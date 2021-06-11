@@ -1,0 +1,26 @@
+.fm__wrapper {
+    width: 40vw;
+    height: auto;
+    background-color: #e8f7ff;
+    display: flex;
+    margin: auto;
+    border-radius: 12px;
+    .fm__container {
+        width: 100%;
+        display: flex;
+        padding: 65px;
+        .fm_formLeft {
+            width: 60%;
+            .fm__form {
+                .fm__avata {
+                }
+                .fm__hoVaTen {
+                    width: 100%;
+                }
+            }
+        }
+        .fm__formRight {
+            width: 30%;
+        }
+    }
+}

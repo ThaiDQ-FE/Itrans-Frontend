@@ -1,0 +1,48 @@
+.fbi__wrapper {
+    width: 40vw;
+    height: auto;
+    background-color: #e8f7ff;
+    display: flex;
+    margin: auto;
+    border-radius: 12px;
+    .fbi__container {
+        width: 100%;
+        padding: 65px;
+        .fbi__form {
+            width: 100%;
+            .fbi__gmailPhone {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 25px;
+                .fbi__gmail {
+                    width: 55%;
+                }
+                .fbi__phone {
+                    width: 35%;
+                }
+            }
+            .fbi__password {
+                width: 100%;
+                margin-bottom: 25px;
+            }
+            .fbi__confirmPassword {
+                width: 100%;
+                margin-bottom: 25px;
+            }
+            .fbi__xacThucMa {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 25px;
+                .fbi__formControl {
+                    width: 45%;
+                }
+                .fbi__maXacThuc {
+                    width: 45%;
+                }
+            }
+            .fbi__button {
+                text-align: right;
+            }
+        }
+    }
+}

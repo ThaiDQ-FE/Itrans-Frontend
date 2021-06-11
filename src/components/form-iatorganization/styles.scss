@@ -1,0 +1,92 @@
+.fiato__wrapper {
+    width: 65vw;
+    height: auto;
+    background-color: #e8f7ff;
+    display: flex;
+    margin: auto;
+    border-radius: 12px;
+    .fiato__container {
+        width: 100%;
+        padding: 65px 65px 40px 65px;
+        .fiato__form {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-gap: 20px;
+            background-color: #e8f7ff;
+            color: #444;
+            .fiato__box {
+                background-color: #e8f7ff;
+                color: #fff;
+                border-radius: 5px;
+                .fiato__tenDoanhNghiep,
+                .fiato__namThanhLap,
+                .fiato__linkWebsite,
+                .fiato__trangGioiThieu,
+                .fiato__formControlTwo,
+                .fiato__formControlThree,
+                .fiato__formControlFive,
+                .fiato__formControlSeven,
+                .fiato__formControlEight {
+                    width: 100%;
+                }
+            }
+            .one {
+                grid-column: 1 / 4;
+                grid-row: 1;
+            }
+            .two {
+                grid-column: 4 / 6;
+                grid-row: 1;
+            }
+            .three {
+                grid-column: 1 / 3;
+                grid-row: 2;
+            }
+            .four {
+                grid-column: 3 / 4;
+                grid-row: 2;
+            }
+            .five {
+                grid-column: 4 / 6;
+                grid-row: 2;
+            }
+            .six {
+                grid-column: 1 / 6;
+                grid-row: 3;
+            }
+            .seven {
+                grid-column: 1 / 3;
+                grid-row: 4;
+            }
+            .eight {
+                grid-column: 3 / 5;
+                grid-row: 4;
+            }
+            .nine {
+                grid-column: 5 / 6;
+                grid-row: 4 / 6;
+                display: flex;
+                border: 1px dotted #ff8412;
+                .fiato__logo {
+                    margin: auto;
+                    text-align: center;
+                    .fiato__file {
+                        display: none;
+                    }
+                    .fiato__camera {
+                        width: 15%;
+                    }
+                }
+            }
+            .ten {
+                grid-column: 1 / 5;
+                grid-row: 5;
+            }
+            .fiato__button {
+                grid-column: 1 / 6;
+                grid-row: 6;
+                text-align: right;
+            }
+        }
+    }
+}
