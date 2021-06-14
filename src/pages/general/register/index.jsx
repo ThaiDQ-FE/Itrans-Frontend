@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 import HeaderGeneral from "../../../components/header-general";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import FormRole from "../../../components/form-role";
@@ -14,11 +12,68 @@ import FormInformationAboutTheOrganization from "../../../components/form-iatorg
 import FormDetailsInformation from "../../../components/form-detailsinfo";
 import FormMember from "../../../components/form-member";
 function Register() {
-  const themeMenu = createMuiTheme({
+  const themeOrganization = createMuiTheme({
     overrides: {
       MuiStep: {
         horizontal: {
           marginTop: 25,
+        },
+      },
+      MuiStepper: {
+        root: {
+          padding: "25px 250px",
+        },
+      },
+      MuiStepIcon: {
+        completed: {
+          color: "#FF8412 !important",
+        },
+        active: {
+          color: "#FF8412 !important",
+        },
+      },
+      MuiSvgIcon: {
+        root: {
+          width: "35px !important",
+          height: "35px !important",
+        },
+      },
+      MuiStepLabel: {
+        active: {
+          fontWeight: "600 !important",
+        },
+      },
+    },
+  });
+  const themeInvestor = createMuiTheme({
+    overrides: {
+      MuiStep: {
+        horizontal: {
+          marginTop: 25,
+        },
+      },
+      MuiStepper: {
+        root: {
+          padding: "25px 350px",
+        },
+      },
+      MuiStepIcon: {
+        completed: {
+          color: "#FF8412 !important",
+        },
+        active: {
+          color: "#FF8412 !important",
+        },
+      },
+      MuiSvgIcon: {
+        root: {
+          width: "35px !important",
+          height: "35px !important",
+        },
+      },
+      MuiStepLabel: {
+        active: {
+          fontWeight: "600 !important",
         },
       },
     },
@@ -33,33 +88,39 @@ function Register() {
         Messages.GENERAL_STEP_1,
         Messages.ORGANIZATION_STEP_2,
         Messages.ORGANIZATION_STEP_3,
-        Messages.GENERAL_STEP_FINAL,
       ];
     } else {
-      return [
-        Messages.GENERAL_STEP_1,
-        Messages.INVESTOR_STEP_2,
-        Messages.GENERAL_STEP_FINAL,
-      ];
+      return [Messages.GENERAL_STEP_1, Messages.INVESTOR_STEP_2];
     }
   };
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-        return <FormBasicInformation handleNext={handleNext} />;
+        return (
+          <FormBasicInformation
+            handleNext={handleNext}
+            handleBack={handleBack}
+            step={step}
+          />
+        );
       case 1:
         switch (role) {
           case "organization":
             return (
-              <FormInformationAboutTheOrganization handleNext={handleNext} />
+              <FormInformationAboutTheOrganization
+                handleNext={handleNext}
+                handleBack={handleBack}
+              />
             );
           default:
-            return <FormDetailsInformation />;
+            return <FormDetailsInformation handleBack={handleBack} />;
         }
       case 2:
         switch (role) {
           case "organization":
-            return <FormMember />;
+            return (
+              <FormMember handleNext={handleNext} handleBack={handleBack} />
+            );
         }
       default:
         return "Unknown step";
@@ -82,7 +143,9 @@ function Register() {
       {role === "" ? (
         <FormRole setStateRole={setStateRole} role={role} />
       ) : (
-        <MuiThemeProvider theme={themeMenu}>
+        <MuiThemeProvider
+          theme={role === "organization" ? themeOrganization : themeInvestor}
+        >
           <div className="register__wrapper">
             <div className="register__container">
               <HeaderGeneral />

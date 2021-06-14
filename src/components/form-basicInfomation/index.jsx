@@ -9,7 +9,9 @@ import {
 import React from "react";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import "./styles.scss";
+import Messages from "../../assets/message/text";
 function FormBasicInformation(props) {
+  console.log(props.step);
   const themeMenu = createMuiTheme({
     overrides: {
       MuiOutlinedInput: {
@@ -34,14 +36,25 @@ function FormBasicInformation(props) {
           },
         },
       },
+      MuiTextField: {
+        root: {
+          width: `${100}% !important`,
+        },
+      },
+      MuiFormControl: {
+        root: {
+          width: `${100}% !important`,
+        },
+      },
     },
   });
   return (
     <div className="fbi__wrapper">
       <div className="fbi__container">
+        <h3>{Messages.GENERAL_STEP_1}</h3>
         <MuiThemeProvider theme={themeMenu}>
           <form className="fbi__form">
-            <div className="fbi__gmailPhone">
+            <div className="fib__box item__a">
               <TextField
                 id="outlined-basic"
                 label="Gmail"
@@ -49,6 +62,8 @@ function FormBasicInformation(props) {
                 type="email"
                 className="fbi__gmail"
               />
+            </div>
+            <div className="fib__box item__b">
               <TextField
                 id="outlined-basic"
                 label="Số điện thoại"
@@ -57,21 +72,25 @@ function FormBasicInformation(props) {
                 className="fbi__phone"
               />
             </div>
-            <TextField
-              id="outlined-basic"
-              label="Mật khẩu"
-              variant="outlined"
-              type="passưord"
-              className="fbi__password"
-            />
-            <TextField
-              id="outlined-basic"
-              label="Nhập lại mật khẩu"
-              variant="outlined"
-              type="passưord"
-              className="fbi__confirmPassword"
-            />
-            <div className="fbi__xacThucMa">
+            <div className="fib__box item__c">
+              <TextField
+                id="outlined-basic"
+                label="Mật khẩu"
+                variant="outlined"
+                type="passưord"
+                className="fbi__password"
+              />
+            </div>
+            <div className="fib__box item__d">
+              <TextField
+                id="outlined-basic"
+                label="Nhập lại mật khẩu"
+                variant="outlined"
+                type="passưord"
+                className="fbi__confirmPassword"
+              />
+            </div>
+            <div className="fib__box item__e">
               <FormControl variant="outlined" className="fbi__formControl">
                 <InputLabel id="demo-simple-select-outlined-label">
                   Chọn loại xác thực
@@ -81,10 +100,12 @@ function FormBasicInformation(props) {
                   id="demo-simple-select-outlined"
                   label="Age"
                 >
-                  <MenuItem value="otp">OTP</MenuItem>
-                  <MenuItem value="gmail">Gmail</MenuItem>
+                  <MenuItem value="">OTP</MenuItem>
+                  <MenuItem value="">Gmail</MenuItem>
                 </Select>
               </FormControl>
+            </div>
+            <div className="fib__box item__f">
               <TextField
                 id="outlined-basic"
                 label="Mã xác thực"
@@ -93,13 +114,13 @@ function FormBasicInformation(props) {
                 className="fbi__maXacThuc"
               />
             </div>
-            <div className="fbi__button">
+            <div className="fbi__button item__g">
               <Button
                 onClick={props.handleNext}
                 variant="contained"
                 color="primary"
               >
-                Tiếp
+                Tiếp Tục
               </Button>
             </div>
           </form>

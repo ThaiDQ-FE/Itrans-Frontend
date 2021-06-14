@@ -31,7 +31,7 @@ function Header() {
             <NavLink
               activeClassName="active-nav-link"
               className="header__navlink__dangnhap"
-              to="/"
+              to="/dang-nhap"
               exact={true}
             >
               Đăng nhập
