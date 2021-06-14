@@ -79,12 +79,19 @@ function Register() {
     },
   });
   const [role, setRole] = useState("");
+  const [subRole, setSubRole] = useState("");
+  const [finalRole, setFinalRole] = useState(null);
   const setStateRole = (newRole) => {
     setRole(newRole);
+    setFinalRole("organization");
   };
-
+  const setStateSubRole = (newSubRole) => {
+    setSubRole(newSubRole);
+    setFinalRole("investor");
+  };
+  console.log(finalRole);
   const getSteps = () => {
-    if (role === "organization") {
+    if (role === "organization" || subRole === "INSTITUTIONAL_INVESTOR") {
       return [
         Messages.GENERAL_STEP_1,
         Messages.ORGANIZATION_STEP_2,
@@ -113,8 +120,19 @@ function Register() {
                 handleBack={handleBack}
               />
             );
-          default:
-            return <FormDetailsInformation handleBack={handleBack} />;
+          case "":
+            switch (subRole) {
+              case "INSTITUTIONAL_INVESTOR":
+                return (
+                  <FormInformationAboutTheOrganization
+                    handleNext={handleNext}
+                    handleBack={handleBack}
+                  />
+                );
+
+              default:
+                return <FormDetailsInformation handleBack={handleBack} />;
+            }
         }
       case 2:
         switch (role) {
@@ -124,7 +142,7 @@ function Register() {
             );
         }
       default:
-        return "Unknown step";
+        return <FormMember handleNext={handleNext} handleBack={handleBack} />;
     }
   };
 
@@ -141,8 +159,11 @@ function Register() {
 
   return (
     <>
-      {role === "" ? (
-        <FormRole setStateRole={setStateRole} role={role} />
+      {subRole === "" && role === "" ? (
+        <FormRole
+          setStateRole={setStateRole}
+          setStateSubRole={setStateSubRole}
+        />
       ) : (
         <MuiThemeProvider
           theme={role === "organization" ? themeOrganization : themeInvestor}

@@ -1,6 +1,7 @@
 const message = {
   BANNER_SOLOGAN:
     "My favorite recent startup articles about growth, marketing and business life that have made a big impact on our team.",
+  // form-role
   REGISTER_ORGANIZATION: "Tổ Chức",
   REGISTER_ORGANIZATION_TEXT:
     "Lorem ipsum dolor sit amet consectetur adipisicing elit.Consectetur ut deleniti molestias porro aliquid, sapientelaudantium aperiam odit tenetur.",
@@ -9,6 +10,8 @@ const message = {
     "Lorem ipsum dolor sit amet consectetur adipisicing elit.Consectetur ut deleniti molestias porro aliquid, sapientelaudantium aperiam odit tenetur.",
   CHOOSE_ROLE_TEXT:
     "Chọn loại người dùng để bắt đầu quy trình đăng ký tài khoản!",
+  INSTITUTIONAL_INVESTOR: "Nhà đầu tư tổ chức",
+  INVESTOPEDIA: "Nhà đầu tư cá nhân",
   // header-general
   LOGIN_BUTTON: "Đăng nhập",
   REGISTER_BUTTON: "Đăng ký",

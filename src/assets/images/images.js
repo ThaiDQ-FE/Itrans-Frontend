@@ -6,6 +6,7 @@ import check from "./check.png";
 import user_avata from "./user_1.png";
 import right_arrows from "./right-arrow.png";
 import buildings from "./buildings.png";
+import cancel from "./cancel.png";
 const Images = {
   LOGO_NAVY: logo_navy,
   LOGO_GREY: logo_grey,
@@ -15,6 +16,7 @@ const Images = {
   USER_AVATA: user_avata,
   RIGHT_ARROWS: right_arrows,
   BUILDINGS: buildings,
+  CANCEL: cancel,
 };
 
 export default Images;
