@@ -10,7 +10,7 @@ const message = {
   CHOOSE_ROLE_TEXT:
     "Chọn loại người dùng để bắt đầu quy trình đăng ký tài khoản!",
   // header-general
-  LOGIN_BUTTON: "Đặng nhập",
+  LOGIN_BUTTON: "Đăng nhập",
   REGISTER_BUTTON: "Đăng ký",
   // form-register
   GENERAL_STEP_1: "Thông tin cơ bản",

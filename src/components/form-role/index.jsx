@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Images from "../../assets/images/images";
 import Messages from "../../assets/message/text";
 import HeaderGeneral from "../header-general";
+import Modal from "@material-ui/core/Modal";
 import "./styles.scss";
 function FormRole(props) {
   const jsonFile = [
@@ -19,6 +20,7 @@ function FormRole(props) {
   ];
   const [click, setClick] = useState(null);
   const [choose, setChoose] = useState(null);
+  const [modal, setModal] = useState(false);
   const handleClickBlock = (index) => {
     setClick(index);
     if (index === 0) {
@@ -28,7 +30,11 @@ function FormRole(props) {
     }
   };
   const handleClickButton = () => {
-    props.setStateRole(choose);
+    if (choose === "investor") {
+      setModal(true);
+    } else {
+      return props.setStateRole(choose);
+    }
   };
   const renderContent = () => {
     return jsonFile.map((block, index) => {

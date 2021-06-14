@@ -67,10 +67,15 @@ function FormInformationAboutTheOrganization(props) {
                 variant="outlined"
                 type="text"
                 className="fiato__tenDoanhNghiep"
+                focused
               />
             </div>
             <div className="fiato__box two">
-              <FormControl variant="outlined" className="fiato__formControlTwo">
+              <FormControl
+                focused
+                variant="outlined"
+                className="fiato__formControlTwo"
+              >
                 <InputLabel id="demo-simple-select-outlined-label">
                   {Messages.LinhVucKinhDoanh}
                 </InputLabel>
@@ -85,7 +90,11 @@ function FormInformationAboutTheOrganization(props) {
               </FormControl>
             </div>
             <div className="fiato__box three">
-              <FormControl variant="outlined" className="fiato__formControlTwo">
+              <FormControl
+                focused
+                variant="outlined"
+                className="fiato__formControlTwo"
+              >
                 <InputLabel id="demo-simple-select-outlined-label">
                   {Messages.GiaiDoanPhatTrien}
                 </InputLabel>
@@ -115,10 +124,15 @@ function FormInformationAboutTheOrganization(props) {
                 variant="outlined"
                 type="text"
                 className="fiato__emailLienLac"
+                focused
               />
             </div>
             <div className="fiato__box six">
-              <FormControl variant="outlined" className="fiato__formControlTwo">
+              <FormControl
+                focused
+                variant="outlined"
+                className="fiato__formControlTwo"
+              >
                 <InputLabel id="demo-simple-select-outlined-label">
                   {Messages.KhuVucHoatDong}
                 </InputLabel>
@@ -146,6 +160,7 @@ function FormInformationAboutTheOrganization(props) {
                 variant="outlined"
                 type="text"
                 className="fiato__linkWebsite"
+                focused
               />
             </div>
             <div className="fiato__box nine">
@@ -155,6 +170,7 @@ function FormInformationAboutTheOrganization(props) {
                 variant="outlined"
                 type="text"
                 className="fiato__soThanhVien"
+                focused
               />
             </div>
             <div className="fiato__box ten">
@@ -179,6 +195,7 @@ function FormInformationAboutTheOrganization(props) {
                 rows={2}
                 rowsMax={2}
                 className="fiato__moTaVeDoanhNghiep"
+                focused
               />
             </div>
           </form>

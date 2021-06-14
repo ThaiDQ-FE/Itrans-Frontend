@@ -82,6 +82,7 @@ function Register() {
   const setStateRole = (newRole) => {
     setRole(newRole);
   };
+
   const getSteps = () => {
     if (role === "organization") {
       return [
