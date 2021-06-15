@@ -1,0 +1,142 @@
+.formRole__wrapper {
+    width: 100%;
+    height: 100vh;
+    font-family: "Montserrat", sans-serif;
+    .formRole__container {
+        display: flex;
+        justify-content: space-evenly;
+        padding: 0 15%;
+        .formRole__main {
+            margin-top: 25px;
+            width: 35%;
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0px 0px 38px -5px rgba(80, 83, 85, 0.75);
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            &:hover {
+                box-shadow: 0px 0px 38px 0px rgba(91, 155, 192, 0.75);
+            }
+            .formRole__check {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                top: 4%;
+                right: 6%;
+                transform: translate(-4%, -6%);
+                img {
+                    width: 100%;
+                }
+            }
+            .formRole__image {
+                display: flex;
+                img {
+                    margin: auto;
+                    width: 100px;
+                    margin-bottom: 20px;
+                }
+            }
+            .formRole__name {
+                display: flex;
+                margin-bottom: 20px;
+                h2 {
+                    margin: auto;
+                    font-weight: 600;
+                }
+            }
+            .formRole__text {
+                p {
+                    text-align: center;
+                    opacity: 0.6;
+                }
+            }
+            .formRole__button {
+                display: flex;
+                span {
+                    margin: auto;
+                    padding: 10px 45px;
+                    background-color: #6bdcff;
+                    border-radius: 50px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    &:hover {
+                        color: #ffffff;
+                        background-color: #37c7f3;
+                        box-shadow: 6px 6px 18px -5px rgba(80, 83, 85, 0.75);
+                    }
+                }
+            }
+        }
+        .formRole__active {
+            box-shadow: 0px 0px 38px 0px rgba(91, 155, 192, 0.75);
+        }
+    }
+    .formRole__title {
+        text-align: center;
+        width: 50%;
+        color: #ff7d04;
+        font-weight: 600;
+        margin: auto;
+        margin-top: 50px;
+    }
+    .formRole__button {
+        text-align: right;
+        padding: 0 22%;
+        margin-top: 50px;
+    }
+}
+.fr__modal {
+    font-family: "Montserrat", sans-serif;
+    background-color: #fff;
+    width: 400px;
+    height: 165px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 15px;
+    border-radius: 12px;
+    .fr__modalContainer {
+        position: relative;
+
+        .fr__close {
+            width: 25px;
+            height: 25px;
+            position: absolute;
+            cursor: pointer;
+            opacity: 0.5;
+            top: -3%;
+            right: 0;
+            width: 15px;
+            height: 15px;
+            line-height: 1.5;
+            &:hover {
+                opacity: 1;
+            }
+        }
+        .fr__modalTitle {
+            font-weight: 600;
+            font-size: 24px;
+            text-align: center;
+        }
+        .fr__modalWrapper {
+            display: flex;
+            justify-content: space-evenly;
+            .fr__modalSubRole {
+                width: 45%;
+                background-color: #6bdcff;
+                padding: 10px 15px;
+                text-align: center;
+                border-radius: 12px;
+                font-weight: 600;
+                box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.1);
+                cursor: pointer;
+                &:hover {
+                    color: #fff;
+                    box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.3);
+                }
+            }
+        }
+    }
+}

@@ -1,11 +1,13 @@
-import Home from "../pages/general/home";
+import AdminHome from "../pages/admin/home";
 import Login from "../pages/general/login";
+import Register from "../pages/general/register";
+import UserHome from "../pages/main/home";
 
 export const mainRouter = [
   {
     path: "/",
     exact: true,
-    Component: Home,
+    Component: UserHome,
   },
 ];
 
@@ -13,14 +15,19 @@ export const adminRouter = [
   {
     path: "/",
     exact: true,
-    Component: Home,
+    Component: AdminHome,
   },
 ];
 
-export const loginRouter = [
+export const generalRouter = [
   {
     path: "/dang-nhap",
-    exact: true,
+    exact: false,
     Component: Login,
+  },
+  {
+    path: "/dang-ky",
+    exact: false,
+    Component: Register,
   },
 ];

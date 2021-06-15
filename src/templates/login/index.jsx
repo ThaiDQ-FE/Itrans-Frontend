@@ -1,17 +1,17 @@
 import React from "react";
 import { Route } from "react-router";
 
-function LoginTemplate(props) {
+function GeneralTemplate(props) {
   return <main>{props.children}</main>;
 }
 
-const RouterLoginTemplate = ({ path, exact, Component }) => {
+const RouterGeneralTemplate = ({ path, exact, Component }) => {
   return (
     <Route path={path} exact={exact}>
-      <LoginTemplate>
+      <GeneralTemplate>
         <Component />
-      </LoginTemplate>
+      </GeneralTemplate>
     </Route>
   );
 };
-export default RouterLoginTemplate;
+export default RouterGeneralTemplate;

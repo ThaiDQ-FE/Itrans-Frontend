@@ -1,0 +1,117 @@
+.header__container {
+    background-color: #112d4e;
+    height: 75px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    font-family: "Montserrat", sans-serif;
+    .header__logo {
+        height: 100%;
+        width: 20%;
+        display: flex;
+        img {
+            height: 80%;
+            margin: auto;
+            margin-left: 60px;
+        }
+    }
+    .header__features {
+        width: 30%;
+        height: 100%;
+        .header__features__ul {
+            list-style-type: none;
+            color: #ffffff;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-around;
+            font-size: 18px;
+            font-weight: 500px;
+            height: 100%;
+            margin-bottom: 0;
+            padding-left: 0;
+            .header__features__li {
+                margin: auto;
+            }
+        }
+    }
+    .header__login {
+        width: 18%;
+        height: 100%;
+        .header__login__ul {
+            height: 100%;
+            list-style-type: none;
+            display: flex;
+            margin-bottom: 0;
+            padding-left: 0;
+            .header__login__li {
+                margin: auto 0;
+                .header__navlink__dangnhap,
+                .header__navlink__dangky {
+                    text-decoration: none;
+                    color: #ffffff;
+                    font-size: 16px;
+                    font-weight: 600;
+                    white-space: nowrap;
+                    font-size: 14px;
+                    text-decoration: underline;
+                }
+                .header__navlink__dangnhap {
+                    margin-left: 20px;
+                    background-color: #ffffff;
+                    color: #112d4e;
+                    border-radius: 12px;
+                    border: 1px solid transparent;
+                    cursor: pointer;
+                    padding: 10px 30px;
+                    text-decoration: none;
+                }
+            }
+        }
+        .header__logined {
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: flex-end;
+            display: flex;
+            padding: 10%;
+            padding-right: 20%;
+            img {
+                width: 35px;
+                height: 35px;
+                cursor: pointer;
+            }
+        }
+    }
+}
+.header__menuAvata {
+    img {
+        width: 35px;
+        margin-right: 10px;
+    }
+    span {
+        font-weight: 600;
+    }
+}
+.header__menuAccount,
+.header__menuLogout {
+    position: relative;
+    width: 100%;
+    padding: 5px;
+    img {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    span {
+        margin-left: 25px;
+    }
+}
+.header__hr {
+    margin: 3px 5px;
+}
