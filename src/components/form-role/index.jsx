@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Images from "../../assets/images/images";
 import Messages from "../../assets/message/text";
 import HeaderGeneral from "../header-general";
+import Modal from "@material-ui/core/Modal";
 import "./styles.scss";
 function FormRole(props) {
   const jsonFile = [
@@ -17,8 +18,17 @@ function FormRole(props) {
       text: Messages.REGISTER_INVESTOR_TEXT,
     },
   ];
+  const jsonSubRole = [
+    {
+      name: Messages.INSTITUTIONAL_INVESTOR,
+    },
+    {
+      name: Messages.INVESTOPEDIA,
+    },
+  ];
   const [click, setClick] = useState(null);
   const [choose, setChoose] = useState(null);
+  const [modal, setModal] = useState(false);
   const handleClickBlock = (index) => {
     setClick(index);
     if (index === 0) {
@@ -28,7 +38,50 @@ function FormRole(props) {
     }
   };
   const handleClickButton = () => {
-    props.setStateRole(choose);
+    if (choose === "investor") {
+      setModal(true);
+    } else {
+      return props.setStateRole(choose);
+    }
+  };
+  const handleClickSubRole = (index) => {
+    if (index === 0) {
+      return props.setStateSubRole("INSTITUTIONAL_INVESTOR");
+    } else {
+      return props.setStateSubRole("INVESTOPEDIA");
+    }
+  };
+  const handleClose = () => {
+    setModal(false);
+  };
+  const renderSubRole = () => {
+    return jsonSubRole.map((subRole, index) => {
+      return (
+        <div
+          className="fr__modalSubRole"
+          key={index}
+          onClick={() => handleClickSubRole(index)}
+        >
+          {subRole.name}
+        </div>
+      );
+    });
+  };
+  const renderBodyModal = () => {
+    return (
+      <div className="fr__modal">
+        <div className="fr__modalContainer">
+          <img
+            src={Images.CANCEL}
+            alt=""
+            className="fr__close"
+            onClick={handleClose}
+          />
+          <p className="fr__modalTitle">Bạn là ?</p>
+          <div className="fr__modalWrapper">{renderSubRole()}</div>
+        </div>
+      </div>
+    );
   };
   const renderContent = () => {
     return jsonFile.map((block, index) => {
@@ -78,6 +131,13 @@ function FormRole(props) {
           Tiếp Tục
         </Button>
       </div>
+      <Modal
+        open={modal}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {renderBodyModal()}
+      </Modal>
     </div>
   );
 }

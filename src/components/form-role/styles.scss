@@ -81,7 +81,62 @@
         margin-top: 50px;
     }
     .formRole__button {
-        text-align: center;
+        text-align: right;
+        padding: 0 22%;
         margin-top: 50px;
+    }
+}
+.fr__modal {
+    font-family: "Montserrat", sans-serif;
+    background-color: #fff;
+    width: 400px;
+    height: 165px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 15px;
+    border-radius: 12px;
+    .fr__modalContainer {
+        position: relative;
+
+        .fr__close {
+            width: 25px;
+            height: 25px;
+            position: absolute;
+            cursor: pointer;
+            opacity: 0.5;
+            top: -3%;
+            right: 0;
+            width: 15px;
+            height: 15px;
+            line-height: 1.5;
+            &:hover {
+                opacity: 1;
+            }
+        }
+        .fr__modalTitle {
+            font-weight: 600;
+            font-size: 24px;
+            text-align: center;
+        }
+        .fr__modalWrapper {
+            display: flex;
+            justify-content: space-evenly;
+            .fr__modalSubRole {
+                width: 45%;
+                background-color: #6bdcff;
+                padding: 10px 15px;
+                text-align: center;
+                border-radius: 12px;
+                font-weight: 600;
+                box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.1);
+                cursor: pointer;
+                &:hover {
+                    color: #fff;
+                    box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.3);
+                }
+            }
+        }
     }
 }
