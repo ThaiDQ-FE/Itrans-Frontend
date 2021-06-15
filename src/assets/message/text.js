@@ -56,6 +56,12 @@ const message = {
     "Khu đô thị mới An Phú Thịnh, Phường Nhơn Bình & Phường Đống Đa, TP. Quy Nhơn, Bình Định",
   SDT: "024 7300 5588",
   EMAIL: "daihocfpt@fpt.edu.vn",
+
+  // --------------------------
+  // Error form login
+  GMAIL_NULL: "Vui lòng nhập gmail",
+  GMAIL_REG: "Gmail không đúng định dạng (@gmail.com)",
+  PASSWORD_NULL: "Vui lòng nhập mật khẩu",
 };
 
 export default message;

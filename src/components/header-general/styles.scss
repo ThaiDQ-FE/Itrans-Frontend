@@ -1,6 +1,6 @@
 .headerGeneral__wrapper {
     background-color: #112d4e;
-    height: 100px;
+    height: 75px;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -33,8 +33,8 @@
             color: #112d4e;
             border-radius: 12px;
             &:hover {
-                background-color: #37c7f3;
-                box-shadow: 6px 6px 18px -5px rgba(107, 220, 255, 0.75);
+                background-color: #e7e6e6;
+                box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.3);
             }
         }
     }

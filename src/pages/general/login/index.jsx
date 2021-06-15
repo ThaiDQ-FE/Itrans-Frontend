@@ -8,7 +8,15 @@ import {
   TextField,
 } from "@material-ui/core";
 import HeaderGeneral from "../../../components/header-general";
+import { useDispatch } from "react-redux";
+import { postCheckLogin } from "../../../store/action/user.action";
+import { useHistory } from "react-router";
+import { validGmail } from "../../../configs/regex";
+import Messages from "../../../assets/message/text";
+import Images from "../../../assets/images/images";
 function Login() {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const themeMenu = createMuiTheme({
     overrides: {
       MuiOutlinedInput: {
@@ -35,6 +43,8 @@ function Login() {
       },
     },
   });
+  const [gmailErr, setGmailErr] = useState("");
+  const [passwordErr, setPasswordErr] = useState("");
   const [user, setUser] = useState({
     gmail: "",
     password: "",
@@ -46,10 +56,35 @@ function Login() {
       [name]: value,
     });
   };
+  const handleGmailFocus = () => {};
+  const handleGmailBlur = () => {
+    if (user.gmail === "") {
+      setGmailErr(Messages.GMAIL_NULL);
+    } else if (validGmail.test(user.gmail) === false) {
+      setGmailErr(Messages.GMAIL_REG);
+    } else {
+      setGmailErr("");
+    }
+  };
+  const handlePasswordBlur = () => {
+    if (user.password === "") {
+      setPasswordErr(Messages.PASSWORD_NULL);
+    } else {
+      setPasswordErr("");
+    }
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("x");
-    console.log(user);
+    handleGmailBlur();
+    handlePasswordBlur();
+    if (
+      user.gmail !== "" &&
+      user.password !== "" &&
+      gmailErr === "" &&
+      passwordErr === ""
+    ) {
+      dispatch(postCheckLogin(user.gmail, user.password, history));
+    }
   };
   return (
     <div className="login__wrapper">
@@ -59,18 +94,21 @@ function Login() {
           <div className="login__title">Đăng nhập</div>
           <MuiThemeProvider theme={themeMenu}>
             <form onSubmit={handleSubmit}>
-              <div>
+              <div className="wrapper__gmail">
                 <TextField
                   id="outlined-basic"
                   label="Gmail"
                   variant="outlined"
-                  type="text"
+                  type="gmail"
                   className="login__gmail"
                   onChange={handleChange}
+                  onFocus={handleGmailFocus}
+                  onBlur={handleGmailBlur}
                   name="gmail"
                 />
+                {gmailErr !== "" ? <small>{gmailErr}</small> : ""}
               </div>
-              <div>
+              <div className="wrapper__password">
                 <TextField
                   id="outlined-basic"
                   label="Mật khẩu"
@@ -78,8 +116,10 @@ function Login() {
                   type="password"
                   className="login__matKhau"
                   onChange={handleChange}
+                  onBlur={handlePasswordBlur}
                   name="password"
                 />
+                {passwordErr !== "" ? <small>{passwordErr}</small> : ""}
               </div>
 
               <div className="login__remember">
