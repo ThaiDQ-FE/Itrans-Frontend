@@ -20,78 +20,101 @@ function FormRole(props) {
   ];
   const jsonSubRole = [
     {
-      name: Messages.INSTITUTIONAL_INVESTOR,
+      name: Messages.NHA_DAU_TU_THIEN_THAN,
     },
     {
-      name: Messages.INVESTOPEDIA,
+      name: Messages.NHA_DAU_TU_MAO_HIEM,
+    },
+    {
+      name: Messages.VUON_UOM_DOANH_NGHIEP,
+    },
+    {
+      name: Messages.QUY_DAU_TU_TU_NHAN,
+    },
+    {
+      name: Messages.NHA_TANG_TOC_KHOI_NGHIEP,
     },
   ];
   const [click, setClick] = useState(null);
   const [choose, setChoose] = useState(null);
+  const [chooseSubRole, setChooseSubRole] = useState(null);
   const [modal, setModal] = useState(false);
+  const [subRole, setSubRole] = useState(false);
+  const [subRoleClicked, setSubRoleClicked] = useState(null);
   const handleClickBlock = (index) => {
     setClick(index);
     if (index === 0) {
-      setChoose("organization");
+      setChoose("ORGANIZATION");
+      document.getElementById("block1").classList.remove("fr__rotate");
+      document.getElementById("block0").classList.add("formRole__active");
+      document.getElementById("block1").classList.remove("formRole__active");
+      setSubRole(false);
+      setChooseSubRole(null);
+      setSubRoleClicked(null);
     } else {
-      setChoose("investor");
+      setChoose("INVESTOR");
+      document.getElementById("block1").classList.add("fr__rotate");
+      document.getElementById("block0").classList.remove("formRole__active");
+      document.getElementById("block1").classList.add("formRole__active");
+      setSubRole(true);
     }
   };
   const handleClickButton = () => {
-    if (choose === "investor") {
-      setModal(true);
+    if (choose === "INVESTOR") {
+      if (chooseSubRole === null) {
+        console.log("nulllllll");
+      } else {
+        return props.setStateSubRole(chooseSubRole);
+      }
     } else {
       return props.setStateRole(choose);
     }
   };
   const handleClickSubRole = (index) => {
-    if (index === 0) {
-      return props.setStateSubRole("INSTITUTIONAL_INVESTOR");
-    } else {
-      return props.setStateSubRole("INVESTOPEDIA");
+    switch (index) {
+      case 0:
+        setChooseSubRole("NHA_DAU_TU_THIEN_THAN");
+        break;
+      case 1:
+        setChooseSubRole("NHA_DAU_TU_MAO_HIEM");
+        break;
+      case 2:
+        setChooseSubRole("VUON_UOM_DOANH_NGHIEP");
+        break;
+      case 3:
+        setChooseSubRole("QUY_DAU_TU_TU_NHAN");
+        break;
+      default:
+        setChooseSubRole("NHA_TANG_TOC_KHOI_NGHIEP");
+        break;
     }
+    setSubRoleClicked(index);
   };
-  const handleClose = () => {
-    setModal(false);
-  };
+  console.log(subRoleClicked);
   const renderSubRole = () => {
-    return jsonSubRole.map((subRole, index) => {
+    return jsonSubRole.map((sub, index) => {
       return (
-        <div
-          className="fr__modalSubRole"
+        <p
+          className={index === subRoleClicked ? "active__subrole" : ""}
           key={index}
           onClick={() => handleClickSubRole(index)}
         >
-          {subRole.name}
-        </div>
+          {sub.name}
+        </p>
       );
     });
-  };
-  const renderBodyModal = () => {
-    return (
-      <div className="fr__modal">
-        <div className="fr__modalContainer">
-          <img
-            src={Images.CANCEL}
-            alt=""
-            className="fr__close"
-            onClick={handleClose}
-          />
-          <p className="fr__modalTitle">Bạn là ?</p>
-          <div className="fr__modalWrapper">{renderSubRole()}</div>
-        </div>
-      </div>
-    );
   };
   const renderContent = () => {
     return jsonFile.map((block, index) => {
       return (
         <div
-          className={`formRole__main${
-            click === index ? " formRole__active" : ""
-          }`}
+          // className={`formRole__main${
+          //   click === index ? " formRole__active" : ""
+          // }`}
+          className="formRole__main"
           key={index}
           onClick={() => handleClickBlock(index)}
+          id={"block" + index}
         >
           {click === index ? (
             <div className="formRole__check">
@@ -100,7 +123,11 @@ function FormRole(props) {
           ) : (
             ""
           )}
-
+          {index === 1 ? (
+            <div className="fr__subRoleActive">{renderSubRole()}</div>
+          ) : (
+            ""
+          )}
           <div className="formRole__image">
             <img src={block.image} alt="" />
           </div>
@@ -131,13 +158,6 @@ function FormRole(props) {
           Tiếp Tục
         </Button>
       </div>
-      <Modal
-        open={modal}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        {renderBodyModal()}
-      </Modal>
     </div>
   );
 }

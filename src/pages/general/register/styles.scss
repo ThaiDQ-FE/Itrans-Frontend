@@ -6,6 +6,14 @@
         .register__form {
             border-radius: 12px;
             background-color: #ffffff;
+            .register__body {
+                min-height: calc(100vh - 221px);
+                background-color: #f0f2f5;
+            }
+            .register__space {
+                background-color: #f0f2f5;
+                height: 50px;
+            }
         }
     }
 }

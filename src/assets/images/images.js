@@ -10,6 +10,9 @@ import cancel from "./cancel.png";
 import logout from "./logout.png";
 import setting from "./setting.png";
 import warning from "./warning.png";
+import upload from "./upload.png";
+import logo_here from "./logo-here.png";
+import camera from "./camera.png";
 const Images = {
   LOGO_NAVY: logo_navy,
   LOGO_GREY: logo_grey,
@@ -23,6 +26,9 @@ const Images = {
   LOGOUT: logout,
   SETTING: setting,
   WARNING: warning,
+  UPLOAD: upload,
+  LOGO_HERE: logo_here,
+  CAMERA: camera,
 };
 
 export default Images;

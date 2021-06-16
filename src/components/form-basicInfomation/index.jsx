@@ -1,130 +1,43 @@
-import {
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@material-ui/core";
+import { Input, Button } from "antd";
 import React from "react";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import "./styles.scss";
+import "antd/dist/antd.css";
 import Messages from "../../assets/message/text";
+import Images from "../../assets/images/images";
 function FormBasicInformation(props) {
-  console.log(props.step);
-  const themeMenu = createMuiTheme({
-    overrides: {
-      MuiOutlinedInput: {
-        notchedOutline: {
-          top: 0,
-          borderColor: "#FF8412 !important",
-        },
-      },
-      MuiInputLabel: {
-        outlined: {
-          backgroundColor: "#e8f7ff",
-        },
-      },
-      MuiButton: {
-        root: {
-          padding: "6px 28px",
-        },
-        containedPrimary: {
-          backgroundColor: "#FF7D04",
-          "&:hover": {
-            backgroundColor: "#ff7b00",
-          },
-        },
-      },
-      MuiTextField: {
-        root: {
-          width: `${100}% !important`,
-        },
-      },
-      MuiFormControl: {
-        root: {
-          width: `${100}% !important`,
-        },
-      },
-    },
-  });
   return (
     <div className="fbi__wrapper">
       <div className="fbi__container">
         <h3>{Messages.GENERAL_STEP_1}</h3>
-        <MuiThemeProvider theme={themeMenu}>
-          <form className="fbi__form">
-            <div className="fib__box item__a">
-              <TextField
-                id="outlined-basic"
-                label="Gmail"
-                variant="outlined"
-                type="email"
-                className="fbi__gmail"
-              />
+        <form className="fbi__form">
+          <div className="fbi__gmail fbi__input">
+            <Input placeholder="Gmail" size="large" />
+          </div>
+          <div className="fbi__password fbi__input">
+            <Input size="large" placeholder="Mật khẩu" type="password" />
+          </div>
+          <div className="fbi__confirmPassword fbi__input">
+            <Input
+              size="large"
+              placeholder="Nhập lại mật khẩu"
+              type="password"
+            />
+          </div>
+          <div className="fbi__groupGmail fbi__input">
+            <div className="fbi__confirmGmail">
+              <Button type="primary">Lấy mã xác thực</Button>
             </div>
-            <div className="fib__box item__b">
-              <TextField
-                id="outlined-basic"
-                label="Số điện thoại"
-                variant="outlined"
-                type="number"
-                className="fbi__phone"
-              />
+            <div className="fbi__inputConfirmGmail fbi__input">
+              <Input size="large" placeholder="Mã xác thực" />
             </div>
-            <div className="fib__box item__c">
-              <TextField
-                id="outlined-basic"
-                label="Mật khẩu"
-                variant="outlined"
-                type="passưord"
-                className="fbi__password"
-              />
-            </div>
-            <div className="fib__box item__d">
-              <TextField
-                id="outlined-basic"
-                label="Nhập lại mật khẩu"
-                variant="outlined"
-                type="passưord"
-                className="fbi__confirmPassword"
-              />
-            </div>
-            <div className="fib__box item__e">
-              <FormControl variant="outlined" className="fbi__formControl">
-                <InputLabel id="demo-simple-select-outlined-label">
-                  Chọn loại xác thực
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-outlined-label"
-                  id="demo-simple-select-outlined"
-                  label="Age"
-                >
-                  <MenuItem value="">OTP</MenuItem>
-                  <MenuItem value="">Gmail</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            <div className="fib__box item__f">
-              <TextField
-                id="outlined-basic"
-                label="Mã xác thực"
-                variant="outlined"
-                type="text"
-                className="fbi__maXacThuc"
-              />
-            </div>
-            <div className="fbi__button item__g">
-              <Button
-                onClick={props.handleNext}
-                variant="contained"
-                color="primary"
-              >
-                Tiếp Tục
-              </Button>
-            </div>
-          </form>
-        </MuiThemeProvider>
+          </div>
+        </form>
+        <div className="fbi__item fbi__button fbi__itemF">
+          <div className="fbi__buttonWrapper" onClick={props.handleNext}>
+            <img src={Images.RIGHT_ARROWS} alt="arrow-next" />
+            <p>Tiếp tục</p>
+          </div>
+        </div>
       </div>
     </div>
   );
