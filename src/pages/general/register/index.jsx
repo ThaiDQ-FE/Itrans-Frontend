@@ -9,8 +9,9 @@ import Messages from "../../../assets/message/text";
 import "./styles.scss";
 import FormBasicInformation from "../../../components/form-basicInfomation";
 import FormInformationAboutTheOrganization from "../../../components/form-iatorganization";
-import FormDetailsInformation from "../../../components/form-detailsinfo";
 import FormMember from "../../../components/form-member";
+import FormAngelInvestorInformation from "../../../components/form-angelInvestor";
+import FormInvestor from "../../../components/form-investor";
 function Register() {
   const themeOrganization = createMuiTheme({
     overrides: {
@@ -22,6 +23,7 @@ function Register() {
       MuiStepper: {
         root: {
           padding: "25px 250px",
+          backgroundColor: "#f0f2f5",
         },
       },
       MuiStepIcon: {
@@ -55,6 +57,7 @@ function Register() {
       MuiStepper: {
         root: {
           padding: "25px 350px",
+          backgroundColor: "#f0f2f5",
         },
       },
       MuiStepIcon: {
@@ -89,16 +92,27 @@ function Register() {
     setSubRole(newSubRole);
     setFinalRole("investor");
   };
-  console.log(finalRole);
+  console.log(role);
   const getSteps = () => {
-    if (role === "organization" || subRole === "INSTITUTIONAL_INVESTOR") {
+    if (role === "ORGANIZATION") {
       return [
         Messages.GENERAL_STEP_1,
         Messages.ORGANIZATION_STEP_2,
         Messages.ORGANIZATION_STEP_3,
       ];
-    } else {
-      return [Messages.GENERAL_STEP_1, Messages.INVESTOR_STEP_2];
+    } else if (subRole === "NHA_DAU_TU_THIEN_THAN") {
+      return [Messages.GENERAL_STEP_1, Messages.INVESTOR_INFORMATION];
+    } else if (
+      subRole === "NHA_DAU_TU_MAO_HIEM" ||
+      subRole === "VUON_UOM_DOANH_NGHIEP" ||
+      subRole === "QUY_DAU_TU_TU_NHAN" ||
+      subRole === "NHA_TANG_TOC_KHOI_NGHIEP"
+    ) {
+      return [
+        Messages.GENERAL_STEP_1,
+        Messages.INVESTOR_INFORMATION,
+        Messages.ORGANIZATION_STEP_3,
+      ];
     }
   };
   const getStepContent = (step) => {
@@ -113,7 +127,7 @@ function Register() {
         );
       case 1:
         switch (role) {
-          case "organization":
+          case "ORGANIZATION":
             return (
               <FormInformationAboutTheOrganization
                 handleNext={handleNext}
@@ -122,21 +136,21 @@ function Register() {
             );
           case "":
             switch (subRole) {
-              case "INSTITUTIONAL_INVESTOR":
-                return (
-                  <FormInformationAboutTheOrganization
-                    handleNext={handleNext}
-                    handleBack={handleBack}
-                  />
-                );
+              case "NHA_DAU_TU_THIEN_THAN":
+                return <FormAngelInvestorInformation handleBack={handleBack} />;
 
               default:
-                return <FormDetailsInformation handleBack={handleBack} />;
+                return (
+                  <FormInvestor
+                    handleBack={handleBack}
+                    handleNext={handleNext}
+                  />
+                );
             }
         }
       case 2:
         switch (role) {
-          case "organization":
+          case "ORGANIZATION":
             return (
               <FormMember handleNext={handleNext} handleBack={handleBack} />
             );
@@ -156,7 +170,6 @@ function Register() {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-
   return (
     <>
       {subRole === "" && role === "" ? (
@@ -166,7 +179,7 @@ function Register() {
         />
       ) : (
         <MuiThemeProvider
-          theme={role === "organization" ? themeOrganization : themeInvestor}
+          theme={role === "ORGANIZATION" ? themeOrganization : themeInvestor}
         >
           <div className="register__wrapper">
             <div className="register__container">
@@ -179,7 +192,10 @@ function Register() {
                     </Step>
                   ))}
                 </Stepper>
-                <div>{getStepContent(activeStep)}</div>
+                <div className="register__body">
+                  {getStepContent(activeStep)}
+                </div>
+                <div className="register__space"></div>
               </div>
             </div>
           </div>

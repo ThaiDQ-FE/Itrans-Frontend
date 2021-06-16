@@ -12,15 +12,22 @@ const message = {
     "Chọn loại người dùng để bắt đầu quy trình đăng ký tài khoản!",
   INSTITUTIONAL_INVESTOR: "Nhà đầu tư tổ chức",
   INVESTOPEDIA: "Nhà đầu tư cá nhân",
+  // subRole
+  NHA_DAU_TU_THIEN_THAN: "Nhà đầu tư thiên thần",
+  NHA_DAU_TU_MAO_HIEM: "Nhà đầu tư mạo hiểm",
+  VUON_UOM_DOANH_NGHIEP: "Vườn ươm doanh nghiệp",
+  QUY_DAU_TU_TU_NHAN: "Quỹ đầu tư tư nhân",
+  NHA_TANG_TOC_KHOI_NGHIEP: "Nhà tăng tốc khởi nghiệp",
   // header-general
   LOGIN_BUTTON: "Đăng nhập",
   REGISTER_BUTTON: "Đăng ký",
   // form-register
-  GENERAL_STEP_1: "Thông tin cơ bản",
+  GENERAL_STEP_1: "Thông tin tài khoản",
   ORGANIZATION_STEP_2: "Thông tin về tổ chức",
   ORGANIZATION_STEP_3: "Thành viên",
   INVESTOR_STEP_2: "Thông tin chi tiết",
   GENERAL_STEP_FINAL: "Hoàn thành",
+  INVESTOR_INFORMATION: "Thông tin nhà đầu tư",
   //Thông tin về tổ chức
   TenDoanhNghiep: "Tên doanh nghiệp",
   LinhVucKinhDoanh: "Lĩnh vực kinh doanh",
