@@ -35,7 +35,7 @@ function FormBasicInformation(props) {
         <div className="fbi__item fbi__button fbi__itemF">
           <div className="fbi__buttonWrapper" onClick={props.handleNext}>
             <img src={Images.RIGHT_ARROWS} alt="arrow-next" />
-            <p>Tiếp tục</p>
+            <p>Tiếp theo</p>
           </div>
         </div>
       </div>

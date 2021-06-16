@@ -72,15 +72,25 @@ function FormAngelInvestorInformation(props) {
                 </label>
               </div>
               <div className="faii__linhVucDauTu">
-                <Select placeholder="Linh vực đầu tư" size="large">
-                  <Option value="jack">Jack (100)</Option>
-                  <Option value="lucy">Lucy (101)</Option>
+                <Select
+                  mode="multiple"
+                  allowClear
+                  placeholder="Lĩnh vực đầu tư"
+                  onChange={handleChange}
+                  size="large"
+                >
+                  {children}
                 </Select>
               </div>
               <div className="faii__khuVucMuonDauTu">
-                <Select placeholder="Khu vực muốn đầu tư" size="large">
-                  <Option value="jack">Jack (100)</Option>
-                  <Option value="lucy">Lucy (101)</Option>
+                <Select
+                  mode="multiple"
+                  allowClear
+                  placeholder="Khu vực muốn đầu tư"
+                  onChange={handleChange}
+                  size="large"
+                >
+                  {children}
                 </Select>
               </div>
               <div className="faii__ul">

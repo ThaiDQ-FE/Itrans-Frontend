@@ -62,13 +62,13 @@
                 span {
                     margin: auto;
                     padding: 10px 45px;
-                    background-color: #6bdcff;
+                    background-color: #ff8412;
                     border-radius: 50px;
                     font-weight: 600;
                     cursor: pointer;
                     &:hover {
                         color: #ffffff;
-                        background-color: #37c7f3;
+                        background-color: #fd800a;
                         box-shadow: 6px 6px 18px -5px rgba(80, 83, 85, 0.75);
                     }
                 }
@@ -138,5 +138,12 @@
         text-align: right;
         padding: 0 22%;
         margin-top: 50px;
+        button {
+            background-color: #ff8412;
+            &:hover {
+                background-color: #fd800a;
+                box-shadow: 6px 6px 18px -5px rgba(80, 83, 85, 0.75);
+            }
+        }
     }
 }

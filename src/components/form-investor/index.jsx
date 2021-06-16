@@ -39,10 +39,14 @@ function FormInvestor(props) {
               </div>
               <div className="fi__khuUl">
                 <div className="fi__khuVucHoatDong">
-                  <Select placeholder="Khu vục hoạt động" size="large">
-                    <Option value="HCM">Hồ Chí Minh</Option>
-                    <Option value="HN">Hà Nội</Option>
-                    <Option value="...">...</Option>
+                  <Select
+                    mode="multiple"
+                    allowClear
+                    placeholder="Khu vực hoạt động"
+                    onChange={handleChange}
+                    size="large"
+                  >
+                    {children}
                   </Select>
                 </div>
                 <div className="fi__ul">
@@ -76,10 +80,14 @@ function FormInvestor(props) {
           <p className="fi__word">Thông tin về đầu tư</p>
           <div className="fi__lineFour">
             <div className="fi__giaiDoanMuonDauTu">
-              <Select placeholder="Giai đoạn muốn đầu tư" size="large">
-                <Option value="HCM">Hồ Chí Minh</Option>
-                <Option value="HN">Hà Nội</Option>
-                <Option value="...">...</Option>
+              <Select
+                mode="multiple"
+                allowClear
+                placeholder="Giai đoạn muốn đầu tư"
+                onChange={handleChange}
+                size="large"
+              >
+                {children}
               </Select>
             </div>
             <div className="fi__linhVucKinhDoanhMuonDauTu">
@@ -96,10 +104,14 @@ function FormInvestor(props) {
           </div>
           <div className="fi__lineFive">
             <div className="fi__khuVucDauTu">
-              <Select placeholder="Khu vục đầu tư" size="large">
-                <Option value="HCM">Hồ Chí Minh</Option>
-                <Option value="HN">Hà Nội</Option>
-                <Option value="...">...</Option>
+              <Select
+                mode="multiple"
+                allowClear
+                placeholder="Khu vực đầu tư"
+                onChange={handleChange}
+                size="large"
+              >
+                {children}
               </Select>
             </div>
             <div className="fi__ul">
