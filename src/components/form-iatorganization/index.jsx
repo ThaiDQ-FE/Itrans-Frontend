@@ -53,38 +53,29 @@ function FormInformationAboutTheOrganization(props) {
           </div>
           <div className="fiato__lineThree">
             <div className="fiato__khuVucHoatDong">
-              <Select placeholder="Khu vục hoạt động" size="large">
-                <Option value="HCM">Hồ Chí Minh</Option>
-                <Option value="HN">Hà Nội</Option>
-                <Option value="...">...</Option>
-              </Select>
-            </div>
-            <div className="fiato__ul">
               <Select
                 mode="multiple"
                 allowClear
-                placeholder=""
+                placeholder="Khu vực hoạt động"
                 onChange={handleChange}
                 size="large"
               >
                 {children}
               </Select>
             </div>
+            <div className="fiato__linkWebsite">
+              <Input placeholder="Link Website" size="large" />
+            </div>
           </div>
           <div className="fiato__lineFour">
-            <div className="fiato__left">
-              <div className="fiato__linkWebsite">
-                <Input placeholder="Link Website" size="large" />
-              </div>
-              <div className="fiato__moTaVeDoanhNghiep">
-                <TextArea
-                  rows={3}
-                  placeholder="Mô tả về doanh nghiệp"
-                  size="large"
-                />
-              </div>
+            <div className="fiato__moTaVeDoanhNghiep">
+              <TextArea
+                rows={5}
+                placeholder="Mô tả về doanh nghiệp"
+                size="large"
+              />
             </div>
-            <div className="fiato__right">
+            <div className="fiato__logo">
               <img src={Images.LOGO_HERE} alt="" className="fiato__userLogo" />
               <input className="fiato__file" type="file" id="file" />
               <label htmlFor="file" className="fiato__span">

@@ -87,16 +87,16 @@
             }
             .fiato__lineThree {
                 display: flex;
-                margin-bottom: 20px;
                 justify-content: space-between;
+                margin-bottom: 20px;
+
                 .fiato__khuVucHoatDong {
-                    width: 30%;
+                    width: 60%;
                     .ant-select {
                         font-size: 17px;
                         height: 100%;
                         width: 100% !important;
                         .ant-select-selector {
-                            height: 100%;
                             border: 1px solid #ff8412;
                             &:focus {
                                 box-shadow: unset;
@@ -104,18 +104,12 @@
                         }
                     }
                 }
-                .fiato__ul {
-                    width: 68%;
-                    .ant-select {
-                        font-size: 17px;
-                        height: 100%;
-                        width: 100% !important;
-                        .ant-select-selector {
-                            height: 100%;
-                            border: 1px solid #ff8412;
-                            &:focus {
-                                box-shadow: unset;
-                            }
+                .fiato__linkWebsite {
+                    width: 38%;
+                    input {
+                        border: 1px solid #ff8412;
+                        &:focus {
+                            box-shadow: unset;
                         }
                     }
                 }
@@ -124,27 +118,18 @@
                 display: flex;
                 justify-content: space-between;
                 margin-bottom: 20px;
-                .fiato__left {
+
+                .fiato__moTaVeDoanhNghiep {
                     width: 78%;
-                    .fiato__linkWebsite {
-                        margin-bottom: 20px;
-                        input {
-                            border: 1px solid #ff8412;
-                            &:focus {
-                                box-shadow: unset;
-                            }
-                        }
-                    }
-                    .fiato__moTaVeDoanhNghiep {
-                        textarea {
-                            border: 1px solid #ff8412;
-                            &:focus {
-                                box-shadow: unset;
-                            }
+
+                    textarea {
+                        border: 1px solid #ff8412;
+                        &:focus {
+                            box-shadow: unset;
                         }
                     }
                 }
-                .fiato__right {
+                .fiato__logo {
                     width: 20%;
                     position: relative;
                     .fiato__file {
