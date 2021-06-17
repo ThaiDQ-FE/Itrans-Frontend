@@ -35,13 +35,21 @@ function Header() {
   return (
     <div className="header__container">
       <div className="header__logo">
-        <img src={logo} />
+        <NavLink
+          activeClassName="active-nav-link"
+          className="header__navlink__dangky"
+          to="/"
+          exact={true}
+        >
+          <img src={logo} />
+        </NavLink>
       </div>
       <div className="header__features">
         <ul className="header__features__ul">
-          <li className="header__features__li">Home</li>
-          <li className="header__features__li">Fund</li>
-          <li className="header__features__li">Startup</li>
+          <li className="header__features__li">Trang chủ</li>
+          <li className="header__features__li">Nhà đầu tư</li>
+          <li className="header__features__li">Doanh nghiệp</li>
+          <li className="header__features__li">Vòng gọi vốn</li>
         </ul>
       </div>
       <div className="header__login">
@@ -90,9 +98,37 @@ function Header() {
           </MenuItem>
           <hr className="header__hr" />
           <MenuItem>
-            <div className="header__menuAccount">
-              <img src={Images.SETTING} alt="" />
-              <span>Quản lý tài khoản</span>
+            <NavLink
+              activeClassName="active-nav-link"
+              className="header__navlink__quanLyTaiKhoan"
+              to="/quan-ly-tai-khoan"
+              exact={false}
+            >
+              <div className="header__menuAccount">
+                <img src={Images.SETTING} alt="" />
+                <span>Quản lý tài khoản</span>
+              </div>
+            </NavLink>
+          </MenuItem>
+          <hr className="header__hr" />
+          <MenuItem>
+            <NavLink
+              activeClassName="active-nav-link"
+              className="header__navlink__quanLyThoiGian"
+              to="/quan-ly-thoi-gian"
+              exact={false}
+            >
+              <div className="header__menuTime">
+                <img src={Images.TIMETABLE} alt="" />
+                <span>Quản lý thời gian</span>
+              </div>
+            </NavLink>
+          </MenuItem>
+          <hr className="header__hr" />
+          <MenuItem>
+            <div className="header__menuCapital">
+              <img src={Images.CALL_CAPITAL} alt="" />
+              <span>Quản lý vòng gọi vốn</span>
             </div>
           </MenuItem>
           <hr className="header__hr" />

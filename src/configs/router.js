@@ -1,13 +1,25 @@
 import AdminHome from "../pages/admin/home";
 import Login from "../pages/general/login";
 import Register from "../pages/general/register";
+import AccountManagement from "../pages/main/account-management";
 import UserHome from "../pages/main/home";
+import TimeManagement from "../pages/main/time-management";
 
 export const mainRouter = [
   {
     path: "/",
     exact: true,
     Component: UserHome,
+  },
+  {
+    path: "/quan-ly-tai-khoan",
+    exact: false,
+    Component: AccountManagement,
+  },
+  {
+    path: "/quan-ly-thoi-gian",
+    exact: false,
+    Component: TimeManagement,
   },
 ];
 

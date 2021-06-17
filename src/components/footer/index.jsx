@@ -35,14 +35,6 @@ function UserFooter() {
               <span className="uf__truSo">Hà Nội:</span>
               <span className="uf__diaChi">{Messages.TRUSOHN}</span>
             </div>
-            <div className="uf__CT">
-              <span className="uf__truSo">Cần Thơ:</span>
-              <span className="uf__diaChi">{Messages.TRUSOCT}</span>
-            </div>
-            <div className="uf__QN">
-              <span className="uf__truSo">Quy Nhơn:</span>
-              <span className="uf__diaChi">{Messages.TRUSPOQN}</span>
-            </div>
             <div className="uf__DN">
               <span className="uf__truSo">Đà Nẵng:</span>
               <span className="uf__diaChi">{Messages.TRUSODN}</span>
