@@ -1,0 +1,100 @@
+.rft__wrapper {
+    padding: 0px 200px 25px 200px;
+    box-sizing: border-box;
+    .rft__container {
+        display: flex;
+        justify-content: center;
+        .rft__left {
+            width: 770px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            .rft__calendarWrapper {
+                box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14),
+                    0 1px 8px 0 rgba(0, 0, 0, 0.12);
+                .ant-picker-calendar {
+                    .ant-picker-calendar-header {
+                        margin-right: 20px;
+                    }
+                    .ant-picker-panel {
+                        .ant-picker-date-panel {
+                            .ant-picker-body {
+                                .ant-picker-content {
+                                    thead {
+                                        tr {
+                                            th {
+                                                font-weight: 600;
+                                                padding: 0 50px 5px 0;
+                                            }
+                                        }
+                                    }
+                                    tbody {
+                                        tr {
+                                            height: 60px;
+                                            width: 60px;
+                                            .ant-picker-cell {
+                                                height: 60px;
+                                                width: 60px;
+                                                .ant-picker-cell-inner {
+                                                    width: 60px;
+                                                    height: 60px;
+                                                    .ant-picker-calendar-date-content {
+                                                        height: 30px;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                .rft__timeAndButton {
+                    display: flex;
+                    justify-content: center;
+                    margin-top: 20px;
+                    padding-bottom: 50px;
+                    .rft__time {
+                    }
+                    .rft__button {
+                        margin-left: 10px;
+                    }
+                }
+            }
+            .rft__ulList {
+                box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14),
+                    0 1px 8px 0 rgba(0, 0, 0, 0.12);
+                margin-top: 20px;
+                padding: 20px;
+                ul {
+                    list-style-type: none;
+                    display: flex;
+                    margin: auto;
+                    li {
+                        background-color: red;
+                        padding: 10px;
+                        &:nth-child(even) {
+                            margin: 0 10px;
+                        }
+                    }
+                }
+            }
+        }
+        .rft__right {
+            margin-left: 50px;
+            width: 200px;
+            background-color: blue;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+    }
+}
+.ant-picker-footer {
+    display: flex;
+    justify-content: center;
+    .ant-picker-ranges {
+        .ant-picker-now {
+            display: none;
+        }
+    }
+}

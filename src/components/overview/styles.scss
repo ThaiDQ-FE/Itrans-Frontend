@@ -1,0 +1,163 @@
+.ot__wrapper {
+    display: flex;
+    justify-content: space-around;
+    padding: 61px 50px;
+    .ot__left {
+        width: 25%;
+        .ot__info {
+            padding: 25px;
+            background-color: #f8f8f8;
+            box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+                0 1px 3px 0 rgba(0, 0, 0, 0.12);
+            &:hover {
+                box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14),
+                    0 1px 8px 0 rgba(0, 0, 0, 0.12);
+            }
+            .ot__thongTin {
+                text-align: center;
+                font-weight: 600;
+                font-size: 20px;
+            }
+            .ot__truSoChinh {
+                margin: 0;
+                font-size: 16px;
+                .ot__truSoChinhLabel {
+                    font-weight: 600;
+                    margin-right: 10px;
+                    font-size: 18px;
+                }
+            }
+            .ot__webSite {
+                margin: 0;
+                font-size: 16px;
+                .ot__webSiteLabel {
+                    font-weight: 600;
+                    margin-right: 10px;
+                    font-size: 18px;
+                }
+            }
+            .ot__email {
+                margin: 0;
+                font-size: 16px;
+                .ot__emailLabel {
+                    font-weight: 600;
+                    margin-right: 10px;
+                    font-size: 18px;
+                }
+            }
+        }
+        .ot__mileStone {
+            position: relative;
+            margin-top: 50px;
+            background-color: #f8f8f8;
+            padding: 25px 25px 45px 25px;
+            box-sizing: border-box;
+            box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+                0 1px 3px 0 rgba(0, 0, 0, 0.12);
+            &:hover {
+                box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14),
+                    0 1px 8px 0 rgba(0, 0, 0, 0.12);
+            }
+            .ot__mileStoneTitle {
+                text-align: center;
+                font-weight: 600;
+                font-size: 20px;
+            }
+            .ot__mileStoneEdit {
+                position: absolute;
+                width: 16px;
+                height: 16px;
+                z-index: 10;
+                top: 10px;
+                right: 10px;
+                img {
+                    opacity: 0.5;
+                    width: 100%;
+                    height: 100%;
+                    cursor: pointer;
+                    &:hover {
+                        opacity: 1;
+                    }
+                }
+            }
+            .ant-timeline {
+                .ant-timeline-item-label {
+                    width: calc(50% - 100px);
+                }
+                .ant-timeline-item-tail {
+                    left: 25% !important;
+                    border-left: 2px solid #ff8412;
+                }
+                .ant-timeline-item-content {
+                    left: calc(50% - 75px);
+                    width: 65% !important;
+                    min-height: unset !important;
+                }
+                .ant-timeline-item-head-blue {
+                    color: #ff8412;
+                    border-color: #ff8412;
+                    left: 25% !important;
+                }
+                .ant-timeline-item-last {
+                    padding-bottom: 0 !important;
+                }
+            }
+        }
+    }
+    .ot__right {
+        width: 65%;
+
+        .right__image {
+            width: 100%;
+            margin-bottom: 20px;
+            img {
+                width: 100%;
+            }
+        }
+        .right__wrapper {
+            position: relative;
+            .ot__rightEdit {
+                width: 16px;
+                height: 16px;
+                position: absolute;
+                right: 0;
+                img {
+                    opacity: 0.5;
+                    width: 100%;
+                    height: 100%;
+                    cursor: pointer;
+                    &:hover {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+        .first {
+            margin-bottom: 20px;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        .right__weight {
+            font-weight: 600;
+            font-size: 18px;
+        }
+        .right__organization {
+            padding: 0 20px;
+            text-align: center;
+            hr {
+                width: 50%;
+                margin: 3rem auto;
+            }
+            .right__organizationTitle {
+                font-weight: 600;
+                font-size: 18px;
+            }
+            .right__organizationVideo {
+                iframe {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
