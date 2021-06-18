@@ -195,7 +195,6 @@ function Register() {
                 <div className="register__body">
                   {getStepContent(activeStep)}
                 </div>
-                <div className="register__space"></div>
               </div>
             </div>
           </div>

@@ -18,36 +18,47 @@ function RegisterFreeTime() {
   const [freeTime, setFreeTime] = useState([]);
   const format = "HH:mm";
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
-  //
   const { listFreeTime } = useSelector((state) => state.freeTime);
-  console.log(listFreeTime);
-  const renderTest = () => {
-    return listFreeTime.map((item, index) => {
-      console.log(typeof item.dateTime);
-      return (
-        <>
-          <span>{item.dateTime}</span>
-          <br />
-        </>
-      );
-    });
-  };
-  //
-
   var formatDate = moment(date).format("DD-MM-YYYY");
   var formatTime = moment(time).format("hh:mm");
   var formatMonth = moment(date).format("MM");
+  var formatMonthYear = moment(date).format("MM-YYYY");
+  var todayDate = moment(new Date()).format("DD-MM-YYYY");
+  var todayTime = moment(new Date()).format("hh:mm");
+  //
+  var dateFormatToParse = moment(date).format("YYYY-MM-DD");
+  var todayFormatToParse = moment(new Date()).format("YYYY-MM-DD hh:mm");
   const handleClickThem = () => {
+    handleResetAPI();
     let finalDT = formatDate + " " + formatTime;
+    let parseFinalDateTime = dateFormatToParse + " " + formatTime;
+    let parseFinalDT = Date.parse(parseFinalDateTime);
+    let parseToday = Date.parse(todayFormatToParse);
+    let checkPreDate = parseFinalDT <= parseToday;
+    let valueFreeTime = freeTime.map(function (item) {
+      return item.freeTime;
+    });
+    let valueBooked = listFreeTime.map((item) => {
+      return item.dateTime;
+    });
+    console.log(listFreeTime);
     const freeDateTime = { freeTime: finalDT, investor: userInfo.id };
     if (freeTime.length <= 0) {
-      freeTime.push(freeDateTime);
+      if (checkPreDate === true) {
+        return setError(
+          "Hãy chọn sau ngày: " + todayDate + " và sau: " + todayTime
+        );
+      } else if (valueBooked.includes(finalDT) === true) {
+        return setError(
+          "Ngày: " + formatDate + ", Giờ: " + formatTime + " đã được chọn!"
+        );
+      } else {
+        freeTime.push(freeDateTime);
+      }
     } else {
-      let valueFreeTime = freeTime.map(function (item) {
-        return item.freeTime;
-      });
-      if (valueFreeTime.includes(freeDateTime.freeTime) === true) {
+      if (checkPreDate === true) {
+        setError("Hãy chọn sau ngày: " + todayDate + " và sau: " + todayTime);
+      } else if (valueFreeTime.includes(freeDateTime.freeTime) === true) {
         return setError(
           "Ngày: " + formatDate + ", Giờ: " + formatTime + " đã được chọn!"
         );
@@ -58,6 +69,10 @@ function RegisterFreeTime() {
     setTime(undefined);
     setError(null);
   };
+  const handleResetAPI = () => {
+    return dispatch(getFreeTimeList(userInfo.id, formatMonth));
+  };
+
   const handleDelete = (index) => {
     let tempFreeTime = [...freeTime];
     tempFreeTime.splice(index, 1);
@@ -67,7 +82,7 @@ function RegisterFreeTime() {
     return freeTime.map((item, index) => {
       return (
         <li className="li__li" key={index}>
-          {item.freeTime}{" "}
+          {item.freeTime}
           <div className="li__cancel">
             <img
               src={Images.CANCEL}
@@ -79,6 +94,23 @@ function RegisterFreeTime() {
       );
     });
   };
+  const renderListDateTimeBooked = () => {
+    return listFreeTime.map((item, index) => {
+      return (
+        <>
+          <li
+            className={`li__li${
+              item.dateTime.includes(formatDate) ? " booked" : ""
+            }`}
+            key={index}
+          >
+            {item.dateTime}
+          </li>
+        </>
+      );
+    });
+  };
+
   useEffect(() => {
     dispatch(getFreeTimeList(userInfo.id, formatMonth));
   }, []);
@@ -155,14 +187,24 @@ function RegisterFreeTime() {
             </div>
           </div>
           <div className="rft__rightBooked">
-            <p>{formatDate === undefined ? "Hãy chọn ngày" : formatDate}</p>
+            <div className="rft__refresh">
+              <img
+                src={Images.REFRESH}
+                alt="refresh"
+                onClick={handleResetAPI}
+              />
+            </div>
+            <p>
+              {formatDate === undefined
+                ? "Hãy chọn ngày"
+                : "Thông tin tháng " + formatMonthYear}
+            </p>
             <div className="rft__ulList">
-              <ul></ul>
+              <ul>{renderListDateTimeBooked()}</ul>
             </div>
           </div>
         </div>
       </div>
-      {renderTest()}
     </div>
   );
 }
