@@ -1,21 +1,47 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./styles.scss";
 import "antd/dist/antd.css";
 import { Input, Select } from "antd";
 import Messages from "../../assets/message/text";
 import Images from "../../assets/images/images";
+import { getListIndustry, getListProvince, getListStage } from "../../store/action/register.action";
+import { useDispatch, useSelector } from "react-redux";
 function FormInformationAboutTheOrganization(props) {
   const { Option } = Select;
   const { TextArea } = Input;
   const children = [];
+  const dispatch = useDispatch();
+  const { listProvince, listStage, listIndustry } = useSelector((state) => state.register);
+ 
+  const renderListProvince = () => {
+    return listProvince.map((item, index) => {
+      return <Option value={item.idProvince} key={index}>{item.name}</Option>
+    })
+  }
+  const renderListStage = ()=>{
+    return listStage.map((item,index)=>{
+      return <Option value={item.idStage} key={index} >{item.name}</Option>
+    })
+  }
+  const renderListIndustry = () => {
+    return listIndustry.map((item,index)=>{
+      return <Option value = {item.idIndustry} key = {index} disabled ={item.active === false}>{item.name}</Option>
+    })
+  }
   for (let i = 10; i < 36; i++) {
     children.push(
       <Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>
     );
   }
+ 
   const handleChange = (value) => {
     console.log(`selected ${value}`);
   };
+  useEffect(() => {
+    dispatch(getListProvince());
+    dispatch(getListIndustry());
+    dispatch(getListStage());
+  }, []);
   return (
     <div className="fiato__wrapper">
       <div className="fiato__container">
@@ -33,15 +59,14 @@ function FormInformationAboutTheOrganization(props) {
                 onChange={handleChange}
                 size="large"
               >
-                {children}
+                {renderListIndustry()}
               </Select>
             </div>
           </div>
           <div className="fiato__lineTwo">
             <div className="fiato__giaiDoanPhatTrien">
               <Select placeholder="Giai đoạn phát triển" size="large">
-                <Option value="jack">Jack (100)</Option>
-                <Option value="lucy">Lucy (101)</Option>
+              {renderListStage()}
               </Select>
             </div>
             <div className="fiato__namThanhLap">
@@ -60,7 +85,7 @@ function FormInformationAboutTheOrganization(props) {
                 onChange={handleChange}
                 size="large"
               >
-                {children}
+                {renderListProvince()}
               </Select>
             </div>
             <div className="fiato__linkWebsite">

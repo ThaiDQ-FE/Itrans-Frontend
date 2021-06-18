@@ -4,10 +4,11 @@ import {
   GET_FREE_TIME_LIST_FAILED,
   GET_FREE_TIME_LIST_SUCCESS,
 } from "../constants/freeTime.const";
-const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-const token = userInfo.jwt;
+
 export const postFreeTime = (freeTime, investor) => {
   return (dispatch) => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const token = userInfo.jwt;
     axios({
       method: "POST",
       url: "http://localhost:8080/api/v1/free-time",
@@ -49,6 +50,8 @@ export const postFreeTime = (freeTime, investor) => {
 
 export const getFreeTimeList = (investor, month) => {
   return (dispatch) => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const token = userInfo.jwt;
     axios({
       method: "GET",
       url: `http://localhost:8080/api/v1/free-time?idInvestor=${investor}&month=${month}`,

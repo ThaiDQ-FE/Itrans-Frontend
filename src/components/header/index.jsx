@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink , withRouter } from "react-router-dom";
 import "./styles.scss";
 import logo from "../../assets/images/logo-grey.png";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Images from "../../assets/images/images";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-function Header() {
+function Header({history}) {
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const [openMenu, setOpenMenu] = useState(null);
   const themeMenu = createMuiTheme({
@@ -29,7 +29,7 @@ function Header() {
   const handleLogoutAccount = () => {
     setOpenMenu(null);
     localStorage.removeItem("userInfo");
-    window.location.reload(true);
+    history.push("/dang-nhap")
   };
 
   return (
@@ -143,4 +143,4 @@ function Header() {
     </div>
   );
 }
-export default Header;
+export default withRouter(Header);
