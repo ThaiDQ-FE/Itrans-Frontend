@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Calendar, TimePicker } from "antd";
 import "./styles.scss";
 import "antd/dist/antd.css";
 import moment from "moment";
 import Images from "../../assets/images/images";
-import { postFreeTime } from "../../store/action/freeTime.action";
-import { useDispatch } from "react-redux";
+import {
+  getFreeTimeList,
+  postFreeTime,
+} from "../../store/action/freeTime.action";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 function RegisterFreeTime() {
-  const today = new Date();
   const dispatch = useDispatch();
   const [date, setDate] = useState();
   const [time, setTime] = useState();
@@ -15,9 +18,26 @@ function RegisterFreeTime() {
   const [freeTime, setFreeTime] = useState([]);
   const format = "HH:mm";
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  let formatDate = moment(date).format("DD-MM-YYYY");
-  let formatTime = moment(time).format("hh:mm");
 
+  //
+  const { listFreeTime } = useSelector((state) => state.freeTime);
+  console.log(listFreeTime);
+  const renderTest = () => {
+    return listFreeTime.map((item, index) => {
+      console.log(typeof item.dateTime);
+      return (
+        <>
+          <span>{item.dateTime}</span>
+          <br />
+        </>
+      );
+    });
+  };
+  //
+
+  var formatDate = moment(date).format("DD-MM-YYYY");
+  var formatTime = moment(time).format("hh:mm");
+  var formatMonth = moment(date).format("MM");
   const handleClickThem = () => {
     let finalDT = formatDate + " " + formatTime;
     const freeDateTime = { freeTime: finalDT, investor: userInfo.id };
@@ -59,9 +79,24 @@ function RegisterFreeTime() {
       );
     });
   };
+  useEffect(() => {
+    dispatch(getFreeTimeList(userInfo.id, formatMonth));
+  }, []);
   const handleSubmit = () => {
-    return freeTime.map((item, index) => {
-      return dispatch(postFreeTime(item.freeTime, item.investor));
+    Swal.fire({
+      title: "Bạn muốn đăng ký những ngày đã chọn ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Đồng ý",
+      cancelButtonText: "Hủy",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        return freeTime.map((item, index) => {
+          return dispatch(postFreeTime(item.freeTime, item.investor));
+        });
+      }
     });
   };
   return (
@@ -95,15 +130,39 @@ function RegisterFreeTime() {
           <div className="rft__rightBooking">
             <p>Lựa chọn của bạn</p>
             <div className="rft__ulList">
-              <ul>{freeTime.length > 0 ? renderListDateTime() : ""}</ul>
+              <ul>
+                {freeTime.length > 0 ? (
+                  renderListDateTime()
+                ) : (
+                  <p
+                    style={{
+                      textAlign: "center",
+                      fontWeight: 400,
+                      fontSize: 14,
+                    }}
+                  >
+                    Hãy chọn thời gian rãnh
+                  </p>
+                )}
+              </ul>
               <div className="rft__buttonUl">
-                <Button onClick={handleSubmit}>Xác nhận</Button>
+                {freeTime.length > 0 ? (
+                  <Button onClick={handleSubmit}>Xác nhận</Button>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </div>
-          <div className="rft__rightBooked"></div>
+          <div className="rft__rightBooked">
+            <p>{formatDate === undefined ? "Hãy chọn ngày" : formatDate}</p>
+            <div className="rft__ulList">
+              <ul></ul>
+            </div>
+          </div>
         </div>
       </div>
+      {renderTest()}
     </div>
   );
 }
