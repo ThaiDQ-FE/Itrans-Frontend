@@ -18,6 +18,7 @@ import call_capital from "./capital.png";
 import no_image from "./noPhoto.jpg";
 import setting_account from "./settings.png";
 import edit_mileStone from "./edit.png";
+import refresh from "./refresh.png";
 const Images = {
   LOGO_NAVY: logo_navy,
   LOGO_GREY: logo_grey,
@@ -39,6 +40,7 @@ const Images = {
   NO_IMAGE: no_image,
   SETTING_ACCOUNT: setting_account,
   EDIT_MILESTONE: edit_mileStone,
+  REFRESH: refresh,
 };
 
 export default Images;
