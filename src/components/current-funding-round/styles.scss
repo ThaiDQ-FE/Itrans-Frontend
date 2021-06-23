@@ -1,0 +1,16 @@
+.round__tenDoanhNghiep {
+    display: flex;
+    .round__thumbnail {
+        width: 16px;
+        height: 16px;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .round__pTenDoanhNghiep {
+        margin-bottom: 0;
+        margin-top: 2px;
+        margin-left: 5px;
+    }
+}
