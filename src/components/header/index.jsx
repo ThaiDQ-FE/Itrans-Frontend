@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { NavLink , withRouter } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import "./styles.scss";
 import logo from "../../assets/images/logo-grey.png";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Images from "../../assets/images/images";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-function Header({history}) {
+import { checkRoleUser } from "../../assets/helper/helper";
+function Header({ history }) {
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const [openMenu, setOpenMenu] = useState(null);
   const themeMenu = createMuiTheme({
@@ -29,7 +30,7 @@ function Header({history}) {
   const handleLogoutAccount = () => {
     setOpenMenu(null);
     localStorage.removeItem("userInfo");
-    history.push("/dang-nhap")
+    history.push("/dang-nhap");
   };
 
   return (
@@ -126,10 +127,25 @@ function Header({history}) {
           </MenuItem>
           <hr className="header__hr" />
           <MenuItem>
-            <div className="header__menuCapital">
-              <img src={Images.CALL_CAPITAL} alt="" />
-              <span>Quản lý vòng gọi vốn</span>
-            </div>
+            <NavLink
+              activeClassName="active-nav-link"
+              className="header__navlink__quanLyThoiGian"
+              to={
+                checkRoleUser() === "INVESTOR"
+                  ? "/quan-ly-deal"
+                  : "/quan-ly-vong-goi-von"
+              }
+              exact={false}
+            >
+              <div className="header__menuCapital">
+                <img src={Images.CALL_CAPITAL} alt="" />
+                <span>
+                  {checkRoleUser() === "INVESTOR"
+                    ? "Quản lý deal"
+                    : "Quản lý vòng gọi vốn"}
+                </span>
+              </div>
+            </NavLink>
           </MenuItem>
           <hr className="header__hr" />
           <MenuItem onClick={handleLogoutAccount}>

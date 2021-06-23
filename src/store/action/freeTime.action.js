@@ -1,41 +1,46 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import {
+  GET_ALL_FREE_TIME_LIST_FAILED,
+  GET_ALL_FREE_TIME_LIST_SUCCESS,
   GET_FREE_TIME_LIST_FAILED,
   GET_FREE_TIME_LIST_SUCCESS,
 } from "../constants/freeTime.const";
+import { authorizationAccount } from "../../assets/helper/helper";
 
-export const postFreeTime = (freeTime, investor) => {
+export const postFreeTime = (freeTime) => {
   return (dispatch) => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const token = userInfo.jwt;
     axios({
       method: "POST",
       url: "http://localhost:8080/api/v1/free-time",
-      data: [
-        {
-          freeTime,
-          investor,
-        },
-      ],
+      data: freeTime,
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => {
-        Swal.fire({
-          icon: "success",
-          title: "Đăng ký thời gian rãnh thành công",
-          heightAuto: true,
-          timerProgressBar: false,
-          showConfirmButton: false,
-          timer: 2000,
-        });
-        setTimeout(() => {
-          window.location.reload(true);
-        }, 2000);
-      })
-      .catch((err) => {
+        if(res.status === 202){
+          Swal.fire({
+            icon: "error",
+            title: res.data,
+            heightAuto: true,
+            timerProgressBar: false,
+            showConfirmButton: true,
+            timer: 2000,
+          })
+        }else if(res.status === 201){
+          Swal.fire({
+            icon: "success",
+            title: res.data,
+            heightAuto: true,
+            timerProgressBar: false,
+            showConfirmButton: true,
+            timer: 2000,
+          })
+        }
+      }).catch((err) => {
         Swal.fire({
           icon: "error",
           title: "Đăng ký thời gian rãnh thất bại",
@@ -61,13 +66,79 @@ export const getFreeTimeList = (investor, month) => {
       },
     })
       .then((res) => {
-        console.log(res);
         dispatch(getFreeTimeListSuccess(res.data));
       })
       .catch((err) => {
-        console.log(err);
         dispatch(getFreeTimeListFailed(err));
       });
+  };
+};
+export const getAllFreeTimeList = (investor) => {
+  return (dispatch) => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const token = userInfo.jwt;
+    axios({
+      method: "GET",
+      url: `http://localhost:8080/api/v1/all-free-time/${investor}`,
+      data: null,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        dispatch(getAllFreeTimeListSuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(getAllFreeTimeListFailed(err));
+      });
+  };
+};
+
+export const getValidateForButtonThem = (freeTime, investor) => {
+  return async (dispatch) => {
+    const token = authorizationAccount();
+
+    const response = await axios({
+      method: "GET",
+      url: `http://localhost:8080/api/v1/validate/free-time?dateTime=${freeTime}&idInvestor=${investor}`,
+      data: {
+        freeTime,
+        investor,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  };
+};
+
+export const getValidateForButtonSubmit = (freeTime) => {
+  return async (dispatch) => {
+    const token = authorizationAccount();
+    const response = await axios({
+      method: "GET",
+      url: `http://localhost:8080/api/v1/validate/free-times?dateTimes=${freeTime}`,
+      data: { freeTime },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  };
+};
+
+const getAllFreeTimeListSuccess = (allFreeTimeList) => {
+  return {
+    type: GET_ALL_FREE_TIME_LIST_SUCCESS,
+    payload: allFreeTimeList,
+  };
+};
+
+const getAllFreeTimeListFailed = (err) => {
+  return {
+    type: GET_ALL_FREE_TIME_LIST_FAILED,
+    payload: err,
   };
 };
 

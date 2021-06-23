@@ -2,6 +2,8 @@ import AdminHome from "../pages/admin/home";
 import Login from "../pages/general/login";
 import Register from "../pages/general/register";
 import AccountManagement from "../pages/main/account-management";
+import DealManagement from "../pages/main/deal-management";
+import FundraisingManagement from "../pages/main/fundraising-management";
 import UserHome from "../pages/main/home";
 import TimeManagement from "../pages/main/time-management";
 
@@ -20,6 +22,16 @@ export const mainRouter = [
     path: "/quan-ly-thoi-gian",
     exact: false,
     Component: TimeManagement,
+  },
+  {
+    path: "/quan-ly-deal",
+    exact: false,
+    Component: DealManagement,
+  },
+  {
+    path: "/quan-ly-vong-goi-von",
+    exact: false,
+    Component: FundraisingManagement,
   },
 ];
 
