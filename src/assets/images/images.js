@@ -19,6 +19,7 @@ import no_image from "./noPhoto.jpg";
 import setting_account from "./settings.png";
 import edit_mileStone from "./edit.png";
 import refresh from "./refresh.png";
+import red_cancel from "./red-cancel.png";
 const Images = {
   LOGO_NAVY: logo_navy,
   LOGO_GREY: logo_grey,
@@ -41,6 +42,7 @@ const Images = {
   SETTING_ACCOUNT: setting_account,
   EDIT_MILESTONE: edit_mileStone,
   REFRESH: refresh,
+  RED_CANCEL: red_cancel,
 };
 
 export default Images;
