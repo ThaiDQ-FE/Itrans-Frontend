@@ -3,8 +3,9 @@ import { authorizationAccount } from "../../assets/helper/helper";
 import {
   GET_LIST_ROUND_ACTIVE_BY_ID_ORGANIZATION_FAILED,
   GET_LIST_ROUND_ACTIVE_BY_ID_ORGANIZATION_SUCCESS,
+  GET_LIST_ROUND_PASS_BY_ID_ORGANIZATION_FAILED,
+  GET_LIST_ROUND_PASS_BY_ID_ORGANIZATION_SUCCESS,
 } from "../constants/round.const";
-import { getListDeal } from "./deal.action";
 
 export const getListRoundActiveByIdOrganization = (id) => {
   return (dispatch) => {
@@ -18,8 +19,6 @@ export const getListRoundActiveByIdOrganization = (id) => {
       },
     })
       .then((res) => {
-        console.log(res);
-        dispatch(getListDeal(res.data.idRound))
         dispatch(getListRoundActiveByIdOrganizationSuccess(res.data));
       })
       .catch((err) => {
@@ -27,6 +26,38 @@ export const getListRoundActiveByIdOrganization = (id) => {
       });
   };
 };
+
+export const getListRoundPassByIdOrganization = (id) =>{
+  return (dispatch) =>{
+    const token = authorizationAccount();
+    axios({
+      method: "GET",
+      url: `http://localhost:8080/api/v1/round/round-passed/${id}`,
+      data: {id},
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res)=>{
+      dispatch(getListRoundPassByIdOrganizationSuccess(res.data))
+    }).catch((err)=>{
+      dispatch(getListRoundPassByIdOrganizationFailed(err))
+    })
+  }
+}
+
+export const getListRoundPassByIdOrganizationSuccess = (listRound) =>{
+  return {
+    type: GET_LIST_ROUND_PASS_BY_ID_ORGANIZATION_SUCCESS,
+    payload: listRound
+  }
+}
+
+export const getListRoundPassByIdOrganizationFailed = (err) =>{
+  return {
+    type: GET_LIST_ROUND_PASS_BY_ID_ORGANIZATION_FAILED,
+    payload: err
+  }
+}
 
 export const getListRoundActiveByIdOrganizationSuccess = (listRound) => {
   return {
