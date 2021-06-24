@@ -1,5 +1,6 @@
 import axios from "axios"
-import { GET_LIST_INDUSTRY_FAIL, GET_LIST_INDUSTRY_SUCCESS, GET_LIST_PROVINCE_FAIL, GET_LIST_PROVINCE_SUCCESS, GET_LIST_STAGE_FAIL, GET_LIST_STAGE_SUCCESS } from "../constants/register.const";
+import Swal from "sweetalert2";
+import { CREATE_BASIC_INFORMATION_FAIL, CREATE_BASIC_INFORMATION_SUCCESS, CREATE_ORGANIZATION_INDUSTRY_FAIL, CREATE_ORGANIZATION_INDUSTRY_SUCCESS, CREATE_ORGANIZATION_PROVINCCE_FAIL, CREATE_ORGANIZATION_PROVINCCE_SUCCESS, CREATE_ORGANIZATION_STAGE_FAIL, CREATE_ORGANIZATION_STAGE_SUCCESS, GET_LIST_INDUSTRY_FAIL, GET_LIST_INDUSTRY_SUCCESS, GET_LIST_PROVINCE_FAIL, GET_LIST_PROVINCE_SUCCESS, GET_LIST_STAGE_FAIL, GET_LIST_STAGE_SUCCESS } from "../constants/register.const";
 
 export const postVerificationCode = (gmail) => {
     return (dispatch) => {
@@ -15,12 +16,188 @@ export const postVerificationCode = (gmail) => {
         })
     }
 }
- export const postBasicInformation = (gmail,password)=>{
+export const postBasicInformation = (gmail, password) => {
+    const role = "ORGANIZATION";
+    const rePass = password;
+    return  (dispatch) => {
+         axios({
+            method: "Post",
+            url: "http://localhost:8080/api/v1/auth/registration",
+            data: {
+                gmail,
+                password,
+                rePass,
+                role
+            },
+        }).then((res) => {
+            dispatch(createBasicInformationSuccess(res.data))
+            const user = JSON.parse(localStorage.getItem("Form1"));
+            const gmailObj = { gmail: user.gmail };
+            const organization = JSON.parse(localStorage.getItem("Form2"));
+            const objOrganization = Object.assign({}, gmailObj, organization);
+            objOrganization.logo = "logo";
+            const newObjOrganization = objOrganization;
+            delete newObjOrganization.province;
+            delete newObjOrganization.stage;
+            delete newObjOrganization.industry;
+            dispatch(postIAOTOrganization(newObjOrganization));
+        }).catch((err) => {
+            dispatch(createBasicInformationFail(err))
+        })
+    }
+}
+const createBasicInformationSuccess = (listProvince) => {
+    return {
+        type: CREATE_BASIC_INFORMATION_SUCCESS,
+        payload: listProvince
+    }
+}
+const createBasicInformationFail = (err) => {
+    return {
+        type: CREATE_BASIC_INFORMATION_FAIL,
+        payload: err
+    }
+}
+export const postIAOTOrganization = (organization) => {
+    return (dispatch) => {
+        axios({
+            method: "Post",
+            url: "http://localhost:8080/api/v1/auth/create-organization",
+            data: organization
 
- }
- export const postIAOTOrganization = ()=>{
+        }).then((res) => {
+            dispatch(createIAOTOrganizationSuccess(res.data))
+            const organizationIndustry = [];
+            const organizationProvince = [];
+            const organizationOld = JSON.parse(localStorage.getItem("Form2"));
+            const orId = {id:res.data}
+            const or = {organization:orId}
+            for (let index = 0; index < organizationOld.industry.length; index++) {
+              const industryId = {id:organizationOld.industry[index]};
+              const industry = {industry : industryId} 
+               const elementNew = Object.assign({}, industry, or);
+                organizationIndustry.push(elementNew);
+            }
+            dispatch(postOrganizationIndustry(organizationIndustry))
+            for (let index = 0; index < organizationOld.province.length; index++) {
+                const provienceId = {id:organizationOld.province[index]};
+                const province = {province : provienceId} 
+                 const elementNew = Object.assign({}, province, or);
+                 organizationProvince.push(elementNew);
+              }
+              dispatch(postOrganizationProvince(organizationProvince))
+              const stageId = {id:organizationOld.stage}
+              const stage = {stage : stageId} 
+              const elementNew = Object.assign({}, stage, or);
+              dispatch(postOrganizationStage(elementNew))
+        }).catch((err) => {
+            dispatch(createIAOTOrganizationFail(err))
+        })
+    }
+}
 
- }
+const createIAOTOrganizationSuccess = (organization) => {
+    return {
+        type: CREATE_BASIC_INFORMATION_SUCCESS,
+        payload: organization
+    }
+}
+const createIAOTOrganizationFail = (err) => {
+    return {
+        type: CREATE_BASIC_INFORMATION_FAIL,
+        payload: err
+    }
+}
+export const postOrganizationProvince = (organizationProvince) => {
+    return (dispatch) => {
+        axios({
+            method: "Post",
+            url: "http://localhost:8080/api/v1/auth/create-organizationProvince",
+            data: organizationProvince
+
+        }).then((res) => {
+            dispatch(createOrganizationProvinceSuccess(res.data))
+        }).catch((err) => {
+            dispatch(createOrganizationProvinceFail(err))
+        })
+    }
+}
+const createOrganizationProvinceSuccess = (organizationProvince) => {
+    return {
+        type: CREATE_ORGANIZATION_PROVINCCE_SUCCESS,
+        payload: organizationProvince
+    }
+}
+const createOrganizationProvinceFail = (err) => {
+    return {
+        type: CREATE_ORGANIZATION_PROVINCCE_FAIL,
+        payload: err
+    }
+}
+
+export const postOrganizationStage = (organizationStage) => {
+    return (dispatch) => {
+        axios({
+            method: "Post",
+            url: "http://localhost:8080/api/v1/auth/create-organizationStage",
+            data: organizationStage
+
+        }).then((res) => {
+            dispatch(createOrganizationStageSuccess(res.data))
+            Swal.fire({
+                icon: "success",
+                title: "Đăng ký  thành công!",
+                heightAuto: true,
+                timerProgressBar: false,
+                showConfirmButton: false,
+                timer: 2000,
+              });
+              setTimeout(() => {
+                window.location.assign("http://localhost:3000/dang-nhap");
+              }, 2000);
+        }).catch((err) => {
+            dispatch(createOrganizationStageFail(err))
+        })
+    }
+}
+const createOrganizationStageSuccess = (organizationStage) => {
+    return {
+        type: CREATE_ORGANIZATION_STAGE_SUCCESS,
+        payload: organizationStage
+    }
+}
+const createOrganizationStageFail = (err) => {
+    return {
+        type: CREATE_ORGANIZATION_STAGE_FAIL,
+        payload: err
+    }
+}
+export const postOrganizationIndustry = (organizationIndustry) => {
+    return (dispatch) => {
+        axios({
+            method: "Post",
+            url: "http://localhost:8080/api/v1/auth/create-organizationIndustry",
+            data: organizationIndustry
+
+        }).then((res) => {
+            dispatch(createOrganizationIndustrySuccess(res.data))
+        }).catch((err) => {
+            dispatch(createOrganizationIndustryFail(err))
+        })
+    }
+}
+const createOrganizationIndustrySuccess = (organizationIndustry) => {
+    return {
+        type: CREATE_ORGANIZATION_INDUSTRY_SUCCESS,
+        payload: organizationIndustry
+    }
+}
+const createOrganizationIndustryFail = (err) => {
+    return {
+        type: CREATE_ORGANIZATION_INDUSTRY_FAIL,
+        payload: err
+    }
+}
 export const getListProvince = () => {
     return (dispatch) => {
         axios({
@@ -34,10 +211,10 @@ export const getListProvince = () => {
     }
 }
 
-const getListProvinceSuccess = (listProvince) => {
+const getListProvinceSuccess = (province) => {
     return {
         type: GET_LIST_PROVINCE_SUCCESS,
-        payload: listProvince
+        payload: province
     }
 }
 const getListProvinceFail = (err) => {
