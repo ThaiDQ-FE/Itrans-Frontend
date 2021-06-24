@@ -21,7 +21,7 @@ export const postFreeTime = (freeTime) => {
       },
     })
       .then((res) => {
-        if(res.status === 202){
+        if (res.status === 202) {
           Swal.fire({
             icon: "error",
             title: res.data,
@@ -29,18 +29,23 @@ export const postFreeTime = (freeTime) => {
             timerProgressBar: false,
             showConfirmButton: true,
             timer: 2000,
-          })
-        }else if(res.status === 201){
+          });
+        } else if (res.status === 201) {
           Swal.fire({
             icon: "success",
-            title: res.data,
+            title: "Đăng ký thời gian rãnh thành công",
             heightAuto: true,
             timerProgressBar: false,
             showConfirmButton: true,
-            timer: 2000,
-          })
+            confirmButtonText: "Đồng ý",
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
         }
-      }).catch((err) => {
+      })
+      .catch((err) => {
         Swal.fire({
           icon: "error",
           title: "Đăng ký thời gian rãnh thất bại",
