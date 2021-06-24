@@ -1,105 +1,62 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Table, Input, InputNumber, Button } from "antd";
 import "./styles.scss";
 import "antd/dist/antd.css";
+import { useSelector } from "react-redux";
+import Images from "../../assets/images/images";
 function PreviousFundingRound() {
-  const { TextArea } = Input;
-  const [dataRound, setDataRound] = useState([]);
-  const [dataDeal, setDataDeal] = useState([]);
-  useEffect(() => {
-    const dataRound = [
-      {
-        idRound: 2,
-        vongGoiVon: "vòng 1",
-        tenDoanhNghiep: "Baby Shark",
-        giaiDoanGoiVon: "Series B",
-        soTienKeuGoi: "500.000.000",
-        phanTramCoPhan: "20%",
-        ghiChu: "description",
-        ngayGoi: "21-06-2021",
-        ngayKetThuc: "21-07-2021",
-        status: "active",
-      },
-      {
-        idRound: 1,
-        vongGoiVon: "vòng 1",
-        tenDoanhNghiep: "Baby Shark",
-        giaiDoanGoiVon: "Series B",
-        soTienKeuGoi: "600.000.000",
-        phanTramCoPhan: "20%",
-        ghiChu: "description",
-        ngayGoi: "15-06-2021",
-        ngayKetThuc: "15-07-2021",
-        status: "done",
-      },
-    ];
-    const dataDeal = [
-      {
-        idDeal: 1,
-        idRound: 1,
-        thoaThuan: "Deal 1",
-        soTienMuonDauTu: "100.000.000",
-        phanTramCoPhan: "5%",
-        ngayDangDeal: "23-06-2021",
-        tenNhaDauTu: "abc",
-        ghiChu: "description",
-        status: "accept",
-      },
-      {
-        idDeal: 2,
-        idRound: 1,
-        thoaThuan: "Deal 2",
-        soTienMuonDauTu: "300.000.000",
-        phanTramCoPhan: "20%",
-        ngayDangDeal: "26-06-2021",
-        tenNhaDauTu: "abc",
-        ghiChu: "description",
-        status: "pending",
-      },
-      ,
-      {
-        idDeal: 3,
-        idRound: 1,
-        thoaThuan: "Deal 3",
-        soTienMuonDauTu: "450.000.000",
-        phanTramCoPhan: "20%",
-        ngayDangDeal: "29-06-2021",
-        tenNhaDauTu: "abc",
-        ghiChu: "description",
-        status: "accept",
-      },
-    ];
-    setDataDeal(dataDeal);
-    setDataRound(dataRound);
-  }, []);
+  const { listRoundPass } = useSelector((state) => state.round);
+  const {listDeal} = useSelector(state => state.deal)
+  const checkRound = () => {
+    let round;
+    if (typeof listRoundPass === "string") {
+      round = [];
+      return round;
+    } else if (typeof listRoundPass === "object") {
+      if(listRoundPass.length !== 1){
+        round = listRoundPass;
+        return round;
+      }else{
+        round = [listRoundPass];
+        return round;
+      }
+    }
+  };
   const expandedRowRender = (record, index) => {
     const columns = [
-      { title: "Thỏa thuận", dataIndex: "thoaThuan", key: "thoaThuan" },
-      { title: "Tên nhà đầu tư", dataIndex: "tenNhaDauTu", key: "tenNhaDauTu" },
+      { title: "Tên nhà đầu tư", dataIndex: "investor", key: "investor",render: (value,round)=>(
+        <div className="round__tenDoanhNghiep">
+          <div className="round__thumbnail">
+            <img src={round.logo} alt="logo" />
+          </div>
+          <p className="round__pTenDoanhNghiep">{value}</p>
+        </div>
+      ) },
       {
         title: "Phần trăm cổ phần",
-        dataIndex: "phanTramCoPhan",
-        key: "phanTramCoPhan",
+        dataIndex: "shareRequirement",
+        key: "shareRequirement",
       },
       {
-        title: "Số tiền muốn đầu tư",
-        dataIndex: "soTienMuonDauTu",
-        key: "soTienMuonDauTu",
+        title: "Số tiền muốn đầu tư (triệu VNĐ)",
+        dataIndex: "capitalInvestment",
+        key: "capitalInvestment",
       },
       {
         title: "Ngày đăng",
-        dataIndex: "ngayDangDeal",
-        key: "ngayDangDeal",
+        dataIndex: "date",
+        key: "date",
       },
       {
         title: "Ghi chú",
-        dataIndex: "ghiChu",
-        key: "ghiChu",
+        dataIndex: "description",
+        key: "description",
       },
     ];
-    const data = dataDeal.filter(
-      (deal) => deal.idRound === record.idRound && deal.status === "accept"
+    const data = listDeal.filter(
+      (deal) => deal.idRound === record.idRound && deal.status === "ACCEPT"
     );
+    
     return (
       <Table
         columns={columns}
@@ -110,40 +67,49 @@ function PreviousFundingRound() {
     );
   };
   const columns = [
-    { title: "Vòng gọi vốn", dataIndex: "vongGoiVon", key: "vongGoiVon" },
     {
       title: "Tên doanh nghiệp",
-      dataIndex: "tenDoanhNghiep",
-      key: "tenDoanhNghiep",
+      dataIndex: "organization",
+      key: "organization",
+      render: (value, round) => (
+        <div className="round__tenDoanhNghiep">
+          <div className="round__thumbnail">
+            <img src={round.logo} alt="logo" />
+          </div>
+          <p className="round__pTenDoanhNghiep">{value}</p>
+        </div>
+      ),
     },
     {
       title: "Giai đoạn gọi vốn",
-      dataIndex: "giaiDoanGoiVon",
-      key: "giaiDoanGoiVon",
+      dataIndex: "stage",
+      key: "stage",
     },
     {
       title: "Số tiền kêu gọi",
-      dataIndex: "soTienKeuGoi",
-      key: "soTienKeuGoi",
+      dataIndex: "fundingAmount",
+      key: "fundingAmount",
     },
     {
       title: "Phần trăm cổ phần",
-      dataIndex: "phanTramCoPhan",
-      key: "phanTramCoPhan",
+      dataIndex: "shareRequirement",
+      key: "shareRequirement",
     },
-    { title: "Ghi chú", dataIndex: "ghiChu", key: "ghiChu" },
-    { title: "Ngày gọi", dataIndex: "ngayGoi", key: "ngayGoi" },
-    { title: "Ngày kết thúc", dataIndex: "ngayKetThuc", key: "ngayKetThuc" },
+    { title: "Ghi chú", dataIndex: "description", key: "description" },
+    { title: "Ngày gọi", dataIndex: "startDate", key: "startDate",
+    width:"125px" },
+    { title: "Ngày kết thúc", dataIndex: "endDate", key: "endDate",
+    width:"125px" },
   ];
-  const data = dataRound.filter((round) => round.status === "done");
   return (
-    <div className="rfr__wrapper">
-      <div className="rfc__container">
+    <div className="pfr__wrapper">
+      <h3 style={{marginBottom: 20}}>VÒNG GỌI VỐN TRƯỚC ĐÓ</h3>
+      <div className="pfr__container">
         <Table
           className="components-table-demo-nested"
           columns={columns}
           expandable={{ expandedRowRender }}
-          dataSource={data}
+          dataSource={checkRound()}
           rowKey="idRound"
         />
       </div>

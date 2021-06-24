@@ -1,3 +1,16 @@
+.cfr__wrapper {
+    padding: 25px 25px;
+    position: relative;
+    .cfr__container {
+        padding: 25px;
+        box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);
+    }
+    .cfr__tvgv {
+        position: absolute;
+        top: 30px;
+        right: 25px;
+    }
+}
 .round__tenDoanhNghiep {
     display: flex;
     .round__thumbnail {
@@ -13,4 +26,107 @@
         margin-top: 2px;
         margin-left: 5px;
     }
+}
+
+.round__qlvgvAction {
+    display: flex;
+    justify-content: flex-end;
+    .round__btnHuy {
+        margin-left: 10px;
+    }
+}
+.ant-table-thead {
+    .ant-table-cell {
+        text-align: center;
+    }
+}
+.subround__action {
+    display: flex;
+    justify-content: center;
+    .subround__accept,
+    .subround__reject {
+        width: 16px;
+        height: 16px;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .subround__accept {
+        margin-right: 10px;
+    }
+}
+.cfr__modal {
+    position: absolute;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%);
+    .ant-modal-content {
+        .ant-modal-header {
+            display: none;
+        }
+        .ant-modal-body {
+            position: relative;
+            .cfr__closeModal {
+                position: absolute;
+                top: 5px;
+                right: 10px;
+                width: 14px;
+                height: 14px;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    opacity: 0.5;
+                    cursor: pointer;
+                    &:hover {
+                        opacity: 1;
+                    }
+                }
+            }
+            .cfr__form {
+                padding: 25px 10px;
+                .cfr__lineOne {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 20px;
+                    .cfr__formSTKG {
+                        width: 55%;
+                    }
+                    .cfr__formPTCP {
+                        width: 43%;
+                    }
+                }
+                .cfr__lineArea {
+                    margin-bottom: 20px;
+                    .cfr__formMT {
+                        resize: none;
+                    }
+                }
+                .cfr__datePicker {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 20px;
+                    .cfr__warningSign {
+                        width: 39.8px;
+                        height: 39.8px;
+                        img {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                }
+                .cfr__submitForm {
+                    text-align: right;
+                }
+            }
+        }
+    }
+}
+.cfr__dpngvdrop {
+    top: 155px !important;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

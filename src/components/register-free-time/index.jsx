@@ -137,6 +137,8 @@ function RegisterFreeTime() {
             <div className="rft__timeAndButton">
               <div className="rft__time">
                 <TimePicker
+                  placeholder="Chọn giờ"
+                  popupClassName="rft__drop"
                   value={time}
                   onChange={setTime}
                   minuteStep={30}
