@@ -6,17 +6,18 @@ import { useSelector } from "react-redux";
 import Images from "../../assets/images/images";
 function PreviousFundingRound() {
   const { listRoundPass } = useSelector((state) => state.round);
-  const {listDeal} = useSelector(state => state.deal)
+  console.log(listRoundPass);
+  const { listDeal } = useSelector((state) => state.deal);
   const checkRound = () => {
     let round;
     if (typeof listRoundPass === "string") {
       round = [];
       return round;
     } else if (typeof listRoundPass === "object") {
-      if(listRoundPass.length !== 1){
+      if (listRoundPass.length !== 1) {
         round = listRoundPass;
         return round;
-      }else{
+      } else {
         round = [listRoundPass];
         return round;
       }
@@ -24,14 +25,19 @@ function PreviousFundingRound() {
   };
   const expandedRowRender = (record, index) => {
     const columns = [
-      { title: "Tên nhà đầu tư", dataIndex: "investor", key: "investor",render: (value,round)=>(
-        <div className="round__tenDoanhNghiep">
-          <div className="round__thumbnail">
-            <img src={round.logo} alt="logo" />
+      {
+        title: "Tên nhà đầu tư",
+        dataIndex: "investor",
+        key: "investor",
+        render: (value, round) => (
+          <div className="round__tenDoanhNghiep">
+            <div className="round__thumbnail">
+              <img src={round.logo} alt="logo" />
+            </div>
+            <p className="round__pTenDoanhNghiep">{value}</p>
           </div>
-          <p className="round__pTenDoanhNghiep">{value}</p>
-        </div>
-      ) },
+        ),
+      },
       {
         title: "Phần trăm cổ phần",
         dataIndex: "shareRequirement",
@@ -56,7 +62,7 @@ function PreviousFundingRound() {
     const data = listDeal.filter(
       (deal) => deal.idRound === record.idRound && deal.status === "ACCEPT"
     );
-    
+
     return (
       <Table
         columns={columns}
@@ -96,20 +102,28 @@ function PreviousFundingRound() {
       key: "shareRequirement",
     },
     { title: "Ghi chú", dataIndex: "description", key: "description" },
-    { title: "Ngày gọi", dataIndex: "startDate", key: "startDate",
-    width:"125px" },
-    { title: "Ngày kết thúc", dataIndex: "endDate", key: "endDate",
-    width:"125px" },
+    {
+      title: "Ngày gọi",
+      dataIndex: "startDate",
+      key: "startDate",
+      width: "125px",
+    },
+    {
+      title: "Ngày kết thúc",
+      dataIndex: "endDate",
+      key: "endDate",
+      width: "125px",
+    },
   ];
   return (
     <div className="pfr__wrapper">
-      <h3 style={{marginBottom: 20}}>VÒNG GỌI VỐN TRƯỚC ĐÓ</h3>
+      <h3 style={{ marginBottom: 20 }}>VÒNG GỌI VỐN TRƯỚC ĐÓ</h3>
       <div className="pfr__container">
         <Table
           className="components-table-demo-nested"
           columns={columns}
           expandable={{ expandedRowRender }}
-          dataSource={checkRound()}
+          dataSource={listRoundPass}
           rowKey="idRound"
         />
       </div>

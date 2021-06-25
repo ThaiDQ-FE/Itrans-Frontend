@@ -2,13 +2,19 @@
     padding: 25px 25px;
     position: relative;
     .cfr__container {
-        padding: 25px;
+        padding: 25px 15px;
         box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);
     }
     .cfr__tvgv {
         position: absolute;
-        top: 30px;
+        top: 20px;
         right: 25px;
+        background: #ff8412;
+        border-color: #ff8412;
+        &:hover {
+            background: #fd922f;
+            border-color: #fd922f;
+        }
     }
 }
 .round__tenDoanhNghiep {
@@ -57,11 +63,13 @@
     }
 }
 .cfr__modal {
+    width: 550px !important;
     position: absolute;
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%);
     .ant-modal-content {
+        width: 550px;
         .ant-modal-header {
             display: none;
         }
@@ -84,15 +92,15 @@
                 }
             }
             .cfr__form {
-                padding: 25px 10px;
+                padding: 15px 10px;
                 .cfr__lineOne {
                     display: flex;
                     justify-content: space-between;
                     margin-bottom: 20px;
-                    .cfr__formSTKG {
+                    .cfr__wrapperSTKG {
                         width: 55%;
                     }
-                    .cfr__formPTCP {
+                    .cfr__wrapperPTCP {
                         width: 43%;
                     }
                 }
@@ -106,6 +114,12 @@
                     display: flex;
                     justify-content: space-between;
                     margin-bottom: 20px;
+                    .cfr__startDate,
+                    .cfr__endDate {
+                        .ant-picker {
+                            display: block;
+                        }
+                    }
                     .cfr__warningSign {
                         width: 39.8px;
                         height: 39.8px;
@@ -117,6 +131,14 @@
                 }
                 .cfr__submitForm {
                     text-align: right;
+                    .cfr__sfTao {
+                        background: #ff8412;
+                        border-color: #ff8412;
+                        &:hover {
+                            background: #fd922f;
+                            border-color: #fd922f;
+                        }
+                    }
                 }
             }
         }
@@ -129,4 +151,63 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+.cfr__inputEndDate,
+.cfr__inputStartDate {
+    .cfr__input {
+        padding: 0;
+        text-align: center;
+        border: none;
+        background: transparent;
+        &:focus {
+            box-shadow: unset;
+        }
+    }
+}
+.cfr__des {
+    width: 200px;
+    margin-bottom: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.cfr__inputPtcp {
+    width: auto;
+    .cfr__ptcp {
+        .ant-input-wrapper {
+            .ant-input {
+                text-align: right;
+                padding: 0;
+                border: none;
+                background: transparent;
+                &:focus {
+                    box-shadow: unset;
+                }
+            }
+            .ant-input-group-addon {
+                padding: 0;
+                border: none;
+            }
+        }
+    }
+}
+.cfr__inputStkg {
+    width: auto;
+    .cfr__stkg {
+        .ant-input-wrapper {
+            .ant-input {
+                text-align: right;
+                padding: 0;
+                border: none;
+                background: transparent;
+                &:focus {
+                    box-shadow: unset;
+                }
+            }
+            .ant-input-group-addon {
+                padding: 0;
+                border: none;
+            }
+        }
+    }
 }
