@@ -17,27 +17,45 @@ import { getFreeTimeDetailOfOrganization, getFreeTimeListOfOrganization } from "
 
 
 function ScheduleManagement() {
+    const dispatch = useDispatch();
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const appointments = [];
-    const listDetailFreeTimeOfOrganization = useSelector((state) => state.freeTime.listDetailFreeTimeOfOrganization);
-    const dispatch = useDispatch();
     const listFreeTimeOfOrganization = useSelector((state) => state.freeTime.listFreeTimeOfOrganization);
-    const detail = (schedule) => {
+    const listDetailFreeTimeOfOrganization = useSelector((state) => state.freeTime.listFreeTimeDetailOfOrganization);
+    const detail1 = (schedule) => {
         let data = [];
-        console.log(listDetailFreeTimeOfOrganization);
         for (let index = 0; index < listDetailFreeTimeOfOrganization.length; index++) {
-            if (schedule == listDetailFreeTimeOfOrganization[index].id) {
+            if (listDetailFreeTimeOfOrganization[index].id == schedule) {
                 data = [{
                     key: '1',
                     name: listDetailFreeTimeOfOrganization[index].nameOrganization,
                     stage: listDetailFreeTimeOfOrganization[index].stage,
-                    money: listDetailFreeTimeOfOrganization[index].amountInvestor,
-                    percentageoOfShares: listDetailFreeTimeOfOrganization[index].shareInvestor,
+                    money: listDetailFreeTimeOfOrganization[index].amountOrganization,
+                    percentageoOfShares: listDetailFreeTimeOfOrganization[index].shareOrganization,
                     dateStart: listDetailFreeTimeOfOrganization[index].startDate,
                     dateEnd: listDetailFreeTimeOfOrganization[index].endDate
                 }
                 ];
             }
+
+        }
+        return data;
+
+    }
+    const detail2 = (schedule) => {
+        let data = [];
+        for (let index = 0; index < listDetailFreeTimeOfOrganization.length; index++) {
+            if (listDetailFreeTimeOfOrganization[index].id == schedule) {
+                data = [{
+                    key: '1',
+                    name: listDetailFreeTimeOfOrganization[index].nameInvestor,
+                    money: listDetailFreeTimeOfOrganization[index].amountInvestor,
+                    percentageoOfShares: listDetailFreeTimeOfOrganization[index].shareInvestor,
+                    dateEnd: listDetailFreeTimeOfOrganization[index].description
+                }
+                ];
+            }
+
         }
         return data;
 
@@ -46,11 +64,12 @@ function ScheduleManagement() {
         appointmentData, ...restProps
     }) => (
         <AppointmentTooltip.Content {...restProps} appointmentData={appointmentData}>
-            <Table columns={columns} dataSource={detail(appointmentData.id)} />
+            <Table columns={column1} dataSource={detail1(appointmentData.id)} pagination={false} />
+            <Table columns={column2} dataSource={detail2(appointmentData.id)} pagination={false} />
         </AppointmentTooltip.Content>
     ));
 
-    const columns = [
+    const column1 = [
         {
             title: 'Tên doanh nghiệp',
             dataIndex: 'name',
@@ -83,7 +102,29 @@ function ScheduleManagement() {
             key: 'dateEnd'
         }
     ];
+    const column2 = [
+        {
+            title: 'Tên nhà đầu tư',
+            dataIndex: 'name',
+            key: 'name'
+        },
+        {
+            title: 'Số tiền muốn gọi (VND)',
+            dataIndex: 'money',
+            key: 'money'
+        },
+        {
+            title: 'Phần trăm cổ phần (%)',
+            dataIndex: 'percentageoOfShares',
+            key: 'percentageoOfShares'
 
+        },
+        {
+            title: 'Mô tả',
+            dataIndex: 'description',
+            key: 'description'
+        }
+    ];
     let today = new Date().toISOString().slice(0, 10)
 
     function pad(d) {
@@ -104,7 +145,6 @@ function ScheduleManagement() {
             endDate: new Date(timeEnd),
             id: listFreeTimeOfOrganization[index].idSchedule
         }
-        console.log(appointmentsChild);
         appointments.push(appointmentsChild);
     }
 
@@ -112,7 +152,7 @@ function ScheduleManagement() {
 
     useEffect(() => {
         dispatch(getFreeTimeListOfOrganization(userInfo.id));
-        dispatch(getFreeTimeDetailOfOrganization())
+        dispatch(getFreeTimeDetailOfOrganization(userInfo.id));
     }, []);
     return (
         <div>
