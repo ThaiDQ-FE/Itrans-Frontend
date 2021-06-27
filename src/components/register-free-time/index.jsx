@@ -41,7 +41,6 @@ function RegisterFreeTime() {
     const validateMess = await dispatch(
       getValidateForButtonThem(finalDT, userInfo.id)
     );
-    console.log(validateMess);
     const freeDateTime = { freeTime: finalDT, investor: userInfo.id };
     if (freeTime.length <= 0) {
       if (validateMess !== "" && validateMess !== message) {

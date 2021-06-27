@@ -60,7 +60,6 @@ function FormRole(props) {
   const handleClickButton = () => {
     if (choose === "INVESTOR") {
       if (chooseSubRole === null) {
-        console.log("nulllllll");
       } else {
         return props.setStateSubRole(chooseSubRole);
       }
@@ -88,7 +87,6 @@ function FormRole(props) {
     }
     setSubRoleClicked(index);
   };
-  console.log(subRoleClicked);
   const renderSubRole = () => {
     return jsonSubRole.map((sub, index) => {
       return (

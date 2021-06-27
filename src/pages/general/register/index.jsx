@@ -92,7 +92,6 @@ function Register() {
     setSubRole(newSubRole);
     setFinalRole("investor");
   };
-  console.log(role);
   const getSteps = () => {
     if (role === "ORGANIZATION") {
       return [

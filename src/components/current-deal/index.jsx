@@ -4,75 +4,54 @@ import { Table, Input, InputNumber, Button } from "antd";
 import { useEffect, useState } from "react";
 import "./styles.scss";
 import "antd/dist/antd.css";
+import Images from "../../assets/images/images";
+import { useDispatch, useSelector } from "react-redux";
+import { getCurrentDeal } from "../../store/action/deal.action";
 
 const { TextArea } = Input;
 
 function CurrentDeal() {
+  const dispatch = useDispatch();
   const [data, setData] = useState([]);
-  const [dataJsonDeal, setDataJsonDeal] = useState([]);
+  let [dataJsonDeal, setDataJsonDeal] = useState([]);
   const [activeRecord, setActiveRecord] = useState({});
+  let dataJson = [];
   useEffect(() => {
-    const dataJson = [
-      {
-        idRound: 1,
-        vongGoiVon: "Vòng 1",
-        tenDoanhNghiep: "Baby Shark",
-        giaiDoanGoiVon: "Series A",
-        soTienKeuGoi: "500.000.000 VNĐ",
-        phanTramCoPhan: "20%",
-        ngayGoi: "20-06-2021",
-        ngayKetThuc: "20-07-2021",
-      },
-      {
-        idRound: 2,
-        vongGoiVon: "Vòng 11",
-        tenDoanhNghiep: "Baby Shark",
-        giaiDoanGoiVon: "Series A",
-        soTienKeuGoi: "500.000.000 VNĐ",
-        phanTramCoPhan: "20%",
-        ngayGoi: "20-06-2021",
-        ngayKetThuc: "20-07-2021",
-      },
-    ];
-
-    const dataJsonDeal = [
-      {
-        idDeal: 1,
-        idRound: 1,
-        deal: "Deal 1",
-        tenNhaDauTu: "Tập đoàn ĐQT",
-        phanTramCoPhan: "15%",
-        soTienMuonDauTu: 350000000,
-        ghiChu: "ĐT vô địch ",
-        status: "pending",
-      },
-      {
-        idDeal: 2,
-        idRound: 2,
-        deal: "Deal 2",
-        tenNhaDauTu: "Tập đoàn ĐQT",
-        phanTramCoPhan: "15%",
-        soTienMuonDauTu: 350000000,
-        ghiChu: "ĐT vô địch ",
-        status: "pending",
-      },
-      {
-        idDeal: 3,
-        idRound: 2,
-        deal: "Deal 3",
-        tenNhaDauTu: "Tập đoàn ĐQT",
-        phanTramCoPhan: "15%",
-        soTienMuonDauTu: 350000000,
-        ghiChu: "ĐT vô địch ",
-        status: "done",
-      },
-    ];
+    dispatch(getCurrentDeal(1, 0));
     setData(dataJson);
     setDataJsonDeal(dataJsonDeal);
   }, []);
+  const listDealCurrent = useSelector((state) => state.deal.listDealCurrent);
+  if (!listDealCurrent.length == 0) {
+    dataJson = [
+      {
+        idRound: listDealCurrent[0].idRound,
+        vongGoiVon: listDealCurrent[0].stage,
+        tenDoanhNghiep: listDealCurrent[0].nameOrganization,
+        giaiDoanGoiVon: listDealCurrent[0].stage,
+        soTienKeuGoi: listDealCurrent[0].capitalInvestment,
+        phanTramCoPhan: listDealCurrent[0].roundShareRequirement,
+        ngayGoi: listDealCurrent[0].startDate,
+        ngayKetThuc: listDealCurrent[0].endDate,
+      }
+    ];
+
+    dataJsonDeal = [
+      {
+        idDeal: listDealCurrent[0].idDeal,
+        idRound: listDealCurrent[0].idRound,
+        deal: "Deal 1",
+        tenNhaDauTu: listDealCurrent[0].nameInvestor,
+        phanTramCoPhan: listDealCurrent[0].dealShareRequirement,
+        soTienMuonDauTu: listDealCurrent[0].fundingAmount,
+        ghiChu: listDealCurrent[0].dealDescription,
+        status: listDealCurrent[0].status,
+      }
+    ];
+  }
+
 
   const handleSubmit = (record) => {
-    console.log(record);
     let tmpDataJsonDeal = dataJsonDeal;
     tmpDataJsonDeal = tmpDataJsonDeal.map((item) => {
       if (item.idDeal === record.idDeal) {
@@ -106,7 +85,6 @@ function CurrentDeal() {
     setActiveRecord({});
   };
   const expandedRowRender = (record, index) => {
-    console.log(record, index);
     const columns = [
       { title: "Thỏa thuận", dataIndex: "deal", key: "deal" },
       {

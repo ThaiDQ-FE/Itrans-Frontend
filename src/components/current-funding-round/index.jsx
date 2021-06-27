@@ -94,7 +94,6 @@ function CurrentFundingRound() {
       },
     })
       .then((res) => {
-        console.log(res);
         if (res.status === 202) {
           showMessage("error", res.data);
         } else if (res.status === 201) {
@@ -115,7 +114,6 @@ function CurrentFundingRound() {
         }
       })
       .catch((err) => {
-        console.log(err);
       });
   };
   // declare sub-table
@@ -242,7 +240,6 @@ function CurrentFundingRound() {
   };
   // accept deal
   const handleAcceptDeal = (round) => {
-    console.log(round);
     Swal.fire({
       icon: "warning",
       title: "Chấp nhận deal của nhà đầu tư " + round.investor,
@@ -408,7 +405,6 @@ function CurrentFundingRound() {
   const handleCancelEdit = () => {
     setEdit(false);
   };
-  console.log(dataRound);
   const handleChangeEdit = (event) => {
     const { value, name } = event.target;
     setDataRound({
@@ -417,7 +413,6 @@ function CurrentFundingRound() {
     });
   };
   const handleSaveRound = () => {
-    console.log(startDateEdit);
   };
 
   const columns = [

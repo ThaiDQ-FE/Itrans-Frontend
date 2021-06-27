@@ -8,7 +8,6 @@ function DealManagement() {
   return (
     <div className="dm__wrapper">
       <div className="dm__button">
-        <Button>Tạo deal</Button>
       </div>
       <h1 className="dm__title">Quản lý Deal</h1>
       <CurrentDeal />

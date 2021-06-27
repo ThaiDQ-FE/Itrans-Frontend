@@ -106,7 +106,6 @@ export const updateStatusRound = (object) => {
         }
       })
       .catch((err) => {
-        console.log(err);
       });
   };
 };

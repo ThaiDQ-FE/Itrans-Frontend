@@ -1,8 +1,8 @@
 import {
-  GET_ALL_FREE_TIME_LIST_FAILED,
-  GET_ALL_FREE_TIME_LIST_SUCCESS,
   GET_FREE_TIME_DETAIL_OF_ORGANIZATION_FAIL,
   GET_FREE_TIME_DETAIL_OF_ORGANIZATION_SUCCESS,
+  GET_ALL_FREE_TIME_LIST_FAILED,
+  GET_ALL_FREE_TIME_LIST_SUCCESS,
   GET_FREE_TIME_LIST_FAILED,
   GET_FREE_TIME_LIST_OF_ORGANIZATION_FAIL,
   GET_FREE_TIME_LIST_OF_ORGANIZATION_SUCCESS,
@@ -12,9 +12,9 @@ import {
 const initialState = {
   listAllFreeTime: [],
   listFreeTime: [],
-  listFreeTimeOfOrganization:[],
+  listFreeTimeOfOrganization: [],
   errors: [],
-  listDetailFreeTimeOfOrganization:[]
+  listFreeTimeDetailOfOrganization: []
 };
 
 const freeTimeReducer = (state = initialState, action) => {
@@ -24,16 +24,16 @@ const freeTimeReducer = (state = initialState, action) => {
       return { ...state, listFreeTime: payload };
     case GET_FREE_TIME_LIST_FAILED:
       return { ...state, errors: payload };
+    case GET_FREE_TIME_LIST_OF_ORGANIZATION_SUCCESS:
+      return { ...state, listFreeTimeOfOrganization: payload };
+    case GET_FREE_TIME_LIST_OF_ORGANIZATION_FAIL:
+      return { ...state, errors: payload };
     case GET_ALL_FREE_TIME_LIST_SUCCESS:
       return { ...state, listAllFreeTime: payload };
     case GET_ALL_FREE_TIME_LIST_FAILED:
       return { ...state, errors: payload };
-      case GET_FREE_TIME_LIST_OF_ORGANIZATION_SUCCESS:
-      return { ...state, listFreeTimeOfOrganization: payload };
-    case GET_FREE_TIME_LIST_OF_ORGANIZATION_FAIL:
-      return { ...state, errors: payload };
-      case GET_FREE_TIME_DETAIL_OF_ORGANIZATION_SUCCESS:
-      return { ...state, listDetailFreeTimeOfOrganization: payload };
+    case GET_FREE_TIME_DETAIL_OF_ORGANIZATION_SUCCESS:
+      return { ...state, listFreeTimeDetailOfOrganization: payload };
     case GET_FREE_TIME_DETAIL_OF_ORGANIZATION_FAIL:
       return { ...state, errors: payload };
     default:

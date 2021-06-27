@@ -1,10 +1,10 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import {
-  GET_ALL_FREE_TIME_LIST_FAILED,
-  GET_ALL_FREE_TIME_LIST_SUCCESS,
   GET_FREE_TIME_DETAIL_OF_ORGANIZATION_FAIL,
   GET_FREE_TIME_DETAIL_OF_ORGANIZATION_SUCCESS,
+  GET_ALL_FREE_TIME_LIST_FAILED,
+  GET_ALL_FREE_TIME_LIST_SUCCESS,
   GET_FREE_TIME_LIST_FAILED,
   GET_FREE_TIME_LIST_OF_ORGANIZATION_FAIL,
   GET_FREE_TIME_LIST_OF_ORGANIZATION_SUCCESS,
@@ -203,37 +203,36 @@ const getFreeTimeListOfOrganizationFail = (err) => {
 };
 
 
-export const getFreeTimeDetailOfOrganization = () => {
+export const getFreeTimeDetailOfOrganization = (detail) => {
   return (dispatch) => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const token = userInfo.jwt;
     axios({
       method: "GET",
-      url: `http://localhost:8080/api/v1/schedule/get-all`,
+      url: `http://localhost:8080/api/v1/schedule/get-all/` + detail,
       data: null,
       headers: {
         Authorization: `Bearer ${token}`,
       },
+    }).then((res) => {
+      dispatch(getFreeTimeListDetailOfOrganizationSucess(res.data))
+    }).catch((err) => {
+      dispatch(getFreeTimeListDetailOfOrganizationFail(err))
     })
-      .then((res) => {
-        dispatch(getFreeTimeDetailOfOrganizationSucess(res.data));
-      })
-      .catch((err) => {
-        dispatch(getFreeTimeDetailOfOrganizationFail(err));
-      });
+
   };
 };
-
-const getFreeTimeDetailOfOrganizationSucess = (detailFreeTimeOfOrganization) => {
+const getFreeTimeListDetailOfOrganizationSucess = (listFreeTimeOfOrganization) => {
   return {
     type: GET_FREE_TIME_DETAIL_OF_ORGANIZATION_SUCCESS,
-    payload: detailFreeTimeOfOrganization,
+    payload: listFreeTimeOfOrganization,
   };
 };
 
-const getFreeTimeDetailOfOrganizationFail = (err) => {
+const getFreeTimeListDetailOfOrganizationFail = (err) => {
   return {
     type: GET_FREE_TIME_DETAIL_OF_ORGANIZATION_FAIL,
     payload: err,
   };
 };
+
