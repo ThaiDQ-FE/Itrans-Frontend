@@ -90,7 +90,6 @@ function RegisterFreeTime() {
   };
   const renderListDateTimeBooked = () => {
     return listFreeTime.map((item, index) => {
-      console.log(item);
       return (
         <li
           className={`li__li${
@@ -104,11 +103,10 @@ function RegisterFreeTime() {
       );
     });
   };
-  console.log(date);
   useEffect(() => {
     dispatch(getFreeTimeList(userInfo.id, formatMonth));
     dispatch(getAllFreeTimeList(userInfo.id));
-  });
+  }, []);
   const handleSubmit = () => {
     Swal.fire({
       title: "Bạn muốn đăng ký những ngày đã chọn ?",
