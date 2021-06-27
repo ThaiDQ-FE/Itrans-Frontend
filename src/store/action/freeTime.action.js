@@ -3,7 +3,11 @@ import Swal from "sweetalert2";
 import {
   GET_ALL_FREE_TIME_LIST_FAILED,
   GET_ALL_FREE_TIME_LIST_SUCCESS,
+  GET_FREE_TIME_DETAIL_OF_ORGANIZATION_FAIL,
+  GET_FREE_TIME_DETAIL_OF_ORGANIZATION_SUCCESS,
   GET_FREE_TIME_LIST_FAILED,
+  GET_FREE_TIME_LIST_OF_ORGANIZATION_FAIL,
+  GET_FREE_TIME_LIST_OF_ORGANIZATION_SUCCESS,
   GET_FREE_TIME_LIST_SUCCESS,
 } from "../constants/freeTime.const";
 import { authorizationAccount } from "../../assets/helper/helper";
@@ -157,6 +161,79 @@ const getFreeTimeListSuccess = (freeTimeList) => {
 const getFreeTimeListFailed = (err) => {
   return {
     type: GET_FREE_TIME_LIST_FAILED,
+    payload: err,
+  };
+};
+
+
+
+export const getFreeTimeListOfOrganization = (organization) => {
+  return (dispatch) => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const token = userInfo.jwt;
+    axios({
+      method: "GET",
+      url: `http://localhost:8080/api/v1/view-schedule-organization-by-week?idOrganization=${organization}`,
+      data: null,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        dispatch(getFreeTimeListOfOrganizationSucess(res.data));
+      })
+      .catch((err) => {
+        dispatch(getFreeTimeListOfOrganizationFail(err));
+      });
+  };
+};
+
+const getFreeTimeListOfOrganizationSucess = (listFreeTimeOfOrganization) => {
+  return {
+    type: GET_FREE_TIME_LIST_OF_ORGANIZATION_SUCCESS,
+    payload: listFreeTimeOfOrganization,
+  };
+};
+
+const getFreeTimeListOfOrganizationFail = (err) => {
+  return {
+    type: GET_FREE_TIME_LIST_OF_ORGANIZATION_FAIL,
+    payload: err,
+  };
+};
+
+
+export const getFreeTimeDetailOfOrganization = () => {
+  return (dispatch) => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const token = userInfo.jwt;
+    axios({
+      method: "GET",
+      url: `http://localhost:8080/api/v1/schedule/get-all`,
+      data: null,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        dispatch(getFreeTimeDetailOfOrganizationSucess(res.data));
+      })
+      .catch((err) => {
+        dispatch(getFreeTimeDetailOfOrganizationFail(err));
+      });
+  };
+};
+
+const getFreeTimeDetailOfOrganizationSucess = (detailFreeTimeOfOrganization) => {
+  return {
+    type: GET_FREE_TIME_DETAIL_OF_ORGANIZATION_SUCCESS,
+    payload: detailFreeTimeOfOrganization,
+  };
+};
+
+const getFreeTimeDetailOfOrganizationFail = (err) => {
+  return {
+    type: GET_FREE_TIME_DETAIL_OF_ORGANIZATION_FAIL,
     payload: err,
   };
 };

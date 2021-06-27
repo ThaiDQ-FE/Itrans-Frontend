@@ -20,6 +20,11 @@ import setting_account from "./settings.png";
 import edit_mileStone from "./edit.png";
 import refresh from "./refresh.png";
 import red_cancel from "./red-cancel.png";
+import pencil from "./pencil.svg";
+import power from "./power-off.svg";
+import trash from "./trash.svg";
+import data from "./data.svg";
+import save from "./save.png";
 const Images = {
   LOGO_NAVY: logo_navy,
   LOGO_GREY: logo_grey,
@@ -43,6 +48,11 @@ const Images = {
   EDIT_MILESTONE: edit_mileStone,
   REFRESH: refresh,
   RED_CANCEL: red_cancel,
+  TRASH: trash,
+  PENCIL: pencil,
+  POWER: power,
+  DATA: data,
+  SAVE: save,
 };
 
 export default Images;

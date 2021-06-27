@@ -1,10 +1,5 @@
 import "./App.css";
-import {
-  adminRouter,
-  generalRouter,
-  loginRouter,
-  mainRouter,
-} from "./configs/router";
+import { adminRouter, generalRouter, mainRouter } from "./configs/router";
 import RouterMainTemplate from "./templates/main";
 import RouterAdminTemplate from "./templates/admin";
 import { BrowserRouter, Switch } from "react-router-dom";
@@ -12,7 +7,6 @@ import RouterGeneralTemplate from "./templates/login";
 
 function App() {
   const userLogin = JSON.parse(localStorage.getItem("userLogin"));
-  console.log(userLogin);
   const renderMainRouter = () => {
     return mainRouter.map(({ path, exact, Component }, index) => {
       return (

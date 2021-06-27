@@ -1,42 +1,95 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.scss";
 import "antd/dist/antd.css";
 import { Input, Select } from "antd";
 import Messages from "../../assets/message/text";
 import Images from "../../assets/images/images";
-import { getListIndustry, getListProvince, getListStage } from "../../store/action/register.action";
+import {
+  getListIndustry,
+  getListProvince,
+  getListStage,
+} from "../../store/action/register.action";
 import { useDispatch, useSelector } from "react-redux";
 function FormInformationAboutTheOrganization(props) {
   const { Option } = Select;
   const { TextArea } = Input;
   const children = [];
   const dispatch = useDispatch();
-  const { listProvince, listStage, listIndustry } = useSelector((state) => state.register);
- 
+  const { listProvince, listStage, listIndustry } = useSelector(
+    (state) => state.register
+  );
+  const [information, setInformation] = useState({
+    name: "",
+    industry: "",
+    stage: "",
+    foundedYear: "",
+    numberOfEmployee: "",
+    province: "",
+    link: "",
+    description: "",
+  });
+  const handleChangeInput = (event) => {
+    const { value, name } = event.target;
+    setInformation({
+      ...information,
+      [name]: value,
+    });
+  };
+  const handleNext = () => {
+    localStorage.setItem("Form2", JSON.stringify(information));
+    props.handleNext();
+  };
+  const handleChange = (value, action) => {
+    if (!action.length) {
+      setInformation({
+        ...information,
+        [action.name]: value,
+      });
+    } else {
+      setInformation({
+        ...information,
+        [action[0].name]: value,
+      });
+    }
+  };
   const renderListProvince = () => {
     return listProvince.map((item, index) => {
-      return <Option value={item.idProvince} key={index}>{item.name}</Option>
-    })
-  }
-  const renderListStage = ()=>{
-    return listStage.map((item,index)=>{
-      return <Option value={item.idStage} key={index} >{item.name}</Option>
-    })
-  }
+      return (
+        <Option name="province" value={item.idProvince} key={index}>
+          {item.name}
+        </Option>
+      );
+    });
+  };
+  const renderListStage = () => {
+    return listStage.map((item, index) => {
+      return (
+        <Option name="stage" value={item.idStage} key={index}>
+          {item.name}
+        </Option>
+      );
+    });
+  };
   const renderListIndustry = () => {
-    return listIndustry.map((item,index)=>{
-      return <Option value = {item.idIndustry} key = {index} disabled ={item.active === false}>{item.name}</Option>
-    })
-  }
+    return listIndustry.map((item, index) => {
+      return (
+        <Option
+          name="industry"
+          value={item.idIndustry}
+          key={index}
+          disabled={item.active === false}
+        >
+          {item.name}
+        </Option>
+      );
+    });
+  };
   for (let i = 10; i < 36; i++) {
     children.push(
       <Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>
     );
   }
- 
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
+
   useEffect(() => {
     dispatch(getListProvince());
     dispatch(getListIndustry());
@@ -49,10 +102,16 @@ function FormInformationAboutTheOrganization(props) {
         <form className="fiato__form">
           <div className="fiato__lineOne">
             <div className="fiato__tenToChuc">
-              <Input placeholder="Tên tổ chức" size="large" />
+              <Input
+                name="name"
+                onChange={handleChangeInput}
+                placeholder="Tên tổ chức"
+                size="large"
+              />
             </div>
             <div className="fiato__linhVucKinhDoanh">
               <Select
+                name="industry"
                 mode="multiple"
                 allowClear
                 placeholder="Lĩnh vực kinh doanh"
@@ -65,15 +124,31 @@ function FormInformationAboutTheOrganization(props) {
           </div>
           <div className="fiato__lineTwo">
             <div className="fiato__giaiDoanPhatTrien">
-              <Select placeholder="Giai đoạn phát triển" size="large">
-              {renderListStage()}
+              <Select
+                onChange={handleChange}
+                name="stage"
+                placeholder="Giai đoạn phát triển"
+                size="large"
+              >
+                {renderListStage()}
               </Select>
             </div>
             <div className="fiato__namThanhLap">
-              <Input placeholder="Năm thành lập" type="text" size="large" />
+              <Input
+                name="foundedYear"
+                onChange={handleChangeInput}
+                placeholder="Năm thành lập"
+                type="text"
+                size="large"
+              />
             </div>
             <div className="fiato__soLuongThanhVien">
-              <Input placeholder="Số lượng thành viên" size="large" />
+              <Input
+                name="numberOfEmployee"
+                onChange={handleChangeInput}
+                placeholder="Số lượng thành viên"
+                size="large"
+              />
             </div>
           </div>
           <div className="fiato__lineThree">
@@ -81,6 +156,7 @@ function FormInformationAboutTheOrganization(props) {
               <Select
                 mode="multiple"
                 allowClear
+                name="province"
                 placeholder="Khu vực hoạt động"
                 onChange={handleChange}
                 size="large"
@@ -89,13 +165,20 @@ function FormInformationAboutTheOrganization(props) {
               </Select>
             </div>
             <div className="fiato__linkWebsite">
-              <Input placeholder="Link Website" size="large" />
+              <Input
+                name="link"
+                onChange={handleChangeInput}
+                placeholder="Link Website"
+                size="large"
+              />
             </div>
           </div>
           <div className="fiato__lineFour">
             <div className="fiato__moTaVeDoanhNghiep">
               <TextArea
+                name="description"
                 rows={5}
+                onChange={handleChangeInput}
                 placeholder="Mô tả về doanh nghiệp"
                 size="large"
               />
@@ -118,7 +201,7 @@ function FormInformationAboutTheOrganization(props) {
             <img src={Images.RIGHT_ARROWS} alt="" />
             <span>Quay lại</span>
           </div>
-          <div className="fiato__buttonRight" onClick={props.handleNext}>
+          <div onClick={handleNext} className="fiato__buttonRight">
             <img src={Images.RIGHT_ARROWS} alt="" />
             <span>Tiếp theo</span>
           </div>

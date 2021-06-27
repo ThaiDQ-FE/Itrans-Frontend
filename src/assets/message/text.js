@@ -29,7 +29,6 @@ const message = {
   GENERAL_STEP_FINAL: "Hoàn thành",
   INVESTOR_INFORMATION: "Thông tin nhà đầu tư",
   //Thông tin về tổ chức
-  TenDoanhNghiep: "Tên doanh nghiệp",
   LinhVucKinhDoanh: "Lĩnh vực kinh doanh",
   GiaiDoanPhatTrien: "Giai đoạn phát triển",
   NamThanhLap: "Năm thành lặp",
@@ -47,8 +46,6 @@ const message = {
   LinkCV: "Link CV",
   TenDoanhNghiep: "Tên doanh nghiệp",
   LinhVucHoatDong: "Lĩnh vực hoạt động",
-  NamThanhLap: "Năm thành lặp",
-  KhuVucHoatDong: "Khu vực hoạt động",
   MoTaVeNhaDauTu: "Mô tả về nhà đầu tư",
   // Footer
   TRUSOHCM:
