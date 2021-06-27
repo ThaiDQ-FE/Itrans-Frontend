@@ -122,7 +122,7 @@ function ScheduleManagement() {
   useEffect(() => {
     dispatch(getFreeTimeListOfOrganization(userInfo.id));
     dispatch(getFreeTimeDetailOfOrganization());
-  });
+  }, []);
   return (
     <div>
       <div>&nbsp;</div>

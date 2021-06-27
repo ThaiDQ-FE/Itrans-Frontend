@@ -94,7 +94,7 @@ function FormInformationAboutTheOrganization(props) {
     dispatch(getListProvince());
     dispatch(getListIndustry());
     dispatch(getListStage());
-  });
+  }, []);
   return (
     <div className="fiato__wrapper">
       <div className="fiato__container">
