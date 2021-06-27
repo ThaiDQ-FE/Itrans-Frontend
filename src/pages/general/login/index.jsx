@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./styles.scss";
-import logo from "../../../assets/images/logo-navy.png";
 import {
   Button,
   createMuiTheme,
@@ -13,7 +12,6 @@ import { postCheckLogin } from "../../../store/action/user.action";
 import { useHistory } from "react-router";
 import { validGmail } from "../../../configs/regex";
 import Messages from "../../../assets/message/text";
-import Images from "../../../assets/images/images";
 function Login() {
   const dispatch = useDispatch();
   const history = useHistory();

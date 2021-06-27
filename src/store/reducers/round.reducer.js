@@ -3,10 +3,13 @@ import {
   GET_LIST_ROUND_ACTIVE_BY_ID_ORGANIZATION_SUCCESS,
   GET_LIST_ROUND_PASS_BY_ID_ORGANIZATION_FAILED,
   GET_LIST_ROUND_PASS_BY_ID_ORGANIZATION_SUCCESS,
+  GET_LIST_ROUND_PENDING_BY_ID_ORGANIZATION_FAILED,
+  GET_LIST_ROUND_PENDING_BY_ID_ORGANIZATION_SUCCESS,
 } from "../constants/round.const";
 
 const initialState = {
   listRoundActive: [],
+  listRoundPending: [],
   listRoundPass: [],
   errors: [],
 };
@@ -18,10 +21,14 @@ const roundReducer = (state = initialState, action) => {
       return { ...state, listRoundActive: payload };
     case GET_LIST_ROUND_ACTIVE_BY_ID_ORGANIZATION_FAILED:
       return { ...state, errors: payload };
+    case GET_LIST_ROUND_PENDING_BY_ID_ORGANIZATION_SUCCESS:
+      return { ...state, listRoundPending: payload };
+    case GET_LIST_ROUND_PENDING_BY_ID_ORGANIZATION_FAILED:
+      return { ...state, errors: payload };
     case GET_LIST_ROUND_PASS_BY_ID_ORGANIZATION_SUCCESS:
-      return {...state, listRoundPass: payload}
+      return { ...state, listRoundPass: payload };
     case GET_LIST_ROUND_PASS_BY_ID_ORGANIZATION_FAILED:
-      return {...state, errors: payload}
+      return { ...state, errors: payload };
     default:
       return state;
   }
