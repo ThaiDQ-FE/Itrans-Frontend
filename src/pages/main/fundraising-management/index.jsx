@@ -18,7 +18,7 @@ function FundraisingManagement() {
     dispatch(getListRoundPendingByIdOrganization(checkIdUser()));
     dispatch(getListRoundPassByIdOrganization(checkIdUser()));
     dispatch(getListDealByIdOrganization(checkIdUser()));
-  });
+  }, []);
   return (
     <div className="fundm__wrapper">
       <h1 className="fundm__title">Quản lý vòng gọi vốn</h1>

@@ -34,7 +34,6 @@ function RegisterFreeTime() {
       timer: 2000,
     });
   };
-  console.log('b');
   const message = "Thời gian đã được đăng ký. Vui lòng chọn thời gian khác.";
   const handleClickThem = async () => {
     let finalDT = formatDate + " " + formatTime;
@@ -106,7 +105,7 @@ function RegisterFreeTime() {
   useEffect(() => {
     dispatch(getFreeTimeList(userInfo.id, formatMonth));
     dispatch(getAllFreeTimeList(userInfo.id));
-  });
+  }, []);
   const handleSubmit = () => {
     Swal.fire({
       title: "Bạn muốn đăng ký những ngày đã chọn ?",

@@ -22,8 +22,8 @@ function ScheduleManagement() {
     const dispatch = useDispatch();
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const appointments = [];
-    const listFreeTimeOfOrganization = [];
-    const listDetailFreeTimeOfOrganization = [];
+    const listFreeTimeOfOrganization = useSelector((state) => state.freeTime.listFreeTimeOfOrganization);
+    const listDetailFreeTimeOfOrganization = useSelector((state) => state.freeTime.listFreeTimeDetailOfOrganization);
     const detail1 = (schedule) => {
         let data = [];
         for (let index = 0; index < listDetailFreeTimeOfOrganization.length; index++) {
