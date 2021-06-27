@@ -1,33 +1,64 @@
 import React, { useState } from "react";
-import { Table, Button, Tooltip, Modal, Input, DatePicker } from "antd";
+import { Table, Button, Tooltip, Input, DatePicker } from "antd";
 import "./styles.scss";
-import Swal from "sweetalert2";
 import "antd/dist/antd.css";
+import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import Images from "../../assets/images/images";
-import { checkEmailUser, showMessage } from "../../assets/helper/helper";
+import {
+  authorizationAccount,
+  checkEmailUser,
+  checkIdUser,
+  showMessage,
+} from "../../assets/helper/helper";
 import moment from "moment";
-import { postRound } from "../../store/action/round.action";
+import {
+  getListRoundActiveByIdOrganization,
+  updateStatusRound,
+} from "../../store/action/round.action";
+import ModalCreateRound from "../modal-create-round";
+import axios from "axios";
 function CurrentFundingRound() {
   const { TextArea } = Input;
+  // declare dispatch
+  const dispatch = useDispatch();
+  // get data from store
   const { listRoundActive } = useSelector((state) => state.round);
   const { listDeal } = useSelector((state) => state.deal);
-  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.loading);
+  // declare state
   const [STKGE, setSTKGE] = useState("");
   const [PTCPE, setPTCPE] = useState("");
   const [startDateE, setStartDateE] = useState("");
   const [endDateE, setEndDateE] = useState("");
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+  const [edit, setEdit] = useState(false);
+  const [startDateEdit, setStartDateEdit] = useState();
+  const [endDateEdit, setEndDateEdit] = useState();
+  const [dataRound, setDataRound] = useState({
+    soTienKeuGoi: "",
+    phanTramCoPhan: "",
+    moTa: "",
+    ngayGoi: "",
+    ngayKetThuc: "",
+  });
   const [form, setForm] = useState({
     soTienKeuGoi: "",
     phanTramCoPhan: "",
     moTa: "",
   });
+  const [openModal, setOpenModal] = useState(false);
+  // get data from store
+  const id = checkIdUser();
+  const token = authorizationAccount();
+  // format date
   var formatStartDate = moment(startDate).format("DD-MM-YYYY");
   var formatEndDate = moment(endDate).format("DD-MM-YYYY");
   const dateFormat = "DD/MM/YYYY";
+  // declare rule
   const test = "ở đây chúng ta sẽ định nghĩa rule";
+  // check type of round
   const checkRound = () => {
     let round;
     if (typeof listRoundActive === "string") {
@@ -38,13 +69,63 @@ function CurrentFundingRound() {
       return round;
     }
   };
-  const [openModal, setOpenModal] = useState(false);
+  // call api create round
+  const postRound = (
+    mail,
+    fundingAmount,
+    shareRequirement,
+    description,
+    startDate,
+    endDate
+  ) => {
+    axios({
+      method: "POST",
+      url: "http://localhost:8080/api/v1/round",
+      data: {
+        mail,
+        fundingAmount,
+        shareRequirement,
+        description,
+        startDate,
+        endDate,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 202) {
+          showMessage("error", res.data);
+        } else if (res.status === 201) {
+          Swal.fire({
+            icon: "success",
+            title: res.data,
+            heightAuto: true,
+            timerProgressBar: false,
+            showConfirmButton: true,
+            confirmButtonText: "Đồng ý",
+            confirmButtonColor: "#ff8412",
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              setOpenModal(false);
+              dispatch(getListRoundActiveByIdOrganization(id));
+            }
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  // declare sub-table
   const expandedRowRender = (record, index) => {
     const columns = [
       {
         title: "Tên nhà đầu tư",
         dataIndex: "investor",
         key: "investor",
+        width: "150px",
         render: (value, round) => (
           <div className="round__tenDoanhNghiep">
             <div className="round__thumbnail">
@@ -54,37 +135,77 @@ function CurrentFundingRound() {
           </div>
         ),
       },
+
+      {
+        title: "Số tiền muốn đầu tư",
+        dataIndex: "capitalInvestment",
+        key: "capitalInvestment",
+        width: "180px",
+        render: (value) => (
+          <div className="cfr__inputStkg">
+            <Input
+              className="cfr__stkg"
+              addonAfter=".000.000 VNĐ"
+              defaultValue={value}
+              readOnly
+            />
+          </div>
+        ),
+      },
       {
         title: "Phần trăm cổ phần",
         dataIndex: "shareRequirement",
         key: "shareRequirement",
-      },
-      {
-        title: "Số tiền muốn đầu tư (triệu VNĐ)",
-        dataIndex: "capitalInvestment",
-        key: "capitalInvestment",
+        width: "160px",
+        render: (value) => (
+          <div className="cfr__inputPtcp">
+            <Input
+              className="cfr__ptcp"
+              addonAfter="%"
+              defaultValue={value}
+              readOnly
+            />
+          </div>
+        ),
       },
       {
         title: "Ngày đăng",
         dataIndex: "date",
         key: "date",
+        width: "180px",
+        render: (value) => (
+          <div className="cfr__inputStartDate">
+            <Input className="cfr__input" defaultValue={value} readOnly />
+          </div>
+        ),
       },
       {
         title: "Ghi chú",
         dataIndex: "description",
         key: "description",
+        width: "200px",
+        render: (value) => (
+          <Tooltip placement="top" title={value}>
+            <p className="cfr__des">{value}</p>
+          </Tooltip>
+        ),
       },
       {
         title: "",
         dataIndex: "status",
         key: "status",
-        render: (value, record) => (
+        width: "50px",
+        render: (value, round) => (
           <div className="subround__action">
             {value === "PENDING" ? (
               <>
                 <div className="subround__accept">
                   <Tooltip placement="top" title="Chấp nhận">
-                    <img src={Images.CHECKED_REGISTER} alt="chap nhan" />
+                    <img
+                      src={Images.CHECKED_REGISTER}
+                      alt="chap nhan"
+                      onClick={() => handleAcceptDeal(round)}
+                    />
                   </Tooltip>
                 </div>
                 <div className="subround__reject">
@@ -115,10 +236,31 @@ function CurrentFundingRound() {
         dataSource={data}
         pagination={false}
         rowKey="idDeal"
+        locale={{ emptyText: "Không có dữ liệu" }}
       />
     );
   };
-  const handleSubmitEnd = (round) => {
+  // accept deal
+  const handleAcceptDeal = (round) => {
+    console.log(round);
+    Swal.fire({
+      icon: "warning",
+      title: "Chấp nhận deal của nhà đầu tư " + round.investor,
+      heightAuto: true,
+      timerProgressBar: false,
+      showConfirmButton: true,
+      showCancelButton: true,
+      cancelButtonText: "Hủy",
+      cancelButtonColor: "red",
+      confirmButtonText: "Đồng ý",
+      confirmButtonColor: "#ff8412",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+      }
+    });
+  };
+  // icon power
+  const handlePowerOffRound = (round) => {
     Swal.fire({
       icon: "warning",
       title: "Bạn muốn kết thúc vòng gọi vốn hiện tại?",
@@ -126,29 +268,78 @@ function CurrentFundingRound() {
       timerProgressBar: false,
       showConfirmButton: true,
       showCancelButton: true,
+      cancelButtonText: "Hủy",
+      cancelButtonColor: "red",
       confirmButtonText: "Đồng ý",
+      confirmButtonColor: "#ff8412",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const object = { id: round.idRound, status: "Kết thúc" };
+        dispatch(updateStatusRound(object));
+      }
     });
   };
-  const handleCancelRound = (round) => {
-    console.log(round);
+  // icon edit
+  const handleEditRound = (round) => {
     const data = listDeal.filter(
       (deal) => deal.idRound === round.idRound && deal.status !== "REJECT"
     );
     if (data.length !== 0) {
-      showMessage("error", "Không thể hủy vòng gọi vốn hiện tại!");
-    }
-  };
-  const handleCreateRound = () => {
-    if (typeof listRoundActive === "object") {
-      return showMessage("error", "Hiện tại không thể tạo vòng gọi vốn!");
+      showMessage("error", "Hiện tại không thể chỉnh sửa vòng gọi vốn!");
     } else {
-      return setOpenModal(true);
+      setDataRound({
+        ...dataRound,
+        soTienKeuGoi: round.fundingAmount,
+        phanTramCoPhan: round.shareRequirement,
+        moTa: round.description,
+        ngayGoi: round.startDate,
+        ngayKetThuc: round.endDate,
+      });
+      setEdit(true);
     }
   };
-
+  // icon trash
+  const handleDeleteRound = (round) => {
+    const data = listDeal.filter(
+      (deal) => deal.idRound === round.idRound && deal.status !== "REJECT"
+    );
+    if (data.length !== 0) {
+      showMessage("error", "Hiện tại không thể xóa vòng gọi vốn!");
+    } else {
+      Swal.fire({
+        icon: "warning",
+        title: "Bạn muốn hủy vòng gọi vốn hiện tại?",
+        heightAuto: true,
+        timerProgressBar: false,
+        showConfirmButton: true,
+        showCancelButton: true,
+        cancelButtonText: "Hủy",
+        cancelButtonColor: "red",
+        confirmButtonText: "Đồng ý",
+        confirmButtonColor: "#ff8412",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const object = { id: round.idRound, status: "Hủy" };
+          dispatch(updateStatusRound(object));
+        }
+      });
+    }
+  };
+  // open modal create
+  const handleCreateRound = () => {
+    setOpenModal(true);
+  };
+  // close modal create
   const handleCloseModal = () => {
     setOpenModal(false);
+    setPTCPE("");
+    setSTKGE("");
+    setStartDateE("");
+    setEndDateE("");
+    setStartDate("");
+    setEndDate("");
   };
+
   const handleCreateRoundForm = (e) => {
     e.preventDefault();
     handleSTKGBlur();
@@ -163,15 +354,13 @@ function CurrentFundingRound() {
       form.soTienKeuGoi !== "" &&
       form.phanTramCoPhan !== ""
     ) {
-      dispatch(
-        postRound(
-          checkEmailUser(),
-          parseInt(form.soTienKeuGoi),
-          parseInt(form.phanTramCoPhan),
-          form.moTa,
-          formatStartDate,
-          formatEndDate
-        )
+      postRound(
+        checkEmailUser(),
+        parseInt(form.soTienKeuGoi),
+        parseInt(form.phanTramCoPhan),
+        form.moTa,
+        formatStartDate,
+        formatEndDate
       );
     }
   };
@@ -216,11 +405,27 @@ function CurrentFundingRound() {
       return setEndDateE("");
     }
   };
+  const handleCancelEdit = () => {
+    setEdit(false);
+  };
+  console.log(dataRound);
+  const handleChangeEdit = (event) => {
+    const { value, name } = event.target;
+    setDataRound({
+      ...dataRound,
+      [name]: value,
+    });
+  };
+  const handleSaveRound = () => {
+    console.log(startDateEdit);
+  };
+
   const columns = [
     {
       title: "Tên doanh nghiệp",
       dataIndex: "organization",
       key: "organization",
+      width: "150px",
       render: (value, round) => (
         <div className="round__tenDoanhNghiep">
           <div className="round__thumbnail">
@@ -234,20 +439,32 @@ function CurrentFundingRound() {
       title: "Giai đoạn gọi vốn",
       dataIndex: "stage",
       key: "stage",
+      width: "150px",
     },
     {
       title: "Số tiền kêu gọi",
       dataIndex: "fundingAmount",
       key: "fundingAmount",
       width: "160px",
-      render: (value) => (
+      render: (value, round) => (
         <div className="cfr__inputStkg">
-          <Input
-            className="cfr__stkg"
-            addonAfter=".000.000 VNĐ"
-            defaultValue={value}
-            readOnly
-          />
+          {edit === true ? (
+            <Input
+              type="number"
+              defaultValue={value}
+              onChange={handleChangeEdit}
+              name="soTienKeuGoi"
+            />
+          ) : (
+            <>
+              <span>{value}</span>
+              <Input
+                className="cfr__stkgDefault"
+                addonAfter=".000.000 VNĐ"
+                readOnly
+              />
+            </>
+          )}
         </div>
       ),
     },
@@ -258,12 +475,19 @@ function CurrentFundingRound() {
       width: "160px",
       render: (value) => (
         <div className="cfr__inputPtcp">
-          <Input
-            className="cfr__ptcp"
-            addonAfter="%"
-            defaultValue={value}
-            readOnly
-          />
+          {edit === true ? (
+            <Input
+              type="number"
+              defaultValue={value}
+              onChange={handleChangeEdit}
+              name="phanTramCoPhan"
+            />
+          ) : (
+            <>
+              <span>{value}</span>
+              <Input className="cfr__ptcpDefault" addonAfter="%" readOnly />
+            </>
+          )}
         </div>
       ),
     },
@@ -272,31 +496,62 @@ function CurrentFundingRound() {
       dataIndex: "description",
       key: "description",
       render: (value) => (
-        <Tooltip placement="top" title={value}>
-          <p className="cfr__des">{value}</p>
-        </Tooltip>
+        <>
+          {edit === true ? (
+            <TextArea
+              rows={1}
+              defaultValue={value}
+              className="round__textArea"
+              onChange={handleChangeEdit}
+              name="moTa"
+            />
+          ) : (
+            <Tooltip placement="top" title={value}>
+              <p className="cfr__des">{value}</p>
+            </Tooltip>
+          )}
+        </>
       ),
     },
     {
       title: "Ngày gọi",
       dataIndex: "startDate",
       key: "startDate",
-      width: "115px",
+      width: `${edit === true ? "150px" : "115px"}`,
       render: (value) => (
-        <div className="cfr__inputStartDate">
-          <Input className="cfr__input" defaultValue={value} readOnly />
-        </div>
+        <>
+          {edit === true ? (
+            <DatePicker
+              defaultValue={moment(value, dateFormat)}
+              format={dateFormat}
+              onChange={setStartDateEdit}
+            />
+          ) : (
+            <div className="cfr__inputStartDate">
+              <Input className="cfr__input" defaultValue={value} readOnly />
+            </div>
+          )}
+        </>
       ),
     },
     {
       title: "Ngày kết thúc",
       dataIndex: "endDate",
       key: "endDate",
-      width: "125px",
+      width: `${edit === true ? "150px" : "125px"}`,
       render: (value) => (
-        <div className="cfr__inputEndDate">
-          <Input className="cfr__input" defaultValue={value} readOnly />
-        </div>
+        <>
+          {edit === true ? (
+            <DatePicker
+              defaultValue={moment(value, dateFormat)}
+              format={dateFormat}
+            />
+          ) : (
+            <div className="cfr__inputEndDate">
+              <Input className="cfr__input" defaultValue={value} readOnly />
+            </div>
+          )}
+        </>
       ),
     },
     {
@@ -306,140 +561,80 @@ function CurrentFundingRound() {
       width: "50px",
       render: (value, round) => (
         <div className="round__qlvgvAction">
-          <Button type="primary" onClick={() => handleSubmitEnd(round)}>
-            Kết thúc
-          </Button>
-          <Button
-            className="round__btnHuy"
-            type="primary"
-            danger
-            onClick={() => handleCancelRound(round)}
-          >
-            Hủy
-          </Button>
+          {edit === false ? (
+            <>
+              <div className="round__power">
+                <Tooltip placement="top" title="Kết thúc">
+                  <img
+                    src={Images.POWER}
+                    alt="power"
+                    onClick={() => handlePowerOffRound(round)}
+                  />
+                </Tooltip>
+              </div>
+              <div className="round__edit">
+                <Tooltip placement="top" title="Chỉnh sửa">
+                  <img
+                    src={Images.PENCIL}
+                    alt="edit"
+                    onClick={() => handleEditRound(round)}
+                  />
+                </Tooltip>
+              </div>
+              <div className="round__trash">
+                <Tooltip placement="top" title="Xóa">
+                  <img
+                    src={Images.TRASH}
+                    alt="trash"
+                    onClick={() => handleDeleteRound(round)}
+                  />
+                </Tooltip>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="round__save">
+                <Tooltip placement="top" title="Lưu">
+                  <img src={Images.SAVE} alt="save" onClick={handleSaveRound} />
+                </Tooltip>
+              </div>
+              <div className="round__cancel">
+                <Tooltip placement="top" title="Hủy">
+                  <img
+                    src={Images.RED_CANCEL}
+                    alt="trash"
+                    onClick={handleCancelEdit}
+                  />
+                </Tooltip>
+              </div>
+            </>
+          )}
         </div>
       ),
     },
   ];
   return (
     <div className="cfr__wrapper">
-      <Modal
-        className="cfr__modal"
-        title="Basic Modal"
-        visible={openModal}
-        maskClosable={false}
-        footer={null}
-        closable={false}
-      >
-        <div className="cfr__closeModal">
-          <img
-            onClick={handleCloseModal}
-            src={Images.CANCEL}
-            alt="close modal"
-          />
-        </div>
-        <h3 style={{ textAlign: "center" }}>Tạo vòng gọi vốn</h3>
-        <form className="cfr__form" id="cfr__form">
-          <div className="cfr__lineOne">
-            <div className="cfr__wrapperSTKG">
-              <Input
-                id="cfr__formSTKG"
-                size="large"
-                type="number"
-                className="cfr__formSTKG"
-                addonAfter=".000.000 VNĐ"
-                placeholder="Số tiền kêu gọi"
-                onBlur={handleSTKGBlur}
-                onChange={handleChangeValue}
-                name="soTienKeuGoi"
-              />
-              {STKGE !== "" ? (
-                <small style={{ color: "red" }}>{STKGE}</small>
-              ) : (
-                ""
-              )}
-            </div>
-            <div className="cfr__wrapperPTCP">
-              <Input
-                size="large"
-                type="number"
-                className="cfr__formPTCP"
-                addonAfter="%"
-                placeholder="Phần trăm cổ phần"
-                onBlur={handlePTCPBlur}
-                onChange={handleChangeValue}
-                name="phanTramCoPhan"
-              />
-              {PTCPE !== "" ? (
-                <small style={{ color: "red" }}>{PTCPE}</small>
-              ) : (
-                ""
-              )}
-            </div>
-          </div>
-          <div className="cfr__lineArea">
-            <TextArea
-              className="cfr__formMT"
-              size="large"
-              rows={5}
-              placeholder="Mô tả"
-              onChange={handleChangeValue}
-              name="moTa"
-            />
-          </div>
-          <div className="cfr__datePicker">
-            <div className="cfr__startDate">
-              <DatePicker
-                value={startDate}
-                onChange={setStartDate}
-                onBlur={handleBlurStartDate}
-                className="cfr__dpngv"
-                dropdownClassName="cfr__dpngvdrop"
-                placeholder="Ngày gọi vốn"
-                size="large"
-                format={dateFormat}
-              />
-              {startDateE !== "" ? (
-                <small style={{ color: "red" }}>{startDateE}</small>
-              ) : (
-                ""
-              )}
-            </div>
-            <div className="cfr__startDate">
-              <DatePicker
-                className="cfr__dpnkt"
-                value={endDate}
-                onChange={setEndDate}
-                onBlur={handleBlurEndDate}
-                dropdownClassName="cfr__dpnktdrop"
-                placeholder="Ngày kết thúc"
-                size="large"
-                format={dateFormat}
-              />
-              {endDateE !== "" ? (
-                <small style={{ color: "red" }}>{endDateE}</small>
-              ) : (
-                ""
-              )}
-            </div>
-            <div className="cfr__warningSign">
-              <Tooltip placement="topRight" title={test}>
-                <img src={Images.WARNING} alt="warning" />
-              </Tooltip>
-            </div>
-          </div>
-          <div className="cfr__submitForm">
-            <Button
-              onClick={handleCreateRoundForm}
-              className="cfr__sfTao"
-              type="primary"
-              size="large"
-            >
-              Xác nhận
-            </Button>
-          </div>
-        </form>
-      </Modal>
+      <ModalCreateRound
+        openModal={openModal}
+        closeModal={handleCloseModal}
+        handleSTKGBlur={handleSTKGBlur}
+        handleChangeValue={handleChangeValue}
+        STKGE={STKGE}
+        handlePTCPBlur={handlePTCPBlur}
+        PTCPE={PTCPE}
+        startDate={startDate}
+        setStartDate={setStartDate}
+        handleBlurStartDate={handleBlurStartDate}
+        dateFormat={dateFormat}
+        startDateE={startDateE}
+        endDate={endDate}
+        setEndDate={setEndDate}
+        handleBlurEndDate={handleBlurEndDate}
+        endDateE={endDateE}
+        test={test}
+        handleCreateRoundForm={handleCreateRoundForm}
+      />
       <h3 style={{ marginBottom: 20 }}>VÒNG GỌI VỐN HIỆN TẠI</h3>
       <Button
         size="large"
@@ -451,6 +646,7 @@ function CurrentFundingRound() {
       </Button>
       <div className="cfr__container">
         <Table
+          loading={loading}
           className="components-table-demo-nested"
           columns={columns}
           expandable={{ expandedRowRender }}
@@ -458,7 +654,7 @@ function CurrentFundingRound() {
           rowKey="idRound"
           pagination={false}
           bordered
-          // locale={{ emptyText: "Không có dữ liệu" }}
+          locale={{ emptyText: "Không có dữ liệu" }}
         />
       </div>
     </div>

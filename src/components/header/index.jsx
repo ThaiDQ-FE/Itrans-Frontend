@@ -42,7 +42,7 @@ function Header({ history }) {
           to="/"
           exact={true}
         >
-          <img src={logo} />
+          <img src={logo} alt="logo" />
         </NavLink>
       </div>
       <div className="header__features">

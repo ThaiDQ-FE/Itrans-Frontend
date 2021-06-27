@@ -1,34 +1,20 @@
-import React from "react";
-import { Table, Input, InputNumber, Button } from "antd";
+import React, { useState } from "react";
+import { Table, Pagination, Input, Tooltip } from "antd";
 import "./styles.scss";
 import "antd/dist/antd.css";
 import { useSelector } from "react-redux";
 import Images from "../../assets/images/images";
 function PreviousFundingRound() {
   const { listRoundPass } = useSelector((state) => state.round);
-  console.log(listRoundPass);
   const { listDeal } = useSelector((state) => state.deal);
-  const checkRound = () => {
-    let round;
-    if (typeof listRoundPass === "string") {
-      round = [];
-      return round;
-    } else if (typeof listRoundPass === "object") {
-      if (listRoundPass.length !== 1) {
-        round = listRoundPass;
-        return round;
-      } else {
-        round = [listRoundPass];
-        return round;
-      }
-    }
-  };
+  const { loading } = useSelector((state) => state.loading);
   const expandedRowRender = (record, index) => {
     const columns = [
       {
         title: "Tên nhà đầu tư",
         dataIndex: "investor",
         key: "investor",
+        width: "150px",
         render: (value, round) => (
           <div className="round__tenDoanhNghiep">
             <div className="round__thumbnail">
@@ -38,25 +24,60 @@ function PreviousFundingRound() {
           </div>
         ),
       },
+
+      {
+        title: "Số tiền muốn đầu tư",
+        dataIndex: "capitalInvestment",
+        key: "capitalInvestment",
+        width: "180px",
+        render: (value) => (
+          <div className="cfr__inputStkg">
+            <Input
+              className="cfr__stkg"
+              addonAfter=".000.000 VNĐ"
+              defaultValue={value}
+              readOnly
+            />
+          </div>
+        ),
+      },
       {
         title: "Phần trăm cổ phần",
         dataIndex: "shareRequirement",
         key: "shareRequirement",
-      },
-      {
-        title: "Số tiền muốn đầu tư (triệu VNĐ)",
-        dataIndex: "capitalInvestment",
-        key: "capitalInvestment",
+        width: "160px",
+        render: (value) => (
+          <div className="cfr__inputPtcp">
+            <Input
+              className="cfr__ptcp"
+              addonAfter="%"
+              defaultValue={value}
+              readOnly
+            />
+          </div>
+        ),
       },
       {
         title: "Ngày đăng",
         dataIndex: "date",
         key: "date",
+        width: "180px",
+        render: (value) => (
+          <div className="cfr__inputStartDate">
+            <Input className="cfr__input" defaultValue={value} readOnly />
+          </div>
+        ),
       },
       {
         title: "Ghi chú",
         dataIndex: "description",
         key: "description",
+        width: "200px",
+        render: (value) => (
+          <Tooltip placement="top" title={value}>
+            <p className="cfr__des">{value}</p>
+          </Tooltip>
+        ),
       },
     ];
     const data = listDeal.filter(
@@ -69,6 +90,9 @@ function PreviousFundingRound() {
         dataSource={data}
         pagination={false}
         rowKey="idDeal"
+        locale={{
+          emptyText: <span>Không có dữ liệu</span>,
+        }}
       />
     );
   };
@@ -77,6 +101,7 @@ function PreviousFundingRound() {
       title: "Tên doanh nghiệp",
       dataIndex: "organization",
       key: "organization",
+      width: "150px",
       render: (value, round) => (
         <div className="round__tenDoanhNghiep">
           <div className="round__thumbnail">
@@ -90,29 +115,71 @@ function PreviousFundingRound() {
       title: "Giai đoạn gọi vốn",
       dataIndex: "stage",
       key: "stage",
+      width: "150px",
     },
     {
       title: "Số tiền kêu gọi",
       dataIndex: "fundingAmount",
       key: "fundingAmount",
+      width: "160px",
+      render: (value) => (
+        <div className="cfr__inputStkg">
+          <Input
+            className="cfr__stkg"
+            addonAfter=".000.000 VNĐ"
+            defaultValue={value}
+            readOnly
+          />
+        </div>
+      ),
     },
     {
       title: "Phần trăm cổ phần",
       dataIndex: "shareRequirement",
       key: "shareRequirement",
+      width: "175px",
+      render: (value) => (
+        <div className="cfr__inputPtcp">
+          <Input
+            className="cfr__ptcp"
+            addonAfter="%"
+            defaultValue={value}
+            readOnly
+          />
+        </div>
+      ),
     },
-    { title: "Ghi chú", dataIndex: "description", key: "description" },
+    {
+      title: "Mô tả",
+      dataIndex: "description",
+      key: "description",
+      render: (value) => (
+        <Tooltip placement="top" title={value}>
+          <p className="cfr__des">{value}</p>
+        </Tooltip>
+      ),
+    },
     {
       title: "Ngày gọi",
       dataIndex: "startDate",
       key: "startDate",
-      width: "125px",
+      width: "115px",
+      render: (value) => (
+        <div className="cfr__inputStartDate">
+          <Input className="cfr__input" defaultValue={value} readOnly />
+        </div>
+      ),
     },
     {
       title: "Ngày kết thúc",
       dataIndex: "endDate",
       key: "endDate",
       width: "125px",
+      render: (value) => (
+        <div className="cfr__inputEndDate">
+          <Input className="cfr__input" defaultValue={value} readOnly />
+        </div>
+      ),
     },
   ];
   return (
@@ -120,11 +187,20 @@ function PreviousFundingRound() {
       <h3 style={{ marginBottom: 20 }}>VÒNG GỌI VỐN TRƯỚC ĐÓ</h3>
       <div className="pfr__container">
         <Table
+          loading={loading}
           className="components-table-demo-nested"
           columns={columns}
           expandable={{ expandedRowRender }}
           dataSource={listRoundPass}
+          pagination={{
+            defaultPageSize: 5,
+            showSizeChanger: true,
+            pageSizeOptions: ["5", "10", "20"],
+          }}
           rowKey="idRound"
+          locale={{
+            emptyText: <span>Không có dữ liệu</span>,
+          }}
         />
       </div>
     </div>

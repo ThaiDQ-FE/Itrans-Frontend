@@ -37,8 +37,21 @@
 .round__qlvgvAction {
     display: flex;
     justify-content: flex-end;
-    .round__btnHuy {
-        margin-left: 10px;
+    .round__power,
+    .round__edit,
+    .round__trash,
+    .round__save,
+    .round__cancel {
+        position: relative;
+        width: 16px;
+        height: 16px;
+        margin: 0 5px;
+        img {
+            cursor: pointer;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
     }
 }
 .ant-table-thead {
@@ -54,6 +67,7 @@
         width: 16px;
         height: 16px;
         img {
+            cursor: pointer;
             width: 100%;
             height: 100%;
         }
@@ -173,6 +187,8 @@ input::-webkit-inner-spin-button {
 }
 .cfr__inputPtcp {
     width: auto;
+    display: flex;
+    justify-content: flex-end;
     .cfr__ptcp {
         .ant-input-wrapper {
             .ant-input {
@@ -190,9 +206,25 @@ input::-webkit-inner-spin-button {
             }
         }
     }
+    .cfr__ptcpDefault {
+        width: unset;
+        .ant-input-wrapper {
+            width: unset;
+            .ant-input {
+                display: none;
+            }
+            .ant-input-group-addon {
+                background: transparent;
+                padding: 0;
+                border: none;
+            }
+        }
+    }
 }
 .cfr__inputStkg {
     width: auto;
+    display: flex;
+    justify-content: flex-end;
     .cfr__stkg {
         .ant-input-wrapper {
             .ant-input {
@@ -210,4 +242,20 @@ input::-webkit-inner-spin-button {
             }
         }
     }
+    .cfr__stkgDefault {
+        .ant-input-wrapper {
+            width: unset;
+            .ant-input {
+                display: none;
+            }
+            .ant-input-group-addon {
+                background: transparent;
+                padding: 0;
+                border: none;
+            }
+        }
+    }
+}
+.round__textArea {
+    resize: none;
 }

@@ -31,8 +31,9 @@ export const showMessageWithConfirm = (
   icon,
   mess,
   confirm,
+  cancel,
   textConfirm,
-  colorConfirm
+  textCancel
 ) => {
   return Swal.fire({
     icon: icon,
@@ -40,7 +41,10 @@ export const showMessageWithConfirm = (
     heightAuto: true,
     timerProgressBar: false,
     showConfirmButton: confirm,
+    showCancelButton: cancel,
     confirmButtonText: textConfirm,
-    confirmButtonColor: colorConfirm,
+    cancelButtonText: textCancel,
+    confirmButtonColor: "#FF8412",
+    cancelButtonColor: "#FC0F0F",
   });
 };

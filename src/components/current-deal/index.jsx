@@ -4,7 +4,6 @@ import { Table, Input, InputNumber, Button } from "antd";
 import { useEffect, useState } from "react";
 import "./styles.scss";
 import "antd/dist/antd.css";
-import Images from "../../assets/images/images";
 
 const { TextArea } = Input;
 

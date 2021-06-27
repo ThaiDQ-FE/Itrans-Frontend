@@ -1,5 +1,4 @@
 import axios from "axios";
-import Swal from "sweetalert2";
 import {
   authorizationAccount,
   checkIdUser,
@@ -10,11 +9,15 @@ import {
   GET_LIST_ROUND_ACTIVE_BY_ID_ORGANIZATION_SUCCESS,
   GET_LIST_ROUND_PASS_BY_ID_ORGANIZATION_FAILED,
   GET_LIST_ROUND_PASS_BY_ID_ORGANIZATION_SUCCESS,
+  GET_LIST_ROUND_PENDING_BY_ID_ORGANIZATION_FAILED,
+  GET_LIST_ROUND_PENDING_BY_ID_ORGANIZATION_SUCCESS,
 } from "../constants/round.const";
+import { startLoading, stopLoading } from "./loading.action";
 const id = checkIdUser();
 export const getListRoundActiveByIdOrganization = (id) => {
   return (dispatch) => {
     const token = authorizationAccount();
+    dispatch(startLoading());
     axios({
       method: "GET",
       url: `http://localhost:8080/api/v1/round/round-active/${id}`,
@@ -24,10 +27,35 @@ export const getListRoundActiveByIdOrganization = (id) => {
       },
     })
       .then((res) => {
+        dispatch(stopLoading());
         dispatch(getListRoundActiveByIdOrganizationSuccess(res.data));
       })
       .catch((err) => {
+        dispatch(stopLoading());
         dispatch(getListRoundActiveByIdOrganizationFailed(err));
+      });
+  };
+};
+
+export const getListRoundPendingByIdOrganization = (id) => {
+  return (dispatch) => {
+    const token = authorizationAccount();
+    dispatch(startLoading());
+    axios({
+      method: "GET",
+      url: `http://localhost:8080/api/v1/round/round-pending/${id}`,
+      data: { id },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        dispatch(stopLoading());
+        dispatch(getListRoundPendingByIdOrganizationSuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(stopLoading());
+        dispatch(getListRoundPendingByIdOrganizationFailed(err));
       });
   };
 };
@@ -35,6 +63,7 @@ export const getListRoundActiveByIdOrganization = (id) => {
 export const getListRoundPassByIdOrganization = (id) => {
   return (dispatch) => {
     const token = authorizationAccount();
+    dispatch(startLoading());
     axios({
       method: "GET",
       url: `http://localhost:8080/api/v1/round/round-passed/${id}`,
@@ -44,60 +73,54 @@ export const getListRoundPassByIdOrganization = (id) => {
       },
     })
       .then((res) => {
+        dispatch(stopLoading());
         dispatch(getListRoundPassByIdOrganizationSuccess(res.data));
       })
       .catch((err) => {
+        dispatch(stopLoading());
         dispatch(getListRoundPassByIdOrganizationFailed(err));
       });
   };
 };
 
-export const postRound = (
-  mail,
-  fundingAmount,
-  shareRequirement,
-  description,
-  startDate,
-  endDate
-) => {
+export const updateStatusRound = (object) => {
   return (dispatch) => {
     const token = authorizationAccount();
     axios({
-      method: "POST",
-      url: "http://localhost:8080/api/v1/round",
-      data: {
-        mail,
-        fundingAmount,
-        shareRequirement,
-        description,
-        startDate,
-        endDate,
-      },
+      method: "PUT",
+      url: "http://localhost:8080/api/v1/round/updateStatusRound",
+      data: object,
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => {
-        console.log(res);
-        if (res.status === 202) {
-          showMessage("error", res.data);
-        } else {
-          Swal.fire({
-            icon: "success",
-            title: res.data,
-            heightAuto: true,
-            timerProgressBar: false,
-            showConfirmButton: true,
-            confirmButtonText: "Đồng ý",
-            confirmButtonColor: "#ff8412",
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              dispatch(getListRoundActiveByIdOrganization(id));
-            }
-          });
+        if (res.status === 200) {
+          if (object.status === "Kết thúc") {
+            showMessage("success", "Kết thúc vòng gọi vốn thành công");
+          } else {
+            showMessage("success", "Hủy vòng gọi vốn thành công");
+          }
+          dispatch(getListRoundActiveByIdOrganization(id));
+          dispatch(getListRoundPendingByIdOrganization(id));
         }
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+export const getListRoundPendingByIdOrganizationSuccess = (listRound) => {
+  return {
+    type: GET_LIST_ROUND_PENDING_BY_ID_ORGANIZATION_SUCCESS,
+    payload: listRound,
+  };
+};
+
+export const getListRoundPendingByIdOrganizationFailed = (err) => {
+  return {
+    type: GET_LIST_ROUND_PENDING_BY_ID_ORGANIZATION_FAILED,
+    payload: err,
   };
 };
 

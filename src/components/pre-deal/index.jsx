@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Badge, Menu, Dropdown, Space } from "antd";
+import { Table } from "antd";
 import "./styles.scss";
 import "antd/dist/antd.css";
 function PreviousDeal() {

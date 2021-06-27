@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Calendar, TimePicker, Badge  } from "antd";
+import { Button, Calendar, TimePicker } from "antd";
 import "./styles.scss";
 import "antd/dist/antd.css";
 import moment from "moment";
@@ -9,7 +9,6 @@ import {
   getFreeTimeList,
   postFreeTime,
   getValidateForButtonThem,
-  getValidateForButtonSubmit,
 } from "../../store/action/freeTime.action";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
@@ -17,13 +16,10 @@ function RegisterFreeTime() {
   const dispatch = useDispatch();
   const [date, setDate] = useState();
   const [time, setTime] = useState();
-  const [error, setError] = useState(null);
   const [freeTime, setFreeTime] = useState([]);
   const format = "HH:mm";
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const { listFreeTime, listAllFreeTime } = useSelector(
-    (state) => state.freeTime
-  );
+  const { listFreeTime } = useSelector((state) => state.freeTime);
   var formatDate = moment(date).format("DD-MM-YYYY");
   var formatTime = moment(time).format("HH:mm");
   var formatMonth = moment(date).format("MM");
@@ -42,7 +38,9 @@ function RegisterFreeTime() {
   const handleClickThem = async () => {
     let finalDT = formatDate + " " + formatTime;
     handleResetAPI();
-    const validateMess = await dispatch(getValidateForButtonThem(finalDT, userInfo.id));
+    const validateMess = await dispatch(
+      getValidateForButtonThem(finalDT, userInfo.id)
+    );
     console.log(validateMess);
     const freeDateTime = { freeTime: finalDT, investor: userInfo.id };
     if (freeTime.length <= 0) {
@@ -94,14 +92,15 @@ function RegisterFreeTime() {
     return listFreeTime.map((item, index) => {
       console.log(item);
       return (
-          <li
-            className={`li__li${
-              item.dateTime.includes(formatDate) ? " booked" : " notthing"
-            }`}
-            key={index}
-          >
-            {item.dateTime.slice(0,11)} <span style={{fontWeight: 600}}>{item.dateTime.slice(11,17)}</span>
-          </li>
+        <li
+          className={`li__li${
+            item.dateTime.includes(formatDate) ? " booked" : " notthing"
+          }`}
+          key={index}
+        >
+          {item.dateTime.slice(0, 11)}{" "}
+          <span style={{ fontWeight: 600 }}>{item.dateTime.slice(11, 17)}</span>
+        </li>
       );
     });
   };
@@ -109,7 +108,7 @@ function RegisterFreeTime() {
   useEffect(() => {
     dispatch(getFreeTimeList(userInfo.id, formatMonth));
     dispatch(getAllFreeTimeList(userInfo.id));
-  }, []);
+  });
   const handleSubmit = () => {
     Swal.fire({
       title: "Bạn muốn đăng ký những ngày đã chọn ?",
@@ -133,7 +132,6 @@ function RegisterFreeTime() {
         <div className="rft__left">
           <div className="rft__calendarWrapper">
             <Calendar className="ahihi" value={date} onChange={setDate} />
-            <div className="rft__errorThem">{error !== null ? error : ""}</div>
             <div className="rft__timeAndButton">
               <div className="rft__time">
                 <TimePicker
