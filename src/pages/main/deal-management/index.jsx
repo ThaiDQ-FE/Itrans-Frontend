@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Table, Badge, Menu, Dropdown, Space, Button } from "antd";
+import React from "react";
+import { Button } from "antd";
 import "./styles.scss";
 import "antd/dist/antd.css";
 import CurrentDeal from "../../../components/current-deal";

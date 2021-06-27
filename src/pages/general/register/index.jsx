@@ -92,7 +92,6 @@ function Register() {
     setSubRole(newSubRole);
     setFinalRole("investor");
   };
-  console.log(role);
   const getSteps = () => {
     if (role === "ORGANIZATION") {
       return [
@@ -126,6 +125,7 @@ function Register() {
           />
         );
       case 1:
+        // eslint-disable-next-line default-case
         switch (role) {
           case "ORGANIZATION":
             return (
@@ -148,13 +148,16 @@ function Register() {
                 );
             }
         }
+      // eslint-disable-next-line no-fallthrough
       case 2:
+        // eslint-disable-next-line default-case
         switch (role) {
           case "ORGANIZATION":
             return (
               <FormMember handleNext={handleNext} handleBack={handleBack} />
             );
         }
+      // eslint-disable-next-line no-fallthrough
       default:
         return <FormMember handleNext={handleNext} handleBack={handleBack} />;
     }

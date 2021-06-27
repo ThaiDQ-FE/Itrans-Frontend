@@ -10,7 +10,7 @@ function AccountManagement() {
     <div className="am__wrapper">
       <div className="am__container">
         <div className="am__image">
-          <img src={Images.NO_IMAGE} alt="No image" />
+          <img src={Images.NO_IMAGE} alt="No img" />
         </div>
         <div className="am__info">
           <span>Công ty Baby Shark</span>

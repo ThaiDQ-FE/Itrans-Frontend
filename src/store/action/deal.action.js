@@ -1,5 +1,5 @@
 import axios from "axios";
-import { authorizationAccount, checkIdUser } from "../../assets/helper/helper";
+import { authorizationAccount } from "../../assets/helper/helper";
 import {
   GET_CURRENT_DEAL_SUCCESS,
   GET_DEAL_BY_ID_FAILD,
@@ -12,7 +12,7 @@ export const getListDealByIdOrganization = (idOrganization) => {
     axios({
       method: "GET",
       url: `http://localhost:8080/api/v1/deal-by-organization?id-organization=${idOrganization}`,
-      data: {idOrganization},
+      data: { idOrganization },
       headers: {
         Authorization: `Bearer ${token}`,
       },

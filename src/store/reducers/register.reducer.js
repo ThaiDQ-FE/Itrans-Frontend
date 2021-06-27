@@ -51,4 +51,3 @@ const registerReducre = (state = initialState, action) => {
     }
 }
 export default registerReducre;
-

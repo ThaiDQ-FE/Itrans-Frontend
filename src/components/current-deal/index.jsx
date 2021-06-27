@@ -52,7 +52,6 @@ function CurrentDeal() {
 
 
   const handleSubmit = (record) => {
-    console.log(record);
     let tmpDataJsonDeal = dataJsonDeal;
     tmpDataJsonDeal = tmpDataJsonDeal.map((item) => {
       if (item.idDeal === record.idDeal) {
@@ -86,7 +85,6 @@ function CurrentDeal() {
     setActiveRecord({});
   };
   const expandedRowRender = (record, index) => {
-    console.log(record, index);
     const columns = [
       { title: "Thỏa thuận", dataIndex: "deal", key: "deal" },
       {

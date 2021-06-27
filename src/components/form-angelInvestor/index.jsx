@@ -14,7 +14,6 @@ function FormAngelInvestorInformation(props) {
     );
   }
   const handleChange = (value) => {
-    console.log(`selected ${value}`);
   };
   return (
     <div className="faii__wrapper">

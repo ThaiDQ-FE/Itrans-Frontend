@@ -1,27 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./styles.scss";
-import Paper from '@material-ui/core/Paper';
+import Paper from "@material-ui/core/Paper";
 import {
-    Scheduler,
-    WeekView,
-    Appointments,
-    Toolbar,
-    DateNavigator,
-    AppointmentTooltip
-} from '@devexpress/dx-react-scheduler-material-ui';
-import { ViewState } from '@devexpress/dx-react-scheduler';
-import { withStyles } from '@material-ui/core/styles';
-import { Table } from 'antd';
+  Scheduler,
+  WeekView,
+  Appointments,
+  Toolbar,
+  DateNavigator,
+  AppointmentTooltip,
+} from "@devexpress/dx-react-scheduler-material-ui";
+import { ViewState } from "@devexpress/dx-react-scheduler";
+import { withStyles } from "@material-ui/core/styles";
+import { Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { getFreeTimeDetailOfOrganization, getFreeTimeListOfOrganization } from "../../store/action/freeTime.action";
-
+import {
+  getFreeTimeDetailOfOrganization,
+  getFreeTimeListOfOrganization,
+} from "../../store/action/freeTime.action";
 
 function ScheduleManagement() {
     const dispatch = useDispatch();
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     const appointments = [];
-    const listFreeTimeOfOrganization = useSelector((state) => state.freeTime.listFreeTimeOfOrganization);
-    const listDetailFreeTimeOfOrganization = useSelector((state) => state.freeTime.listFreeTimeDetailOfOrganization);
+    const listFreeTimeOfOrganization = [];
+    const listDetailFreeTimeOfOrganization = [];
     const detail1 = (schedule) => {
         let data = [];
         for (let index = 0; index < listDetailFreeTimeOfOrganization.length; index++) {
@@ -148,34 +150,25 @@ function ScheduleManagement() {
         appointments.push(appointmentsChild);
     }
 
-
-
     useEffect(() => {
         dispatch(getFreeTimeListOfOrganization(userInfo.id));
         dispatch(getFreeTimeDetailOfOrganization(userInfo.id));
     }, []);
-    return (
-        <div>
-            <div>&nbsp;</div>
-            <Paper id="paper">
-                <Scheduler data={appointments} height={620}>
-
-                    <ViewState
-                        defaultCurrentDate={today}
-                    />
-                    <WeekView cellDuration={60} startDayHour={7} endDayHour={17} />
-                    <Appointments />
-                    <Toolbar
-                    />
-                    <DateNavigator />
-                    <AppointmentTooltip
-                        contentComponent={Content}
-                    />
-                </Scheduler>
-            </Paper>
-            <div>&nbsp;</div>
-        </div>
-    )
-        ;
+  return (
+    <div>
+      <div>&nbsp;</div>
+      <Paper id="paper">
+        <Scheduler data={appointments} height={620}>
+          <ViewState defaultCurrentDate={today} />
+          <WeekView cellDuration={60} startDayHour={7} endDayHour={17} />
+          <Appointments />
+          <Toolbar />
+          <DateNavigator />
+          <AppointmentTooltip contentComponent={Content} />
+        </Scheduler>
+      </Paper>
+      <div>&nbsp;</div>
+    </div>
+  );
 }
 export default ScheduleManagement;

@@ -4,36 +4,37 @@ import "./styles.scss";
 import Messages from "../../assets/message/text";
 import Images from "../../assets/images/images";
 import { useDispatch } from "react-redux";
-import { postBasicInformation, postIAOTOrganization, postOrganizationIndustry, postOrganizationProvince, postOrganizationStage } from "../../store/action/register.action";
+import { postBasicInformation } from "../../store/action/register.action";
 function FormMember(props) {
   const [teamMember, setTeamMember] = useState({
     name: "",
     position: "",
     gmail: "",
-    linkcv: ""
-  })
+    linkcv: "",
+  });
 
   const dispatch = useDispatch();
   const handleChangeInput = (event) => {
     const { value, name } = event.target;
     setTeamMember({
-      ...teamMember, [name]: value
-    })
-  }
+      ...teamMember,
+      [name]: value,
+    });
+  };
   const handleAdd = () => {
     if (!localStorage.getItem("TeamMember")) {
-      localStorage.setItem("TeamMember", JSON.stringify([teamMember]))
+      localStorage.setItem("TeamMember", JSON.stringify([teamMember]));
     } else {
       let listTeamMember = localStorage.getItem("TeamMember");
       let listTeamMemberNew = JSON.parse(listTeamMember);
       listTeamMemberNew.push(teamMember);
-      localStorage.setItem("TeamMember", JSON.stringify(listTeamMemberNew))
+      localStorage.setItem("TeamMember", JSON.stringify(listTeamMemberNew));
     }
-  }
+  };
   const handleConfirm = () => {
     const user = JSON.parse(localStorage.getItem("Form1"));
     dispatch(postBasicInformation(user.gmail, user.password));
-  }
+  };
   return (
     <div className="fm__wrapper">
       <div className="fm__container">
@@ -53,16 +54,36 @@ function FormMember(props) {
                 </label>
               </div>
               <div className="fm__hoVaTen">
-                <Input onChange={handleChangeInput} name="name" placeholder="Họ và Tên" size="large" />
+                <Input
+                  onChange={handleChangeInput}
+                  name="name"
+                  placeholder="Họ và Tên"
+                  size="large"
+                />
               </div>
               <div className="fm__chucVu">
-                <Input nChange={handleChangeInput} name="position" placeholder="Chức vụ" size="large" />
+                <Input
+                  nChange={handleChangeInput}
+                  name="position"
+                  placeholder="Chức vụ"
+                  size="large"
+                />
               </div>
               <div className="fm__gmail">
-                <Input onChange={handleChangeInput} name="gmail" placeholder="Gmail" size="large" />
+                <Input
+                  onChange={handleChangeInput}
+                  name="gmail"
+                  placeholder="Gmail"
+                  size="large"
+                />
               </div>
               <div className="fm__linkCv">
-                <Input onChange={handleChangeInput} name="linkcv" placeholder="Link CV" size="large" />
+                <Input
+                  onChange={handleChangeInput}
+                  name="linkcv"
+                  placeholder="Link CV"
+                  size="large"
+                />
                 <div className="fm__upload">
                   <input className="fm__uploadPDF" type="file" id="filePDF" />
                   <label htmlFor="filePDF" className="fm__spanPDF">
@@ -91,7 +112,9 @@ function FormMember(props) {
             <span>Quay lại</span>
           </div>
           <div className="fm__buttonDone">
-            <Button onClick={handleConfirm} type="primary">Hoàn tất</Button>
+            <Button onClick={handleConfirm} type="primary">
+              Hoàn tất
+            </Button>
           </div>
         </div>
       </div>

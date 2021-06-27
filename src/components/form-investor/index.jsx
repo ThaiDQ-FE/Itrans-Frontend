@@ -14,7 +14,6 @@ function FormInvestor(props) {
     );
   }
   const handleChange = (value) => {
-    console.log(`selected ${value}`);
   };
   return (
     <div className="fi__wrapper">

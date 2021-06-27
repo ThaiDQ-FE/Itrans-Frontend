@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Images from "../../assets/images/images";
 import Messages from "../../assets/message/text";
 import HeaderGeneral from "../header-general";
-import Modal from "@material-ui/core/Modal";
 import "./styles.scss";
 function FormRole(props) {
   const jsonFile = [
@@ -38,7 +37,6 @@ function FormRole(props) {
   const [click, setClick] = useState(null);
   const [choose, setChoose] = useState(null);
   const [chooseSubRole, setChooseSubRole] = useState(null);
-  const [modal, setModal] = useState(false);
   const [subRole, setSubRole] = useState(false);
   const [subRoleClicked, setSubRoleClicked] = useState(null);
   const handleClickBlock = (index) => {
@@ -62,7 +60,6 @@ function FormRole(props) {
   const handleClickButton = () => {
     if (choose === "INVESTOR") {
       if (chooseSubRole === null) {
-        console.log("nulllllll");
       } else {
         return props.setStateSubRole(chooseSubRole);
       }
@@ -90,7 +87,6 @@ function FormRole(props) {
     }
     setSubRoleClicked(index);
   };
-  console.log(subRoleClicked);
   const renderSubRole = () => {
     return jsonSubRole.map((sub, index) => {
       return (
