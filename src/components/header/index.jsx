@@ -47,10 +47,28 @@ function Header({ history }) {
       </div>
       <div className="header__features">
         <ul className="header__features__ul">
-          <li className="header__features__li">Trang chủ</li>
+          <li className="header__features__li">
+            <NavLink
+              activeClassName="active-nav-link"
+              className="header__trangchu"
+              to="/"
+              exact={true}
+            >
+              Trang chủ
+            </NavLink>
+          </li>
           <li className="header__features__li">Nhà đầu tư</li>
           <li className="header__features__li">Doanh nghiệp</li>
-          <li className="header__features__li">Vòng gọi vốn</li>
+          <li className="header__features__li">
+            <NavLink
+              activeClassName="active-nav-link"
+              className="header__vgv"
+              to="/vong-goi-von"
+              exact={true}
+            >
+              Vòng gọi vốn
+            </NavLink>
+          </li>
         </ul>
       </div>
       <div className="header__login">

@@ -48,3 +48,24 @@ export const showMessageWithConfirm = (
     cancelButtonColor: "#FC0F0F",
   });
 };
+
+export const convertNumber = (value) => {
+  if (value !== null) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+};
+
+export const countDecimals = (value) => {
+  if (value !== "") {
+    if (Math.floor(value) === value) return 0;
+    return value.toString().split(".")[1].length || 0;
+  }
+};
+
+export const localStorages = (name, value) => {
+  return localStorage.setItem(name, JSON.stringify(value));
+};
+
+export const getLocalStorage = (name) => {
+  return JSON.parse(localStorage.getItem(name));
+};

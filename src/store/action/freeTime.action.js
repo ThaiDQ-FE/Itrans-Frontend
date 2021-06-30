@@ -9,6 +9,8 @@ import {
   GET_FREE_TIME_LIST_OF_ORGANIZATION_FAIL,
   GET_FREE_TIME_LIST_OF_ORGANIZATION_SUCCESS,
   GET_FREE_TIME_LIST_SUCCESS,
+  GET_LIST_FREE_TIME_SUCCESS,
+  GET_LIST_FREE_TIME_FAILED,
 } from "../constants/freeTime.const";
 import { authorizationAccount } from "../../assets/helper/helper";
 
@@ -137,6 +139,38 @@ export const getValidateForButtonSubmit = (freeTime) => {
   };
 };
 
+export const getListFreeTimeActive = (id) => {
+  return (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: "GET",
+      url: `http://localhost:8080/api/v1/free-time-active?idInvestor=${id}`,
+      data: id,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        dispatch(getListFreeTimeActiveSuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(getListFreeTimeActiveFail(err));
+      });
+  };
+};
+const getListFreeTimeActiveSuccess = (listFreeTime) => {
+  return {
+    type: GET_LIST_FREE_TIME_SUCCESS,
+    payload: listFreeTime,
+  };
+};
+
+const getListFreeTimeActiveFail = (err) => {
+  return {
+    type: GET_LIST_FREE_TIME_FAILED,
+    payload: err,
+  };
+};
 const getAllFreeTimeListSuccess = (allFreeTimeList) => {
   return {
     type: GET_ALL_FREE_TIME_LIST_SUCCESS,
@@ -164,8 +198,6 @@ const getFreeTimeListFailed = (err) => {
     payload: err,
   };
 };
-
-
 
 export const getFreeTimeListOfOrganization = (organization) => {
   return (dispatch) => {
@@ -202,7 +234,6 @@ const getFreeTimeListOfOrganizationFail = (err) => {
   };
 };
 
-
 export const getFreeTimeDetailOfOrganization = (detail) => {
   return (dispatch) => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -214,15 +245,18 @@ export const getFreeTimeDetailOfOrganization = (detail) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }).then((res) => {
-      dispatch(getFreeTimeListDetailOfOrganizationSucess(res.data))
-    }).catch((err) => {
-      dispatch(getFreeTimeListDetailOfOrganizationFail(err))
     })
-
+      .then((res) => {
+        dispatch(getFreeTimeListDetailOfOrganizationSucess(res.data));
+      })
+      .catch((err) => {
+        dispatch(getFreeTimeListDetailOfOrganizationFail(err));
+      });
   };
 };
-const getFreeTimeListDetailOfOrganizationSucess = (listFreeTimeOfOrganization) => {
+const getFreeTimeListDetailOfOrganizationSucess = (
+  listFreeTimeOfOrganization
+) => {
   return {
     type: GET_FREE_TIME_DETAIL_OF_ORGANIZATION_SUCCESS,
     payload: listFreeTimeOfOrganization,
@@ -235,4 +269,3 @@ const getFreeTimeListDetailOfOrganizationFail = (err) => {
     payload: err,
   };
 };
-

@@ -25,6 +25,8 @@ import power from "./power-off.svg";
 import trash from "./trash.svg";
 import data from "./data.svg";
 import save from "./save.png";
+import accepted from "./yes.svg";
+import oops from "./oops.svg";
 const Images = {
   LOGO_NAVY: logo_navy,
   LOGO_GREY: logo_grey,
@@ -53,6 +55,8 @@ const Images = {
   POWER: power,
   DATA: data,
   SAVE: save,
+  ACCEPTED: accepted,
+  OOPS: oops,
 };
 
 export default Images;

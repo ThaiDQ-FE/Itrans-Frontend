@@ -1,15 +1,42 @@
 import React, { useState } from "react";
-import { Table, Button, Tooltip, Input } from "antd";
+import { Table, Button, Tooltip, Input, DatePicker } from "antd";
 import "./styles.scss";
 import "antd/dist/antd.css";
 import Swal from "sweetalert2";
 import Images from "../../assets/images/images";
 import { useDispatch, useSelector } from "react-redux";
-import { updateStatusRound } from "../../store/action/round.action";
+import {
+  getListRoundPendingByIdOrganization,
+  updateStatusRound,
+} from "../../store/action/round.action";
+import moment from "moment";
+import axios from "axios";
+import {
+  authorizationAccount,
+  checkIdUser,
+  convertNumber,
+  countDecimals,
+  showMessage,
+} from "../../assets/helper/helper";
 function PendingFundingRound() {
   const { listRoundPending } = useSelector((state) => state.round);
   const { loading } = useSelector((state) => state.loading);
+  const [edit, setEdit] = useState(false);
+  const [startDateEdit, setStartDateEdit] = useState(null);
+  const [endDateEdit, setEndDateEdit] = useState(null);
+  const [dataRound, setDataRound] = useState({
+    soTienKeuGoi: "",
+    phanTramCoPhan: "",
+    moTa: "",
+    ngayGoi: "",
+    ngayKetThuc: "",
+    id: "",
+  });
   const dispatch = useDispatch();
+  const { TextArea } = Input;
+  const dateFormat = "DD/MM/YYYY";
+  const id = checkIdUser();
+  const token = authorizationAccount();
   const checkRound = () => {
     let round;
     if (typeof listRoundPending === "string") {
@@ -31,7 +58,7 @@ function PendingFundingRound() {
       cancelButtonText: "Hủy",
       cancelButtonColor: "red",
       confirmButtonText: "Đồng ý",
-      confirmButtonColor: "#ff8412",
+      confirmButtonColor: "#2ecc71",
     }).then(async (result) => {
       if (result.isConfirmed) {
         const object = { id: round.idRound, status: "Hủy" };
@@ -39,9 +66,139 @@ function PendingFundingRound() {
       }
     });
   };
+  const handleEditRound = (round) => {
+    setDataRound({
+      ...dataRound,
+      soTienKeuGoi: round.fundingAmount,
+      phanTramCoPhan: round.shareRequirement,
+      moTa: round.description,
+      ngayGoi: round.startDate,
+      ngayKetThuc: round.endDate,
+      id: round.idRound,
+    });
+    setEdit(true);
+  };
+  const handleCancelEdit = () => {
+    setEdit(false);
+    setStartDateEdit(null);
+    setEndDateEdit(null);
+  };
+  const handleChangeEdit = (event) => {
+    const { value, name } = event.target;
+    setDataRound({
+      ...dataRound,
+      [name]: value,
+    });
+  };
+  const putRound = (object) => {
+    axios({
+      method: "PUT",
+      url: "http://localhost:8080/api/v1/round/updateRound",
+      data: object,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 202) {
+          showMessage("error", res.data);
+        } else if (res.status === 200) {
+          Swal.fire({
+            icon: "success",
+            title: "Cập nhật vòng gọi vốn thành công",
+            heightAuto: true,
+            timerProgressBar: false,
+            showConfirmButton: true,
+            confirmButtonText: "Đồng ý",
+            confirmButtonColor: "#2ecc71",
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              setEdit(false);
+              dispatch(getListRoundPendingByIdOrganization(id));
+            }
+          });
+        }
+      })
+      .catch((err) => {});
+  };
+  const handleSaveRound = () => {
+    const parseSTKG = parseInt(dataRound.soTienKeuGoi);
+    const parsePTCP = parseFloat(dataRound.phanTramCoPhan);
+    var formatStartDate = moment(startDateEdit).format("DD-MM-YYYY");
+    var formatEndDate = moment(endDateEdit).format("DD-MM-YYYY");
+    if (parseSTKG % 1 !== 0) {
+      return showMessage("error", "Số tiền kêu gọi phải là số nguyên dương");
+    } else if (parseSTKG < 1) {
+      return showMessage("error", "Số tiền kêu gọi thấp nhất là 1");
+    } else if (parsePTCP < 0.1 || parsePTCP > 100) {
+      return showMessage(
+        "error",
+        "Phần trăm cố phần phải nằm trong khoảng [0.1 - 100]"
+      );
+    } else if (countDecimals(parsePTCP) > 2) {
+      return showMessage(
+        "error",
+        "Phần trăm cổ phần phải đúng định dạng [VD: 25.25]"
+      );
+    } else if (
+      formatEndDate === "Invalid date" &&
+      formatStartDate === "Invalid date"
+    ) {
+      const object = {
+        fundingAmount: parseSTKG,
+        shareRequirement: parsePTCP,
+        description: dataRound.moTa,
+        startDate: dataRound.ngayGoi,
+        endDate: dataRound.ngayKetThuc,
+        id: dataRound.id,
+      };
+      return putRound(object);
+    } else if (
+      formatStartDate !== "Invalid date" &&
+      formatEndDate === "Invalid date"
+    ) {
+      console.log(formatStartDate);
+      console.log(dataRound.endDate);
+      const object = {
+        fundingAmount: parseSTKG,
+        shareRequirement: parsePTCP,
+        description: dataRound.moTa,
+        startDate: formatStartDate,
+        endDate: dataRound.ngayKetThuc,
+        id: dataRound.id,
+      };
+      return putRound(object);
+    } else if (
+      formatStartDate === "Invalid date" &&
+      formatEndDate !== "Invalid date"
+    ) {
+      const object = {
+        fundingAmount: parseSTKG,
+        shareRequirement: parsePTCP,
+        description: dataRound.moTa,
+        startDate: dataRound.ngayGoi,
+        endDate: formatEndDate,
+        id: dataRound.id,
+      };
+      return putRound(object);
+    } else if (
+      formatStartDate !== "Invalid date" &&
+      formatEndDate !== "Invalid date"
+    ) {
+      const object = {
+        fundingAmount: parseSTKG,
+        shareRequirement: parsePTCP,
+        description: dataRound.moTa,
+        startDate: formatStartDate,
+        endDate: formatEndDate,
+        id: dataRound.id,
+      };
+      return putRound(object);
+    }
+  };
   const columns = [
     {
-      title: "Tên doanh nghiệp",
+      title: "Tên tổ chúc",
       dataIndex: "organization",
       key: "organization",
       width: "150px",
@@ -67,12 +224,23 @@ function PendingFundingRound() {
       width: "160px",
       render: (value) => (
         <div className="cfr__inputStkg">
-          <Input
-            className="cfr__stkg"
-            addonAfter=".000.000 VNĐ"
-            defaultValue={value}
-            readOnly
-          />
+          {edit === true ? (
+            <Input
+              type="number"
+              defaultValue={value}
+              name="soTienKeuGoi"
+              onChange={handleChangeEdit}
+            />
+          ) : (
+            <>
+              <span>{value > 1000 ? convertNumber(value) : value}</span>
+              <Input
+                className="cfr__stkgDefault"
+                addonAfter=",000,000 VNĐ"
+                readOnly
+              />
+            </>
+          )}
         </div>
       ),
     },
@@ -83,12 +251,19 @@ function PendingFundingRound() {
       width: "160px",
       render: (value) => (
         <div className="cfr__inputPtcp">
-          <Input
-            className="cfr__ptcp"
-            addonAfter="%"
-            defaultValue={value}
-            readOnly
-          />
+          {edit === true ? (
+            <Input
+              type="number"
+              defaultValue={value}
+              name="phanTramCoPhan"
+              onChange={handleChangeEdit}
+            />
+          ) : (
+            <>
+              <span>{value}</span>
+              <Input className="cfr__ptcpDefault" addonAfter="%" readOnly />
+            </>
+          )}
         </div>
       ),
     },
@@ -97,31 +272,65 @@ function PendingFundingRound() {
       dataIndex: "description",
       key: "description",
       render: (value) => (
-        <Tooltip placement="top" title={value}>
-          <p className="cfr__des">{value}</p>
-        </Tooltip>
+        <>
+          {edit === true ? (
+            <TextArea
+              rows={1}
+              defaultValue={value}
+              className="round__textArea"
+              name="moTa"
+              onChange={handleChangeEdit}
+            />
+          ) : (
+            <Tooltip placement="top" title={value}>
+              <p className="pfr__des">{value}</p>
+            </Tooltip>
+          )}
+        </>
       ),
     },
     {
       title: "Ngày gọi",
       dataIndex: "startDate",
       key: "startDate",
-      width: "115px",
+      width: `${edit === true ? "150px" : "125px"}`,
       render: (value) => (
-        <div className="cfr__inputStartDate">
-          <Input className="cfr__input" defaultValue={value} readOnly />
-        </div>
+        <>
+          {edit === true ? (
+            <DatePicker
+              defaultValue={moment(value, dateFormat)}
+              format={dateFormat}
+              onChange={setStartDateEdit}
+              allowClear={false}
+            />
+          ) : (
+            <div className="cfr__inputStartDate">
+              <span>{value}</span>
+            </div>
+          )}
+        </>
       ),
     },
     {
       title: "Ngày kết thúc",
       dataIndex: "endDate",
       key: "endDate",
-      width: "125px",
+      width: `${edit === true ? "150px" : "125px"}`,
       render: (value) => (
-        <div className="cfr__inputEndDate">
-          <Input className="cfr__input" defaultValue={value} readOnly />
-        </div>
+        <>
+          {edit === true ? (
+            <DatePicker
+              defaultValue={moment(value, dateFormat)}
+              format={dateFormat}
+              onChange={setEndDateEdit}
+              allowClear={false}
+            />
+          ) : (
+            <div className="cfr__inputEndDate">
+              <span>{value}</span>
+            </div>
+          )}
+        </>
       ),
     },
     {
@@ -131,20 +340,45 @@ function PendingFundingRound() {
       width: "50px",
       render: (value, round) => (
         <div className="round__qlvgvAction">
-          <div className="round__edit">
-            <Tooltip placement="top" title="Chỉnh sửa">
-              <img src={Images.PENCIL} alt="edit" />
-            </Tooltip>
-          </div>
-          <div className="round__trash">
-            <Tooltip placement="top" title="Xóa">
-              <img
-                src={Images.TRASH}
-                alt="trash"
-                onClick={() => handleDeleteRound(round)}
-              />
-            </Tooltip>
-          </div>
+          {edit === false ? (
+            <>
+              <div className="round__edit">
+                <Tooltip placement="top" title="Chỉnh sửa">
+                  <img
+                    src={Images.PENCIL}
+                    alt="edit"
+                    onClick={() => handleEditRound(round)}
+                  />
+                </Tooltip>
+              </div>
+              <div className="round__trash">
+                <Tooltip placement="top" title="Xóa">
+                  <img
+                    src={Images.TRASH}
+                    alt="trash"
+                    onClick={() => handleDeleteRound(round)}
+                  />
+                </Tooltip>
+              </div>{" "}
+            </>
+          ) : (
+            <>
+              <div className="round__save">
+                <Tooltip placement="top" title="Lưu">
+                  <img src={Images.SAVE} alt="save" onClick={handleSaveRound} />
+                </Tooltip>
+              </div>
+              <div className="round__cancel">
+                <Tooltip placement="top" title="Hủy">
+                  <img
+                    src={Images.RED_CANCEL}
+                    alt="trash"
+                    onClick={handleCancelEdit}
+                  />
+                </Tooltip>
+              </div>
+            </>
+          )}
         </div>
       ),
     },
@@ -158,7 +392,7 @@ function PendingFundingRound() {
           className="components-table-demo-nested"
           columns={columns}
           dataSource={checkRound()}
-          rowKey="idRound"
+          rowKey={(round) => round.idRound}
           pagination={false}
           bordered
           locale={{

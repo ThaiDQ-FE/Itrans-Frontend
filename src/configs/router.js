@@ -3,6 +3,7 @@ import Login from "../pages/general/login";
 import Register from "../pages/general/register";
 import AccountManagement from "../pages/main/account-management";
 import DealManagement from "../pages/main/deal-management";
+import FundingRound from "../pages/main/funding-round";
 import FundraisingManagement from "../pages/main/fundraising-management";
 import UserHome from "../pages/main/home";
 import TimeManagement from "../pages/main/time-management";
@@ -32,6 +33,11 @@ export const mainRouter = [
     path: "/quan-ly-vong-goi-von",
     exact: false,
     Component: FundraisingManagement,
+  },
+  {
+    path: "/vong-goi-von",
+    exact: false,
+    Component: FundingRound,
   },
 ];
 

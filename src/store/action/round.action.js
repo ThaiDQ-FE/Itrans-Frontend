@@ -5,6 +5,8 @@ import {
   showMessage,
 } from "../../assets/helper/helper";
 import {
+  GET_ALL_LIST_ROUND_ACCTIVE_FAILED,
+  GET_ALL_LIST_ROUND_ACTIVE_SUCCESS,
   GET_LIST_ROUND_ACTIVE_BY_ID_ORGANIZATION_FAILED,
   GET_LIST_ROUND_ACTIVE_BY_ID_ORGANIZATION_SUCCESS,
   GET_LIST_ROUND_PASS_BY_ID_ORGANIZATION_FAILED,
@@ -103,12 +105,46 @@ export const updateStatusRound = (object) => {
           }
           dispatch(getListRoundActiveByIdOrganization(id));
           dispatch(getListRoundPendingByIdOrganization(id));
+          dispatch(getListRoundPassByIdOrganization(id));
         }
       })
+      .catch((err) => {});
+  };
+};
+
+export const getAllRoundByEmail = (gmail, page) => {
+  return (dispatch) => {
+    dispatch(startLoading());
+    axios({
+      method: "GET",
+      url: `http://localhost:8080/api/v1/auth/round/all-round/${gmail}?page=${page}`,
+      data: null,
+    })
+      .then((res) => {
+        dispatch(stopLoading());
+        dispatch(getAllRoundByEmailSuccess(res.data));
+      })
       .catch((err) => {
+        dispatch(stopLoading());
+        dispatch(getAllRoundByEmailFailed(err));
       });
   };
 };
+
+export const getAllRoundByEmailSuccess = (listRound) => {
+  return {
+    type: GET_ALL_LIST_ROUND_ACTIVE_SUCCESS,
+    payload: listRound,
+  };
+};
+
+export const getAllRoundByEmailFailed = (err) => {
+  return {
+    type: GET_ALL_LIST_ROUND_ACCTIVE_FAILED,
+    payload: err,
+  };
+};
+
 export const getListRoundPendingByIdOrganizationSuccess = (listRound) => {
   return {
     type: GET_LIST_ROUND_PENDING_BY_ID_ORGANIZATION_SUCCESS,

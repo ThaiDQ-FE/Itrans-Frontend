@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Table, Pagination, Input, Tooltip } from "antd";
+import React from "react";
+import { Table, Input, Tooltip } from "antd";
 import "./styles.scss";
 import "antd/dist/antd.css";
 import { useSelector } from "react-redux";
-import Images from "../../assets/images/images";
+import { convertNumber } from "../../assets/helper/helper";
 function PreviousFundingRound() {
   const { listRoundPass } = useSelector((state) => state.round);
   const { listDeal } = useSelector((state) => state.deal);
@@ -34,8 +34,8 @@ function PreviousFundingRound() {
           <div className="cfr__inputStkg">
             <Input
               className="cfr__stkg"
-              addonAfter=".000.000 VNĐ"
-              defaultValue={value}
+              addonAfter=",000,000 VNĐ"
+              defaultValue={convertNumber(value)}
               readOnly
             />
           </div>
@@ -75,7 +75,7 @@ function PreviousFundingRound() {
         width: "200px",
         render: (value) => (
           <Tooltip placement="top" title={value}>
-            <p className="cfr__des">{value}</p>
+            <p className="prefr__des">{value}</p>
           </Tooltip>
         ),
       },
@@ -89,7 +89,8 @@ function PreviousFundingRound() {
         columns={columns}
         dataSource={data}
         pagination={false}
-        rowKey="idDeal"
+        rowKey={(record) => record.idRound}
+        bordered
         locale={{
           emptyText: <span>Không có dữ liệu</span>,
         }}
@@ -98,7 +99,7 @@ function PreviousFundingRound() {
   };
   const columns = [
     {
-      title: "Tên doanh nghiệp",
+      title: "Tên tổ chức",
       dataIndex: "organization",
       key: "organization",
       width: "150px",
@@ -126,7 +127,7 @@ function PreviousFundingRound() {
         <div className="cfr__inputStkg">
           <Input
             className="cfr__stkg"
-            addonAfter=".000.000 VNĐ"
+            addonAfter=",000,000 VNĐ"
             defaultValue={value}
             readOnly
           />
@@ -155,7 +156,7 @@ function PreviousFundingRound() {
       key: "description",
       render: (value) => (
         <Tooltip placement="top" title={value}>
-          <p className="cfr__des">{value}</p>
+          <p className="prefr__des">{value}</p>
         </Tooltip>
       ),
     },
@@ -197,7 +198,7 @@ function PreviousFundingRound() {
             showSizeChanger: true,
             pageSizeOptions: ["5", "10", "20"],
           }}
-          rowKey="idRound"
+          rowKey={(round) => round.idRound}
           locale={{
             emptyText: <span>Không có dữ liệu</span>,
           }}
