@@ -9,6 +9,10 @@ import {
   GET_FREE_TIME_LIST_OF_ORGANIZATION_FAIL,
   GET_FREE_TIME_LIST_OF_ORGANIZATION_SUCCESS,
   GET_FREE_TIME_LIST_SUCCESS,
+  GET_FREE_TIME_DETAIL_OF_INVESTOR_SUCCESS,
+  GET_FREE_TIME_DETAIL_OF_INVESTOR_FAIL,
+  GET_FREE_TIME_LIST_OF_INVESTOR_SUCCESS,
+  GET_FREE_TIME_LIST_OF_INVESTOR_FAIL,
 } from "../constants/freeTime.const";
 import { authorizationAccount } from "../../assets/helper/helper";
 
@@ -236,3 +240,70 @@ const getFreeTimeListDetailOfOrganizationFail = (err) => {
   };
 };
 
+export const getFreeTimeDetailOfInvestor = (detail) => {
+  return (dispatch) => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const token = userInfo.jwt;
+    axios({
+      method: "GET",
+      url: `http://localhost:8080/api/v1/schedule/get-all-investor/` + detail,
+      data: null,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => {
+      dispatch(getFreeTimeListDetailOfInvestorSucess(res.data))
+    }).catch((err) => {
+      dispatch(getFreeTimeListDetailOfInvestorFail(err))
+    })
+
+  };
+};
+const getFreeTimeListDetailOfInvestorSucess = (listFreeTimeOfInvestor) => {
+  return {
+    type: GET_FREE_TIME_DETAIL_OF_INVESTOR_SUCCESS,
+    payload: listFreeTimeOfInvestor,
+  };
+};
+
+const getFreeTimeListDetailOfInvestorFail = (err) => {
+  return {
+    type: GET_FREE_TIME_DETAIL_OF_INVESTOR_FAIL,
+    payload: err,
+  };
+};
+
+export const getFreeTimeListOfInvestor = (investor) => {
+  return (dispatch) => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const token = userInfo.jwt;
+    axios({
+      method: "GET",
+      url: `http://localhost:8080/api/v1/view-schedule-organization-by-week?idOrganization=${investor}`,
+      data: null,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        dispatch(getFreeTimeListOfInvestorSucess(res.data));
+      })
+      .catch((err) => {
+        dispatch(getFreeTimeListOfInvestorFail(err));
+      });
+  };
+};
+
+const getFreeTimeListOfInvestorSucess = (listFreeTimeOfInvestor) => {
+  return {
+    type: GET_FREE_TIME_LIST_OF_INVESTOR_SUCCESS,
+    payload: listFreeTimeOfInvestor,
+  };
+};
+
+const getFreeTimeListOfInvestorFail = (err) => {
+  return {
+    type: GET_FREE_TIME_LIST_OF_INVESTOR_FAIL,
+    payload: err,
+  };
+};

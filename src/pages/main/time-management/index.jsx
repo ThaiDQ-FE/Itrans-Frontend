@@ -4,6 +4,7 @@ import "antd/dist/antd.css";
 import "./styles.scss";
 import RegisterFreeTime from "../../../components/register-free-time";
 import ScheduleManagement from "../../../components/schedule-management";
+import ScheduleManagementInvestor from "../../../components/schedule-management-investor";
 import { checkRoleUser } from "../../../assets/helper/helper";
 function TimeManagement() {
   const { TabPane } = Tabs;
@@ -15,11 +16,11 @@ function TimeManagement() {
             <RegisterFreeTime />
           </TabPane>
           <TabPane tab="QUẢN LÝ LỊCH TRÌNH" key="2">
-            <ScheduleManagement />
+            <ScheduleManagementInvestor />
           </TabPane>
         </Tabs>
       ) : (
-        ""
+        <ScheduleManagement />
       )}
     </div>
   );

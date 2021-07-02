@@ -84,11 +84,7 @@ function FormInformationAboutTheOrganization(props) {
       );
     });
   };
-  for (let i = 10; i < 36; i++) {
-    children.push(
-      <Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>
-    );
-  }
+ 
 
   useEffect(() => {
     dispatch(getListProvince());

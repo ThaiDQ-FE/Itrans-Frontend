@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import "./styles.scss";
 import "antd/dist/antd.css";
-function PreviousDeal() {
+function AfferDeal() {
   const { TextArea } = Input;
   const dispatch = useDispatch();
-  const { listDealDone } = useSelector((state) => state.deal);
+  const { listDealCancel } = useSelector((state) => state.deal);
   const [dataDeal, setDataDeal] = useState({
     soTienDauTu: "",
     phanTramCoPhan: "",
@@ -36,7 +36,7 @@ function PreviousDeal() {
        
       }
     ];
-    const data = listDealDone.filter(
+    const data = listDealCancel.filter(
       (deal) => deal.idRound === record.idRound && deal.status !== "REJECT"
     );
     console.log(data);
@@ -68,13 +68,13 @@ function PreviousDeal() {
   ];
   return (
     <div className="cd__wrapper">
-      <h4>Deal thành công</h4>
+      <h4>Deal thất bại</h4>
       <div className="cd__container">
         <Table
           className="components-table-demo-nested"
           columns={columns}
           expandable={{ expandedRowRender }}
-          dataSource={listDealDone}
+          dataSource={listDealCancel}
           rowKey="idRound"
           locale={{ emptyText: "Không có dữ liệu" }}
         />
@@ -82,4 +82,4 @@ function PreviousDeal() {
     </div>
   );
 }
-export default PreviousDeal;
+export default AfferDeal;

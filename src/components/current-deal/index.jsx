@@ -1,237 +1,345 @@
 import React from "react";
 import { EditOutlined } from "@ant-design/icons";
-import { Table, Input, InputNumber, Button } from "antd";
+import { Table, Input, InputNumber, Button, Tooltip } from "antd";
 import { useEffect, useState } from "react";
 import "./styles.scss";
 import "antd/dist/antd.css";
 import Images from "../../assets/images/images";
 import { useDispatch, useSelector } from "react-redux";
-import { getCurrentDeal } from "../../store/action/deal.action";
-
-const { TextArea } = Input;
-
+import { getCurrentDeal, updateDeal, updateDealAccept, updateDealStatusCancel } from "../../store/action/deal.action";
+import { Switch } from 'antd';
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import Swal from "sweetalert2";
+import ModalCreateDeal from "../modal-create-deal";
 function CurrentDeal() {
+  const { TextArea } = Input;
   const dispatch = useDispatch();
-  const [data, setData] = useState([]);
-  let [dataJsonDeal, setDataJsonDeal] = useState([]);
-  const [activeRecord, setActiveRecord] = useState({});
-  let dataJson = [];
-  useEffect(() => {
-    dispatch(getCurrentDeal(1, 0));
-    setData(dataJson);
-    setDataJsonDeal(dataJsonDeal);
-  }, []);
-  const listDealCurrent = useSelector((state) => state.deal.listDealCurrent);
-  if (!listDealCurrent.length == 0) {
-    dataJson = [
-      {
-        idRound: listDealCurrent[0].idRound,
-        vongGoiVon: listDealCurrent[0].stage,
-        tenDoanhNghiep: listDealCurrent[0].nameOrganization,
-        giaiDoanGoiVon: listDealCurrent[0].stage,
-        soTienKeuGoi: listDealCurrent[0].capitalInvestment,
-        phanTramCoPhan: listDealCurrent[0].roundShareRequirement,
-        ngayGoi: listDealCurrent[0].startDate,
-        ngayKetThuc: listDealCurrent[0].endDate,
+  const { listDealCurrent } = useSelector((state) => state.deal);
+  const [idDeal, setIdDeal] = useState({
+    id: "",
+  });
+  const [dataDeal, setDataDeal] = useState({
+    soTienDauTu: "",
+    phanTramCoPhan: "",
+    moTa: ""
+  });
+  const [openModal, setOpenModal] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const handleCancelEdit = () => {
+    setEdit(false);
+  };
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  }
+  const handleCreateDealForm = () => {
+    const dealNew = {
+      idDeal: idDeal.id,
+      capitalInvestment: dataDeal.soTienDauTu,
+      shareRequirement: dataDeal.phanTramCoPhan,
+    }
+    Swal.fire({
+      icon: "warning",
+      title: "Deal hiện tại đã được thỏa thuận?",
+      heightAuto: true,
+      timerProgressBar: false,
+      showConfirmButton: true,
+      showCancelButton: true,
+      cancelButtonText: "Hủy",
+      cancelButtonColor: "gray",
+      confirmButtonText: "Đồng ý",
+      confirmButtonColor: "#112D4E",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        dispatch(updateDealAccept(dealNew))
+        setOpenModal(false);
       }
-    ];
+    });
 
-    dataJsonDeal = [
-      {
-        idDeal: listDealCurrent[0].idDeal,
-        idRound: listDealCurrent[0].idRound,
-        deal: "Deal 1",
-        tenNhaDauTu: listDealCurrent[0].nameInvestor,
-        phanTramCoPhan: listDealCurrent[0].dealShareRequirement,
-        soTienMuonDauTu: listDealCurrent[0].fundingAmount,
-        ghiChu: listDealCurrent[0].dealDescription,
-        status: listDealCurrent[0].status,
+  }
+  const handleSaveDeal = (deal) => {
+    let capitalInvestmentCheck = dataDeal.soTienDauTu;
+    let shareRequirementCheck = dataDeal.phanTramCoPhan;
+    let descriptionCheck = dataDeal.moTa;
+
+    if (dataDeal.soTienDauTu === '') {
+      capitalInvestmentCheck = deal.capitalInvestment
+    } if (dataDeal.phanTramCoPhan === '') {
+      shareRequirementCheck = deal.dealShareRequirement
+    }
+    if (dataDeal.moTa === '') {
+      descriptionCheck = deal.dealDescription
+    }
+    const dealNew = {
+      idDeal: deal.idDeal,
+      capitalInvestment: capitalInvestmentCheck,
+      shareRequirement: shareRequirementCheck,
+      description: descriptionCheck
+    }
+    Swal.fire({
+      icon: "warning",
+      title: "Bạn có chắc chỉnh sửa đúng?",
+      heightAuto: true,
+      timerProgressBar: false,
+      showConfirmButton: true,
+      showCancelButton: true,
+      cancelButtonText: "Hủy",
+      cancelButtonColor: "gray",
+      confirmButtonText: "Đồng ý",
+      confirmButtonColor: "#112D4E",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        dispatch(updateDeal(dealNew));
+        setEdit(false);
       }
-    ];
+    });
+
   }
 
-
-  const handleSubmit = (record) => {
-    let tmpDataJsonDeal = dataJsonDeal;
-    tmpDataJsonDeal = tmpDataJsonDeal.map((item) => {
-      if (item.idDeal === record.idDeal) {
-        return {
-          ...record,
-          status: "done",
-        };
-      }
-      return item;
+  const handleEditDeal = (deal) => {
+    setEdit(true);
+  };
+  const handleChangeEdit = (event) => {
+    const { value, name } = event.target;
+    setDataDeal({
+      ...dataDeal,
+      [name]: value,
     });
-
-    setDataJsonDeal(tmpDataJsonDeal);
   };
-
-  const handleReject = (record) => {
-    let tmpDataJsonDeal = dataJsonDeal;
-    tmpDataJsonDeal = tmpDataJsonDeal.map((item) => {
-      if (item.idDeal === record.idDeal) {
-        return {
-          ...record,
-          status: "pending",
-        };
-      }
-      return item;
+  const handleAcceptDeal = (deal) => {
+    setOpenModal(true);
+    setIdDeal({
+      ...idDeal,
+      id: deal.idDeal,
     });
-
-    setDataJsonDeal(tmpDataJsonDeal);
-  };
-
-  const handleCancel = () => {
-    setActiveRecord({});
-  };
+  }
+  const handleCancelDeal = (deal) => {
+    Swal.fire({
+      icon: "warning",
+      title: "Deal hiện tại không được thỏa thuận?",
+      heightAuto: true,
+      timerProgressBar: false,
+      showConfirmButton: true,
+      showCancelButton: true,
+      cancelButtonText: "Hủy",
+      cancelButtonColor: "gray",
+      confirmButtonText: "Đồng ý",
+      confirmButtonColor: "#112D4E",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const object = { id: deal.idDeal, status: "CANCEL" };
+        dispatch(updateDealStatusCancel(object));
+      }
+    });
+  }
+  const handleDeleteDeal = (deal) => {
+    Swal.fire({
+      icon: "warning",
+      title: "Bạn muốn hủy deal hiện tại?",
+      heightAuto: true,
+      timerProgressBar: false,
+      showConfirmButton: true,
+      showCancelButton: true,
+      cancelButtonText: "Hủy",
+      cancelButtonColor: "gray",
+      confirmButtonText: "Đồng ý",
+      confirmButtonColor: "#112D4E",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const object = { id: deal.idDeal, status: "DELETE" };
+        dispatch(updateDealStatusCancel(object));
+      }
+    });
+  }
   const expandedRowRender = (record, index) => {
     const columns = [
-      { title: "Thỏa thuận", dataIndex: "deal", key: "deal" },
       {
-        title: "Nhà đầu tư",
-        dataIndex: "tenNhaDauTu",
-        key: "tenNhaDauTu",
+        title: "Tên nhà đầu tư", dataIndex: "nameInvestor", key: "nameInvestor", render: (value, round) => (
+          <>
+            <img id='src' src={round.logoInvestor} alt="&nbsp;" />
+            <span>{value}</span>
+          </>
+        ),
       },
       {
-        title: "Phần trăm cổ phần",
-        dataIndex: "phanTramCoPhan",
-        key: "phanTramCoPhan",
-        render: (value, record) => (
-          <>
-            {activeRecord.idDeal === record.idDeal ? (
+        title: "Số tiền muốn đầu tư", dataIndex: "capitalInvestment", key: "capitalInvestment",
+        render: (value, round) => (
+          <div className="cfr__inputStkg">
+            {edit === true ? (
               <Input
-                placeholder="Phần trăm cổ phần"
+                type="number"
                 defaultValue={value}
-                disabled={record.status === "done"}
+                name="soTienDauTu"
+                onChange={handleChangeEdit}
               />
-            ) : (
-              value
-            )}
-          </>
-        ),
-      },
-      {
-        title: "Số tiền kêu gọi",
-        dataIndex: "soTienMuonDauTu",
-        key: "soTienMuonDauTu",
-        render: (value, record) => (
-          <>
-            {activeRecord.idDeal === record.idDeal ? (
-              <InputNumber
-                placeholder="Số tiền đầu tư"
-                defaultValue={value}
-                disabled={record.status === "done"}
-              />
-            ) : (
-              value
-            )}
-          </>
-        ),
-      },
-      {
-        title: "Ghi chú",
-        dataIndex: "ghiChu",
-        key: "ghiChu",
-        render: (value, record) => (
-          <>
-            {activeRecord.idDeal === record.idDeal ? (
-              <TextArea
-                rows={2}
-                defaultValue={value}
-                disabled={record.status === "done"}
-              />
-            ) : (
-              value
-            )}
-          </>
-        ),
-      },
-      {
-        title: "",
-        dataIndex: "status",
-        key: "status",
-        render: (value, record) => (
-          <div>
-            {value === "pending" ? (
-              <>
-                {activeRecord.idDeal === record.idDeal ? (
-                  <>
-                    <Button type="primary" onClick={() => handleSubmit(record)}>
-                      Chấp nhận
-                    </Button>
-                    <Button type="primary" onClick={handleCancel}>
-                      Hủy
-                    </Button>
-                  </>
-                ) : (
-                  <EditOutlined onClick={() => setActiveRecord(record)} />
-                )}
-              </>
             ) : (
               <>
-                <Button type="primary" disabled>
-                  Đã Chấp nhận
-                </Button>
-                <Button
-                  type="primary"
-                  danger
-                  onClick={() => handleReject(record)}
-                >
-                  Hủy deal
-                </Button>
+                <span>{value}</span>
+                <Input
+                  className="cfr__stkgDefault"
+                  addonAfter=".000.000 VNĐ"
+                  readOnly
+                />
               </>
             )}
           </div>
-        ),
+        )
       },
+      {
+        title: "Phần trăm cổ phần", dataIndex: "dealShareRequirement", key: "dealShareRequirement",
+        render: (value) => (
+          <div className="cfr__inputPtcp">
+            {edit === true ? (
+              <Input
+                type="number"
+                defaultValue={value}
+                name="phanTramCoPhan"
+                onChange={handleChangeEdit}
+              />
+            ) : (
+              <>
+                <span>{value}</span>
+                <Input className="cfr__ptcpDefault" addonAfter="%" readOnly />
+              </>
+            )}
+          </div>
+        )
+      },
+      { title: "Ngày đăng", dataIndex: "createAt", key: "createAt" },
+      {
+        dataIndex: "dealDescription", key: "dealDescription", title: "Mô tả",
+        render: (value) => (
+          <>
+            {edit === true ? (
+              <TextArea
+                rows={1}
+                defaultValue={value}
+                onChange={handleChangeEdit}
+                className="deal__textArea"
+                name="moTa"
+              />
+            ) : (
+              <Tooltip placement="top" title={value}>
+                <p className="cfr__des">{value}</p>
+              </Tooltip>
+            )}
+          </>
+        )
+      },
+      {
+        title: "", key: "action", render: (deal) => (
+          <div className="deal__qlvgvAction">
+            <If condition={deal.status === "PENDING" && edit === false}>
+              <Then>
+                <div className="deal__edit">
+                  <Tooltip placement="top" title="Chỉnh sửa">
+                    <img
+                      src={Images.PENCIL}
+                      onClick={() => handleEditDeal(deal)}
+                      alt="edit"
+                    />
+                  </Tooltip>
+                </div>
+                <div className="deal__trash">
+                  <Tooltip placement="top" title="Xóa">
+                    <img
+                      src={Images.TRASH}
+                      alt="trash"
+                      onClick={() => handleDeleteDeal(deal)}
+                    />
+                  </Tooltip>
+                </div>
+              </Then>
+              <ElseIf condition={deal.status === "ACCEPT" && edit === false}>
+                <>
+                  <div className="deal__done">
+                    <Tooltip placement="top" title="Đồng ý">
+                      <img src={Images.CHECKED_REGISTER} alt="done"
+                        onClick={() => handleAcceptDeal(deal)}
+                      />
+                    </Tooltip>
+                  </div>
+                  <div className="deal__cancel">
+                    <Tooltip placement="top" title="Hủy">
+                      <img
+                        src={Images.RED_CANCEL}
+                        onClick={() => handleCancelDeal(deal)}
+                        alt="cancel"
+                      />
+                    </Tooltip>
+                  </div>
+                </>
+              </ElseIf>
+              <Else>
+                <>
+                  <div className="deal__save">
+                    <Tooltip placement="top" title="Lưu">
+                      <img src={Images.SAVE} alt="save"
+                        onClick={() => handleSaveDeal(record)}
+                      />
+                    </Tooltip>
+                  </div>
+                  <div className="deal__cancel">
+                    <Tooltip placement="top" title="Hủy">
+                      <img
+                        src={Images.RED_CANCEL}
+                        onClick={() => handleCancelEdit()}
+                        alt="trash"
+                      />
+                    </Tooltip>
+                  </div>
+                </>
+              </Else>
+            </If>
+          </div>
+        )
+      }
     ];
-
-    const data = dataJsonDeal.filter((deal) => deal.idRound === record.idRound);
-
+    const data = listDealCurrent.filter(
+      (deal) => deal.idRound === record.idRound && deal.status !== "REJECT"
+    );
     return (
       <Table
         columns={columns}
         dataSource={data}
         pagination={false}
-        rowKey="idDeal"
+        rowKey="1"
+        locale={{ emptyText: "Không có dữ liệu" }}
       />
     );
   };
   const columns = [
-    { title: "Vòng gọi vốn", dataIndex: "vongGoiVon", key: "vongGoiVon" },
     {
-      title: "Tên doanh ngiệp",
-      dataIndex: "tenDoanhNghiep",
-      key: "tenDoanhNghiep",
+      title: "Tên doanh nghiệp", dataIndex: "nameOrganization", key: "nameOrganization", render: (value, round) => (
+        <>
+          <img id='src' src={round.logoOrganization} alt="&nbsp;" />
+          <span>{value}</span>
+        </>
+      ),
     },
-    {
-      title: "Giai đoạn gọi vốn",
-      dataIndex: "giaiDoanGoiVon",
-      key: "giaiDoanGoiVon",
-    },
-    {
-      title: "Số tiền kêu gọi",
-      dataIndex: "soTienKeuGoi",
-      key: "soTienKeuGoi",
-    },
-    {
-      title: "Phần trăm cổ phần",
-      dataIndex: "phanTramCoPhan",
-      key: "phanTramCoPhan",
-    },
-    { title: "Ngày gọi", dataIndex: "ngayGoi", key: "ngayGoi" },
-    { title: "Ngày kết thúc", dataIndex: "ngayKetThuc", key: "ngayKetThuc" },
+    { title: "Giai đoạn gọi vốn", dataIndex: "stage", key: "stage" },
+    { title: "Số tiền kiêu gọi", dataIndex: "fundingAmount", key: "fundingAmount" },
+    { title: "Phần trăm cổ phần", dataIndex: "roundShareRequirement", key: "roundShareRequirement" },
+    { title: "Mô tả", dataIndex: "roundDescription", key: "roundDescription" },
+    { title: "Ngày gọi", dataIndex: "startDate", key: "startDate" },
+    { title: "Ngày kết thúc", dataIndex: "endDate", key: "endDate" },
   ];
   return (
     <div className="cd__wrapper">
       <h4>Deal hiện tại</h4>
       <div className="cd__container">
+        <ModalCreateDeal
+          openModal={openModal}
+          closeModal={handleCloseModal}
+          handleChangeValue={handleChangeEdit}
+          handleCreateDealForm={handleCreateDealForm}
+        />
         <Table
           className="components-table-demo-nested"
           columns={columns}
           expandable={{ expandedRowRender }}
-          dataSource={data}
+          dataSource={listDealCurrent}
           rowKey="idRound"
+          locale={{ emptyText: "Không có dữ liệu" }}
         />
       </div>
     </div>
