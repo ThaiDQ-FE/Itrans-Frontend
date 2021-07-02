@@ -136,3 +136,11 @@
 .header__hr {
     margin: 3px 5px;
 }
+.menu__navbar {
+    .MuiPopover-paper {
+        top: 8% !important;
+        left: unset !important;
+        right: 3% !important;
+        width: 230px !important;
+    }
+}

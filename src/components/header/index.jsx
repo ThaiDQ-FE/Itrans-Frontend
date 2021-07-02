@@ -5,22 +5,11 @@ import logo from "../../assets/images/logo-grey.png";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Images from "../../assets/images/images";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { checkRoleUser } from "../../assets/helper/helper";
 function Header({ history }) {
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const [openMenu, setOpenMenu] = useState(null);
-  const themeMenu = createMuiTheme({
-    overrides: {
-      MuiPopover: {
-        paper: {
-          top: `${8}% !important`,
-          left: "unset !important",
-          right: `${3}%`,
-        },
-      },
-    },
-  });
+
   const handleOpenMenu = (event) => {
     setOpenMenu(event.currentTarget);
   };
@@ -61,11 +50,10 @@ function Header({ history }) {
             <NavLink
               activeClassName="active-nav-link-header"
               className="header__vgv"
-              to="/nha-dau-tu"
+              to="/to-chuc"
               exact={true}
-            >
-              Nhà đầu tư
-            </NavLink>
+            ></NavLink>
+            Nhà đầu tư
           </li>
           <li className="header__features__li">
             <NavLink
@@ -119,79 +107,78 @@ function Header({ history }) {
           </ul>
         )}
       </div>
-      <MuiThemeProvider theme={themeMenu}>
-        <Menu
-          id="simple-menu"
-          anchorEl={openMenu}
-          keepMounted
-          open={Boolean(openMenu)}
-          onClose={handleCloseMenu}
-        >
-          <MenuItem>
-            <div className="header__menuAvata">
-              <img src={Images.USER_AVATA} alt="" />
-              <span>{user !== null ? user.gmail : ""}</span>
+      <Menu
+        id="simple-menu"
+        anchorEl={openMenu}
+        keepMounted
+        open={Boolean(openMenu)}
+        onClose={handleCloseMenu}
+        className="menu__navbar"
+      >
+        <MenuItem>
+          <div className="header__menuAvata">
+            <img src={Images.USER_AVATA} alt="" />
+            <span>{user !== null ? user.gmail : ""}</span>
+          </div>
+        </MenuItem>
+        <hr className="header__hr" />
+        <MenuItem>
+          <NavLink
+            activeClassName="active-nav-link"
+            className="header__navlink__quanLyTaiKhoan"
+            to="/quan-ly-tai-khoan"
+            exact={false}
+          >
+            <div className="header__menuAccount">
+              <img src={Images.SETTING} alt="" />
+              <span>Quản lý tài khoản</span>
             </div>
-          </MenuItem>
-          <hr className="header__hr" />
-          <MenuItem>
-            <NavLink
-              activeClassName="active-nav-link"
-              className="header__navlink__quanLyTaiKhoan"
-              to="/quan-ly-tai-khoan"
-              exact={false}
-            >
-              <div className="header__menuAccount">
-                <img src={Images.SETTING} alt="" />
-                <span>Quản lý tài khoản</span>
-              </div>
-            </NavLink>
-          </MenuItem>
-          <hr className="header__hr" />
-          <MenuItem>
-            <NavLink
-              activeClassName="active-nav-link"
-              className="header__navlink__quanLyThoiGian"
-              to="/quan-ly-thoi-gian"
-              exact={false}
-            >
-              <div className="header__menuTime">
-                <img src={Images.TIMETABLE} alt="" />
-                <span>Quản lý thời gian</span>
-              </div>
-            </NavLink>
-          </MenuItem>
-          <hr className="header__hr" />
-          <MenuItem>
-            <NavLink
-              activeClassName="active-nav-link"
-              className="header__navlink__quanLyThoiGian"
-              to={
-                checkRoleUser() === "INVESTOR"
-                  ? "/quan-ly-deal"
-                  : "/quan-ly-vong-goi-von"
-              }
-              exact={false}
-            >
-              <div className="header__menuCapital">
-                <img src={Images.CALL_CAPITAL} alt="" />
-                <span>
-                  {checkRoleUser() === "INVESTOR"
-                    ? "Quản lý deal"
-                    : "Quản lý vòng gọi vốn"}
-                </span>
-              </div>
-            </NavLink>
-          </MenuItem>
-          <hr className="header__hr" />
-          <MenuItem onClick={handleLogoutAccount}>
-            <div className="header__menuLogout">
-              <img src={Images.LOGOUT} alt="" />
-              <span>Thoát</span>
+          </NavLink>
+        </MenuItem>
+        <hr className="header__hr" />
+        <MenuItem>
+          <NavLink
+            activeClassName="active-nav-link"
+            className="header__navlink__quanLyThoiGian"
+            to="/quan-ly-thoi-gian"
+            exact={false}
+          >
+            <div className="header__menuTime">
+              <img src={Images.TIMETABLE} alt="" />
+              <span>Quản lý thời gian</span>
             </div>
-          </MenuItem>
-        </Menu>
-      </MuiThemeProvider>
+          </NavLink>
+        </MenuItem>
+        <hr className="header__hr" />
+        <MenuItem>
+          <NavLink
+            activeClassName="active-nav-link"
+            className="header__navlink__quanLyThoiGian"
+            to={
+              checkRoleUser() === "INVESTOR"
+                ? "/quan-ly-deal"
+                : "/quan-ly-vong-goi-von"
+            }
+            exact={false}
+          >
+            <div className="header__menuCapital">
+              <img src={Images.CALL_CAPITAL} alt="" />
+              <span>
+                {checkRoleUser() === "INVESTOR"
+                  ? "Quản lý deal"
+                  : "Quản lý vòng gọi vốn"}
+              </span>
+            </div>
+          </NavLink>
+        </MenuItem>
+        <hr className="header__hr" />
+        <MenuItem onClick={handleLogoutAccount}>
+          <div className="header__menuLogout">
+            <img src={Images.LOGOUT} alt="" />
+            <span>Thoát</span>
+          </div>
+        </MenuItem>
+      </Menu>
     </div>
   );
 }
