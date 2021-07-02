@@ -80,7 +80,7 @@ function CurrentFundingRound() {
       return <ul style={{ listStyleType: "upper-roman" }}>{item}</ul>;
     });
   };
-  const test = renderListRule();
+  const rule = renderListRule();
   // check type of round
   const checkRound = () => {
     let round;
@@ -788,7 +788,7 @@ function CurrentFundingRound() {
         endDate={endDate}
         setEndDate={setEndDate}
         endDateE={endDateE}
-        test={test}
+        rule={rule}
         handleCreateRoundForm={handleCreateRoundForm}
       />
       <ModalAcceptDeal

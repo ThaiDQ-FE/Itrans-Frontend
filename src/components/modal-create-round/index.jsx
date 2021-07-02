@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Tooltip, Modal, Input, DatePicker } from "antd";
+import { Button, Popover, Modal, Input, DatePicker } from "antd";
 import Images from "../../assets/images/images";
 import "./styles.scss";
 import "antd/dist/antd.css";
@@ -98,13 +98,9 @@ function ModalCreateRound(props) {
               )}
             </div>
             <div className="cfr__warningSign">
-              <Tooltip
-                overlayClassName="cfr__tooltip"
-                placement="topRight"
-                title={props.test}
-              >
+              <Popover placement="topRight" content={props.rule}>
                 <img src={Images.WARNING} alt="warning" />
-              </Tooltip>
+              </Popover>
             </div>
           </div>
           <div className="cfr__submitForm">
