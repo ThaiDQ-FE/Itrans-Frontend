@@ -8,41 +8,57 @@ export const getOrganizationFilter = (
   arrayIndustry,
   arrayProvince,
   arrayRegion,
-  arrayStage
+  arrayStage,
+  gmail
 ) => {
   let baseUrl = "http://localhost:8080/api/v1/auth/filter-organization?";
   let tailUrl = "";
-  arrayIndustry.map((item) => {
-    let params = `idIndustry=${item}`;
+  if (arrayIndustry.length === 0) {
+    let params = `idIndustry=0`;
     tailUrl = tailUrl + params + `&`;
-  });
-  arrayProvince.map((item) => {
-    let params = `idProvince=${item}`;
+  } else {
+    arrayIndustry.map((item) => {
+      let params = `idIndustry=${item}`;
+      tailUrl = tailUrl + params + `&`;
+    });
+  }
+  if (arrayProvince.length === 0) {
+    let params = `idProvince=0`;
     tailUrl = tailUrl + params + `&`;
-  });
-  arrayRegion.map((item) => {
-    let params = `idRegion=${item}`;
+  } else {
+    arrayProvince.map((item) => {
+      let params = `idProvince=${item}`;
+      tailUrl = tailUrl + params + `&`;
+    });
+  }
+  if (arrayRegion.length === 0) {
+    let params = `idRegion=0`;
     tailUrl = tailUrl + params + `&`;
-  });
-  arrayStage.map((item, index) => {
-    if (index === arrayStage.length - 1) {
-      let params = `idStage=${item}`;
-      tailUrl = tailUrl + params;
-    } else {
+  } else {
+    arrayRegion.map((item) => {
+      let params = `idRegion=${item}`;
+      tailUrl = tailUrl + params + `&`;
+    });
+  }
+  if (arrayStage.length === 0) {
+    let params = `idStage=0`;
+    tailUrl = tailUrl + params + `&`;
+  } else {
+    arrayStage.map((item) => {
       let params = `idStage=${item}`;
       tailUrl = tailUrl + params + `&`;
-    }
-  });
-  console.log(tailUrl);
+    });
+  }
+
+  let gmailTail = `mail=${gmail}`;
   return (dispatch) => {
     dispatch(startLoading());
     axios({
       method: "GET",
-      url: baseUrl + tailUrl,
+      url: baseUrl + tailUrl + gmailTail,
       data: null,
     })
       .then((res) => {
-        console.log(res);
         dispatch(stopLoading());
         dispatch(getOrganizationFilterSuccess(res.data));
       })

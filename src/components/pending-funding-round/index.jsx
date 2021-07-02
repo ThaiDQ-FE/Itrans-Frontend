@@ -43,7 +43,7 @@ function PendingFundingRound() {
       round = [];
       return round;
     } else {
-      round = [listRoundPending];
+      round = listRoundPending;
       return round;
     }
   };
@@ -129,7 +129,7 @@ function PendingFundingRound() {
     if (parseSTKG % 1 !== 0) {
       return showMessage("error", "Số tiền kêu gọi phải là số nguyên dương");
     } else if (parseSTKG < 1) {
-      return showMessage("error", "Số tiền kêu gọi thấp nhất là 1");
+      return showMessage("error", "Số tiền kêu gọi thấp nhất là 1 triệu VNĐ");
     } else if (parsePTCP < 0.1 || parsePTCP > 100) {
       return showMessage(
         "error",

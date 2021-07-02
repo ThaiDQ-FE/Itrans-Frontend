@@ -16,13 +16,15 @@ import "antd/dist/antd.css";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { getAllRoundByEmail } from "../../store/action/round.action";
-import { getOrganizationFilter } from "../../store/action/organization.action";
+import { getAllRoundsActive } from "../../store/action/round.action";
 function FundingRoundComponent(props) {
   const { listAllRoundActive } = useSelector((state) => state.round);
   const { loading } = useSelector((state) => state.loading);
   const dispatch = useDispatch();
   const token = authorizationAccount();
+  const arrayStage = [0];
+  const min = NaN;
+  const max = NaN;
   const [data, setData] = useState({
     soTienMuonDauTu: "",
     phanTramCoPhan: "",
@@ -95,7 +97,7 @@ function FundingRoundComponent(props) {
             timerProgressBar: false,
             showConfirmButton: true,
             confirmButtonText: "Đồng ý",
-            confirmButtonColor: "#ff8412",
+            confirmButtonColor: "#1890ff",
           }).then(async (result) => {
             if (result.isConfirmed) {
               setOpenModal(false);
@@ -105,7 +107,9 @@ function FundingRoundComponent(props) {
               localStorage.removeItem("shareReq");
               localStorage.removeItem("des");
               localStorage.removeItem("roundId");
-              dispatch(getAllRoundByEmail(checkEmailUser(), 0));
+              dispatch(
+                getAllRoundsActive(checkEmailUser(), max, min, arrayStage)
+              );
             }
           });
         }
@@ -262,20 +266,6 @@ function FundingRoundComponent(props) {
       ),
     },
   ];
-  const checkTotalRecord = () => {
-    if (listAllRoundActive.length > 0) {
-      let totalRecord;
-      // eslint-disable-next-line array-callback-return
-      listAllRoundActive.map((item) => {
-        totalRecord = item.totalRecordRound;
-      });
-      return totalRecord;
-    }
-  };
-
-  const handleChange = (page) => {
-    dispatch(getAllRoundByEmail(checkEmailUser(), page - 1));
-  };
   return (
     <div className="frc__wrapper">
       <div className="frc__container">
@@ -290,26 +280,14 @@ function FundingRoundComponent(props) {
             loading={loading}
             className="vgv__table"
             columns={columns}
-            dataSource={props.filter === false ? listAllRoundActive : ""}
-            pagination={props.filter === false ? false : true}
+            dataSource={listAllRoundActive}
+            pagination={listAllRoundActive.length > 15 ? true : false}
             rowKey={(round) => round.idRound}
             bordered
             locale={{ emptyText: "Không có dữ liệu" }}
           />
-          {props.filter === false && checkTotalRecord() > 15 ? (
-            <Pagination
-              className="paging__all"
-              defaultCurrent={1}
-              total={checkTotalRecord()}
-              pageSize={15}
-              onChange={handleChange}
-            />
-          ) : (
-            ""
-          )}
         </div>
       </div>
-      <Button type="primary">abc</Button>
     </div>
   );
 }

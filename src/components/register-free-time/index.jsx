@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Calendar, TimePicker } from "antd";
+import { Button, Calendar, TimePicker, Badge } from "antd";
 import "./styles.scss";
 import "antd/dist/antd.css";
 import moment from "moment";
@@ -7,11 +7,12 @@ import Images from "../../assets/images/images";
 import {
   getAllFreeTimeList,
   getFreeTimeList,
-  postFreeTime,
   getValidateForButtonThem,
 } from "../../store/action/freeTime.action";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import { authorizationAccount, showMessage } from "../../assets/helper/helper";
+import axios from "axios";
 function RegisterFreeTime() {
   const dispatch = useDispatch();
   const [date, setDate] = useState();
@@ -19,7 +20,9 @@ function RegisterFreeTime() {
   const [freeTime, setFreeTime] = useState([]);
   const format = "HH:mm";
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const { listFreeTime } = useSelector((state) => state.freeTime);
+  const { listFreeTime, listAllFreeTime } = useSelector(
+    (state) => state.freeTime
+  );
   var formatDate = moment(date).format("DD-MM-YYYY");
   var formatTime = moment(time).format("HH:mm");
   var formatMonth = moment(date).format("MM");
@@ -65,7 +68,6 @@ function RegisterFreeTime() {
     dispatch(getAllFreeTimeList(userInfo.id));
     dispatch(getFreeTimeList(userInfo.id, formatMonth));
   };
-
   const handleDelete = (index) => {
     let tempFreeTime = [...freeTime];
     tempFreeTime.splice(index, 1);
@@ -102,10 +104,41 @@ function RegisterFreeTime() {
       );
     });
   };
-  useEffect(() => {
-    dispatch(getFreeTimeList(userInfo.id, formatMonth));
-    dispatch(getAllFreeTimeList(userInfo.id));
-  }, []);
+  const postFreeTime = (freeTime) => {
+    return (dispatch) => {
+      const token = authorizationAccount();
+      axios({
+        method: "POST",
+        url: "http://localhost:8080/api/v1/free-time",
+        data: freeTime,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => {
+          if (res.status === 202) {
+            showMessage("error", res.data);
+          } else if (res.status === 201) {
+            Swal.fire({
+              icon: "success",
+              title: "Đăng ký thời gian rãnh thành công",
+              heightAuto: true,
+              timerProgressBar: false,
+              showConfirmButton: true,
+              confirmButtonText: "Đồng ý",
+            }).then(async (result) => {
+              if (result.isConfirmed) {
+                setFreeTime([]);
+                handleResetAPI();
+              }
+            });
+          }
+        })
+        .catch((err) => {
+          showMessage("error", "Đăng ký thời gian rãnh thất bại");
+        });
+    };
+  };
   const handleSubmit = () => {
     Swal.fire({
       title: "Bạn muốn đăng ký những ngày đã chọn ?",
@@ -123,12 +156,54 @@ function RegisterFreeTime() {
       }
     });
   };
+  const mapListFreeTime = () => {
+    let dataFreeTime = [];
+    listAllFreeTime.map((item) => {
+      let temp = item.dateTime;
+      let cutTemp = temp.slice(0, 10);
+      dataFreeTime.push(cutTemp);
+    });
+    let final = [...new Set(dataFreeTime)];
+    return final;
+  };
+  function getListData(value) {
+    const parseValue = moment(value).format("DD-MM-YYYY");
+    let listData;
+    mapListFreeTime().map((item) => {
+      if (parseValue === item) {
+        listData = [{ type: "success" }];
+      }
+    });
+    return listData || [];
+  }
+  function dateCellRender(value) {
+    const listData = getListData(value);
+    console.log(listData);
+    return (
+      <ul className="events">
+        {listData.map((item) => (
+          <li>
+            <Badge status={item.type} />
+          </li>
+        ))}
+      </ul>
+    );
+  }
+  useEffect(() => {
+    dispatch(getFreeTimeList(userInfo.id, formatMonth));
+    dispatch(getAllFreeTimeList(userInfo.id));
+  }, []);
   return (
     <div className="rft__wrapper">
       <div className="rft__container">
         <div className="rft__left">
           <div className="rft__calendarWrapper">
-            <Calendar className="ahihi" value={date} onChange={setDate} />
+            <Calendar
+              className="ahihi"
+              value={date}
+              onChange={setDate}
+              dateCellRender={dateCellRender}
+            />
             <div className="rft__timeAndButton">
               <div className="rft__time">
                 <TimePicker

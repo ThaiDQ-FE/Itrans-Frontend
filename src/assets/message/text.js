@@ -66,6 +66,15 @@ const message = {
   GMAIL_NULL: "Vui lòng nhập gmail",
   GMAIL_REG: "Gmail không đúng định dạng (@gmail.com)",
   PASSWORD_NULL: "Vui lòng nhập mật khẩu",
+  // to chuc
+  OM_TITLE: "Tổ chức",
+  OM_SLOGAN: "Mãi mãi tinh thần khởi nghiệp",
+  OM_SLOGAN_TAIL: "- Vin Group",
+  // nha dau tu
+  IM_TITLE: "Nhà đầu tư",
+  IM_SLOGAN: "Bốn từ nguy hiểm nhất trong đầu tư là:",
+  IM_QUOTE: "Lần này sẽ khác",
+  IM_SLOGAN_TAIL: "-Sir John Templeton",
 };
 
 export default message;

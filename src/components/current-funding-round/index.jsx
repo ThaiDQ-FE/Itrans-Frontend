@@ -16,6 +16,7 @@ import {
 import moment from "moment";
 import {
   getListRoundActiveByIdOrganization,
+  getListRoundPendingByIdOrganization,
   updateStatusRound,
 } from "../../store/action/round.action";
 import { getListFreeTimeActive } from "../../store/action/freeTime.action";
@@ -127,6 +128,7 @@ function CurrentFundingRound() {
             if (result.isConfirmed) {
               setOpenModal(false);
               dispatch(getListRoundActiveByIdOrganization(id));
+              dispatch(getListRoundPendingByIdOrganization(id));
             }
           });
         }
@@ -310,7 +312,11 @@ function CurrentFundingRound() {
       },
     ];
     const data = checkDeal().filter(
-      (deal) => deal.idRound === record.idRound && deal.status !== "REJECT"
+      (deal) =>
+        deal.idRound === record.idRound &&
+        deal.status !== "REJECT" &&
+        deal.status !== "DELETE" &&
+        deal.status !== "CANCEL"
     );
     return (
       <Table
@@ -370,7 +376,11 @@ function CurrentFundingRound() {
   // icon edit
   const handleEditRound = (round) => {
     const data = listDeal.filter(
-      (deal) => deal.idRound === round.idRound && deal.status !== "REJECT"
+      (deal) =>
+        deal.idRound === round.idRound &&
+        deal.status !== "REJECT" &&
+        deal.status !== "DELETE" &&
+        deal.status !== "CANCEL"
     );
     if (data.length !== 0) {
       showMessage("error", "Hiện tại không thể chỉnh sửa vòng gọi vốn!");
@@ -390,7 +400,11 @@ function CurrentFundingRound() {
   // icon trash
   const handleDeleteRound = (round) => {
     const data = listDeal.filter(
-      (deal) => deal.idRound === round.idRound && deal.status !== "REJECT"
+      (deal) =>
+        deal.idRound === round.idRound &&
+        deal.status !== "REJECT" &&
+        deal.status !== "DELETE" &&
+        deal.status !== "CANCEL"
     );
     if (data.length !== 0) {
       showMessage("error", "Hiện tại không thể xóa vòng gọi vốn!");
@@ -536,7 +550,7 @@ function CurrentFundingRound() {
     if (parseSTKG % 1 !== 0) {
       return showMessage("error", "Số tiền kêu gọi phải là số nguyên dương");
     } else if (parseSTKG < 1) {
-      return showMessage("error", "Số tiền kêu gọi thấp nhất là 1");
+      return showMessage("error", "Số tiền kêu gọi thấp nhất là 1 triệu VNĐ");
     } else if (parsePTCP < 0.1 || parsePTCP > 100) {
       return showMessage(
         "error",

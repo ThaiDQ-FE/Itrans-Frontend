@@ -1,20 +1,19 @@
-.ffr__wrapper {
+.filter__wrapper {
     padding: 35px 0;
-    .ffr__container {
-        width: 860px;
+    .filter__container {
+        width: 640px;
         margin: auto;
-        .ffr__dislayGrid {
+        .filter__displayGrid {
             box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14),
                 0 1px 8px 0 rgba(0, 0, 0, 0.12);
             display: grid;
-            grid-template-columns: 200px 200px 200px 200px;
+            grid-template-columns: 220px 380px;
             background-color: #fff;
             color: #444;
             padding: 10px;
             max-height: 138px;
             grid-gap: 20px;
-            position: relative;
-            min-width: 860px;
+            min-width: 640px;
             .box {
                 .ant-select {
                     .ant-select-selector {
@@ -22,12 +21,12 @@
                         overflow: auto;
                     }
                 }
-            }
-            .ffr__button {
-                display: flex;
-                align-items: flex-end;
-                .ffr__ads {
-                    margin-right: 5px;
+                .filter__button {
+                    text-align: right;
+                    margin-top: 5px;
+                    .filter__ht {
+                        margin-left: 15px;
+                    }
                 }
             }
         }

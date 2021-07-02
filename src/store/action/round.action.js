@@ -186,3 +186,62 @@ export const getListRoundActiveByIdOrganizationFailed = (err) => {
     payload: err,
   };
 };
+
+export const getAllRoundsActive = (mail, max, min, arrayStage) => {
+  let baseUrl = "http://localhost:8080/api/v1/auth/round/all-round?";
+  let tailUrl = "";
+  let minUrl = "";
+  let maxUrl = "";
+  if (isNaN(max) === false) {
+    let params = `max=${max}`;
+    maxUrl = params + `&`;
+  }
+  if (isNaN(min) === false) {
+    let params = `min=${min}`;
+    minUrl = params + `&`;
+  }
+  if (arrayStage.length === 0) {
+    let params = `stages=0`;
+    tailUrl = tailUrl + params;
+  } else {
+    arrayStage.map((item, index) => {
+      if (arrayStage.length - 1 === index) {
+        let params = `stages=${item}`;
+        tailUrl = tailUrl + params;
+      } else {
+        let params = `stages=${item}`;
+        tailUrl = tailUrl + params + `&`;
+      }
+    });
+  }
+  let gmailTail = `mail=${mail}&`;
+  return (dispatch) => {
+    dispatch(startLoading());
+    axios({
+      method: "GET",
+      url: baseUrl + gmailTail + maxUrl + minUrl + tailUrl,
+    })
+      .then((res) => {
+        dispatch(stopLoading());
+        dispatch(getAllRoundsActiveSuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(stopLoading());
+        dispatch(getAllRoundsActiveFailed(err));
+      });
+  };
+};
+
+export const getAllRoundsActiveSuccess = (listRoundsActive) => {
+  return {
+    type: GET_ALL_LIST_ROUND_ACTIVE_SUCCESS,
+    payload: listRoundsActive,
+  };
+};
+
+export const getAllRoundsActiveFailed = (err) => {
+  return {
+    type: GET_ALL_LIST_ROUND_ACCTIVE_FAILED,
+    payload: err,
+  };
+};

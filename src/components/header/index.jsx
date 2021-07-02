@@ -49,7 +49,7 @@ function Header({ history }) {
         <ul className="header__features__ul">
           <li className="header__features__li">
             <NavLink
-              activeClassName="active-nav-link"
+              activeClassName="active-nav-link-header"
               className="header__trangchu"
               to="/"
               exact={true}
@@ -57,11 +57,29 @@ function Header({ history }) {
               Trang chủ
             </NavLink>
           </li>
-          <li className="header__features__li">Nhà đầu tư</li>
-          <li className="header__features__li">Doanh nghiệp</li>
           <li className="header__features__li">
             <NavLink
-              activeClassName="active-nav-link"
+              activeClassName="active-nav-link-header"
+              className="header__vgv"
+              to="/nha-dau-tu"
+              exact={true}
+            >
+              Nhà đầu tư
+            </NavLink>
+          </li>
+          <li className="header__features__li">
+            <NavLink
+              activeClassName="active-nav-link-header"
+              className="header__vgv"
+              to="/to-chuc"
+              exact={true}
+            >
+              Tổ chức
+            </NavLink>
+          </li>
+          <li className="header__features__li">
+            <NavLink
+              activeClassName="active-nav-link-header"
               className="header__vgv"
               to="/vong-goi-von"
               exact={true}

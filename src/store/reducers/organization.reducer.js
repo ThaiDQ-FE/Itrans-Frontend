@@ -4,7 +4,7 @@ import {
 } from "../constants/organization.const";
 
 const initialState = {
-  listRoundFilter: [],
+  listOrganizationFilter: [],
   errors: [],
 };
 
@@ -13,9 +13,9 @@ const organizationReducer = (state = initialState, action) => {
   switch (type) {
     case GET_ORGANIZATION_FILTER_SUCCESS:
       if (payload === "No Data") {
-        return { ...state, listRoundFilter: [] };
+        return { ...state, listOrganizationFilter: [] };
       } else {
-        return { ...state, listRoundFilter: payload };
+        return { ...state, listOrganizationFilter: payload };
       }
     case GET_ORGANIZATION_FILTER_FAILED:
       return { ...state, errors: payload };

@@ -27,6 +27,7 @@ import data from "./data.svg";
 import save from "./save.png";
 import accepted from "./yes.svg";
 import oops from "./oops.svg";
+import no_data from "./nodata.png";
 const Images = {
   LOGO_NAVY: logo_navy,
   LOGO_GREY: logo_grey,
@@ -57,6 +58,7 @@ const Images = {
   SAVE: save,
   ACCEPTED: accepted,
   OOPS: oops,
+  NO_DATA: no_data,
 };
 
 export default Images;

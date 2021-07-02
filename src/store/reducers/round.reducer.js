@@ -33,7 +33,12 @@ const roundReducer = (state = initialState, action) => {
     case GET_LIST_ROUND_PASS_BY_ID_ORGANIZATION_FAILED:
       return { ...state, errors: payload };
     case GET_ALL_LIST_ROUND_ACTIVE_SUCCESS:
-      return { ...state, listAllRoundActive: payload };
+      if (payload === "No Data") {
+        return { ...state, listAllRoundActive: [] };
+      } else {
+        return { ...state, listAllRoundActive: payload };
+      }
+
     case GET_ALL_LIST_ROUND_ACCTIVE_FAILED:
       return { ...state, errors: payload };
     default:

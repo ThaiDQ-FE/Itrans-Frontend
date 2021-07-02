@@ -6,6 +6,7 @@ import roundReducer from "./round.reducer";
 import userReducer from "./user.reducer";
 import loadingReducer from "./loading.reducer";
 import organizationReducer from "./organization.reducer";
+import investorReducer from "./investor.reducer";
 const rootReducer = combineReducers({
   user: userReducer,
   freeTime: freeTimeReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   deal: dealReducer,
   loading: loadingReducer,
   organization: organizationReducer,
+  investor: investorReducer,
 });
 
 export default rootReducer;

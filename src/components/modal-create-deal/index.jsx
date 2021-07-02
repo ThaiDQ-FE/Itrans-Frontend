@@ -20,19 +20,11 @@ function ModalCreateDeal(props) {
           <div className="modal__lineOne">
             <div className="modal__one">
               <small>Tên tổ chức</small>
-              <Input
-                defaultValue={getLocalStorage("nameOrg")}
-                disabled
-                readOnly
-              />
+              <Input defaultValue={getLocalStorage("nameOrg")} readOnly />
             </div>
             <div className="modal__two">
               <small>Giai đoạn gọi vốn</small>
-              <Input
-                defaultValue={getLocalStorage("stageOrg")}
-                readOnly
-                disabled
-              />
+              <Input defaultValue={getLocalStorage("stageOrg")} readOnly />
             </div>
           </div>
           <div className="modal__lineTwo">
@@ -45,7 +37,6 @@ function ModalCreateDeal(props) {
                     : getLocalStorage("fundingAmount") + ",000,000 VNĐ"
                 }
                 readOnly
-                disabled
               />
             </div>
             <div className="modal__four">
@@ -53,7 +44,6 @@ function ModalCreateDeal(props) {
               <Input
                 defaultValue={getLocalStorage("shareReq") + "%"}
                 readOnly
-                disabled
               />
             </div>
           </div>
