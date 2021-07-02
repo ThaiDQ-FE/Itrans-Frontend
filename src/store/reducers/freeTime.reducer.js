@@ -11,6 +11,8 @@ import {
   GET_FREE_TIME_DETAIL_OF_INVESTOR_FAIL,
   GET_FREE_TIME_LIST_OF_INVESTOR_SUCCESS,
   GET_FREE_TIME_LIST_OF_INVESTOR_FAIL,
+  GET_LIST_FREE_TIME_SUCCESS,
+  GET_LIST_FREE_TIME_FAILED,
 } from "../constants/freeTime.const";
 
 const initialState = {
@@ -20,7 +22,8 @@ const initialState = {
   errors: [],
   listFreeTimeDetailOfOrganization: [],
   listFreeTimeDetailOfInvestor: [],
-  listFreeTimeOfInvestor: []
+  listFreeTimeOfInvestor: [],
+  listFreeTimeByIdInvestor: [],
 };
 
 const freeTimeReducer = (state = initialState, action) => {
@@ -49,6 +52,9 @@ const freeTimeReducer = (state = initialState, action) => {
     case GET_FREE_TIME_LIST_OF_INVESTOR_SUCCESS:
       return { ...state, listFreeTimeOfInvestor: payload };
     case GET_FREE_TIME_LIST_OF_INVESTOR_FAIL:
+    case GET_LIST_FREE_TIME_SUCCESS:
+      return { ...state, listFreeTimeByIdInvestor: payload };
+    case GET_LIST_FREE_TIME_FAILED:
       return { ...state, errors: payload };
     default:
       return state;

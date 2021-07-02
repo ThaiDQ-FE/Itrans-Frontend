@@ -66,6 +66,36 @@ const message = {
   GMAIL_NULL: "Vui lòng nhập gmail",
   GMAIL_REG: "Gmail không đúng định dạng (@gmail.com)",
   PASSWORD_NULL: "Vui lòng nhập mật khẩu",
+  // to chuc
+  OM_TITLE: "Tổ chức",
+  OM_SLOGAN: "Mãi mãi tinh thần khởi nghiệp",
+  OM_SLOGAN_TAIL: "- Vin Group",
+  // nha dau tu
+  IM_TITLE: "Nhà đầu tư",
+  IM_SLOGAN: "Bốn từ nguy hiểm nhất trong đầu tư là:",
+  IM_QUOTE: "Lần này sẽ khác",
+  IM_SLOGAN_TAIL: "-Sir John Templeton",
+  // Modal create round
+  MODAL_STKG_NULL: "Số tiền kêu gọi không được bỏ trống",
+  MODAL_STKG_AM: "Số tiền kêu gọi phải lớn hơn 1 triệu VNĐ",
+  MODAL_PTCP_NULL: "Phần trăm cổ phần không được trống",
+  MODAL_PTCP_RANGE: "Phần trăm cổ phần phải từ [0.1-100]",
+  MODAL_PTCP_DECIMALS: "Phần trăm cổ phần có tối đa 2 số ở phần thập phân",
+  MODAL_STARTDATE: "Ngày gọi vốn không được bỏ trống",
+  MODAL_ENDDATE: "Ngày kết thúc không được bỏ trống",
+  MODAL_ROUND_R1:
+    "Số tiền kêu gọi, Phần trăm cổ phần, Ngày bắt đầu, Ngày kết thúc là bắt buộc.",
+  MODAL_ROUND_R2: "Số tiền kêu gọi tối thiểu là 1 triệu VNĐ.",
+  MODAL_ROUND_R3: "Phần trăm cổ phần có tối đa 2 số ở phần thập phân.",
+  MODAL_ROUND_R4: "Ngày gọi và ngày kết thúc không được trùng nhau.",
+  MODAL_ROUND_R5: "Ngày gọi phải từ ngày hiện tại trở đi.",
+  MODAL_ROUND_R6: "Ngày kết thúc cách ngày bắt đầu tối đa 30 ngày.",
+  // modal create deal
+  MODAL_CD_STMDT_NULL: "Số tiền muốn đầu tư không được bỏ trống",
+  MODAL_CD_STMDT_AM: "Số tiền muốn đầu tư tối thiểu là 1 triệu VNĐ",
+  MODAL_CD_PTCP_NULL: "Phần trăm cổ phần không được bỏ trống",
+  MODAL_CD_PTCP_RANGE: "Phần trăm cổ phần phải từ [0.1-100]",
+  MOADL_CD_PTCP_DECIMALS: "Phần trăm cổ phần có tối đa 2 số ở phần thập phân",
 };
 
 export default message;

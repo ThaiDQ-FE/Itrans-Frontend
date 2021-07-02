@@ -13,10 +13,11 @@ import {
   GET_DEAL_BY_ID_SUCCESS,
 } from "../constants/deal.const";
 import { checkIdUser } from "../../assets/helper/helper";
+import { startLoading,stopLoading } from "./loading.action";
 export const getListDealByIdOrganization = (idOrganization) => {
   return (dispatch) => {
+    dispatch(startLoading());
     const token = authorizationAccount();
-    console.log('eee');
     axios({
       method: "GET",
       url: `http://localhost:8080/api/v1/deal-by-organization?id-organization=${idOrganization}`,
@@ -26,9 +27,11 @@ export const getListDealByIdOrganization = (idOrganization) => {
       },
     })
       .then((res) => {
+        dispatch(stopLoading());
         dispatch(getListDealSuccess(res.data));
       })
       .catch((err) => {
+        dispatch(stopLoading());
         dispatch(getListDealFailed(err));
       });
   };
@@ -59,8 +62,6 @@ export const getCurrentDeal = (idInvestor, page) => {
         Authorization: `Bearer ${token}`
       }
     }).then((res) => {
-      console.log(res.data)
-      console.log(idInvestor)
       dispatch(getCurrentDealSuccess(res.data))
     }).catch((err) => {
       dispatch(getCurrentDealFail(err))

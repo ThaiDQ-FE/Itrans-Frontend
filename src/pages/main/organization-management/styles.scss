@@ -1,0 +1,25 @@
+.om__wrapper {
+    margin-top: 75px;
+    position: relative;
+    font-family: "Montserrat", sans-serif;
+    .om__banner {
+        padding: 35px;
+        background-color: #112d4e;
+        text-align: center;
+        .om__title {
+            color: #6bdcff;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-style: inherit;
+            font-size: 46px;
+        }
+        .om__slogan {
+            color: #ffffff;
+            font-weight: 500;
+        }
+    }
+    .om__hr {
+        width: 200px;
+        margin: auto;
+    }
+}

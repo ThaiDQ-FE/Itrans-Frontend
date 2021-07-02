@@ -10,7 +10,7 @@ import { getCurrentDeal, updateDeal, updateDealAccept, updateDealStatusCancel } 
 import { Switch } from 'antd';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import Swal from "sweetalert2";
-import ModalCreateDeal from "../modal-create-deal";
+import ModalConfirmDeal from "../modal-confirm-deal";
 function CurrentDeal() {
   const { TextArea } = Input;
   const dispatch = useDispatch();
@@ -327,7 +327,7 @@ function CurrentDeal() {
     <div className="cd__wrapper">
       <h4>Deal hiện tại</h4>
       <div className="cd__container">
-        <ModalCreateDeal
+        <ModalConfirmDeal
           openModal={openModal}
           closeModal={handleCloseModal}
           handleChangeValue={handleChangeEdit}

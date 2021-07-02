@@ -6,7 +6,10 @@ import { BrowserRouter, Switch } from "react-router-dom";
 import RouterGeneralTemplate from "./templates/login";
 
 function App() {
-  const userLogin = JSON.parse(localStorage.getItem("userLogin"));
+  const userLogin = JSON.parse(localStorage.getItem("userInfo"));
+  const checkRole = () => {
+    if (userLogin !== null) return userLogin.role;
+  };
   const renderMainRouter = () => {
     return mainRouter.map(({ path, exact, Component }, index) => {
       return (
@@ -49,7 +52,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        {userLogin === "admin" ? (
+        {checkRole() === "ADMIN" ? (
           <Switch>{renderAdminRouter()}</Switch>
         ) : (
           <Switch>{renderMainRouter()}</Switch>

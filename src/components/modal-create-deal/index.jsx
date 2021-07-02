@@ -1,72 +1,108 @@
 import React from "react";
-import { Button, Tooltip, Modal, Input, DatePicker } from "antd";
-import Images from "../../assets/images/images";
-import "./styles.scss";
+import { Modal, Button, Input } from "antd";
 import "antd/dist/antd.css";
+import "./styles.scss";
+import { convertNumber, getLocalStorage } from "../../assets/helper/helper";
 function ModalCreateDeal(props) {
   const { TextArea } = Input;
   return (
-    <>
-      <Modal
-        className="cfr__modal"
-        title="Basic Modal"
-        maskClosable={true}
-        footer={null}
-        closable={true}
-        destroyOnClose={true}
-        visible={props.openModal}
-        onCancel={props.closeModal}
-      >
-        <h3 style={{ textAlign: "center" }}>Xác nhận lại deal</h3>
-        <form className="cfr__form" id="cfr__form">
-          <div className="cfr__lineOne">
-            <div className="cfr__wrapperSTKG">
+    <Modal
+      className="modal__createDeal"
+      visible={props.openModal}
+      footer={null}
+      closable={true}
+      destroyOnClose={true}
+      onCancel={props.closeModal}
+    >
+      <div className="modal__wrapper">
+        <h3>Tạo DEAL</h3>
+        <div className="modal__top">
+          <div className="modal__lineOne">
+            <div className="modal__one">
+              <small>Tên tổ chức</small>
+              <Input defaultValue={getLocalStorage("nameOrg")} readOnly />
+            </div>
+            <div className="modal__two">
+              <small>Giai đoạn gọi vốn</small>
+              <Input defaultValue={getLocalStorage("stageOrg")} readOnly />
+            </div>
+          </div>
+          <div className="modal__lineTwo">
+            <div className="modal__three">
+              <small>Số tiền kêu gọi</small>
               <Input
-                id="cfr__formSTKG"
-                size="large"
-                type="number"
-                className="cfr__formSTKG"
-                addonAfter=".000.000 VNĐ"
-                placeholder="Số tiền đầu tư"
-                onChange={props.handleChangeValue}
-                name="soTienDauTu"
+                defaultValue={
+                  getLocalStorage("fundingAmount") >= 1000
+                    ? convertNumber(getLocalStorage("fundingAmount"))
+                    : getLocalStorage("fundingAmount") + ",000,000 VNĐ"
+                }
+                readOnly
               />
             </div>
-            <div className="cfr__wrapperPTCP">
+            <div className="modal__four">
+              <small>Phần trăm cổ phần</small>
               <Input
+                defaultValue={getLocalStorage("shareReq") + "%"}
+                readOnly
+              />
+            </div>
+          </div>
+          <div className="modal__lineThree">
+            <div className="modal__five">
+              <small>Mô tả</small>
+              <TextArea
+                style={{ resize: "none" }}
                 size="large"
+                rows={3}
+                defaultValue={getLocalStorage("des")}
+                readOnly
+              />
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div className="modal__bottom">
+          <div className="modal__lineFour">
+            <div className="modal__six">
+              <small>Số tiền muốn đầu tư</small>
+              <Input
                 type="number"
-                className="cfr__formPTCP"
+                addonAfter=",000,000 VNĐ"
+                name="soTienMuonDauTu"
+                onChange={props.handleChangeData}
+              />
+            </div>
+            <div className="modal__seven">
+              <small>Phần trăm cổ phần</small>
+              <Input
+                type="number"
                 addonAfter="%"
-                placeholder="Phần trăm cổ phần"
-                onChange={props.handleChangeValue}
                 name="phanTramCoPhan"
+                onChange={props.handleChangeData}
               />
             </div>
           </div>
-          <div className="cfr__lineArea">
-            <TextArea
-              className="cfr__formMT"
-              size="large"
-              rows={5}
-              placeholder="Mô tả"
-              onChange={props.handleChangeValue}
-              name="moTa"
-            />
+          <div className="modal__lineFive">
+            <div className="modal__eight">
+              <small>Mô tả</small>
+              <TextArea
+                style={{ resize: "none" }}
+                size="large"
+                rows={3}
+                name="moTa"
+                onChange={props.handleChangeData}
+              />
+            </div>
           </div>
-          <div className="cfr__submitForm">
-            <Button
-              onClick={props.handleCreateDealForm}
-              className="cfr__sfTao"
-              type="primary"
-              size="large"
-            >
-              Xác nhận
-            </Button>
-          </div>
-        </form>
-      </Modal>
-    </>
+        </div>
+        <div className="modal__button">
+          <Button type="primary" onClick={props.handleClickButton}>
+            Tạo deal
+          </Button>
+        </div>
+      </div>
+    </Modal>
   );
 }
+
 export default ModalCreateDeal;

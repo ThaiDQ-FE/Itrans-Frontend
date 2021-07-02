@@ -3,8 +3,11 @@ import Login from "../pages/general/login";
 import Register from "../pages/general/register";
 import AccountManagement from "../pages/main/account-management";
 import DealManagement from "../pages/main/deal-management";
+import FundingRound from "../pages/main/funding-round";
 import FundraisingManagement from "../pages/main/fundraising-management";
 import UserHome from "../pages/main/home";
+import InvestorManagement from "../pages/main/investor-management";
+import OrganizationManagement from "../pages/main/organization-management";
 import TimeManagement from "../pages/main/time-management";
 
 export const mainRouter = [
@@ -32,6 +35,21 @@ export const mainRouter = [
     path: "/quan-ly-vong-goi-von",
     exact: false,
     Component: FundraisingManagement,
+  },
+  {
+    path: "/vong-goi-von",
+    exact: false,
+    Component: FundingRound,
+  },
+  {
+    path: "/to-chuc",
+    exact: false,
+    Component: OrganizationManagement,
+  },
+  {
+    path: "/nha-dau-tu",
+    exact: false,
+    Component: InvestorManagement,
   },
 ];
 

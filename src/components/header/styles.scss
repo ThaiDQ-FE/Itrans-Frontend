@@ -5,7 +5,7 @@
     display: flex;
     justify-content: space-between;
     box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.3);
-    z-index: 1000;
+    z-index: 1100;
     position: fixed;
     top: 0;
     font-family: "Montserrat", sans-serif;
@@ -19,6 +19,7 @@
             margin-left: 60px;
         }
     }
+
     .header__features {
         width: 50%;
         height: 100%;
@@ -36,6 +37,14 @@
             .header__features__li {
                 margin: auto;
                 font-size: 16px;
+                .header__vgv,
+                .header__trangchu {
+                    text-decoration: none;
+                    color: #ffffff;
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
             }
         }
     }
@@ -126,4 +135,11 @@
 }
 .header__hr {
     margin: 3px 5px;
+}
+.menu__navbar {
+    .MuiPopover-paper {
+        top: 8% !important;
+        left: unset !important;
+        right: 3% !important;
+    }
 }
