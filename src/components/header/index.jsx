@@ -50,10 +50,11 @@ function Header({ history }) {
             <NavLink
               activeClassName="active-nav-link-header"
               className="header__vgv"
-              to="/to-chuc"
+              to="/nha-dau-tu"
               exact={true}
-            ></NavLink>
-            Nhà đầu tư
+            >
+              Nhà đầu tư
+            </NavLink>
           </li>
           <li className="header__features__li">
             <NavLink
