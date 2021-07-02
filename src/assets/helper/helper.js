@@ -27,25 +27,23 @@ export const showMessage = (icon, mess) => {
     timer: 2000,
   });
 };
-export const showMessageWithConfirm = (
-  icon,
-  mess,
-  confirm,
-  cancel,
-  textConfirm,
-  textCancel
-) => {
+export const showMessageWithConfirm = (icon, mess, action) => {
   return Swal.fire({
     icon: icon,
     title: mess,
     heightAuto: true,
     timerProgressBar: false,
-    showConfirmButton: confirm,
-    showCancelButton: cancel,
-    confirmButtonText: textConfirm,
-    cancelButtonText: textCancel,
-    confirmButtonColor: "#FF8412",
-    cancelButtonColor: "#FC0F0F",
+    showConfirmButton: true,
+    showCancelButton: true,
+    confirmButtonText: "Đồng ý",
+    cancelButtonText: "Hủy",
+    confirmButtonColor: "#1890ff",
+    cancelButtonColor: "red",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      return action;
+    } else {
+    }
   });
 };
 

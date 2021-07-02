@@ -24,6 +24,7 @@ import ModalCreateRound from "../modal-create-round";
 import axios from "axios";
 import ModalAcceptDeal from "../modal-accept-deal";
 import { getListDealByIdOrganization } from "../../store/action/deal.action";
+import message from "../../assets/message/text";
 function CurrentFundingRound() {
   const { TextArea } = Input;
   // declare dispatch
@@ -65,7 +66,21 @@ function CurrentFundingRound() {
   var formatEndDate = moment(endDate).format("DD-MM-YYYY");
   const dateFormat = "DD/MM/YYYY";
   // declare rule
-  const test = "ở đây chúng ta sẽ định nghĩa rule";
+  const arrayRule = [
+    message.MODAL_ROUND_R1,
+    message.MODAL_ROUND_R2,
+    message.MODAL_ROUND_R3,
+    message.MODAL_ROUND_R4,
+    message.MODAL_ROUND_R5,
+    message.MODAL_ROUND_R6,
+  ];
+  const renderListRule = () => {
+    // eslint-disable-next-line array-callback-return
+    return arrayRule.map((item) => {
+      return <ul style={{ listStyleType: "upper-roman" }}>{item}</ul>;
+    });
+  };
+  const test = renderListRule();
   // check type of round
   const checkRound = () => {
     let round;
@@ -123,7 +138,7 @@ function CurrentFundingRound() {
             timerProgressBar: false,
             showConfirmButton: true,
             confirmButtonText: "Đồng ý",
-            confirmButtonColor: "#ff8412",
+            confirmButtonColor: "#1890ff",
           }).then(async (result) => {
             if (result.isConfirmed) {
               setOpenModal(false);
@@ -146,24 +161,12 @@ function CurrentFundingRound() {
       },
     })
       .then((res) => {
-        console.log(res);
         if (res.status === 202) {
           showMessage("error", res.data);
         } else if (res.status === 200) {
-          Swal.fire({
-            icon: "success",
-            title: "Cập nhật vòng gọi vốn thành công",
-            heightAuto: true,
-            timerProgressBar: false,
-            showConfirmButton: true,
-            confirmButtonText: "Đồng ý",
-            confirmButtonColor: "#ff8412",
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              setEdit(false);
-              dispatch(getListRoundActiveByIdOrganization(id));
-            }
-          });
+          showMessage("success", "Cập nhật vòng gọi vốn thành công");
+          setEdit(false);
+          dispatch(getListRoundActiveByIdOrganization(id));
         }
       })
       .catch((err) => {
@@ -467,27 +470,34 @@ function CurrentFundingRound() {
   };
   const handleCreateRoundForm = (e) => {
     e.preventDefault();
-    handleSTKGBlur();
-    handlePTCPBlur();
-    handleBlurStartDate();
-    handleBlurEndDate();
-    if (
-      STKGE === "" &&
-      PTCPE === "" &&
-      startDateE === "" &&
-      endDateE === "" &&
-      form.soTienKeuGoi !== "" &&
-      form.phanTramCoPhan !== ""
-    ) {
-      postRound(
-        checkEmailUser(),
-        parseInt(form.soTienKeuGoi),
-        parseInt(form.phanTramCoPhan),
-        form.moTa,
-        formatStartDate,
-        formatEndDate
-      );
+    let convertInt = parseInt(form.soTienKeuGoi);
+    let convertFloat = parseFloat(form.phanTramCoPhan);
+    if (isNaN(convertInt)) {
+      return showMessage("error", message.MODAL_STKG_NULL);
+    } else if (convertInt < 1) {
+      return showMessage("error", message.MODAL_STKG_AM);
     }
+    if (isNaN(convertFloat)) {
+      return showMessage("error", message.MODAL_PTCP_NULL);
+    } else if (convertFloat < 0.1 || convertFloat > 100) {
+      return showMessage("error", message.MODAL_PTCP_RANGE);
+    } else if (countDecimals(convertFloat) > 2) {
+      return showMessage("error", message.MODAL_PTCP_DECIMALS);
+    }
+    if (startDate === null || startDate === undefined || startDate === "") {
+      return showMessage("error", message.MODAL_STARTDATE);
+    }
+    if (endDate === null || endDate === undefined || endDate === "") {
+      return showMessage("error", message.MODAL_ENDDATE);
+    }
+    postRound(
+      checkEmailUser(),
+      parseInt(form.soTienKeuGoi),
+      parseInt(form.phanTramCoPhan),
+      form.moTa,
+      formatStartDate,
+      formatEndDate
+    );
   };
   const handleChangeValue = (event) => {
     const { value, name } = event.target;
@@ -495,42 +505,6 @@ function CurrentFundingRound() {
       ...form,
       [name]: value,
     });
-  };
-  const handleSTKGBlur = () => {
-    let convertInt = parseInt(form.soTienKeuGoi);
-    if (isNaN(convertInt)) {
-      return setSTKGE("Số tiền kêu gọi không được trống");
-    } else if (convertInt < 1) {
-      return setSTKGE("Số tiền kêu gọi phải >= 1.000.000 VNĐ");
-    } else {
-      return setSTKGE("");
-    }
-  };
-  const handlePTCPBlur = () => {
-    let convertFloat = parseFloat(form.phanTramCoPhan);
-    if (isNaN(convertFloat)) {
-      return setPTCPE("Phần trăm cổ phần không được trống");
-    } else if (convertFloat < 0.1 || convertFloat > 100) {
-      return setPTCPE("Phần trăm cổ phần phải từ [0.1-100]");
-    } else if (countDecimals(convertFloat) > 2) {
-      return setPTCPE("Định dạng (VD: 45.25)");
-    } else {
-      return setPTCPE("");
-    }
-  };
-  const handleBlurStartDate = () => {
-    if (startDate === null || startDate === undefined || startDate === "") {
-      return setStartDateE("Ngày gọi vốn không được bỏ trống");
-    } else {
-      return setStartDateE("");
-    }
-  };
-  const handleBlurEndDate = () => {
-    if (endDate === null || endDate === undefined || endDate === "") {
-      return setEndDateE("Ngày kết thúc không được bỏ trống");
-    } else {
-      return setEndDateE("");
-    }
   };
   const handleCancelEdit = () => {
     setEdit(false);
@@ -570,7 +544,22 @@ function CurrentFundingRound() {
         endDate: dataRound.ngayKetThuc,
         id: dataRound.id,
       };
-      return putRound(object);
+      Swal.fire({
+        icon: "warning",
+        title: "Bạn chắc chắn muốn cập nhật?",
+        heightAuto: true,
+        timerProgressBar: false,
+        showConfirmButton: true,
+        confirmButtonText: "Đồng ý",
+        confirmButtonColor: "#1890ff",
+        showCancelButton: true,
+        cancelButtonColor: "red",
+        cancelButtonText: "Hủy",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          return putRound(object);
+        }
+      });
     } else if (formatEndDate !== "Invalid date") {
       const object = {
         fundingAmount: parseSTKG,
@@ -580,7 +569,22 @@ function CurrentFundingRound() {
         endDate: formatEndDate,
         id: dataRound.id,
       };
-      return putRound(object);
+      Swal.fire({
+        icon: "warning",
+        title: "Bạn chắc chắn muốn cập nhật?",
+        heightAuto: true,
+        timerProgressBar: false,
+        showConfirmButton: true,
+        confirmButtonText: "Đồng ý",
+        confirmButtonColor: "#1890ff",
+        showCancelButton: true,
+        cancelButtonColor: "red",
+        cancelButtonText: "Hủy",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          return putRound(object);
+        }
+      });
     }
   };
 
@@ -774,19 +778,15 @@ function CurrentFundingRound() {
       <ModalCreateRound
         openModal={openModal}
         closeModal={handleCloseModal}
-        handleSTKGBlur={handleSTKGBlur}
         handleChangeValue={handleChangeValue}
         STKGE={STKGE}
-        handlePTCPBlur={handlePTCPBlur}
         PTCPE={PTCPE}
         startDate={startDate}
         setStartDate={setStartDate}
-        handleBlurStartDate={handleBlurStartDate}
         dateFormat={dateFormat}
         startDateE={startDateE}
         endDate={endDate}
         setEndDate={setEndDate}
-        handleBlurEndDate={handleBlurEndDate}
         endDateE={endDateE}
         test={test}
         handleCreateRoundForm={handleCreateRoundForm}

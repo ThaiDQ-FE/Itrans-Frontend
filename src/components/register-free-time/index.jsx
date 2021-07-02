@@ -119,19 +119,9 @@ function RegisterFreeTime() {
           if (res.status === 202) {
             showMessage("error", res.data);
           } else if (res.status === 201) {
-            Swal.fire({
-              icon: "success",
-              title: "Đăng ký thời gian rãnh thành công",
-              heightAuto: true,
-              timerProgressBar: false,
-              showConfirmButton: true,
-              confirmButtonText: "Đồng ý",
-            }).then(async (result) => {
-              if (result.isConfirmed) {
-                setFreeTime([]);
-                handleResetAPI();
-              }
-            });
+            showMessage("success", "Đăng ký thời gian rãnh thành công");
+            setFreeTime([]);
+            handleResetAPI();
           }
         })
         .catch((err) => {
@@ -217,6 +207,7 @@ function RegisterFreeTime() {
               </div>
               <div className="rft__button">
                 <Button
+                  type="primary"
                   disabled={date === undefined || time === undefined}
                   onClick={handleClickThem}
                 >
@@ -247,7 +238,9 @@ function RegisterFreeTime() {
               </ul>
               <div className="rft__buttonUl">
                 {freeTime.length > 0 ? (
-                  <Button onClick={handleSubmit}>Xác nhận</Button>
+                  <Button type="primary" onClick={handleSubmit}>
+                    Xác nhận
+                  </Button>
                 ) : (
                   ""
                 )}

@@ -17,6 +17,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { getAllRoundsActive } from "../../store/action/round.action";
+import message from "../../assets/message/text";
 function FundingRoundComponent(props) {
   const { listAllRoundActive } = useSelector((state) => state.round);
   const { loading } = useSelector((state) => state.loading);
@@ -120,29 +121,15 @@ function FundingRoundComponent(props) {
     const parseSTMDT = parseInt(data.soTienMuonDauTu);
     const parsePTCP = parseFloat(data.phanTramCoPhan);
     if (data.soTienMuonDauTu === "") {
-      return showMessage("error", "Số tiền muốn đầu tư không được bỏ trống");
-    } else if (parseSTMDT % 1 !== 0) {
-      return showMessage(
-        "error",
-        "Số tiền muốn đầu tư phải là số nguyên dương"
-      );
-    } else if (data.phanTramCoPhan === "") {
-      return showMessage("error", "Phần trăm cổ phần không được bỏ trống");
+      return showMessage("error", message.MODAL_CD_STMDT_NULL);
     } else if (parseSTMDT < 1) {
-      return showMessage(
-        "error",
-        "Số tiền muốn đầu tư tối thiểu là 1,000,000 VNĐ"
-      );
+      return showMessage("error", message.MODAL_CD_STMDT_AM);
+    } else if (data.phanTramCoPhan === "") {
+      return showMessage("error", message.MODAL_CD_PTCP_NULL);
     } else if (parsePTCP < 0.1 || parsePTCP > 100) {
-      return showMessage(
-        "error",
-        "Phần trăm cố phần phải nằm trong khoảng [0.1 - 100]"
-      );
+      return showMessage("error", message.MODAL_CD_PTCP_RANGE);
     } else if (countDecimals(parsePTCP) > 2) {
-      return showMessage(
-        "error",
-        "Phần trăm cổ phần phải đúng định dạng [VD: 25.25]"
-      );
+      return showMessage("error", message.MOADL_CD_PTCP_DECIMALS);
     } else {
       Swal.fire({
         icon: "warning",

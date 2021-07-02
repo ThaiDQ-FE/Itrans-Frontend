@@ -58,7 +58,7 @@ function PendingFundingRound() {
       cancelButtonText: "Hủy",
       cancelButtonColor: "red",
       confirmButtonText: "Đồng ý",
-      confirmButtonColor: "#2ecc71",
+      confirmButtonColor: "#1890ff",
     }).then(async (result) => {
       if (result.isConfirmed) {
         const object = { id: round.idRound, status: "Hủy" };
@@ -103,20 +103,9 @@ function PendingFundingRound() {
         if (res.status === 202) {
           showMessage("error", res.data);
         } else if (res.status === 200) {
-          Swal.fire({
-            icon: "success",
-            title: "Cập nhật vòng gọi vốn thành công",
-            heightAuto: true,
-            timerProgressBar: false,
-            showConfirmButton: true,
-            confirmButtonText: "Đồng ý",
-            confirmButtonColor: "#2ecc71",
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              setEdit(false);
-              dispatch(getListRoundPendingByIdOrganization(id));
-            }
-          });
+          showMessage("success", "Cập nhật vòng gọi vốn thành công");
+          setEdit(false);
+          dispatch(getListRoundPendingByIdOrganization(id));
         }
       })
       .catch((err) => {});
@@ -152,7 +141,22 @@ function PendingFundingRound() {
         endDate: dataRound.ngayKetThuc,
         id: dataRound.id,
       };
-      return putRound(object);
+      Swal.fire({
+        icon: "warning",
+        title: "Bạn chắc chắn muốn cập nhật?",
+        heightAuto: true,
+        timerProgressBar: false,
+        showConfirmButton: true,
+        confirmButtonText: "Đồng ý",
+        confirmButtonColor: "#1890ff",
+        showCancelButton: true,
+        cancelButtonColor: "red",
+        cancelButtonText: "Hủy",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          return putRound(object);
+        }
+      });
     } else if (
       formatStartDate !== "Invalid date" &&
       formatEndDate === "Invalid date"
@@ -167,7 +171,22 @@ function PendingFundingRound() {
         endDate: dataRound.ngayKetThuc,
         id: dataRound.id,
       };
-      return putRound(object);
+      Swal.fire({
+        icon: "warning",
+        title: "Bạn chắc chắn muốn cập nhật?",
+        heightAuto: true,
+        timerProgressBar: false,
+        showConfirmButton: true,
+        confirmButtonText: "Đồng ý",
+        confirmButtonColor: "#1890ff",
+        showCancelButton: true,
+        cancelButtonColor: "red",
+        cancelButtonText: "Hủy",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          return putRound(object);
+        }
+      });
     } else if (
       formatStartDate === "Invalid date" &&
       formatEndDate !== "Invalid date"
@@ -180,7 +199,22 @@ function PendingFundingRound() {
         endDate: formatEndDate,
         id: dataRound.id,
       };
-      return putRound(object);
+      Swal.fire({
+        icon: "warning",
+        title: "Bạn chắc chắn muốn cập nhật?",
+        heightAuto: true,
+        timerProgressBar: false,
+        showConfirmButton: true,
+        confirmButtonText: "Đồng ý",
+        confirmButtonColor: "#1890ff",
+        showCancelButton: true,
+        cancelButtonColor: "red",
+        cancelButtonText: "Hủy",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          return putRound(object);
+        }
+      });
     } else if (
       formatStartDate !== "Invalid date" &&
       formatEndDate !== "Invalid date"
@@ -193,7 +227,22 @@ function PendingFundingRound() {
         endDate: formatEndDate,
         id: dataRound.id,
       };
-      return putRound(object);
+      Swal.fire({
+        icon: "warning",
+        title: "Bạn chắc chắn muốn cập nhật?",
+        heightAuto: true,
+        timerProgressBar: false,
+        showConfirmButton: true,
+        confirmButtonText: "Đồng ý",
+        confirmButtonColor: "#1890ff",
+        showCancelButton: true,
+        cancelButtonColor: "red",
+        cancelButtonText: "Hủy",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          return putRound(object);
+        }
+      });
     }
   };
   const columns = [

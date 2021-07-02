@@ -28,7 +28,6 @@ function ModalCreateRound(props) {
                 className="cfr__formSTKG"
                 addonAfter=".000.000 VNĐ"
                 placeholder="Số tiền kêu gọi"
-                onBlur={props.handleSTKGBlur}
                 onChange={props.handleChangeValue}
                 name="soTienKeuGoi"
               />
@@ -45,7 +44,6 @@ function ModalCreateRound(props) {
                 className="cfr__formPTCP"
                 addonAfter="%"
                 placeholder="Phần trăm cổ phần"
-                onBlur={props.handlePTCPBlur}
                 onChange={props.handleChangeValue}
                 name="phanTramCoPhan"
               />
@@ -71,7 +69,6 @@ function ModalCreateRound(props) {
               <DatePicker
                 value={props.startDate}
                 onChange={props.setStartDate}
-                onBlur={props.handleBlurStartDate}
                 className="cfr__dpngv"
                 dropdownClassName="cfr__dpngvdrop"
                 placeholder="Ngày gọi vốn"
@@ -89,7 +86,6 @@ function ModalCreateRound(props) {
                 className="cfr__dpnkt"
                 value={props.endDate}
                 onChange={props.setEndDate}
-                onBlur={props.handleBlurEndDate}
                 dropdownClassName="cfr__dpnktdrop"
                 placeholder="Ngày kết thúc"
                 size="large"
@@ -102,7 +98,11 @@ function ModalCreateRound(props) {
               )}
             </div>
             <div className="cfr__warningSign">
-              <Tooltip placement="topRight" title={props.test}>
+              <Tooltip
+                overlayClassName="cfr__tooltip"
+                placement="topRight"
+                title={props.test}
+              >
                 <img src={Images.WARNING} alt="warning" />
               </Tooltip>
             </div>
