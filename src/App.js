@@ -7,6 +7,7 @@ import RouterGeneralTemplate from "./templates/login";
 
 function App() {
   const userLogin = JSON.parse(localStorage.getItem("userInfo"));
+  console.log(userLogin);
   const checkRole = () => {
     if (userLogin !== null) return userLogin.role;
   };
@@ -52,11 +53,8 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        {checkRole() === "ADMIN" ? (
-          <Switch>{renderAdminRouter()}</Switch>
-        ) : (
-          <Switch>{renderMainRouter()}</Switch>
-        )}
+        <Switch>{renderAdminRouter()}</Switch>
+        <Switch>{renderMainRouter()}</Switch>
         <Switch>{renderGeneralRouter()}</Switch>
       </BrowserRouter>
     </>

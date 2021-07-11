@@ -63,7 +63,6 @@ export const getOrganizationFilter = (
         dispatch(getOrganizationFilterSuccess(res.data));
       })
       .catch((err) => {
-        console.log(err);
         dispatch(stopLoading());
         dispatch(getOrganizationFilterFailed(err));
       });

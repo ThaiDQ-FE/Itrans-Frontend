@@ -161,8 +161,6 @@ function PendingFundingRound() {
       formatStartDate !== "Invalid date" &&
       formatEndDate === "Invalid date"
     ) {
-      console.log(formatStartDate);
-      console.log(dataRound.endDate);
       const object = {
         fundingAmount: parseSTKG,
         shareRequirement: parsePTCP,

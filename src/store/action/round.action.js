@@ -4,11 +4,16 @@ import {
   checkIdUser,
   showMessage,
 } from "../../assets/helper/helper";
+import { defaultUrlAPIStringTemplate } from "../../configs/url";
 import {
   GET_ALL_LIST_ROUND_ACCTIVE_FAILED,
   GET_ALL_LIST_ROUND_ACTIVE_SUCCESS,
   GET_LIST_ROUND_ACTIVE_BY_ID_ORGANIZATION_FAILED,
   GET_LIST_ROUND_ACTIVE_BY_ID_ORGANIZATION_SUCCESS,
+  GET_LIST_ROUND_BY_ID_INVESTOR_FAILED,
+  GET_LIST_ROUND_BY_ID_INVESTOR_SUCCESS,
+  GET_LIST_ROUND_BY_ID_ORGANIZATION_FAILED,
+  GET_LIST_ROUND_BY_ID_ORGANIZATION_SUCCESS,
   GET_LIST_ROUND_PASS_BY_ID_ORGANIZATION_FAILED,
   GET_LIST_ROUND_PASS_BY_ID_ORGANIZATION_SUCCESS,
   GET_LIST_ROUND_PENDING_BY_ID_ORGANIZATION_FAILED,
@@ -242,6 +247,86 @@ export const getAllRoundsActiveSuccess = (listRoundsActive) => {
 export const getAllRoundsActiveFailed = (err) => {
   return {
     type: GET_ALL_LIST_ROUND_ACCTIVE_FAILED,
+    payload: err,
+  };
+};
+// v2
+export const getListRoundByIdInvestor = (id) => {
+  return (dispatch) => {
+    dispatch(startLoading());
+    axios({
+      method: "GET",
+      url: defaultUrlAPIStringTemplate() + `round/get-rounds-by-investor/${id}`,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        dispatch(stopLoading());
+        if (res.status === 200) {
+          dispatch(getListRoundByIdInvestorSuccess(res.data));
+        } else {
+          dispatch(getListRoundByIdInvestorFailed(res));
+        }
+      })
+      .catch((err) => {
+        dispatch(stopLoading());
+        dispatch(getListRoundByIdInvestorFailed(err));
+      });
+  };
+};
+
+export const getListRoundByIdInvestorSuccess = (listRound) => {
+  return {
+    type: GET_LIST_ROUND_BY_ID_INVESTOR_SUCCESS,
+    payload: listRound,
+  };
+};
+
+export const getListRoundByIdInvestorFailed = (err) => {
+  return {
+    type: GET_LIST_ROUND_BY_ID_INVESTOR_FAILED,
+    payload: err,
+  };
+};
+
+export const getListRoundByIdOrganization = (id) => {
+  return (dispatch) => {
+    dispatch(startLoading());
+    axios({
+      method: "GET",
+      url:
+        defaultUrlAPIStringTemplate() +
+        `round/get-rounds-by-organization/${id}`,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        dispatch(stopLoading());
+        if (res.status === 200) {
+          dispatch(getListRoundByIdOrganizationSuccess(res.data));
+        } else {
+          dispatch(getListRoundByIdOrganizationFailed(res));
+        }
+      })
+      .catch((err) => {
+        dispatch(stopLoading());
+        dispatch(getListRoundByIdOrganizationFailed(err));
+      });
+  };
+};
+
+export const getListRoundByIdOrganizationSuccess = (listRound) => {
+  return {
+    type: GET_LIST_ROUND_BY_ID_ORGANIZATION_SUCCESS,
+    payload: listRound,
+  };
+};
+
+export const getListRoundByIdOrganizationFailed = (err) => {
+  return {
+    type: GET_LIST_ROUND_BY_ID_ORGANIZATION_FAILED,
     payload: err,
   };
 };

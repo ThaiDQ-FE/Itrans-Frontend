@@ -125,7 +125,7 @@ function RegisterFreeTime() {
           }
         })
         .catch((err) => {
-          showMessage("error", "Đăng ký thời gian rãnh thất bại");
+          showMessage("error", message.CACTH_ERROR);
         });
     };
   };
@@ -168,7 +168,6 @@ function RegisterFreeTime() {
   }
   function dateCellRender(value) {
     const listData = getListData(value);
-    console.log(listData);
     return (
       <ul className="events">
         {listData.map((item) => (

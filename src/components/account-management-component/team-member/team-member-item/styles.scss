@@ -1,0 +1,28 @@
+.tm__link {
+    text-decoration: none;
+    .tm__img {
+        width: 100%;
+        height: 167.5px;
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .tm__name {
+        text-align: center;
+        p {
+            color: black;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 0;
+            margin-top: 10px;
+        }
+    }
+    .tm__position {
+        text-align: center;
+        p {
+            color: #ff8412;
+            margin-bottom: 0;
+        }
+    }
+}

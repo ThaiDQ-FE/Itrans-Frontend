@@ -5,7 +5,7 @@ import logo from "../../assets/images/logo-grey.png";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Images from "../../assets/images/images";
-import { checkRoleUser } from "../../assets/helper/helper";
+import { checkRoleUser, getLocalStorage } from "../../assets/helper/helper";
 function Header({ history }) {
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const [openMenu, setOpenMenu] = useState(null);
@@ -20,6 +20,38 @@ function Header({ history }) {
     setOpenMenu(null);
     localStorage.removeItem("userInfo");
     history.push("/dang-nhap");
+  };
+  const renderTabs = () => {
+    const userLogin = getLocalStorage("userInfo");
+    if (userLogin !== null) {
+      if (userLogin.role === "INVESTOR") {
+        return (
+          <li className="header__features__li">
+            <NavLink
+              activeClassName="active-nav-link-header"
+              className="header__vgv"
+              to="/nha-dau-tu"
+              exact={true}
+            >
+              Nhà đầu tư
+            </NavLink>
+          </li>
+        );
+      } else if (userLogin.role === "ORGANIZATION") {
+        return (
+          <li className="header__features__li">
+            <NavLink
+              activeClassName="active-nav-link-header"
+              className="header__vgv"
+              to="/to-chuc"
+              exact={true}
+            >
+              Tổ chức
+            </NavLink>
+          </li>
+        );
+      }
+    }
   };
 
   return (
@@ -46,26 +78,8 @@ function Header({ history }) {
               Trang chủ
             </NavLink>
           </li>
-          <li className="header__features__li">
-            <NavLink
-              activeClassName="active-nav-link-header"
-              className="header__vgv"
-              to="/nha-dau-tu"
-              exact={true}
-            >
-              Nhà đầu tư
-            </NavLink>
-          </li>
-          <li className="header__features__li">
-            <NavLink
-              activeClassName="active-nav-link-header"
-              className="header__vgv"
-              to="/to-chuc"
-              exact={true}
-            >
-              Tổ chức
-            </NavLink>
-          </li>
+
+          {renderTabs()}
           <li className="header__features__li">
             <NavLink
               activeClassName="active-nav-link-header"

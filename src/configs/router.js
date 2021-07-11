@@ -55,7 +55,7 @@ export const mainRouter = [
 
 export const adminRouter = [
   {
-    path: "/",
+    path: "/admin",
     exact: true,
     Component: AdminHome,
   },

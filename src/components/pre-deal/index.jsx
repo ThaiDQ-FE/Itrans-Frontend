@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Input,Tooltip } from "antd";
+import { Table, Input, Tooltip } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import "./styles.scss";
@@ -11,35 +11,42 @@ function PreviousDeal() {
   const [dataDeal, setDataDeal] = useState({
     soTienDauTu: "",
     phanTramCoPhan: "",
-    moTa: ""
+    moTa: "",
   });
-  
+
   const expandedRowRender = (record, index) => {
     const columns = [
       {
-        title: "Tên nhà đầu tư", dataIndex: "nameInvestor", key: "nameInvestor", render: (value, round) => (
+        title: "Tên nhà đầu tư",
+        dataIndex: "nameInvestor",
+        key: "nameInvestor",
+        render: (value, round) => (
           <>
-            <img id='src' src={round.logoInvestor} alt="&nbsp;" />
+            <img id="src" src={round.logoInvestor} alt="&nbsp;" />
             <span>{value}</span>
           </>
         ),
       },
       {
-        title: "Số tiền muốn đầu tư", dataIndex: "capitalInvestment", key: "capitalInvestment",
+        title: "Số tiền muốn đầu tư",
+        dataIndex: "capitalInvestment",
+        key: "capitalInvestment",
       },
       {
-        title: "Phần trăm cổ phần", dataIndex: "dealShareRequirement", key: "dealShareRequirement",
+        title: "Phần trăm cổ phần",
+        dataIndex: "dealShareRequirement",
+        key: "dealShareRequirement",
       },
       { title: "Ngày đăng", dataIndex: "createAt", key: "createAt" },
       {
-        dataIndex: "dealDescription", key: "dealDescription", title: "Mô tả",
-       
-      }
+        dataIndex: "dealDescription",
+        key: "dealDescription",
+        title: "Mô tả",
+      },
     ];
     const data = listDealDone.filter(
       (deal) => deal.idRound === record.idRound && deal.status !== "REJECT"
     );
-    console.log(data);
     return (
       <Table
         columns={columns}
@@ -52,16 +59,27 @@ function PreviousDeal() {
   };
   const columns = [
     {
-      title: "Tên doanh nghiệp", dataIndex: "nameOrganization", key: "nameOrganization", render: (value, round) => (
+      title: "Tên doanh nghiệp",
+      dataIndex: "nameOrganization",
+      key: "nameOrganization",
+      render: (value, round) => (
         <>
-          <img id='src' src={round.logoOrganization} alt="&nbsp;" />
+          <img id="src" src={round.logoOrganization} alt="&nbsp;" />
           <span>{value}</span>
         </>
       ),
     },
     { title: "Giai đoạn gọi vốn", dataIndex: "stage", key: "stage" },
-    { title: "Số tiền kiêu gọi", dataIndex: "fundingAmount", key: "fundingAmount" },
-    { title: "Phần trăm cổ phần", dataIndex: "roundShareRequirement", key: "roundShareRequirement" },
+    {
+      title: "Số tiền kiêu gọi",
+      dataIndex: "fundingAmount",
+      key: "fundingAmount",
+    },
+    {
+      title: "Phần trăm cổ phần",
+      dataIndex: "roundShareRequirement",
+      key: "roundShareRequirement",
+    },
     { title: "Mô tả", dataIndex: "roundDescription", key: "roundDescription" },
     { title: "Ngày gọi", dataIndex: "startDate", key: "startDate" },
     { title: "Ngày kết thúc", dataIndex: "endDate", key: "endDate" },

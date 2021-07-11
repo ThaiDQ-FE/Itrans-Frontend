@@ -38,9 +38,15 @@ export const postCheckLogin = (gmail, password, history) => {
                 showConfirmButton: false,
                 timer: 2000,
               });
-              setTimeout(() => {
-                history.push("/");
-              }, 2000);
+              if (res.data.role === "ADMIN") {
+                setTimeout(() => {
+                  history.push("/admin");
+                }, 2000);
+              } else {
+                setTimeout(() => {
+                  history.push("/");
+                }, 2000);
+              }
             })
             .catch((err) => {
               dispatch(postLoginFailed(err));

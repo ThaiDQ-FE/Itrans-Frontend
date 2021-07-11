@@ -169,9 +169,7 @@ function CurrentFundingRound() {
           dispatch(getListRoundActiveByIdOrganization(id));
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
   // call api accept deal
   const postAcceptDeal = (object) => {

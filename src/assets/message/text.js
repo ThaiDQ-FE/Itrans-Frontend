@@ -96,6 +96,8 @@ const message = {
   MODAL_CD_PTCP_NULL: "Phần trăm cổ phần không được bỏ trống",
   MODAL_CD_PTCP_RANGE: "Phần trăm cổ phần phải từ [0.1-100]",
   MOADL_CD_PTCP_DECIMALS: "Phần trăm cổ phần có tối đa 2 số ở phần thập phân",
+  // Error
+  CACTH_ERROR: "Máy chủ đang bị lỗi. Hãy thử lại sau",
 };
 
 export default message;
