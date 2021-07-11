@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 
+import "./styles.scss";
 function AdminHome() {
-  return <div>admin home</div>;
+  
+  return (
+    <><a>admin</a>
+    </>
+  )
 }
 export default AdminHome;

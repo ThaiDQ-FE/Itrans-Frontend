@@ -52,11 +52,8 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        {checkRole() === "ADMIN" ? (
-          <Switch>{renderAdminRouter()}</Switch>
-        ) : (
-          <Switch>{renderMainRouter()}</Switch>
-        )}
+        <Switch>{renderAdminRouter()}</Switch>
+        <Switch>{renderMainRouter()}</Switch>
         <Switch>{renderGeneralRouter()}</Switch>
       </BrowserRouter>
     </>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -12,7 +12,13 @@ import FormInformationAboutTheOrganization from "../../../components/form-iatorg
 import FormMember from "../../../components/form-member";
 import FormAngelInvestorInformation from "../../../components/form-angelInvestor";
 import FormInvestor from "../../../components/form-investor";
+import { getListInvestorType } from "../../../store/action/register.action";
+import { useDispatch, useSelector } from "react-redux";
 function Register() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getListInvestorType());
+  }, []);
   const themeOrganization = createMuiTheme({
     overrides: {
       MuiStep: {
@@ -99,14 +105,9 @@ function Register() {
         Messages.ORGANIZATION_STEP_2,
         Messages.ORGANIZATION_STEP_3,
       ];
-    } else if (subRole === "NHA_DAU_TU_THIEN_THAN") {
+    } else if (subRole === "Nhà đầu tư thiên thần") {
       return [Messages.GENERAL_STEP_1, Messages.INVESTOR_INFORMATION];
-    } else if (
-      subRole === "NHA_DAU_TU_MAO_HIEM" ||
-      subRole === "VUON_UOM_DOANH_NGHIEP" ||
-      subRole === "QUY_DAU_TU_TU_NHAN" ||
-      subRole === "NHA_TANG_TOC_KHOI_NGHIEP"
-    ) {
+    } else {
       return [
         Messages.GENERAL_STEP_1,
         Messages.INVESTOR_INFORMATION,
@@ -136,7 +137,7 @@ function Register() {
             );
           case "":
             switch (subRole) {
-              case "NHA_DAU_TU_THIEN_THAN":
+              case "Nhà đầu tư thiên thần":
                 return <FormAngelInvestorInformation handleBack={handleBack} />;
 
               default:

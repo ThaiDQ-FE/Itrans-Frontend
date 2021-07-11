@@ -1,13 +1,14 @@
 import React from "react";
 import { Route } from "react-router-dom";
+import SideBar from "../../components/side-bar"
+import Images from "../../assets/images/images";
 function AdminTemplate(props) {
   return (
-    <>
-      <header>header admin</header>
-      <main>
-        <section>{props.children}</section>
-      </main>
-    </>
+    <div className="admin-wrapper" style={{ display: "flex" }}>
+      <SideBar />
+      <section>{props.children}</section>
+      <img style={{ width: 50, height: 50, float: "left", marginTop: 5 }} src={Images.USER_AVATA} />
+    </div>
   );
 }
 const RouterAdminTemplate = ({ path, exact, Component }) => {

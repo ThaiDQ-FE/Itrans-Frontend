@@ -309,10 +309,11 @@ function CurrentDeal() {
   };
   const columns = [
     {
-      title: "Tên doanh nghiệp", dataIndex: "nameOrganization", key: "nameOrganization", render: (value, round) => (
+      title: "Tên doanh nghiệp", dataIndex: "nameOrganization", key: "nameOrganization", render: (value1, round,e) => (
         <>
+          {console.log(e)}
           <img id='src' src={round.logoOrganization} alt="&nbsp;" />
-          <span>{value}</span>
+          <span>{value1}</span>
         </>
       ),
     },

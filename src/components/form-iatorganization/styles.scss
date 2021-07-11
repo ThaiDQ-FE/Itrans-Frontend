@@ -34,9 +34,9 @@
                     width: 58%;
                     .ant-select {
                         font-size: 17px;
-                        height: 100%;
                         width: 100% !important;
                         .ant-select-selector {
+                            height: 100%;
                             border: 1px solid #ff8412;
                             &:focus {
                                 box-shadow: unset;
@@ -53,7 +53,7 @@
                     width: 40%;
                     .ant-select {
                         font-size: 17px;
-                        height: 100%;
+                        height: 64%;
                         width: 100% !important;
                         .ant-select-selector {
                             height: 100%;
@@ -94,9 +94,9 @@
                     width: 60%;
                     .ant-select {
                         font-size: 17px;
-                        height: 100%;
                         width: 100% !important;
                         .ant-select-selector {
+                            height: 100%;
                             border: 1px solid #ff8412;
                             &:focus {
                                 box-shadow: unset;
@@ -136,7 +136,8 @@
                         display: none;
                     }
                     .fiato__userLogo {
-                        width: 100%;
+                        width: 170px;
+                        height: 140px;
                     }
                     .fiato__camera {
                         width: 15px;

@@ -32,6 +32,11 @@
                         margin: auto;
                         position: relative;
                         margin-bottom: 20px;
+                        .fm__userAvata{
+                            width: 70px;
+                            height: 70px;
+                            border-radius: 100%;
+                        }
                         .fm__file {
                             display: none;
                         }
@@ -89,7 +94,7 @@
                         .fm__upload {
                             position: absolute;
 
-                            top: 7px;
+                            top: 30px;
                             right: 8px;
                             .fm__uploadPDF {
                                 display: none;
@@ -125,12 +130,21 @@
             }
             .fm__formRight {
                 width: 40%;
-                margin-left: 50px;
+                margin-left: 30px;
                 .fm__member {
-                    height: 90%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+                    width: 100%;
+                img {
+                    display: inline-block;
+                    border-radius: 100%;
+                    width: 60px;
+                    height: 60px;
+                    margin: 5px;
+                }
+                div{
+                    width: 60%;
+                    margin: 10px;
+                    display: inline-block;
+                }
                 }
             }
         }

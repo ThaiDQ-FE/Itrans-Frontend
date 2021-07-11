@@ -313,7 +313,7 @@ export const getFreeTimeListOfInvestor = (investor) => {
     const token = userInfo.jwt;
     axios({
       method: "GET",
-      url: `http://localhost:8080/api/v1/view-schedule-organization-by-week?idOrganization=${investor}`,
+      url: `http://localhost:8080/api/v1/view-schedule-investor-by-week?idInvestor=${investor}`,
       data: null,
       headers: {
         Authorization: `Bearer ${token}`,
