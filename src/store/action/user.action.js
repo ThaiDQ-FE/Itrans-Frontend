@@ -42,7 +42,7 @@ export const postCheckLogin = (gmail, password, history) => {
                 setTimeout(() => {
                   history.push("/admin");
                 }, 2000);
-              } else {
+              }else {
                 setTimeout(() => {
                   history.push("/");
                 }, 2000);

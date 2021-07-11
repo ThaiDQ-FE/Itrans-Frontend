@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./styles.scss";
 import "antd/dist/antd.css";
-import { Input, Select } from "antd";
+import { Input, Select, Tooltip } from "antd";
 import Messages from "../../assets/message/text";
 import Images from "../../assets/images/images";
 import {
@@ -10,6 +10,7 @@ import {
   getListStage,
 } from "../../store/action/register.action";
 import { useDispatch, useSelector } from "react-redux";
+import { storage } from "../../configs/firebase";
 function FormInformationAboutTheOrganization(props) {
   const { Option } = Select;
   const { TextArea } = Input;
@@ -18,6 +19,31 @@ function FormInformationAboutTheOrganization(props) {
   const { listProvince, listStage, listIndustry } = useSelector(
     (state) => state.register
   );
+  const [url, setUrl] = useState("");
+  const handleChangeImage = (e) => {
+    const image = e.target.files[0];
+    if (image != undefined) {
+    const upload = storage.ref(`images/${image.name}`).put(image);
+    upload.on(
+      "state_changed",
+      snapshot => { },
+      error => {
+        console.log(error);
+      },
+      () => {
+        storage.ref("images")
+          .child(image.name)
+          .getDownloadURL()
+          .then((url) => {
+            setUrl(url);
+            localStorage.setItem('image', JSON.stringify(url));
+          })
+      }
+    )
+  }else {
+    setUrl(Images.NO_IMAGE);
+  }
+  }
   const [information, setInformation] = useState({
     name: "",
     industry: "",
@@ -28,6 +54,151 @@ function FormInformationAboutTheOrganization(props) {
     link: "",
     description: "",
   });
+  const [errors, setErrors] = useState({
+    name: "",
+    industry: "",
+    stage: "",
+    foundedYear: "",
+    numberOfEmployee: "",
+    province: "",
+    link: "",
+    description: "",
+  });
+  const [color, setColor] = useState({
+    name: "",
+    industry: "",
+    stage: "",
+    foundedYear: "",
+    numberOfEmployee: "",
+    province: "",
+    link: "",
+    description: "",
+  });
+  let check = 0;
+  const regex = new RegExp("^[0-9]*$");
+  const validate = (values) => {
+    let errors = {};
+    if (!values.name) {
+      errors.name = 'Tên tổ chức không được để trống';
+    } else {
+      errors.name = '';
+      check++;
+    }
+    if (!values.foundedYear) {
+      errors.foundedYear = 'Năm thành lập không được để trống';
+    } else if (values.foundedYear < 1900 || values.foundedYear > 2021) {
+      errors.foundedYear = 'Năm thành lập từ 1900 - 2021';
+    } else if (!regex.test(values.foundedYear)) {
+      errors.foundedYear = 'Năm thành lập phải là số';
+    } else {
+      errors.foundedYear = '';
+      check++;
+    }
+    if (!values.numberOfEmployee) {
+      errors.numberOfEmployee = 'Số lượng thành viên không được để trống';
+    } else if (values.numberOfEmployee < 0) {
+      errors.numberOfEmployee = 'Số lượng thành viên phải lớn hơn 0';
+    } else if (!regex.test(values.numberOfEmployee)) {
+      errors.numberOfEmployee = 'Số lượng thành viên phải là số';
+    } else {
+      errors.numberOfEmployee = '';
+      check++;
+    }
+    if (!values.link) {
+      errors.link = 'Link web không được để trống';
+    } else if (!validateEmail(values.link)) {
+      errors.link = 'Link web không đúng';
+    }
+    else {
+      errors.link = '';
+      check++;
+    }
+    if (!values.stage) {
+      errors.stage = 'Giai đoạn phát triển không được để trống';
+    } else {
+      errors.stage = '';
+      check++;
+    }
+    if (!values.industry) {
+      errors.industry = 'Linh vực kinh doanh không được để trống';
+    } else {
+      errors.industry = '';
+      check++;
+    }
+    if (!values.province) {
+      errors.province = 'Khu vực hoạt động không được để trống';
+    } else {
+      errors.province = '';
+      check++;
+    }
+    if (!values.description) {
+      errors.description = 'Mô tả về doanh nghiệp không được để trống';
+    } else {
+      errors.description = '';
+      check++;
+    }
+    return errors;
+  };
+  const validateColor = (values) => {
+    let errors = {};
+    if (!values.name) {
+      errors.name = '1px solid red';
+    } else {
+      errors.name = '';
+    }
+    if (!values.foundedYear) {
+      errors.foundedYear = '1px solid red';
+    } else if (values.foundedYear < 1900 || values.foundedYear > 2021) {
+      errors.foundedYear = '1px solid red';
+    } else if (!regex.test(values.foundedYear)) {
+      errors.foundedYear = '1px solid red';
+    } else {
+      errors.foundedYear = '';
+    }
+    if (!values.numberOfEmployee) {
+      errors.numberOfEmployee = '1px solid red';
+    } else if (values.numberOfEmployee < 0) {
+      errors.numberOfEmployee = '1px solid red';
+    } else if (!regex.test(values.numberOfEmployee)) {
+      errors.numberOfEmployee = '1px solid red';
+    } else {
+      errors.numberOfEmployee = '';
+    }
+    if (!values.link) {
+      errors.link = '1px solid red';
+    } else if (!validateEmail(values.link)) {
+      errors.link = '1px solid red';
+    }
+    else {
+      errors.link = '';
+    }
+    if (!values.stage) {
+      errors.stage = '1px solid red';
+    } else {
+      errors.stage = '';
+    }
+    if (!values.industry) {
+      errors.industry = '1px solid red';
+    } else {
+      errors.industry = '';
+    }
+    if (!values.province) {
+      errors.province = '1px solid red';
+    } else {
+      errors.province = '';
+    }
+    if (!values.description) {
+      errors.description = '1px solid red';
+    } else {
+      errors.description = '';
+    }
+
+    return errors;
+  };
+  function validateEmail(email) {
+    var re = /\S+\.\S+/;
+    return re.test(email);
+  }
   const handleChangeInput = (event) => {
     const { value, name } = event.target;
     setInformation({
@@ -37,7 +208,12 @@ function FormInformationAboutTheOrganization(props) {
   };
   const handleNext = () => {
     localStorage.setItem("Form2", JSON.stringify(information));
-    props.handleNext();
+    setErrors(validate(information));
+    setColor(validateColor(information));
+    if (check == 8) {
+      props.handleNext();
+    }
+
   };
   const handleChange = (value, action) => {
     if (!action.length) {
@@ -84,7 +260,7 @@ function FormInformationAboutTheOrganization(props) {
       );
     });
   };
- 
+
 
   useEffect(() => {
     dispatch(getListProvince());
@@ -98,90 +274,117 @@ function FormInformationAboutTheOrganization(props) {
         <form className="fiato__form">
           <div className="fiato__lineOne">
             <div className="fiato__tenToChuc">
-              <Input
-                name="name"
-                onChange={handleChangeInput}
-                placeholder="Tên tổ chức"
-                size="large"
-              />
+              <small>Tên tổ chức</small>
+              <Tooltip title={errors.name} placement='topRight' color='red' >
+                <Input
+                  style={{ 'border': color.name }}
+                  name="name"
+                  onChange={handleChangeInput}
+                  size="large"
+                />
+              </Tooltip>
             </div>
             <div className="fiato__linhVucKinhDoanh">
-              <Select
-                name="industry"
-                mode="multiple"
-                allowClear
-                placeholder="Lĩnh vực kinh doanh"
-                onChange={handleChange}
-                size="large"
-              >
-                {renderListIndustry()}
-              </Select>
+              <small>Lĩnh vực kinh doanh</small>
+              <Tooltip title={errors.industry} placement='topRight' color='red' >
+                <Select
+                  style={{ 'border': color.industry }}
+                  name="industry"
+                  mode="multiple"
+                  allowClear
+                  onChange={handleChange}
+                  size="large"
+                >
+                  {renderListIndustry()}
+                </Select>
+              </Tooltip>
             </div>
           </div>
           <div className="fiato__lineTwo">
             <div className="fiato__giaiDoanPhatTrien">
-              <Select
-                onChange={handleChange}
-                name="stage"
-                placeholder="Giai đoạn phát triển"
-                size="large"
-              >
-                {renderListStage()}
-              </Select>
+              <small>Giai đoạn phát triển</small>
+              <Tooltip title={errors.stage} placement='topRight' color='red' >
+                <Select
+                  style={{ 'border': color.stage }}
+                  onChange={handleChange}
+                  name="stage"
+                  size="large"
+                  allowClear
+                >
+                  {renderListStage()}
+                </Select>
+              </Tooltip>
             </div>
             <div className="fiato__namThanhLap">
-              <Input
-                name="foundedYear"
-                onChange={handleChangeInput}
-                placeholder="Năm thành lập"
-                type="text"
-                size="large"
-              />
+              <small>Năm thành lập</small>
+              <Tooltip title={errors.foundedYear} placement='topRight' color='red' >
+                <Input
+                  style={{ 'border': color.foundedYear }}
+                  name="foundedYear"
+                  onChange={handleChangeInput}
+                  type="text" maxLength="9"
+                  size="large"
+                />
+              </Tooltip>
             </div>
             <div className="fiato__soLuongThanhVien">
-              <Input
-                name="numberOfEmployee"
-                onChange={handleChangeInput}
-                placeholder="Số lượng thành viên"
-                size="large"
-              />
+              <small>Số lượng thành viên</small>
+              <Tooltip title={errors.numberOfEmployee} placement='topRight' color='red' >
+                <Input
+                  style={{ 'border': color.numberOfEmployee }}
+                  name="numberOfEmployee"
+                  type="text" maxLength="9"
+                  onChange={handleChangeInput}
+                  size="large"
+                />
+              </Tooltip>
             </div>
           </div>
           <div className="fiato__lineThree">
             <div className="fiato__khuVucHoatDong">
-              <Select
-                mode="multiple"
-                allowClear
-                name="province"
-                placeholder="Khu vực hoạt động"
-                onChange={handleChange}
-                size="large"
-              >
-                {renderListProvince()}
-              </Select>
+              <small>Khu vực hoạt động</small>
+              <Tooltip title={errors.province} placement='topRight' color='red' >
+                <Select
+                  style={{ 'border': color.province }}
+                  mode="multiple"
+                  allowClear
+                  name="province"
+                  onChange={handleChange}
+                  size="large"
+                >
+                  {renderListProvince()}
+                </Select>
+              </Tooltip>
             </div>
             <div className="fiato__linkWebsite">
-              <Input
-                name="link"
-                onChange={handleChangeInput}
-                placeholder="Link Website"
-                size="large"
-              />
+              <small>Link Website</small>
+              <Tooltip title={errors.link} placement='topRight' color='red' >
+                <Input
+                  style={{ 'border': color.link }}
+                  name="link"
+                  onChange={handleChangeInput}
+                  size="large"
+                />
+              </Tooltip>
             </div>
           </div>
           <div className="fiato__lineFour">
             <div className="fiato__moTaVeDoanhNghiep">
-              <TextArea
-                name="description"
-                rows={5}
-                onChange={handleChangeInput}
-                placeholder="Mô tả về doanh nghiệp"
-                size="large"
-              />
+              <small>Mô tả về doanh nghiệp</small>
+              <Tooltip title={errors.description} placement='topRight' color='red' >
+                <TextArea
+                  style={{ 'border': color.description }}
+                  name="description"
+                  rows={5}
+                  onChange={handleChangeInput}
+                  size="large"
+                />
+              </Tooltip>
             </div>
             <div className="fiato__logo">
-              <img src={Images.LOGO_HERE} alt="" className="fiato__userLogo" />
-              <input className="fiato__file" type="file" id="file" />
+            <small>&nbsp;</small>
+              <img src={url || Images.NO_IMAGE} alt="" className="fiato__userLogo" />
+              <input className="fiato__file" type="file" id="file" onChange={handleChangeImage} />
               <label htmlFor="file" className="fiato__span">
                 <img
                   src={Images.CAMERA}

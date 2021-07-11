@@ -120,7 +120,7 @@ function Login() {
                 {passwordErr !== "" ? <small>{passwordErr}</small> : ""}
               </div>
 
-              <div className="login__remember">
+              {/* <div className="login__remember">
                 <input
                   type="checkbox"
                   id="vehicle1"
@@ -128,7 +128,7 @@ function Login() {
                   defaultValue="Bike"
                 />
                 <label htmlFor="vehicle1"> Ghi nhớ mật khẩu</label>
-              </div>
+              </div> */}
               <div className="login__button">
                 <Button variant="contained" color="primary" type="submit">
                   Đăng nhập

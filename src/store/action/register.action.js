@@ -7,12 +7,24 @@ import {
 import {
   CREATE_BASIC_INFORMATION_FAIL,
   CREATE_BASIC_INFORMATION_SUCCESS,
+  CREATE_INVESTMENT_INDUSTRY_FAIL,
+  CREATE_INVESTMENT_INDUSTRY_SUCCESS,
+  CREATE_INVESTMENT_STAGE_FAIL,
+  CREATE_INVESTMENT_STAGE_SUCCESS,
+  CREATE_INVESTOR_FAIL,
+  CREATE_INVESTOR_SUCCESS,
+  CREATE_INVESTOR_TASTE_FAIL,
+  CREATE_INVESTOR_TASTE_SUCCESS,
   CREATE_ORGANIZATION_INDUSTRY_FAIL,
   CREATE_ORGANIZATION_INDUSTRY_SUCCESS,
   CREATE_ORGANIZATION_PROVINCCE_FAIL,
   CREATE_ORGANIZATION_PROVINCCE_SUCCESS,
   CREATE_ORGANIZATION_STAGE_FAIL,
   CREATE_ORGANIZATION_STAGE_SUCCESS,
+  CREATE_TASTE_PROVINCE_REGION_FAIL,
+  CREATE_TASTE_PROVINCE_REGION_SUCCESS,
+  CREATE_TEAM_MEMBER_FAIL,
+  CREATE_TEAM_MEMBER_SUCCESS,
   GET_LIST_INDUSTRY_FAIL,
   GET_LIST_INDUSTRY_SUCCESS,
   GET_LIST_INVESTOR_TYPE_SUCCESS,
@@ -29,16 +41,16 @@ export const postVerificationCode = (gmail) => {
     axios({
       method: "Post",
       url: "http://localhost:8080/api/v1/auth/sendmail",
-      data: { gmail },
+      data: gmail,
     })
       .then((res) => {
         localStorage.setItem("VerificationCode", JSON.stringify(res.data));
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 };
 export const postBasicInformation = (gmail, password) => {
-  const role = "ORGANIZATION";
+  const role = JSON.parse(localStorage.getItem('roleName'));
   const rePass = password;
   return (dispatch) => {
     axios({
@@ -53,16 +65,38 @@ export const postBasicInformation = (gmail, password) => {
     })
       .then((res) => {
         dispatch(createBasicInformationSuccess(res.data));
-        const user = JSON.parse(localStorage.getItem("Form1"));
-        const gmailObj = { gmail: user.gmail };
-        const organization = JSON.parse(localStorage.getItem("Form2"));
-        const objOrganization = Object.assign({}, gmailObj, organization);
-        objOrganization.logo = "logo";
-        const newObjOrganization = objOrganization;
-        delete newObjOrganization.province;
-        delete newObjOrganization.stage;
-        delete newObjOrganization.industry;
-        dispatch(postIAOTOrganization(newObjOrganization));
+        const roleName = JSON.parse(localStorage.getItem("roleName"));
+        if (roleName === 'ORGANIZATION') {
+          const user = JSON.parse(localStorage.getItem("Form1"));
+          const gmailObj = { gmail: user.gmail };
+          const organization = JSON.parse(localStorage.getItem("Form2"));
+          const objOrganization = Object.assign({}, gmailObj, organization);
+          const logo = JSON.parse(localStorage.getItem("image"));
+          objOrganization.logo = logo;
+          const newObjOrganization = objOrganization;
+          delete newObjOrganization.province;
+          delete newObjOrganization.stage;
+          delete newObjOrganization.industry;
+          dispatch(postIAOTOrganization(newObjOrganization));
+        } else {
+          const user = JSON.parse(localStorage.getItem("Form1"));
+          const gmailObj = { gmail: user.gmail };
+          const investor = JSON.parse(localStorage.getItem("Form2Investor"));
+          const objInvestor = Object.assign({}, gmailObj, investor);
+          const logo = JSON.parse(localStorage.getItem("image"));
+          objInvestor.logo = logo;
+          const idInvestorType = JSON.parse(localStorage.getItem("idInvestorType"));
+          objInvestor.idInvestorType = idInvestorType;
+          const newObjInvestor = objInvestor;
+          delete newObjInvestor.province;
+          delete newObjInvestor.stage;
+          delete newObjInvestor.industry;
+          delete newObjInvestor.region;
+          delete newObjInvestor.min;
+          delete newObjInvestor.max;
+          dispatch(postInvestor(newObjInvestor));
+        }
+
       })
       .catch((err) => {
         dispatch(createBasicInformationFail(err));
@@ -90,6 +124,12 @@ export const postIAOTOrganization = (organization) => {
     })
       .then((res) => {
         dispatch(createIAOTOrganizationSuccess(res.data));
+        const teamMember = JSON.parse(localStorage.getItem("TeamMember"));
+        for (let index = 0; index < teamMember.length; index++) {
+          teamMember[index].idOrganization=res.data;
+        }
+        dispatch(postTeamMember(teamMember));
+        localStorage.removeItem("TeamMember");
         const organizationIndustry = [];
         const organizationProvince = [];
         const organizationOld = JSON.parse(localStorage.getItem("Form2"));
@@ -170,16 +210,17 @@ export const postOrganizationStage = (organizationStage) => {
       .then((res) => {
         dispatch(createOrganizationStageSuccess(res.data));
         Swal.fire({
-          icon: "success",
-          title: "Đăng ký  thành công!",
+          imageUrl: "https://i.imgur.com/RfiuoTr.png",
           heightAuto: true,
           timerProgressBar: false,
-          showConfirmButton: false,
-          timer: 2000,
-        });
-        setTimeout(() => {
-          window.location.assign("http://localhost:3000/dang-nhap");
-        }, 2000);
+          showConfirmButton: true,
+          confirmButtonText: "Đồng ý",
+          confirmButtonColor: "#112D4E",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            window.location.assign("http://localhost:3000/dang-nhap");
+          }
+        })
       })
       .catch((err) => {
         dispatch(createOrganizationStageFail(err));
@@ -361,6 +402,222 @@ const getListInvestorTypeSuccess = (listInvestorType) => {
 const getListInvestorTypeFailed = (err) => {
   return {
     type: GET_LIST_INVESTOR_TYPE_SUCCESS,
+    payload: err,
+  };
+};
+
+export const postInvestor = (investor) => {
+  return (dispatch) => {
+    axios({
+      method: "Post",
+      url: "http://localhost:8080/api/v1/auth/create-investor",
+      data: investor,
+    })
+      .then((res) => {
+        dispatch(createInvestorSuccess(res.data));
+        const teamMember = JSON.parse(localStorage.getItem("TeamMember"));
+        for (let index = 0; index < teamMember.length; index++) {
+          teamMember[index].idInvestor=res.data;
+        }
+        dispatch(postTeamMember(teamMember));
+        localStorage.removeItem("TeamMember");
+        const investor = JSON.parse(localStorage.getItem("Form2Investor"));
+        const objInvestorTaste = {
+          idInvestor: res.data,
+          minInvestment: investor.min,
+          maxInvestment: investor.max
+        }
+        dispatch(postInvestorTaste(objInvestorTaste));
+      })
+      .catch((err) => {
+        dispatch(createInvestorFail(err));
+      });
+  };
+};
+const createInvestorSuccess = (investor) => {
+  return {
+    type: CREATE_INVESTOR_SUCCESS,
+    payload: investor,
+  };
+};
+const createInvestorFail = (err) => {
+  return {
+    type: CREATE_INVESTOR_FAIL,
+    payload: err,
+  };
+};
+
+export const postInvestorTaste = (investorTaste) => {
+  return (dispatch) => {
+    axios({
+      method: "Post",
+      url: "http://localhost:8080/api/v1/auth/create-investorTaste",
+      data: investorTaste,
+    })
+      .then((res) => {
+        dispatch(createInvestorTasteSuccess(res.data));
+        const investmentIndustry = [];
+        const investmentStage = [];
+        const provinceRegionList = [];
+        const investorOld = JSON.parse(localStorage.getItem("Form2Investor"));
+        for (let index = 0; index < investorOld.industry.length; index++) {
+          const industry = { idIndustry: investorOld.industry[index] };
+          industry.idInvestorTaste = res.data
+          investmentIndustry.push(industry);
+        }
+        dispatch(postInvestmentIndustry(investmentIndustry))
+        for (let index = 0; index < investorOld.stage.length; index++) {
+          const stage = { idStage: investorOld.stage[index] };
+          stage.idInvestorTaste = res.data
+          investmentStage.push(stage);
+        }
+        dispatch(postInvestmentStage(investmentStage))
+        for (let index = 0; index < investorOld.province.length; index++) {
+          const provinceRegion = { idProvince: investorOld.province[index] };
+          provinceRegion.idRegion = investorOld.region[index];
+          provinceRegion.idInvestorTaste = res.data
+          provinceRegionList.push(provinceRegion);
+        }
+        dispatch(postTasteProvinceRegion(provinceRegionList))
+      })
+      .catch((err) => {
+        dispatch(createInvestorTasteFail(err));
+      });
+  };
+};
+const createInvestorTasteSuccess = (object) => {
+  return {
+    type: CREATE_INVESTOR_TASTE_SUCCESS,
+    payload: object,
+  };
+};
+const createInvestorTasteFail = (err) => {
+  return {
+    type: CREATE_INVESTOR_TASTE_FAIL,
+    payload: err,
+  };
+};
+
+export const postInvestmentIndustry = (investmentIndustry) => {
+  return (dispatch) => {
+    axios({
+      method: "Post",
+      url: "http://localhost:8080/api/v1/auth/create-investmentIndustry",
+      data: investmentIndustry,
+    })
+      .then((res) => {
+        dispatch(createInvestmentIndustrySuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(createInvestmentIndustryFail(err));
+      });
+  };
+};
+const createInvestmentIndustrySuccess = (object) => {
+  return {
+    type: CREATE_INVESTMENT_INDUSTRY_SUCCESS,
+    payload: object,
+  };
+};
+const createInvestmentIndustryFail = (err) => {
+  return {
+    type: CREATE_INVESTMENT_INDUSTRY_FAIL,
+    payload: err,
+  };
+};
+
+export const postInvestmentStage = (investmentStage) => {
+  return (dispatch) => {
+    axios({
+      method: "Post",
+      url: "http://localhost:8080/api/v1/auth/create-investmentStage",
+      data: investmentStage,
+    })
+      .then((res) => {
+        dispatch(createInvestmentStageSuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(createInvestmentStageFail(err));
+      });
+  };
+};
+const createInvestmentStageSuccess = (object) => {
+  return {
+    type: CREATE_INVESTMENT_STAGE_SUCCESS,
+    payload: object,
+  };
+};
+const createInvestmentStageFail = (err) => {
+  return {
+    type: CREATE_INVESTMENT_STAGE_FAIL,
+    payload: err,
+  };
+};
+
+export const postTasteProvinceRegion = (tasteProvinceRegion) => {
+  return (dispatch) => {
+    axios({
+      method: "Post",
+      url: "http://localhost:8080/api/v1/auth/create-taste-province-region",
+      data: tasteProvinceRegion,
+    })
+      .then((res) => {
+        dispatch(createTasteProvinceRegionSuccess(res.data));
+        Swal.fire({
+          imageUrl: "https://i.imgur.com/RfiuoTr.png",
+          heightAuto: true,
+          timerProgressBar: false,
+          showConfirmButton: true,
+          confirmButtonText: "Đồng ý",
+          confirmButtonColor: "#112D4E",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            window.location.assign("http://localhost:3000/dang-nhap");
+          }
+        })
+      })
+      .catch((err) => {
+        dispatch(createTasteProvinceRegionFail(err));
+      });
+  };
+};
+const createTasteProvinceRegionSuccess = (object) => {
+  return {
+    type: CREATE_TASTE_PROVINCE_REGION_SUCCESS,
+    payload: object,
+  };
+};
+const createTasteProvinceRegionFail = (err) => {
+  return {
+    type: CREATE_TASTE_PROVINCE_REGION_FAIL,
+    payload: err,
+  };
+};
+
+export const postTeamMember = (member) => {
+  return (dispatch) => {
+    axios({
+      method: "Post",
+      url: "http://localhost:8080/api/v1/auth/team",
+      data: member,
+    })
+      .then((res) => {
+        dispatch(createTeamMemberSuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(createTeamMemberFail(err));
+      });
+  };
+};
+const createTeamMemberSuccess = (object) => {
+  return {
+    type: CREATE_TEAM_MEMBER_SUCCESS,
+    payload: object,
+  };
+};
+const createTeamMemberFail = (err) => {
+  return {
+    type: CREATE_TEAM_MEMBER_FAIL,
     payload: err,
   };
 };

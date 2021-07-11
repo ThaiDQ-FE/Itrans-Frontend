@@ -1,10 +1,14 @@
 import { Button } from "@material-ui/core";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import Images from "../../assets/images/images";
 import Messages from "../../assets/message/text";
 import HeaderGeneral from "../header-general";
 import "./styles.scss";
+import { localStorages } from "../../assets/helper/helper";
 function FormRole(props) {
+  const {listInvestorType} = useSelector((state)=>state.register);
+  console.log(listInvestorType)
   const jsonFile = [
     {
       image: Images.ORGANIZATION_REGISTER,
@@ -15,23 +19,6 @@ function FormRole(props) {
       image: Images.INVESTOR_REGISTER,
       name: Messages.REGISTER_INVESTOR,
       text: Messages.REGISTER_INVESTOR_TEXT,
-    },
-  ];
-  const jsonSubRole = [
-    {
-      name: Messages.NHA_DAU_TU_THIEN_THAN,
-    },
-    {
-      name: Messages.NHA_DAU_TU_MAO_HIEM,
-    },
-    {
-      name: Messages.VUON_UOM_DOANH_NGHIEP,
-    },
-    {
-      name: Messages.QUY_DAU_TU_TU_NHAN,
-    },
-    {
-      name: Messages.NHA_TANG_TOC_KHOI_NGHIEP,
     },
   ];
   const [click, setClick] = useState(null);
@@ -61,39 +48,33 @@ function FormRole(props) {
     if (choose === "INVESTOR") {
       if (chooseSubRole === null) {
       } else {
+        localStorages("roleName","INVESTOR");
         return props.setStateSubRole(chooseSubRole);
       }
     } else {
+      localStorages("roleName","ORGANIZATION");
       return props.setStateRole(choose);
     }
   };
-  const handleClickSubRole = (index) => {
+  const handleClickSubRole = (index,name,id) => {
     switch (index) {
-      case 0:
-        setChooseSubRole("NHA_DAU_TU_THIEN_THAN");
-        break;
-      case 1:
-        setChooseSubRole("NHA_DAU_TU_MAO_HIEM");
-        break;
-      case 2:
-        setChooseSubRole("VUON_UOM_DOANH_NGHIEP");
-        break;
-      case 3:
-        setChooseSubRole("QUY_DAU_TU_TU_NHAN");
+      case index:
+        setChooseSubRole(name);
+        localStorages("idInvestorType",id);
         break;
       default:
-        setChooseSubRole("NHA_TANG_TOC_KHOI_NGHIEP");
+        setChooseSubRole(name);
         break;
     }
     setSubRoleClicked(index);
   };
   const renderSubRole = () => {
-    return jsonSubRole.map((sub, index) => {
+    return listInvestorType.map((sub, index) => {
       return (
         <p
           className={index === subRoleClicked ? "active__subrole" : ""}
           key={index}
-          onClick={() => handleClickSubRole(index)}
+          onClick={() => handleClickSubRole(index,sub.name,sub.idInvestorType)}
         >
           {sub.name}
         </p>

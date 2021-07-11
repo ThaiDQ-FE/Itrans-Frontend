@@ -8,6 +8,7 @@ import FundraisingManagement from "../pages/main/fundraising-management";
 import UserHome from "../pages/main/home";
 import InvestorManagement from "../pages/main/investor-management";
 import OrganizationManagement from "../pages/main/organization-management";
+import RoundDetailManagement from "../pages/main/round-detail-management";
 import TimeManagement from "../pages/main/time-management";
 
 export const mainRouter = [
@@ -51,6 +52,11 @@ export const mainRouter = [
     exact: false,
     Component: InvestorManagement,
   },
+  {
+    path: "/thong-tin-chi-tiet-vong-goi-von",
+    exact: false,
+    Component: RoundDetailManagement,
+  },
 ];
 
 export const adminRouter = [
@@ -58,7 +64,7 @@ export const adminRouter = [
     path: "/admin",
     exact: true,
     Component: AdminHome,
-  },
+  }
 ];
 
 export const generalRouter = [
