@@ -222,7 +222,7 @@ function RoundByIdOrganization(props) {
     if (checkPathUrl() === pathQuanLyTaiKhoan()) {
       return (
         <div className="rbio__addNewRound">
-          <Button size="large" type="primary">
+          <Button size="large" type="primary" onClick={handleOpen}>
             Tạo vòng gọi vốn
           </Button>
         </div>
