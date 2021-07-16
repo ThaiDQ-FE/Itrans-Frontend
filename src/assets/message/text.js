@@ -12,17 +12,23 @@ const message = {
     "Chọn loại người dùng để bắt đầu quy trình đăng ký tài khoản!",
   INSTITUTIONAL_INVESTOR: "Nhà đầu tư tổ chức",
   INVESTOPEDIA: "Nhà đầu tư cá nhân",
+  // subRole
+  NHA_DAU_TU_THIEN_THAN: "Nhà đầu tư thiên thần",
+  NHA_DAU_TU_MAO_HIEM: "Nhà đầu tư mạo hiểm",
+  VUON_UOM_DOANH_NGHIEP: "Vườn ươm doanh nghiệp",
+  QUY_DAU_TU_TU_NHAN: "Quỹ đầu tư tư nhân",
+  NHA_TANG_TOC_KHOI_NGHIEP: "Nhà tăng tốc khởi nghiệp",
   // header-general
   LOGIN_BUTTON: "Đăng nhập",
   REGISTER_BUTTON: "Đăng ký",
   // form-register
-  GENERAL_STEP_1: "Thông tin cơ bản",
+  GENERAL_STEP_1: "Thông tin tài khoản",
   ORGANIZATION_STEP_2: "Thông tin về tổ chức",
   ORGANIZATION_STEP_3: "Thành viên",
   INVESTOR_STEP_2: "Thông tin chi tiết",
   GENERAL_STEP_FINAL: "Hoàn thành",
+  INVESTOR_INFORMATION: "Thông tin nhà đầu tư",
   //Thông tin về tổ chức
-  TenDoanhNghiep: "Tên doanh nghiệp",
   LinhVucKinhDoanh: "Lĩnh vực kinh doanh",
   GiaiDoanPhatTrien: "Giai đoạn phát triển",
   NamThanhLap: "Năm thành lặp",
@@ -40,8 +46,6 @@ const message = {
   LinkCV: "Link CV",
   TenDoanhNghiep: "Tên doanh nghiệp",
   LinhVucHoatDong: "Lĩnh vực hoạt động",
-  NamThanhLap: "Năm thành lặp",
-  KhuVucHoatDong: "Khu vực hoạt động",
   MoTaVeNhaDauTu: "Mô tả về nhà đầu tư",
   // Footer
   TRUSOHCM:
@@ -62,6 +66,38 @@ const message = {
   GMAIL_NULL: "Vui lòng nhập gmail",
   GMAIL_REG: "Gmail không đúng định dạng (@gmail.com)",
   PASSWORD_NULL: "Vui lòng nhập mật khẩu",
+  // to chuc
+  OM_TITLE: "Tổ chức",
+  OM_SLOGAN: "Mãi mãi tinh thần khởi nghiệp",
+  OM_SLOGAN_TAIL: "- Vin Group",
+  // nha dau tu
+  IM_TITLE: "Nhà đầu tư",
+  IM_SLOGAN: "Bốn từ nguy hiểm nhất trong đầu tư là:",
+  IM_QUOTE: "Lần này sẽ khác",
+  IM_SLOGAN_TAIL: "-Sir John Templeton",
+  // Modal create round
+  MODAL_STKG_NULL: "Số tiền kêu gọi không được bỏ trống",
+  MODAL_STKG_AM: "Số tiền kêu gọi phải lớn hơn 1 triệu VNĐ",
+  MODAL_PTCP_NULL: "Phần trăm cổ phần không được trống",
+  MODAL_PTCP_RANGE: "Phần trăm cổ phần phải từ [0.1-100]",
+  MODAL_PTCP_DECIMALS: "Phần trăm cổ phần có tối đa 2 số ở phần thập phân",
+  MODAL_STARTDATE: "Ngày gọi vốn không được bỏ trống",
+  MODAL_ENDDATE: "Ngày kết thúc không được bỏ trống",
+  MODAL_ROUND_R1:
+    "Số tiền kêu gọi, Phần trăm cổ phần, Ngày bắt đầu, Ngày kết thúc là bắt buộc.",
+  MODAL_ROUND_R2: "Số tiền kêu gọi tối thiểu là 1 triệu VNĐ.",
+  MODAL_ROUND_R3: "Phần trăm cổ phần có tối đa 2 số ở phần thập phân.",
+  MODAL_ROUND_R4: "Ngày gọi và ngày kết thúc không được trùng nhau.",
+  MODAL_ROUND_R5: "Ngày gọi phải từ ngày hiện tại trở đi.",
+  MODAL_ROUND_R6: "Ngày kết thúc cách ngày bắt đầu tối đa 30 ngày.",
+  // modal create deal
+  MODAL_CD_STMDT_NULL: "Số tiền muốn đầu tư không được bỏ trống",
+  MODAL_CD_STMDT_AM: "Số tiền muốn đầu tư tối thiểu là 1 triệu VNĐ",
+  MODAL_CD_PTCP_NULL: "Phần trăm cổ phần không được bỏ trống",
+  MODAL_CD_PTCP_RANGE: "Phần trăm cổ phần phải từ [0.1-100]",
+  MOADL_CD_PTCP_DECIMALS: "Phần trăm cổ phần có tối đa 2 số ở phần thập phân",
+  // Error
+  CACTH_ERROR: "Máy chủ đang bị lỗi. Hãy thử lại sau",
 };
 
 export default message;

@@ -1,6 +1,7 @@
 import React from "react";
 
+import "./styles.scss";
 function AdminHome() {
-  return <div>admin home</div>;
+  return <div className="adminHome__wrapper">home</div>;
 }
 export default AdminHome;

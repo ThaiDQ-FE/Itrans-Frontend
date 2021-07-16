@@ -1,0 +1,28 @@
+.formCreateRound__wrapper {
+    .formCreateRound__container {
+        border: 1px solid #d9d9d9;
+        padding: 10px;
+        .formCreateRound__form {
+            max-height: 160px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            .ant-space {
+                .ant-space-item {
+                    width: 48%;
+                    &:nth-child(3) {
+                        width: 2%;
+                        position: relative;
+                        .formCreateRound__close {
+                            position: absolute;
+                            top: -25px;
+                        }
+                    }
+                }
+            }
+            .formCreateRound__themTD {
+                width: 200px;
+                margin: auto;
+            }
+        }
+    }
+}

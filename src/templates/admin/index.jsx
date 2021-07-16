@@ -1,13 +1,36 @@
 import React from "react";
 import { Route } from "react-router-dom";
+import { getLocalStorage } from "../../assets/helper/helper";
+import AdminMenuIcon from "../../components/admin/menu";
+import AdminSidebar from "../../components/admin/sidebar";
+import NotAuth from "../../pages/error/auth";
+import "./styles.scss";
 function AdminTemplate(props) {
+  // if (getLocalStorage("userInfo") === "ADMIN") {
+  //   return (
+  //     <div className="adminTemplate__wrapper">
+  //       <AdminSidebar />
+  //       <div className="adminTemplate__container">
+  //         <div className="adminTemplate__menu">
+  //           <AdminMenuIcon />
+  //         </div>
+  //         <>{props.children}</>
+  //       </div>
+  //     </div>
+  //   );
+  // } else {
+  //   return <NotAuth />;
+  // }
   return (
-    <>
-      <header>header admin</header>
-      <main>
-        <section>{props.children}</section>
-      </main>
-    </>
+    <div className="adminTemplate__wrapper">
+      <AdminSidebar />
+      <div className="adminTemplate__container">
+        <div className="adminTemplate__menu">
+          <AdminMenuIcon />
+        </div>
+        <>{props.children}</>
+      </div>
+    </div>
   );
 }
 const RouterAdminTemplate = ({ path, exact, Component }) => {

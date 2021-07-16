@@ -6,8 +6,8 @@ function Banner() {
   return (
     <div className="banner__wrapper">
       <div className="banner__container">
-        <h1 className="banner__h1">connect</h1>
-        <h1 className="banner__h1">fund and startup</h1>
+        <h1 className="banner__h1">Kết nối nhà đầu tư</h1>
+        <h1 className="banner__h1">và tổ chức</h1>
         <p className="banner__sologan">{message.BANNER_SOLOGAN}</p>
         <div className="banner__button">
           <ul className="banner__ul">
@@ -18,7 +18,7 @@ function Banner() {
                 to="/"
                 exact={true}
               >
-                Fund
+                Nhà đầu tư
               </NavLink>
             </li>
             <li className="banner__li">
@@ -28,7 +28,7 @@ function Banner() {
                 to="/"
                 exact={true}
               >
-                Startup
+                Doanh nghiệp
               </NavLink>
             </li>
           </ul>

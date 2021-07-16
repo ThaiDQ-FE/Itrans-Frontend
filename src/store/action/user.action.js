@@ -2,10 +2,16 @@ import axios from "axios";
 import {
   CHECK_LOGIN_FAILED,
   CHECK_LOGIN_SUCCESS,
+  GET_LIST_ACCOUNT_NOT_CONFIRM_FAILED,
+  GET_LIST_ACCOUNT_NOT_CONFIRM_SUCCESS,
   LOGIN_FAILED,
   LOGIN_SUCCESS,
 } from "../constants/user.const";
 import Swal from "sweetalert2";
+import { authorizationAccount, showMessage } from "../../assets/helper/helper";
+import { defaultUrlAPI, defaultUrlAPIStringTemplate } from "../../configs/url";
+import { startLoading, stopLoading } from "./loading.action";
+import message from "../../assets/message/text";
 export const postCheckLogin = (gmail, password, history) => {
   return (dispatch) => {
     axios({
@@ -38,9 +44,15 @@ export const postCheckLogin = (gmail, password, history) => {
                 showConfirmButton: false,
                 timer: 2000,
               });
-              setTimeout(() => {
-                history.push("/");
-              }, 2000);
+              if (res.data.role === "ADMIN") {
+                setTimeout(() => {
+                  history.push("/admin");
+                }, 2000);
+              } else {
+                setTimeout(() => {
+                  history.push("/");
+                }, 2000);
+              }
             })
             .catch((err) => {
               dispatch(postLoginFailed(err));
@@ -86,5 +98,72 @@ const postCheckLoginFailed = (err) => {
   return {
     type: CHECK_LOGIN_FAILED,
     payload: err,
+  };
+};
+
+export const getListAccountNotConfirm = () => {
+  return (dispatch) => {
+    dispatch(startLoading());
+    const token = authorizationAccount();
+    axios({
+      method: "GET",
+      url: defaultUrlAPI() + "account-not-confirm",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        dispatch(stopLoading());
+        if (res.status === 200) {
+          dispatch(getListAccountNotConfirmSuccess(res.data));
+        } else {
+          dispatch(getListAccountNotConfirmFailed(res.data));
+        }
+      })
+      .catch((err) => {
+        dispatch(stopLoading());
+        dispatch(getListAccountNotConfirmFailed(err));
+      });
+  };
+};
+
+const getListAccountNotConfirmSuccess = (listAccount) => {
+  return {
+    type: GET_LIST_ACCOUNT_NOT_CONFIRM_SUCCESS,
+    payload: listAccount,
+  };
+};
+
+const getListAccountNotConfirmFailed = (err) => {
+  return {
+    type: GET_LIST_ACCOUNT_NOT_CONFIRM_FAILED,
+    payload: err,
+  };
+};
+
+export const putAccountToConfirm = (gmail, history) => {
+  return (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: "PUT",
+      url: defaultUrlAPIStringTemplate() + `confirm-account?gmail=${gmail}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          showMessage("success", "Duyệt tài khoản thành công");
+          dispatch(getListAccountNotConfirm());
+          setTimeout(() => {
+            history.push("/admin/quan-ly-tai-khoan");
+          }, 2000);
+        } else {
+          showMessage("error", "Duyệt tài khoản thất bại");
+        }
+      })
+      .catch((err) => {
+        showMessage("error", message.CACTH_ERROR);
+      });
   };
 };

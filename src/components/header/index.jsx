@@ -1,25 +1,15 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import "./styles.scss";
 import logo from "../../assets/images/logo-grey.png";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Images from "../../assets/images/images";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-function Header() {
+import { checkRoleUser, getLocalStorage } from "../../assets/helper/helper";
+function Header({ history }) {
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const [openMenu, setOpenMenu] = useState(null);
-  const themeMenu = createMuiTheme({
-    overrides: {
-      MuiPopover: {
-        paper: {
-          top: `${8}% !important`,
-          left: "unset !important",
-          right: `${3}%`,
-        },
-      },
-    },
-  });
+
   const handleOpenMenu = (event) => {
     setOpenMenu(event.currentTarget);
   };
@@ -29,19 +19,79 @@ function Header() {
   const handleLogoutAccount = () => {
     setOpenMenu(null);
     localStorage.removeItem("userInfo");
-    window.location.reload(true);
+    history.push("/dang-nhap");
+  };
+  const renderTabs = () => {
+    const userLogin = getLocalStorage("userInfo");
+    if (userLogin !== null) {
+      if (userLogin.role === "INVESTOR") {
+        return (
+          <>
+            <li className="header__features__li">
+              <NavLink
+                activeClassName="active-nav-link-header"
+                className="header__vgv"
+                to="/to-chuc"
+                exact={true}
+              >
+                Tổ chức
+              </NavLink>
+            </li>
+            <li className="header__features__li">
+              <NavLink
+                activeClassName="active-nav-link-header"
+                className="header__vgv"
+                to="/vong-goi-von"
+                exact={true}
+              >
+                Vòng gọi vốn
+              </NavLink>
+            </li>
+          </>
+        );
+      } else if (userLogin.role === "ORGANIZATION") {
+        return (
+          <li className="header__features__li">
+            <NavLink
+              activeClassName="active-nav-link-header"
+              className="header__vgv"
+              to="/nha-dau-tu"
+              exact={true}
+            >
+              Nhà đầu tư
+            </NavLink>
+          </li>
+        );
+      }
+    }
   };
 
   return (
     <div className="header__container">
       <div className="header__logo">
-        <img src={logo} />
+        <NavLink
+          activeClassName="active-nav-link"
+          className="header__navlink__dangky"
+          to="/"
+          exact={true}
+        >
+          <img src={logo} alt="logo" />
+        </NavLink>
       </div>
       <div className="header__features">
         <ul className="header__features__ul">
-          <li className="header__features__li">Home</li>
-          <li className="header__features__li">Fund</li>
-          <li className="header__features__li">Startup</li>
+          <li className="header__features__li">
+            <NavLink
+              activeClassName="active-nav-link-header"
+              className="header__trangchu"
+              to="/"
+              exact={true}
+            >
+              Trang chủ
+            </NavLink>
+          </li>
+
+          {renderTabs()}
         </ul>
       </div>
       <div className="header__login">
@@ -74,37 +124,79 @@ function Header() {
           </ul>
         )}
       </div>
-      <MuiThemeProvider theme={themeMenu}>
-        <Menu
-          id="simple-menu"
-          anchorEl={openMenu}
-          keepMounted
-          open={Boolean(openMenu)}
-          onClose={handleCloseMenu}
-        >
-          <MenuItem>
-            <div className="header__menuAvata">
-              <img src={Images.USER_AVATA} alt="" />
-              <span>{user !== null ? user.gmail : ""}</span>
-            </div>
-          </MenuItem>
-          <hr className="header__hr" />
-          <MenuItem>
+      <Menu
+        id="simple-menu"
+        anchorEl={openMenu}
+        keepMounted
+        open={Boolean(openMenu)}
+        onClose={handleCloseMenu}
+        className="menu__navbar"
+      >
+        <MenuItem>
+          <div className="header__menuAvata">
+            <img src={Images.USER_AVATA} alt="" />
+            <span>{user !== null ? user.gmail : ""}</span>
+          </div>
+        </MenuItem>
+        <hr className="header__hr" />
+        <MenuItem>
+          <NavLink
+            activeClassName="active-nav-link"
+            className="header__navlink__quanLyTaiKhoan"
+            to="/quan-ly-tai-khoan"
+            exact={false}
+          >
             <div className="header__menuAccount">
               <img src={Images.SETTING} alt="" />
-              <span>Quản lý tài khoản</span>
+              <span>Tổ chức của tôi</span>
             </div>
-          </MenuItem>
-          <hr className="header__hr" />
-          <MenuItem onClick={handleLogoutAccount}>
-            <div className="header__menuLogout">
-              <img src={Images.LOGOUT} alt="" />
-              <span>Thoát</span>
+          </NavLink>
+        </MenuItem>
+        <hr className="header__hr" />
+        <MenuItem>
+          <NavLink
+            activeClassName="active-nav-link"
+            className="header__navlink__quanLyThoiGian"
+            to="/quan-ly-thoi-gian"
+            exact={false}
+          >
+            <div className="header__menuTime">
+              <img src={Images.TIMETABLE} alt="" />
+              <span>Quản lý thời gian</span>
             </div>
-          </MenuItem>
-        </Menu>
-      </MuiThemeProvider>
+          </NavLink>
+        </MenuItem>
+        <hr className="header__hr" />
+        <MenuItem>
+          <NavLink
+            activeClassName="active-nav-link"
+            className="header__navlink__quanLyThoiGian"
+            to={
+              checkRoleUser() === "INVESTOR"
+                ? "/quan-ly-deal"
+                : "/quan-ly-vong-goi-von"
+            }
+            exact={false}
+          >
+            <div className="header__menuCapital">
+              <img src={Images.CALL_CAPITAL} alt="" />
+              <span>
+                {checkRoleUser() === "INVESTOR"
+                  ? "Quản lý deal"
+                  : "Quản lý vòng gọi vốn"}
+              </span>
+            </div>
+          </NavLink>
+        </MenuItem>
+        <hr className="header__hr" />
+        <MenuItem onClick={handleLogoutAccount}>
+          <div className="header__menuLogout">
+            <img src={Images.LOGOUT} alt="" />
+            <span>Thoát</span>
+          </div>
+        </MenuItem>
+      </Menu>
     </div>
   );
 }
-export default Header;
+export default withRouter(Header);

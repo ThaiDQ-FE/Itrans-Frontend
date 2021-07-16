@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./styles.scss";
-import logo from "../../../assets/images/logo-navy.png";
 import {
   Button,
   createMuiTheme,
@@ -13,7 +12,6 @@ import { postCheckLogin } from "../../../store/action/user.action";
 import { useHistory } from "react-router";
 import { validGmail } from "../../../configs/regex";
 import Messages from "../../../assets/message/text";
-import Images from "../../../assets/images/images";
 function Login() {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -122,7 +120,7 @@ function Login() {
                 {passwordErr !== "" ? <small>{passwordErr}</small> : ""}
               </div>
 
-              <div className="login__remember">
+              {/* <div className="login__remember">
                 <input
                   type="checkbox"
                   id="vehicle1"
@@ -130,7 +128,7 @@ function Login() {
                   defaultValue="Bike"
                 />
                 <label htmlFor="vehicle1"> Ghi nhớ mật khẩu</label>
-              </div>
+              </div> */}
               <div className="login__button">
                 <Button variant="contained" color="primary" type="submit">
                   Đăng nhập

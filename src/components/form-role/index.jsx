@@ -1,11 +1,14 @@
 import { Button } from "@material-ui/core";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import Images from "../../assets/images/images";
 import Messages from "../../assets/message/text";
 import HeaderGeneral from "../header-general";
-import Modal from "@material-ui/core/Modal";
 import "./styles.scss";
+import { localStorages } from "../../assets/helper/helper";
 function FormRole(props) {
+  const {listInvestorType} = useSelector((state)=>state.register);
+  console.log(listInvestorType)
   const jsonFile = [
     {
       image: Images.ORGANIZATION_REGISTER,
@@ -18,80 +21,77 @@ function FormRole(props) {
       text: Messages.REGISTER_INVESTOR_TEXT,
     },
   ];
-  const jsonSubRole = [
-    {
-      name: Messages.INSTITUTIONAL_INVESTOR,
-    },
-    {
-      name: Messages.INVESTOPEDIA,
-    },
-  ];
   const [click, setClick] = useState(null);
   const [choose, setChoose] = useState(null);
-  const [modal, setModal] = useState(false);
+  const [chooseSubRole, setChooseSubRole] = useState(null);
+  const [subRole, setSubRole] = useState(false);
+  const [subRoleClicked, setSubRoleClicked] = useState(null);
   const handleClickBlock = (index) => {
     setClick(index);
     if (index === 0) {
-      setChoose("organization");
+      setChoose("ORGANIZATION");
+      document.getElementById("block1").classList.remove("fr__rotate");
+      document.getElementById("block0").classList.add("formRole__active");
+      document.getElementById("block1").classList.remove("formRole__active");
+      setSubRole(false);
+      setChooseSubRole(null);
+      setSubRoleClicked(null);
     } else {
-      setChoose("investor");
+      setChoose("INVESTOR");
+      document.getElementById("block1").classList.add("fr__rotate");
+      document.getElementById("block0").classList.remove("formRole__active");
+      document.getElementById("block1").classList.add("formRole__active");
+      setSubRole(true);
     }
   };
   const handleClickButton = () => {
-    if (choose === "investor") {
-      setModal(true);
+    if (choose === "INVESTOR") {
+      if (chooseSubRole === null) {
+      } else {
+        localStorages("roleName","INVESTOR");
+        return props.setStateSubRole(chooseSubRole);
+      }
     } else {
+      localStorages("roleName","ORGANIZATION");
       return props.setStateRole(choose);
     }
   };
-  const handleClickSubRole = (index) => {
-    if (index === 0) {
-      return props.setStateSubRole("INSTITUTIONAL_INVESTOR");
-    } else {
-      return props.setStateSubRole("INVESTOPEDIA");
+  const handleClickSubRole = (index,name,id) => {
+    switch (index) {
+      case index:
+        setChooseSubRole(name);
+        localStorages("idInvestorType",id);
+        break;
+      default:
+        setChooseSubRole(name);
+        break;
     }
-  };
-  const handleClose = () => {
-    setModal(false);
+    setSubRoleClicked(index);
   };
   const renderSubRole = () => {
-    return jsonSubRole.map((subRole, index) => {
+    return listInvestorType.map((sub, index) => {
       return (
-        <div
-          className="fr__modalSubRole"
+        <p
+          className={index === subRoleClicked ? "active__subrole" : ""}
           key={index}
-          onClick={() => handleClickSubRole(index)}
+          onClick={() => handleClickSubRole(index,sub.name,sub.idInvestorType)}
         >
-          {subRole.name}
-        </div>
+          {sub.name}
+        </p>
       );
     });
-  };
-  const renderBodyModal = () => {
-    return (
-      <div className="fr__modal">
-        <div className="fr__modalContainer">
-          <img
-            src={Images.CANCEL}
-            alt=""
-            className="fr__close"
-            onClick={handleClose}
-          />
-          <p className="fr__modalTitle">Bạn là ?</p>
-          <div className="fr__modalWrapper">{renderSubRole()}</div>
-        </div>
-      </div>
-    );
   };
   const renderContent = () => {
     return jsonFile.map((block, index) => {
       return (
         <div
-          className={`formRole__main${
-            click === index ? " formRole__active" : ""
-          }`}
+          // className={`formRole__main${
+          //   click === index ? " formRole__active" : ""
+          // }`}
+          className="formRole__main"
           key={index}
           onClick={() => handleClickBlock(index)}
+          id={"block" + index}
         >
           {click === index ? (
             <div className="formRole__check">
@@ -100,7 +100,11 @@ function FormRole(props) {
           ) : (
             ""
           )}
-
+          {index === 1 ? (
+            <div className="fr__subRoleActive">{renderSubRole()}</div>
+          ) : (
+            ""
+          )}
           <div className="formRole__image">
             <img src={block.image} alt="" />
           </div>
@@ -128,16 +132,9 @@ function FormRole(props) {
           color="primary"
           onClick={handleClickButton}
         >
-          Tiếp Tục
+          Tiếp theo
         </Button>
       </div>
-      <Modal
-        open={modal}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        {renderBodyModal()}
-      </Modal>
     </div>
   );
 }

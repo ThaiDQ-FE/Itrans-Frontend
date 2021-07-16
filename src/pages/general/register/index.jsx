@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -9,9 +9,16 @@ import Messages from "../../../assets/message/text";
 import "./styles.scss";
 import FormBasicInformation from "../../../components/form-basicInfomation";
 import FormInformationAboutTheOrganization from "../../../components/form-iatorganization";
-import FormDetailsInformation from "../../../components/form-detailsinfo";
 import FormMember from "../../../components/form-member";
+import FormAngelInvestorInformation from "../../../components/form-angelInvestor";
+import FormInvestor from "../../../components/form-investor";
+import { getListInvestorType } from "../../../store/action/register.action";
+import { useDispatch, useSelector } from "react-redux";
 function Register() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getListInvestorType());
+  }, []);
   const themeOrganization = createMuiTheme({
     overrides: {
       MuiStep: {
@@ -22,6 +29,7 @@ function Register() {
       MuiStepper: {
         root: {
           padding: "25px 250px",
+          backgroundColor: "#f0f2f5",
         },
       },
       MuiStepIcon: {
@@ -55,6 +63,7 @@ function Register() {
       MuiStepper: {
         root: {
           padding: "25px 350px",
+          backgroundColor: "#f0f2f5",
         },
       },
       MuiStepIcon: {
@@ -89,16 +98,21 @@ function Register() {
     setSubRole(newSubRole);
     setFinalRole("investor");
   };
-  console.log(finalRole);
   const getSteps = () => {
-    if (role === "organization" || subRole === "INSTITUTIONAL_INVESTOR") {
+    if (role === "ORGANIZATION") {
       return [
         Messages.GENERAL_STEP_1,
         Messages.ORGANIZATION_STEP_2,
         Messages.ORGANIZATION_STEP_3,
       ];
+    } else if (subRole === "Nhà đầu tư thiên thần") {
+      return [Messages.GENERAL_STEP_1, Messages.INVESTOR_INFORMATION];
     } else {
-      return [Messages.GENERAL_STEP_1, Messages.INVESTOR_STEP_2];
+      return [
+        Messages.GENERAL_STEP_1,
+        Messages.INVESTOR_INFORMATION,
+        Messages.ORGANIZATION_STEP_3,
+      ];
     }
   };
   const getStepContent = (step) => {
@@ -112,8 +126,9 @@ function Register() {
           />
         );
       case 1:
+        // eslint-disable-next-line default-case
         switch (role) {
-          case "organization":
+          case "ORGANIZATION":
             return (
               <FormInformationAboutTheOrganization
                 handleNext={handleNext}
@@ -122,25 +137,28 @@ function Register() {
             );
           case "":
             switch (subRole) {
-              case "INSTITUTIONAL_INVESTOR":
-                return (
-                  <FormInformationAboutTheOrganization
-                    handleNext={handleNext}
-                    handleBack={handleBack}
-                  />
-                );
+              case "Nhà đầu tư thiên thần":
+                return <FormAngelInvestorInformation handleBack={handleBack} />;
 
               default:
-                return <FormDetailsInformation handleBack={handleBack} />;
+                return (
+                  <FormInvestor
+                    handleBack={handleBack}
+                    handleNext={handleNext}
+                  />
+                );
             }
         }
+      // eslint-disable-next-line no-fallthrough
       case 2:
+        // eslint-disable-next-line default-case
         switch (role) {
-          case "organization":
+          case "ORGANIZATION":
             return (
               <FormMember handleNext={handleNext} handleBack={handleBack} />
             );
         }
+      // eslint-disable-next-line no-fallthrough
       default:
         return <FormMember handleNext={handleNext} handleBack={handleBack} />;
     }
@@ -156,7 +174,6 @@ function Register() {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-
   return (
     <>
       {subRole === "" && role === "" ? (
@@ -166,7 +183,7 @@ function Register() {
         />
       ) : (
         <MuiThemeProvider
-          theme={role === "organization" ? themeOrganization : themeInvestor}
+          theme={role === "ORGANIZATION" ? themeOrganization : themeInvestor}
         >
           <div className="register__wrapper">
             <div className="register__container">
@@ -179,7 +196,9 @@ function Register() {
                     </Step>
                   ))}
                 </Stepper>
-                <div>{getStepContent(activeStep)}</div>
+                <div className="register__body">
+                  {getStepContent(activeStep)}
+                </div>
               </div>
             </div>
           </div>

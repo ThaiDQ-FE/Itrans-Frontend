@@ -1,0 +1,271 @@
+.fi__wrapper {
+    width: 60vw;
+    height: auto;
+    background-color: #fff;
+    box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    margin: auto;
+    border-radius: 12px;
+    font-family: "Montserrat", sans-serif;
+    .fi__container {
+        width: 100%;
+        h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 35px;
+        }
+        .fi__form {
+            padding: 0 55px 35px 55px;
+            .fi__lineOne {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 20px;
+                .fi__tenNhaQuyDauTu {
+                    width: 50%;
+                    input {
+                        border: 1px solid #ff8412;
+                        font-size: 16px;
+                        &:focus {
+                            box-shadow: unset;
+                        }
+                    }
+                }
+                .fi__namThanhLap {
+                    width: 25%;
+                    input {
+                        border: 1px solid #ff8412;
+                        font-size: 16px;
+                        &:focus {
+                            box-shadow: unset;
+                        }
+                    }
+                }
+                .fi__soLuongThanhVien {
+                    width: 20%;
+                    input {
+                        border: 1px solid #ff8412;
+                        font-size: 16px;
+                        &:focus {
+                            box-shadow: unset;
+                        }
+                    }
+                }
+            }
+            .fi__lineTwo {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+                .fi__linkKhuUl {
+                    width: 80%;
+                    .fi__linkWebsite {
+                        margin-bottom: 20px;
+                        input {
+                            border: 1px solid #ff8412;
+                            font-size: 16px;
+                            &:focus {
+                                box-shadow: unset;
+                            }
+                        }
+                    }
+                    .fi__khuUl {
+                        display: flex;
+                        justify-content: space-between;
+                        .fi__khuVucHoatDong {
+                            width: 38%;
+                            .ant-select {
+                                font-size: 17px;
+                                height: 60%;
+                                width: 100% !important;
+                                .ant-select-selector {
+                                    height: 100%;
+                                    border: 1px solid #ff8412;
+                                    &:focus {
+                                        box-shadow: unset;
+                                    }
+                                }
+                            }
+                        }
+                        .fi__ul {
+                            width: 60%;
+                            .ant-select {
+                                font-size: 17px;
+                                height: 60%;
+                                width: 100% !important;
+                                .ant-select-selector {
+                                    height: 100%;
+                                    border: 1px solid #ff8412;
+                                    &:focus {
+                                        box-shadow: unset;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                .fi__logo {
+                    width: 15%;
+                    position: relative;
+                    .fi__file {
+                        display: none;
+                    }
+                    .fi__userLogo {
+                        width: 120px;
+                        height: 120px;
+                    }
+                    .fi__camera {
+                        width: 15px;
+                        height: 15px;
+                    }
+                    .fi__span {
+                        position: absolute;
+                        cursor: pointer;
+                        height: 25px;
+                        right: 0;
+                        bottom: 0;
+                    }
+                }
+            }
+            .fi__lineThree {
+                margin-bottom: 10px;
+                textarea {
+                    border: 1px solid #ff8412;
+                    &:focus {
+                        box-shadow: unset;
+                    }
+                }
+            }
+            .fi__word {
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
+            .fi__lineFour {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 20px;
+                .fi__giaiDoanMuonDauTu {
+                    width: 43%;
+                    .ant-select {
+                        font-size: 17px;
+                        height: 60%;
+                        width: 100% !important;
+                        .ant-select-selector {
+                            height: 100%;
+                            border: 1px solid #ff8412;
+                            &:focus {
+                                box-shadow: unset;
+                            }
+                        }
+                    }
+                }
+                .fi__linhVucKinhDoanhMuonDauTu {
+                    width: 55%;
+                    .ant-select {
+                        font-size: 17px;
+                        height: 60%;
+                        width: 100% !important;
+                        .ant-select-selector {
+                            height: 100%;
+                            border: 1px solid #ff8412;
+                            &:focus {
+                                box-shadow: unset;
+                            }
+                        }
+                    }
+                }
+            }
+            .fi__lineFive {
+                display: flex;
+                justify-content: space-between;
+                .fi__khuVucDauTu {
+                    width: 38%;
+                    .ant-select {
+                        font-size: 17px;
+                        height: 60%;
+                        width: 100% !important;
+                        .ant-select-selector {
+                            height: 100%;
+                            border: 1px solid #ff8412;
+                            &:focus {
+                                box-shadow: unset;
+                            }
+                        }
+                    }
+                }
+                .fi__ul {
+                    width: 60%;
+                    .ant-select {
+                        font-size: 17px;
+                        height: 60%;
+                        width: 100% !important;
+                        .ant-select-selector {
+                            height: 100%;
+                            border: 1px solid #ff8412;
+                            &:focus {
+                                box-shadow: unset;
+                            }
+                        }
+                    }
+                }
+            }
+            .fi__lineSix {
+                display: flex;
+                justify-content: space-between;
+                margin-top:10px;
+                .fi_min{
+                    width: 49%;
+                input {
+                    border: 1px solid #ff8412;
+                    font-size: 16px;
+                    &:focus {
+                        box-shadow: unset;
+                    }
+                }
+            }.fi_max{
+                width: 49%;
+                input {
+                    border: 1px solid #ff8412;
+                    font-size: 16px;
+                    &:focus {
+                        box-shadow: unset;
+                    }
+                }
+            }
+            }
+        }
+        .fi__button {
+            display: flex;
+            justify-content: space-between;
+            .fi__buttonBack {
+                opacity: 0.5;
+                transition: all 0.2s;
+                cursor: pointer;
+                margin-left: 20px;
+                margin-bottom: 15px;
+                img {
+                    width: 15px;
+                    transform: rotate(180deg);
+                    display: block;
+                    margin: auto;
+                }
+                &:hover {
+                    opacity: 1;
+                }
+            }
+            .fi__buttonNext {
+                opacity: 0.5;
+                transition: all 0.2s;
+                cursor: pointer;
+                margin-right: 20px;
+                margin-bottom: 15px;
+                img {
+                    display: block;
+                    width: 15px;
+                    margin: auto;
+                }
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}

@@ -5,7 +5,7 @@
     display: flex;
     justify-content: space-between;
     box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.3);
-    z-index: 1000;
+    z-index: 100;
     position: fixed;
     top: 0;
     font-family: "Montserrat", sans-serif;
@@ -19,8 +19,9 @@
             margin-left: 60px;
         }
     }
+
     .header__features {
-        width: 30%;
+        width: 50%;
         height: 100%;
         .header__features__ul {
             list-style-type: none;
@@ -35,6 +36,15 @@
             padding-left: 0;
             .header__features__li {
                 margin: auto;
+                font-size: 16px;
+                .header__vgv,
+                .header__trangchu {
+                    text-decoration: none;
+                    color: #ffffff;
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
             }
         }
     }
@@ -97,6 +107,8 @@
     }
 }
 .header__menuAccount,
+.header__menuTime,
+.header__menuCapital,
 .header__menuLogout {
     position: relative;
     width: 100%;
@@ -112,6 +124,23 @@
         margin-left: 25px;
     }
 }
+.header__navlink__quanLyTaiKhoan,
+.header__navlink__quanLyThoiGian {
+    color: #000;
+    text-decoration: none;
+    &:hover {
+        color: #000;
+        font-weight: 600;
+    }
+}
 .header__hr {
     margin: 3px 5px;
+}
+.menu__navbar {
+    z-index: 6001 !important;
+    .MuiPopover-paper {
+        top: 8% !important;
+        left: unset !important;
+        right: 3% !important;
+    }
 }
