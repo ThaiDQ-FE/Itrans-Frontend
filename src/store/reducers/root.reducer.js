@@ -13,6 +13,7 @@ import mediaReducer from "./media.reducer";
 import introduceReducer from "./introduce.reducer";
 import articleReducer from "./article.reducer";
 import teamMemberReducer from "./team.reducer";
+import valueReducer from "./value.reducer";
 const rootReducer = combineReducers({
   user: userReducer,
   freeTime: freeTimeReducer,
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   introduce: introduceReducer,
   article: articleReducer,
   teamMember: teamMemberReducer,
+  value: valueReducer,
 });
 
 export default rootReducer;

@@ -3,8 +3,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import message from "../../../assets/message/text";
 import { getOrganizationFilter } from "../../../store/action/organization.action";
-import OrganizationList from "../../../components/organization-list";
-import FilterOrganization from "../../../components/filter-organization";
+import OrganizationManagementComponent from "../../../components/organization-management";
 import "./styles.scss";
 import { getLocalStorage } from "../../../assets/helper/helper";
 import {
@@ -55,9 +54,7 @@ function OrganizationManagement() {
           "{message.OM_SLOGAN}" {message.OM_SLOGAN_TAIL}
         </div>
       </div>
-      <FilterOrganization />
-      <hr className="om__hr" />
-      <OrganizationList />
+      <OrganizationManagementComponent />
     </div>
   );
 }

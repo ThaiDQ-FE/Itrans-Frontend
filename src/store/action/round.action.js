@@ -4,10 +4,12 @@ import {
   checkIdUser,
   showMessage,
 } from "../../assets/helper/helper";
-import { defaultUrlAPIStringTemplate } from "../../configs/url";
+import { defaultUrlAPI, defaultUrlAPIStringTemplate } from "../../configs/url";
 import {
   GET_ALL_LIST_ROUND_ACCTIVE_FAILED,
   GET_ALL_LIST_ROUND_ACTIVE_SUCCESS,
+  GET_LIST_ALL_ROUND_FAILED,
+  GET_LIST_ALL_ROUND_SUCCESS,
   GET_LIST_ROUND_ACTIVE_BY_ID_ORGANIZATION_FAILED,
   GET_LIST_ROUND_ACTIVE_BY_ID_ORGANIZATION_SUCCESS,
   GET_LIST_ROUND_BY_ID_INVESTOR_FAILED,
@@ -327,6 +329,41 @@ export const getListRoundByIdOrganizationSuccess = (listRound) => {
 export const getListRoundByIdOrganizationFailed = (err) => {
   return {
     type: GET_LIST_ROUND_BY_ID_ORGANIZATION_FAILED,
+    payload: err,
+  };
+};
+
+export const getListAllRound = () => {
+  return (dispatch) => {
+    dispatch(startLoading());
+    axios({
+      method: "GET",
+      url: defaultUrlAPI() + "round/get-all-round",
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        dispatch(stopLoading());
+        dispatch(getListAllRoundSuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(stopLoading());
+        dispatch(getListAllRoundFailed(err));
+      });
+  };
+};
+
+export const getListAllRoundSuccess = (listRound) => {
+  return {
+    type: GET_LIST_ALL_ROUND_SUCCESS,
+    payload: listRound,
+  };
+};
+
+export const getListAllRoundFailed = (err) => {
+  return {
+    type: GET_LIST_ALL_ROUND_FAILED,
     payload: err,
   };
 };

@@ -13,6 +13,7 @@ import {
   checkEmailUser,
   checkIdUser,
   checkRoleUser,
+  getLocalStorage,
 } from "../../../assets/helper/helper";
 import { getListMilestone } from "../../../store/action/milestone.action";
 import { getListMediaById } from "../../../store/action/media.action";
@@ -38,18 +39,40 @@ function AccountManagement() {
     (state) => state.round
   );
   useEffect(() => {
-    dispatch(getDeatilCompany(checkEmailUser()));
-    dispatch(getListMediaById(checkEmailUser()));
-    dispatch(getListArticleByGmail(checkEmailUser()));
-    dispatch(getListIntroduceByGmail(checkEmailUser()));
-    dispatch(getListTeamMember(checkEmailUser(), false));
-    if (checkRoleUser() === "ORGANIZATION") {
-      dispatch(getListMilestone(checkIdUser()));
-    }
-    if (checkRoleUser() === "INVESTOR") {
-      dispatch(getListRoundByIdInvestor(checkIdUser()));
-    } else {
-      dispatch(getListRoundByIdOrganization(checkIdUser()));
+    const path = window.location.pathname;
+    if (path === "/quan-ly-tai-khoan") {
+      dispatch(getDeatilCompany(checkEmailUser()));
+      dispatch(getListMediaById(checkEmailUser()));
+      dispatch(getListArticleByGmail(checkEmailUser()));
+      dispatch(getListIntroduceByGmail(checkEmailUser()));
+      dispatch(getListTeamMember(checkEmailUser(), false));
+      if (checkRoleUser() === "ORGANIZATION") {
+        dispatch(getListMilestone(checkIdUser()));
+      }
+      if (checkRoleUser() === "INVESTOR") {
+        dispatch(getListRoundByIdInvestor(checkIdUser()));
+      } else {
+        dispatch(getListRoundByIdOrganization(checkIdUser()));
+      }
+    } else if (path === "/to-chuc/chi-tiet") {
+      const gmail = getLocalStorage("gmailOrganizationToDetail");
+      const id = getLocalStorage("idOrganizationToDetail");
+      dispatch(getDeatilCompany(gmail));
+      dispatch(getListMediaById(gmail));
+      dispatch(getListArticleByGmail(gmail));
+      dispatch(getListIntroduceByGmail(gmail));
+      dispatch(getListTeamMember(gmail, false));
+      dispatch(getListMilestone(id));
+      dispatch(getListRoundByIdOrganization(id));
+    } else if (path === "/nha-dau-tu/chi-tiet") {
+      const gmail = getLocalStorage("gmailInvestorToDetail");
+      const id = getLocalStorage("idInvestorToDetail");
+      dispatch(getDeatilCompany(gmail));
+      dispatch(getListMediaById(gmail));
+      dispatch(getListIntroduceByGmail(gmail));
+      dispatch(getListTeamMember(gmail, false));
+      dispatch(getListRoundByIdInvestor(id));
+      dispatch(getListArticleByGmail(gmail));
     }
   }, []);
   if (loading === true) {

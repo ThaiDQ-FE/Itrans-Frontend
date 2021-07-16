@@ -5,7 +5,12 @@ import { Input, Select, Tooltip } from "antd";
 import Messages from "../../assets/message/text";
 import Images from "../../assets/images/images";
 import { useDispatch, useSelector } from "react-redux";
-import { getListIndustry, getListProvince, getListRegion, getListStage } from "../../store/action/register.action";
+import {
+  getListIndustry,
+  getListProvince,
+  getListRegion,
+  getListStage,
+} from "../../store/action/register.action";
 import { storage } from "../../configs/firebase";
 import { SAVE_IMAGE_SUCCESS } from "../../store/constants/register.const";
 function FormInvestor(props) {
@@ -35,26 +40,28 @@ function FormInvestor(props) {
     setImage(e.target.files[0]);
     const image = e.target.files[0];
     if (image != undefined) {
-    const upload = storage.ref(`images/${image.name}`).put(image);
-    upload.on(
-      "state_changed",
-      snapshot => { },
-      error => {
-        console.log(error);
-      },
-      () => {
-        storage.ref("images")
-          .child(image.name)
-          .getDownloadURL()
-          .then((url) => {
-            setUrl(url);
-            localStorage.setItem('image', JSON.stringify(url));
-          })
-      }
-    )}else {
+      const upload = storage.ref(`images/${image.name}`).put(image);
+      upload.on(
+        "state_changed",
+        (snapshot) => {},
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          storage
+            .ref("images")
+            .child(image.name)
+            .getDownloadURL()
+            .then((url) => {
+              setUrl(url);
+              localStorage.setItem("image", JSON.stringify(url));
+            });
+        }
+      );
+    } else {
       setUrl(Images.NO_IMAGE);
     }
-  }
+  };
   // const getBase64 = (file) => {
   //   return new Promise((resolve, reject) => {
   //     const reader = new FileReader();
@@ -68,90 +75,89 @@ function FormInvestor(props) {
   const validate = (values) => {
     let errors = {};
     if (!values.name) {
-      errors.name = 'Tên nhà/quỹ đầu tư không được để trống';
+      errors.name = "Tên nhà/quỹ đầu tư không được để trống";
     } else {
-      errors.name = '';
+      errors.name = "";
       check++;
     }
     if (!values.foundedYear) {
-      errors.foundedYear = 'Năm thành lập không được để trống';
+      errors.foundedYear = "Năm thành lập không được để trống";
     } else if (values.foundedYear < 1900 || values.foundedYear > 2021) {
-      errors.foundedYear = 'Năm thành lập từ 1900 - 2021';
+      errors.foundedYear = "Năm thành lập từ 1900 - 2021";
     } else if (!regex.test(values.foundedYear)) {
-      errors.foundedYear = 'Năm thành lập phải là số';
+      errors.foundedYear = "Năm thành lập phải là số";
     } else {
-      errors.foundedYear = '';
+      errors.foundedYear = "";
       check++;
     }
     if (!values.numberOfEmployee) {
-      errors.numberOfEmployee = 'Số lượng thành viên không được để trống';
+      errors.numberOfEmployee = "Số lượng thành viên không được để trống";
     } else if (values.numberOfEmployee < 0) {
-      errors.numberOfEmployee = 'Số lượng thành viên phải lớn hơn 0';
+      errors.numberOfEmployee = "Số lượng thành viên phải lớn hơn 0";
     } else if (!regex.test(values.numberOfEmployee)) {
-      errors.numberOfEmployee = 'Số lượng thành viên phải là số';
+      errors.numberOfEmployee = "Số lượng thành viên phải là số";
     } else {
-      errors.numberOfEmployee = '';
+      errors.numberOfEmployee = "";
       check++;
     }
     if (!values.link) {
-      errors.link = 'Link web không được để trống';
+      errors.link = "Link web không được để trống";
     } else if (!validateEmail(values.link)) {
-      errors.link = 'Link web không đúng';
-    }
-    else {
-      errors.link = '';
+      errors.link = "Link web không đúng";
+    } else {
+      errors.link = "";
       check++;
     }
     if (!values.idProvince) {
-      errors.idProvince = 'Trụ sở chính không được để trống';
+      errors.idProvince = "Trụ sở chính không được để trống";
     } else {
-      errors.idProvince = '';
+      errors.idProvince = "";
       check++;
     }
     if (!values.stage) {
-      errors.stage = 'Giai đoạn muốn đầu tư không được để trống';
+      errors.stage = "Giai đoạn muốn đầu tư không được để trống";
     } else {
-      errors.stage = '';
+      errors.stage = "";
       check++;
     }
     if (!values.industry) {
-      errors.industry = 'Linh vực kinh doanh muốn đầu tư không được để trống';
+      errors.industry = "Linh vực kinh doanh muốn đầu tư không được để trống";
     } else {
-      errors.industry = '';
+      errors.industry = "";
       check++;
     }
     if (!values.province) {
-      errors.province = 'Khu vực đầu tư không được để trống';
+      errors.province = "Khu vực đầu tư không được để trống";
     } else {
-      errors.province = '';
+      errors.province = "";
       check++;
     }
     if (!values.region) {
-      errors.region = 'Vùng miền đầu tư không được để trống';
+      errors.region = "Vùng miền đầu tư không được để trống";
     } else {
-      errors.region = '';
+      errors.region = "";
       check++;
     }
     if (!values.min) {
-      errors.min = 'Số tiền nhỏ nhất có thể đầu tư không được để trống';
+      errors.min = "Số tiền nhỏ nhất có thể đầu tư không được để trống";
     } else if (values.min >= values.max) {
-      errors.min = 'Số tiền nhỏ nhất phải nhỏ hơn số tiền lớn nhất';
+      errors.min = "Số tiền nhỏ nhất phải nhỏ hơn số tiền lớn nhất";
     } else if (values.min < 0) {
-      errors.min = 'Số tiền nhỏ nhất phải lớn hơn hoặc bằng 0';
-    }else if (!regex.test(values.min)) {
-      errors.min = 'Số tiền nhỏ nhất phải là số';
+      errors.min = "Số tiền nhỏ nhất phải lớn hơn hoặc bằng 0";
+    } else if (!regex.test(values.min)) {
+      errors.min = "Số tiền nhỏ nhất phải là số";
     } else {
-      errors.min = '';
+      errors.min = "";
       check++;
     }
     if (!values.max) {
-      errors.max = 'Số tiền lớn nhất có thể đầu tư không được để trống';
+      errors.max = "Số tiền lớn nhất có thể đầu tư không được để trống";
     } else if (values.max <= 0) {
-      errors.max = 'Số tiền lớn nhất phải lớn hơn 0';
-    }else if (!regex.test(values.max)) {
-      errors.max = 'Số tiền lớn nhất phải là số';
+      errors.max = "Số tiền lớn nhất phải lớn hơn 0";
+    } else if (!regex.test(values.max)) {
+      errors.max = "Số tiền lớn nhất phải là số";
     } else {
-      errors.max = '';
+      errors.max = "";
       check++;
     }
     return errors;
@@ -159,80 +165,79 @@ function FormInvestor(props) {
   const validateColor = (values) => {
     let errors = {};
     if (!values.name) {
-      errors.name = '1px solid red';
+      errors.name = "1px solid red";
     } else {
-      errors.name = '';
+      errors.name = "";
     }
     if (!values.foundedYear) {
-      errors.foundedYear = '1px solid red';
+      errors.foundedYear = "1px solid red";
     } else if (values.foundedYear < 1900 || values.foundedYear > 2021) {
-      errors.foundedYear = '1px solid red';
+      errors.foundedYear = "1px solid red";
     } else if (!regex.test(values.foundedYear)) {
-      errors.foundedYear = '1px solid red';
+      errors.foundedYear = "1px solid red";
     } else {
-      errors.foundedYear = '';
+      errors.foundedYear = "";
     }
     if (!values.numberOfEmployee) {
-      errors.numberOfEmployee = '1px solid red';
+      errors.numberOfEmployee = "1px solid red";
     } else if (values.numberOfEmployee < 0) {
-      errors.numberOfEmployee = '1px solid red';
-    }else if (!regex.test(values.numberOfEmployee)) {
-      errors.numberOfEmployee = '1px solid red';
+      errors.numberOfEmployee = "1px solid red";
+    } else if (!regex.test(values.numberOfEmployee)) {
+      errors.numberOfEmployee = "1px solid red";
     } else {
-      errors.numberOfEmployee = '';
+      errors.numberOfEmployee = "";
     }
     if (!values.link) {
-      errors.link = '1px solid red';
+      errors.link = "1px solid red";
     } else if (!validateEmail(values.link)) {
-      errors.link = '1px solid red';
-    }
-    else {
-      errors.link = '';
+      errors.link = "1px solid red";
+    } else {
+      errors.link = "";
     }
     if (!values.idProvince) {
-      errors.idProvince = '1px solid red';
+      errors.idProvince = "1px solid red";
     } else {
-      errors.idProvince = '';
+      errors.idProvince = "";
     }
     if (!values.stage) {
-      errors.stage = '1px solid red';
+      errors.stage = "1px solid red";
     } else {
-      errors.stage = '';
+      errors.stage = "";
     }
     if (!values.industry) {
-      errors.industry = '1px solid red';
+      errors.industry = "1px solid red";
     } else {
-      errors.industry = '';
+      errors.industry = "";
     }
     if (!values.province) {
-      errors.province = '1px solid red';
+      errors.province = "1px solid red";
     } else {
-      errors.province = '';
+      errors.province = "";
     }
     if (!values.region) {
-      errors.region = '1px solid red';
+      errors.region = "1px solid red";
     } else {
-      errors.region = '';
+      errors.region = "";
     }
     if (!values.min) {
-      errors.min = '1px solid red';
+      errors.min = "1px solid red";
     } else if (values.min >= values.max) {
-      errors.min = '1px solid red';
+      errors.min = "1px solid red";
     } else if (values.min < 0) {
-      errors.min = '1px solid red';
-    }else if (!regex.test(values.min)) {
-      errors.min = '1px solid red';
+      errors.min = "1px solid red";
+    } else if (!regex.test(values.min)) {
+      errors.min = "1px solid red";
     } else {
-      errors.min = '';
+      errors.min = "";
     }
     if (!values.max) {
-      errors.max = '1px solid red';
+      errors.max = "1px solid red";
     } else if (values.max <= 0) {
-      errors.max = '1px solid red';
-    }else if (!regex.test(values.max)) {
-      errors.max = '1px solid red';
+      errors.max = "1px solid red";
+    } else if (!regex.test(values.max)) {
+      errors.max = "1px solid red";
     } else {
-      errors.max = '';
+      errors.max = "";
     }
     return errors;
   };
@@ -283,7 +288,6 @@ function FormInvestor(props) {
       ...information,
       [name]: value,
     });
-
   };
   const handleChange = (value, action) => {
     if (!action.length) {
@@ -363,20 +367,48 @@ function FormInvestor(props) {
           <div className="fi__lineOne">
             <div className="fi__tenNhaQuyDauTu">
               <small>Tên nhà/quỹ đầu tư</small>
-              <Tooltip title={errors.name} placement='topRight' color='red' >
-                <Input value={information.name} style={{ 'border': color.name }} name='name' size="large" onChange={handleChangeInput} />
+              <Tooltip title={errors.name} placement="topRight" color="red">
+                <Input
+                  value={information.name}
+                  style={{ border: color.name }}
+                  name="name"
+                  size="large"
+                  onChange={handleChangeInput}
+                />
               </Tooltip>
             </div>
             <div className="fi__namThanhLap">
               <small>Năm thành lập</small>
-              <Tooltip title={errors.foundedYear} placement='topRight' color='red'>
-                <Input type="text" maxLength="9" style={{ 'border': color.foundedYear }} name='foundedYear' size="large" onChange={handleChangeInput} />
+              <Tooltip
+                title={errors.foundedYear}
+                placement="topRight"
+                color="red"
+              >
+                <Input
+                  type="text"
+                  maxLength="9"
+                  style={{ border: color.foundedYear }}
+                  name="foundedYear"
+                  size="large"
+                  onChange={handleChangeInput}
+                />
               </Tooltip>
             </div>
             <div className="fi__soLuongThanhVien">
               <small>Số thành viên</small>
-              <Tooltip title={errors.numberOfEmployee} placement='topRight' color='red' >
-                <Input type="text" maxLength="9" style={{ 'border': color.numberOfEmployee }} name='numberOfEmployee' size="large" onChange={handleChangeInput} />
+              <Tooltip
+                title={errors.numberOfEmployee}
+                placement="topRight"
+                color="red"
+              >
+                <Input
+                  type="text"
+                  maxLength="9"
+                  style={{ border: color.numberOfEmployee }}
+                  name="numberOfEmployee"
+                  size="large"
+                  onChange={handleChangeInput}
+                />
               </Tooltip>
             </div>
           </div>
@@ -384,17 +416,26 @@ function FormInvestor(props) {
             <div className="fi__linkKhuUl">
               <div className="fi__linkWebsite">
                 <small>Link website</small>
-                <Tooltip title={errors.link} placement='topRight' color='red' >
-                  <Input style={{ 'border': color.link }} name='link' size="large" onChange={handleChangeInput} />
+                <Tooltip title={errors.link} placement="topRight" color="red">
+                  <Input
+                    style={{ border: color.link }}
+                    name="link"
+                    size="large"
+                    onChange={handleChangeInput}
+                  />
                 </Tooltip>
               </div>
               <div className="fi__khuUl">
                 <div className="fi__khuVucHoatDong">
                   <small>Trụ sở chính</small>
-                  <Tooltip title={errors.idProvince} placement='topRight' color='red' >
+                  <Tooltip
+                    title={errors.idProvince}
+                    placement="topRight"
+                    color="red"
+                  >
                     <Select
-                      style={{ 'border': color.idProvince }}
-                      name='idProvince'
+                      style={{ border: color.idProvince }}
+                      name="idProvince"
                       onChange={handleChange}
                       size="large"
                     >
@@ -405,8 +446,17 @@ function FormInvestor(props) {
               </div>
             </div>
             <div className="fi__logo">
-              <img src={url || Images.NO_IMAGE} alt="" className="fi__userLogo" />
-              <input className="fi__file" type="file" id="file" onChange={handleChangeImage} />
+              <img
+                src={url || Images.NO_IMAGE}
+                alt=""
+                className="fi__userLogo"
+              />
+              <input
+                className="fi__file"
+                type="file"
+                id="file"
+                onChange={handleChangeImage}
+              />
               <label htmlFor="file" className="fi__span">
                 <img src={Images.CAMERA} alt="camera" className="fi__camera" />
               </label>
@@ -428,10 +478,10 @@ function FormInvestor(props) {
           <div className="fi__lineFour">
             <div className="fi__giaiDoanMuonDauTu">
               <small>Giai đoạn muốn đầu tư</small>
-              <Tooltip title={errors.stage} placement='topRight' color='red' >
+              <Tooltip title={errors.stage} placement="topRight" color="red">
                 <Select
-                  style={{ 'border': color.stage }}
-                  name='stage'
+                  style={{ border: color.stage }}
+                  name="stage"
                   mode="multiple"
                   allowClear
                   onChange={handleChange}
@@ -443,10 +493,10 @@ function FormInvestor(props) {
             </div>
             <div className="fi__linhVucKinhDoanhMuonDauTu">
               <small>Lĩnh vực kinh doanh muốn đầu tư</small>
-              <Tooltip title={errors.industry} placement='topRight' color='red' >
+              <Tooltip title={errors.industry} placement="topRight" color="red">
                 <Select
-                  style={{ 'border': color.industry }}
-                  name='industry'
+                  style={{ border: color.industry }}
+                  name="industry"
                   mode="multiple"
                   allowClear
                   onChange={handleChange}
@@ -460,10 +510,10 @@ function FormInvestor(props) {
           <div className="fi__lineFive">
             <div className="fi__khuVucDauTu">
               <small>Khu vực đầu tư</small>
-              <Tooltip title={errors.province} placement='topRight' color='red' >
+              <Tooltip title={errors.province} placement="topRight" color="red">
                 <Select
-                  style={{ 'border': color.province }}
-                  name='province'
+                  style={{ border: color.province }}
+                  name="province"
                   mode="multiple"
                   allowClear
                   onChange={handleChange}
@@ -475,10 +525,10 @@ function FormInvestor(props) {
             </div>
             <div className="fi__ul">
               <small>Vùng miền đầu tư</small>
-              <Tooltip title={errors.region} placement='topRight' color='red' >
+              <Tooltip title={errors.region} placement="topRight" color="red">
                 <Select
-                  style={{ 'border': color.region }}
-                  name='region'
+                  style={{ border: color.region }}
+                  name="region"
                   mode="multiple"
                   allowClear
                   onChange={handleChange}
@@ -492,14 +542,30 @@ function FormInvestor(props) {
           <div className="fi__lineSix">
             <div className="fi_min">
               <small>Số tiền nhỏ nhất có thể đầu tư</small>
-              <Tooltip title={errors.min} placement='topRight' color='red' >
-                <Input type="text" maxLength="9" addonAfter="Tỉ VND" style={{ 'border': color.min }} name='min' size="large" onChange={handleChangeInput} />
+              <Tooltip title={errors.min} placement="topRight" color="red">
+                <Input
+                  type="text"
+                  maxLength="9"
+                  addonAfter="Tỷ VNĐ"
+                  style={{ border: color.min }}
+                  name="min"
+                  size="large"
+                  onChange={handleChangeInput}
+                />
               </Tooltip>
             </div>
             <div className="fi_max">
               <small>Số tiền lớn nhất có thể đầu tư</small>
-              <Tooltip title={errors.max} placement='topRight' color='red' >
-                <Input type="text" maxLength="9" addonAfter="Tỉ VND" style={{ 'border': color.max }} name='max' size="large" onChange={handleChangeInput} />
+              <Tooltip title={errors.max} placement="topRight" color="red">
+                <Input
+                  type="text"
+                  maxLength="9"
+                  addonAfter="Tỷ VNĐ"
+                  style={{ border: color.max }}
+                  name="max"
+                  size="large"
+                  onChange={handleChangeInput}
+                />
               </Tooltip>
             </div>
           </div>

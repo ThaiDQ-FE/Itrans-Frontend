@@ -7,6 +7,7 @@ import Images from "../../../assets/images/images";
 import {
   authorizationAccount,
   checkIdUser,
+  checkPathUrl,
   checkRoleUser,
   getLocalStorage,
   localStorages,
@@ -270,30 +271,34 @@ function OverviewTab(props) {
   const renderListMilestone = () => {
     return props.listMilestone.map((item, index) => {
       return (
-        <Timeline.Item className="timeline__item" label={item.date}>
-          <div className="timeline__action">
-            <img
-              src={Images.PENCIL}
-              alt="edit"
-              className="timeline__edit"
-              onClick={() =>
-                handleOpenEditMilestone(
-                  item.title,
-                  item.date,
-                  item.content,
-                  item.id
-                )
-              }
-            />
-            <img
-              src={Images.RED_CANCEL}
-              alt="edit"
-              className="timeline__delete"
-              onClick={() =>
-                handleClickDeleteTimeline(item.title, item.date, item.id)
-              }
-            />
-          </div>
+        <Timeline.Item key={index} className="timeline__item" label={item.date}>
+          {checkPathUrl() === "/quan-ly-tai-khoan" ? (
+            <div className="timeline__action">
+              <img
+                src={Images.PENCIL}
+                alt="edit"
+                className="timeline__edit"
+                onClick={() =>
+                  handleOpenEditMilestone(
+                    item.title,
+                    item.date,
+                    item.content,
+                    item.id
+                  )
+                }
+              />
+              <img
+                src={Images.RED_CANCEL}
+                alt="edit"
+                className="timeline__delete"
+                onClick={() =>
+                  handleClickDeleteTimeline(item.title, item.date, item.id)
+                }
+              />
+            </div>
+          ) : (
+            <></>
+          )}
 
           {item.content === "" ? (
             item.title
@@ -308,20 +313,61 @@ function OverviewTab(props) {
   };
   const checkAchievement = () => {
     if (props.listMilestone === "No Data") {
-      return (
-        <div className="ot__noMilestone">
-          <p>Bạn chưa có thành tựu. Hãy thêm thành tựu</p>
-          <Button
-            onClick={handleOpenModalMilestone}
-            className="ot__noMiletoneButton"
-            type="primary"
-          >
-            Thêm thành tựu
-          </Button>
-        </div>
-      );
+      if (checkPathUrl() === "/quan-ly-tai-khoan") {
+        return (
+          <div className="ot__noMilestone">
+            <p>Bạn chưa có thành tựu. Hãy thêm thành tựu</p>
+            <Button
+              onClick={handleOpenModalMilestone}
+              className="ot__noMiletoneButton"
+              type="primary"
+            >
+              Thêm thành tựu
+            </Button>
+          </div>
+        );
+      } else {
+        return (
+          <div className="ot__noMilestone">
+            <p>Tổ chức này có thành tựu nào được đăng tải</p>
+          </div>
+        );
+      }
     } else {
       return <Timeline mode="left">{renderListMilestone()}</Timeline>;
+    }
+  };
+  const checkPath = () => {
+    const path = window.location.pathname;
+    if (path === "/to-chuc/chi-tiet") {
+      return (
+        <div className="ot__mileStone">
+          <p className="ot__mileStoneTitle">Thành tựu</p>
+          {props.loading === true ? <Skeleton active /> : checkAchievement()}
+        </div>
+      );
+    } else if (path === "/quan-ly-tai-khoan") {
+      if (checkRoleUser() === "INVESTOR") {
+        return <></>;
+      } else {
+        return (
+          <div className="ot__mileStone">
+            {props.listMilestone !== "No Data" ? (
+              <div className="ot__plusMilestone">
+                <img
+                  src={Images.PLUS}
+                  alt="plus milestone"
+                  onClick={handleOpenModalMilestone}
+                />
+              </div>
+            ) : (
+              <></>
+            )}
+            <p className="ot__mileStoneTitle">Thành tựu</p>
+            {props.loading === true ? <Skeleton active /> : checkAchievement()}
+          </div>
+        );
+      }
     }
   };
   return (
@@ -398,25 +444,7 @@ function OverviewTab(props) {
             </>
           )}
         </div>
-        {checkRoleUser() === "INVESTOR" ? (
-          <></>
-        ) : (
-          <div className="ot__mileStone">
-            {props.listMilestone !== "No Data" ? (
-              <div className="ot__plusMilestone">
-                <img
-                  src={Images.PLUS}
-                  alt="plus milestone"
-                  onClick={handleOpenModalMilestone}
-                />
-              </div>
-            ) : (
-              <></>
-            )}
-            <p className="ot__mileStoneTitle">Thành tựu</p>
-            {props.loading === true ? <Skeleton active /> : checkAchievement()}
-          </div>
-        )}
+        {checkPath()}
       </div>
       <OverviewContent media={props.media} introduce={props.introduce} />
     </div>

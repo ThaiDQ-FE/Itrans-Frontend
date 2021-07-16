@@ -11,8 +11,11 @@ import ModalEditIntro from "../../modal-edit-intro";
 import {
   authorizationAccount,
   checkEmailUser,
+  checkPathUrl,
   getLocalStorage,
   localStorages,
+  pathQuanLyTaiKhoan,
+  pathToChuc,
   showMessage,
 } from "../../../../assets/helper/helper";
 import axios from "axios";
@@ -136,40 +139,48 @@ function OverviewContent(props) {
   };
   const renderListMedia = () => {
     if (props.media.length === 0) {
-      return (
-        <div className="oc__noMediaRender">
-          <h4>Hiện tại không có hình ảnh - video đang được hiển thị</h4>
-          <Button type="primary" size="large" onClick={handleOpenModalAdd}>
-            Thêm ảnh/video
-          </Button>
-        </div>
-      );
+      if (checkPathUrl() === pathQuanLyTaiKhoan()) {
+        return (
+          <div className="oc__noMediaRender">
+            <h4>Hiện tại không có hình ảnh - video đang được hiển thị</h4>
+            <Button type="primary" size="large" onClick={handleOpenModalAdd}>
+              Thêm ảnh/video
+            </Button>
+          </div>
+        );
+      } else if (checkPathUrl() === pathToChuc) {
+        return <></>;
+      }
     }
     if (props.media.length === 1) {
       return props.media.map((item) => {
         if (item.type === "IMAGE") {
           return (
             <div className="right__image" key={item.id}>
-              <div className="oc__actionAPI">
-                <Tooltip placement="top" title="Xóa">
-                  <img
-                    className="oc__deleteMedia"
-                    src={Images.RED_CANCEL}
-                    alt="clear"
-                    onClick={() => {
-                      handleDeleteMediaItem(item.id);
-                    }}
-                  />
-                </Tooltip>
-                <Tooltip placement="top" title="Thêm">
-                  <img
-                    className="oc__createMedia"
-                    src={Images.PLUS}
-                    alt="add"
-                    onClick={handleOpenModalAdd}
-                  />
-                </Tooltip>
-              </div>
+              {checkPathUrl() === pathQuanLyTaiKhoan() ? (
+                <div className="oc__actionAPI">
+                  <Tooltip placement="top" title="Xóa">
+                    <img
+                      className="oc__deleteMedia"
+                      src={Images.RED_CANCEL}
+                      alt="clear"
+                      onClick={() => {
+                        handleDeleteMediaItem(item.id);
+                      }}
+                    />
+                  </Tooltip>
+                  <Tooltip placement="top" title="Thêm">
+                    <img
+                      className="oc__createMedia"
+                      src={Images.PLUS}
+                      alt="add"
+                      onClick={handleOpenModalAdd}
+                    />
+                  </Tooltip>
+                </div>
+              ) : (
+                <></>
+              )}
 
               <img src={item.linkMedia} alt={item.linkMedia} />
             </div>
@@ -177,26 +188,31 @@ function OverviewContent(props) {
         } else {
           return (
             <div className="right__image" key={item.id}>
-              <div className="oc__actionAPI">
-                <Tooltip placement="top" title="Xóa">
-                  <img
-                    className="oc__deleteMedia"
-                    src={Images.RED_CANCEL}
-                    alt="clear"
-                    onClick={() => {
-                      handleDeleteMediaItem(item.id);
-                    }}
-                  />
-                </Tooltip>
-                <Tooltip placement="top" title="Thêm">
-                  <img
-                    className="oc__createMedia"
-                    src={Images.PLUS}
-                    alt="add"
-                    onClick={handleOpenModalAdd}
-                  />
-                </Tooltip>
-              </div>
+              {checkPathUrl() === pathQuanLyTaiKhoan() ? (
+                <div className="oc__actionAPI">
+                  <Tooltip placement="top" title="Xóa">
+                    <img
+                      className="oc__deleteMedia"
+                      src={Images.RED_CANCEL}
+                      alt="clear"
+                      onClick={() => {
+                        handleDeleteMediaItem(item.id);
+                      }}
+                    />
+                  </Tooltip>
+                  <Tooltip placement="top" title="Thêm">
+                    <img
+                      className="oc__createMedia"
+                      src={Images.PLUS}
+                      alt="add"
+                      onClick={handleOpenModalAdd}
+                    />
+                  </Tooltip>
+                </div>
+              ) : (
+                <></>
+              )}
+
               <video controls className="modal__ocRender">
                 <source src={item.linkMedia} type="video/mp4" />
               </video>
@@ -213,27 +229,30 @@ function OverviewContent(props) {
             key={item.id}
             style={{ position: "relative" }}
           >
-            <div className="oc__actionAPI">
-              <Tooltip placement="top" title="Xóa">
-                <img
-                  className="oc__deleteMedia"
-                  src={Images.RED_CANCEL}
-                  alt="clear"
-                  onClick={() => {
-                    handleDeleteMediaItem(item.id);
-                  }}
-                />
-              </Tooltip>
-              <Tooltip placement="top" title="Thêm">
-                <img
-                  className="oc__createMedia"
-                  src={Images.PLUS}
-                  alt="add"
-                  onClick={handleOpenModalAdd}
-                />
-              </Tooltip>
-            </div>
-
+            {checkPathUrl() === pathQuanLyTaiKhoan() ? (
+              <div className="oc__actionAPI">
+                <Tooltip placement="top" title="Xóa">
+                  <img
+                    className="oc__deleteMedia"
+                    src={Images.RED_CANCEL}
+                    alt="clear"
+                    onClick={() => {
+                      handleDeleteMediaItem(item.id);
+                    }}
+                  />
+                </Tooltip>
+                <Tooltip placement="top" title="Thêm">
+                  <img
+                    className="oc__createMedia"
+                    src={Images.PLUS}
+                    alt="add"
+                    onClick={handleOpenModalAdd}
+                  />
+                </Tooltip>
+              </div>
+            ) : (
+              <></>
+            )}
             {item.type === "IMAGE" ? (
               <img src={item.linkMedia} alt={item.linkMedia} />
             ) : (
@@ -250,26 +269,31 @@ function OverviewContent(props) {
     return props.introduce.map((item) => {
       return (
         <div className="ot__introduceWrapper" key={item.idIntroduce}>
-          <div className="otOc__action">
-            <Tooltip title="Chỉnh sửa">
-              <img
-                src={Images.PENCIL}
-                alt="edit"
-                onClick={() => {
-                  handleEditIntro(item);
-                }}
-              />
-            </Tooltip>
-            <Tooltip title="Xóa">
-              <img
-                src={Images.RED_CANCEL}
-                alt="clear"
-                onClick={() => {
-                  handleDeleteIntro(item.idIntroduce);
-                }}
-              />
-            </Tooltip>
-          </div>
+          {checkPathUrl() === pathQuanLyTaiKhoan() ? (
+            <div className="otOc__action">
+              <Tooltip title="Chỉnh sửa">
+                <img
+                  src={Images.PENCIL}
+                  alt="edit"
+                  onClick={() => {
+                    handleEditIntro(item);
+                  }}
+                />
+              </Tooltip>
+              <Tooltip title="Xóa">
+                <img
+                  src={Images.RED_CANCEL}
+                  alt="clear"
+                  onClick={() => {
+                    handleDeleteIntro(item.idIntroduce);
+                  }}
+                />
+              </Tooltip>
+            </div>
+          ) : (
+            <></>
+          )}
+
           <div className="ot__title">{item.title}</div>
           <p className="ot__content">{item.content}</p>
         </div>
@@ -562,9 +586,9 @@ function OverviewContent(props) {
       });
     }
   };
-  return (
-    <>
-      {props.media.length === 0 && props.introduce.length === 0 ? (
+  const checkMediaIntroduceLength0 = () => {
+    if (checkPathUrl() === "/quan-ly-tai-khoan") {
+      return (
         <div className="ot__rightNoData">
           <div className="ot__rightNoDataWrapper">
             <p>Bạn chưa có thông tin giới thiệu. Hãy tạo ngay nào</p>
@@ -573,6 +597,55 @@ function OverviewContent(props) {
             </Button>
           </div>
         </div>
+      );
+    } else {
+      return (
+        <div className="ot__rightNoData">
+          <div className="ot__rightNoDataWrapper">
+            <p>Tổ chức này chưa đăng tải thông tin giới thiệu</p>
+          </div>
+        </div>
+      );
+    }
+  };
+  const checkIntroduce = () => {
+    if (props.introduce.length === 0) {
+      if (checkPathUrl() === pathQuanLyTaiKhoan()) {
+        return (
+          <div className="oc__noIntroduceRender">
+            <h4>Hiện tại không có tiêu đề - nội dung</h4>
+            <Button type="primary" size="large" onClick={handleOpenModalIntro}>
+              Thêm tiêu đề - nội dung
+            </Button>
+          </div>
+        );
+      } else {
+        return <></>;
+      }
+    } else {
+      if (checkPathUrl() === pathQuanLyTaiKhoan()) {
+        return (
+          <>
+            <Tooltip placement="right" title="Thêm tiêu đề - nội dung">
+              <img
+                className="ot__ocAddIntro"
+                src={Images.PLUS}
+                alt="add"
+                onClick={handleOpenModalIntro}
+              />
+            </Tooltip>
+            {renderListIntroduce()}
+          </>
+        );
+      } else {
+        return <>{renderListIntroduce()}</>;
+      }
+    }
+  };
+  return (
+    <>
+      {props.media.length === 0 && props.introduce.length === 0 ? (
+        checkMediaIntroduceLength0()
       ) : (
         <div className="ot__right">
           {props.media.length >= 2 ? (
@@ -582,32 +655,7 @@ function OverviewContent(props) {
           ) : (
             renderListMedia()
           )}
-          <div className="ot__introduce">
-            {props.introduce.length === 0 ? (
-              <div className="oc__noIntroduceRender">
-                <h4>Hiện tại không có tiêu đề - nội dung</h4>
-                <Button
-                  type="primary"
-                  size="large"
-                  onClick={handleOpenModalIntro}
-                >
-                  Thêm tiêu đề - nội dung
-                </Button>
-              </div>
-            ) : (
-              <>
-                <Tooltip placement="right" title="Thêm tiêu đề - nội dung">
-                  <img
-                    className="ot__ocAddIntro"
-                    src={Images.PLUS}
-                    alt="add"
-                    onClick={handleOpenModalIntro}
-                  />
-                </Tooltip>
-                {renderListIntroduce()}
-              </>
-            )}
-          </div>
+          <div className="ot__introduce">{checkIntroduce()}</div>
         </div>
       )}
       <ModalIntroduce

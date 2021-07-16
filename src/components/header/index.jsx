@@ -26,6 +26,31 @@ function Header({ history }) {
     if (userLogin !== null) {
       if (userLogin.role === "INVESTOR") {
         return (
+          <>
+            <li className="header__features__li">
+              <NavLink
+                activeClassName="active-nav-link-header"
+                className="header__vgv"
+                to="/to-chuc"
+                exact={true}
+              >
+                Tổ chức
+              </NavLink>
+            </li>
+            <li className="header__features__li">
+              <NavLink
+                activeClassName="active-nav-link-header"
+                className="header__vgv"
+                to="/vong-goi-von"
+                exact={true}
+              >
+                Vòng gọi vốn
+              </NavLink>
+            </li>
+          </>
+        );
+      } else if (userLogin.role === "ORGANIZATION") {
+        return (
           <li className="header__features__li">
             <NavLink
               activeClassName="active-nav-link-header"
@@ -34,19 +59,6 @@ function Header({ history }) {
               exact={true}
             >
               Nhà đầu tư
-            </NavLink>
-          </li>
-        );
-      } else if (userLogin.role === "ORGANIZATION") {
-        return (
-          <li className="header__features__li">
-            <NavLink
-              activeClassName="active-nav-link-header"
-              className="header__vgv"
-              to="/to-chuc"
-              exact={true}
-            >
-              Tổ chức
             </NavLink>
           </li>
         );
@@ -80,16 +92,6 @@ function Header({ history }) {
           </li>
 
           {renderTabs()}
-          <li className="header__features__li">
-            <NavLink
-              activeClassName="active-nav-link-header"
-              className="header__vgv"
-              to="/vong-goi-von"
-              exact={true}
-            >
-              Vòng gọi vốn
-            </NavLink>
-          </li>
         </ul>
       </div>
       <div className="header__login">
@@ -146,7 +148,7 @@ function Header({ history }) {
           >
             <div className="header__menuAccount">
               <img src={Images.SETTING} alt="" />
-              <span>Quản lý tài khoản</span>
+              <span>Tổ chức của tôi</span>
             </div>
           </NavLink>
         </MenuItem>
