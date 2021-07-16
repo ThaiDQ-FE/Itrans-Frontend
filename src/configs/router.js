@@ -1,4 +1,8 @@
+import AdminManagementAccount from "../pages/admin/account-management";
+import AdminDetailAccountManagement from "../pages/admin/account-management/account-detail";
 import AdminHome from "../pages/admin/home";
+import AdminManagementGenneral from "../pages/admin/other-management/genneral-management";
+import AdminManagementRound from "../pages/admin/other-management/round-management";
 import Login from "../pages/general/login";
 import Register from "../pages/general/register";
 import AccountManagement from "../pages/main/account-management";
@@ -44,12 +48,12 @@ export const mainRouter = [
   },
   {
     path: "/to-chuc",
-    exact: false,
+    exact: true,
     Component: OrganizationManagement,
   },
   {
     path: "/nha-dau-tu",
-    exact: false,
+    exact: true,
     Component: InvestorManagement,
   },
   {
@@ -57,14 +61,44 @@ export const mainRouter = [
     exact: false,
     Component: RoundDetailManagement,
   },
+  {
+    path: "/nha-dau-tu/chi-tiet",
+    exact: true,
+    Component: AccountManagement,
+  },
+  {
+    path: "/to-chuc/chi-tiet",
+    exact: true,
+    Component: AccountManagement,
+  },
 ];
 
 export const adminRouter = [
   {
     path: "/admin",
-    exact: false,
+    exact: true,
     Component: AdminHome,
-  }
+  },
+  {
+    path: "/admin/quan-ly-tai-khoan",
+    exact: true,
+    Component: AdminManagementAccount,
+  },
+  {
+    path: "/admin/quan-ly-tai-khoan/chi-tiet",
+    exact: true,
+    Component: AdminDetailAccountManagement,
+  },
+  {
+    path: "/admin/quan-ly-vong-goi-von",
+    exact: true,
+    Component: AdminManagementRound,
+  },
+  {
+    path: "/admin/quan-ly-chung",
+    exact: true,
+    Component: AdminManagementGenneral,
+  },
 ];
 
 export const generalRouter = [

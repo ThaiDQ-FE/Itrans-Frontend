@@ -10,9 +10,12 @@ import {
   authorizationAccount,
   checkEmailUser,
   checkIdUser,
+  checkPathUrl,
   checkRoleUser,
   getLocalStorage,
   localStorages,
+  pathQuanLyTaiKhoan,
+  pathToChuc,
   showMessage,
 } from "../../../assets/helper/helper";
 import axios from "axios";
@@ -165,30 +168,39 @@ function TeamMember(props) {
     return props.teamMember.map((item, index) => {
       return (
         <div className="tm__box" key={index}>
-          <div className="tm__editBox">
-            <div className="tm__pencialBox">
-              <Tooltip placement="top" title="Cập nhật">
-                <img
-                  src={Images.PENCIL}
-                  alt="edit"
-                  onClick={() => {
-                    handleClickEdit(item);
-                  }}
-                />
-              </Tooltip>
+          {checkPathUrl() === pathQuanLyTaiKhoan() ? (
+            <div className="tm__editBox">
+              <div className="tm__pencialBox">
+                <Tooltip placement="top" title="Cập nhật">
+                  <img
+                    src={Images.PENCIL}
+                    alt="edit"
+                    onClick={() => {
+                      handleClickEdit(item);
+                    }}
+                  />
+                </Tooltip>
+              </div>
+              <div className="tm__clearBox">
+                <Tooltip placement="top" title="Xóa">
+                  <img
+                    src={Images.RED_CANCEL}
+                    alt="delete"
+                    onClick={() => {
+                      handleClickDelete(
+                        item.idMember,
+                        item.name,
+                        item.position
+                      );
+                    }}
+                  />
+                </Tooltip>
+              </div>
             </div>
-            <div className="tm__clearBox">
-              <Tooltip placement="top" title="Xóa">
-                <img
-                  src={Images.RED_CANCEL}
-                  alt="delete"
-                  onClick={() => {
-                    handleClickDelete(item.idMember, item.name, item.position);
-                  }}
-                />
-              </Tooltip>
-            </div>
-          </div>
+          ) : (
+            <></>
+          )}
+
           <TeamMemberItem
             idMemeber={item.idMember}
             image={item.image}
@@ -335,6 +347,46 @@ function TeamMember(props) {
     setWebLinkCv(value);
     setLinkCv(value);
   };
+
+  const checkNoTeam = () => {
+    if (checkPathUrl() === pathQuanLyTaiKhoan()) {
+      return (
+        <div className="tm__noTeamMember">
+          <p>Hiện tại bạn không có thành viên nào</p>
+          <Button type="primary" size="large" onClick={handleOpenModal}>
+            Thêm thành viên
+          </Button>
+        </div>
+      );
+    } else {
+      if (checkPathUrl() === pathToChuc()) {
+        return (
+          <div className="tm__noTeamMember">
+            <p>Tổ chức này hiện tại chưa đăng tải thành viên chủ chốt</p>
+          </div>
+        );
+      } else {
+        return (
+          <div className="tm__noTeamMember">
+            <p>Nhà đầu tư này hiện tại chưa đăng tải thành viên chủ chốt</p>
+          </div>
+        );
+      }
+    }
+  };
+  const checkAddTeam = () => {
+    if (checkPathUrl() === pathQuanLyTaiKhoan()) {
+      return (
+        <div className="tm__box tm__add" onClick={handleOpenModal}>
+          <div className="tm__plusAdd">
+            <img src={Images.PLUS_ADD} alt="plus-add" />
+          </div>
+        </div>
+      );
+    } else {
+      return <></>;
+    }
+  };
   return (
     <div
       className={`tm__Wrapper${
@@ -343,20 +395,11 @@ function TeamMember(props) {
     >
       {props.teamMember.length !== 0 ? (
         <div className="tm__displayGird">
-          <div className="tm__box tm__add" onClick={handleOpenModal}>
-            <div className="tm__plusAdd">
-              <img src={Images.PLUS_ADD} alt="plus-add" />
-            </div>
-          </div>
+          {checkAddTeam()}
           {renderListTeamMember()}
         </div>
       ) : (
-        <div className="tm__noTeamMember">
-          <p>Hiện tại bạn không có thành viên nào</p>
-          <Button type="primary" size="large" onClick={handleOpenModal}>
-            Thêm thành viên
-          </Button>
-        </div>
+        checkNoTeam()
       )}
       <ModalTeamMember
         openOrClose={openModal}

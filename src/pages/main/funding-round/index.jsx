@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { checkEmailUser, getLocalStorage } from "../../../assets/helper/helper";
-import FilterFundingRound from "../../../components/filter-funding-round";
-import FundingRoundComponent from "../../../components/funding-round";
+import FundingRoundManagement from "../../../components/funding-round-management";
 import { getListStage } from "../../../store/action/register.action";
 import { getAllRoundsActive } from "../../../store/action/round.action";
 import "./styles.scss";
@@ -24,9 +23,7 @@ function FundingRound() {
   return (
     <div className="fr__wrapper">
       <h1 className="fr__title">Vòng gọi vốn</h1>
-      <FilterFundingRound />
-      <hr className="fr__hr" />
-      <FundingRoundComponent />
+      <FundingRoundManagement />
     </div>
   );
 }

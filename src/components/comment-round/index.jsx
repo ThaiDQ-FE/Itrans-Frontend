@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getLocalStorage } from "../../assets/helper/helper";
-import { createQuestion } from "../../store/action/round.action";
+import { createAnswer, createQuestion } from "../../store/action/round.action";
 const { TextArea } = Input;
 
 const CommentList = ({ comments, onClick, children, idQuestion }) => (
@@ -85,6 +85,13 @@ function CommentRound() {
                 value: '',
                 comments: arrayComment
             });
+            const answerObj =
+            {
+                idInvestor: 1,
+                idRound: 1,
+                question: state.value
+              };
+            dispatch(createAnswer(answerObj));
         }
     }, [listQuestionAndAnswer])
     const handleClick = (e) => {

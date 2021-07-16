@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getLocalStorage } from "../../../assets/helper/helper";
 import message from "../../../assets/message/text";
-import FilterInvestor from "../../../components/filter-investor";
-import InvestorList from "../../../components/investor-list";
+import InvestorManagementComponent from "../../../components/investor-management";
 import { getInvestorFilter } from "../../../store/action/investor.action";
 import {
   getListInvestorType,
@@ -32,9 +31,7 @@ function InvestorManagement() {
           {message.IM_SLOGAN} "{message.IM_QUOTE}" {message.IM_SLOGAN_TAIL}
         </div>
       </div>
-      <FilterInvestor />
-      <hr className="im__hr" />
-      <InvestorList />
+      <InvestorManagementComponent />
     </div>
   );
 }

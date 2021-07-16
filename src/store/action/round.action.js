@@ -4,7 +4,7 @@ import {
   checkIdUser,
   showMessage,
 } from "../../assets/helper/helper";
-import { defaultUrlAPIStringTemplate } from "../../configs/url";
+import { defaultUrlAPI, defaultUrlAPIStringTemplate } from "../../configs/url";
 import {
   CREATE_ANSWER_FAIL,
   CREATE_ANSWER_SUCCESS,
@@ -14,6 +14,8 @@ import {
   GET_ALL_LIST_ROUND_ACTIVE_SUCCESS,
   GET_LIST_QUESTION_AND_ANSWER_FAIL,
   GET_LIST_QUESTION_AND_ANSWER_SUCCESS,
+  GET_LIST_ALL_ROUND_FAILED,
+  GET_LIST_ALL_ROUND_SUCCESS,
   GET_LIST_ROUND_ACTIVE_BY_ID_ORGANIZATION_FAILED,
   GET_LIST_ROUND_ACTIVE_BY_ID_ORGANIZATION_SUCCESS,
   GET_LIST_ROUND_BY_ID_INVESTOR_FAILED,
@@ -119,7 +121,7 @@ export const updateStatusRound = (object) => {
           dispatch(getListRoundPassByIdOrganization(id));
         }
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 };
 
@@ -337,7 +339,8 @@ export const getListRoundByIdOrganizationFailed = (err) => {
   };
 };
 
-export const getListQuestionAndAnswer = (gmail,idRound) => {
+
+export const getListQuestionAndAnswer = (gmail, idRound) => {
   return (dispatch) => {
     const token = authorizationAccount();
     axios({
@@ -352,9 +355,31 @@ export const getListQuestionAndAnswer = (gmail,idRound) => {
       })
       .catch((err) => {
         dispatch(getListQuestionAndAnswerFailed(err));
+      })
+    }
+};
+
+export const getListAllRound = () => {
+  return (dispatch) => {
+    dispatch(startLoading());
+    axios({
+      method: "GET",
+      url: defaultUrlAPI() + "round/get-all-round",
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        dispatch(stopLoading());
+        dispatch(getListAllRoundSuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(stopLoading());
+        dispatch(getListAllRoundFailed(err));
       });
   };
 };
+
 
 export const getListQuestionAndAnswerSuccess = (roundDetail) => {
   return {
@@ -375,7 +400,7 @@ export const createQuestion = (question) => {
     axios({
       method: "POST",
       url: `http://localhost:8080/api/v1/question`,
-      data:question,
+      data: question,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -409,7 +434,7 @@ export const createAnswer = (answer) => {
     axios({
       method: "POST",
       url: `http://localhost:8080/api/v1/answer`,
-      data:answer,
+      data: answer,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -433,6 +458,20 @@ export const createAnswerSuccess = (question) => {
 export const createAnswerFailed = (err) => {
   return {
     type: CREATE_ANSWER_FAIL,
+    payload: err,
+  };
+};
+
+export const getListAllRoundSuccess = (listRound) => {
+  return {
+    type: GET_LIST_ALL_ROUND_SUCCESS,
+    payload: listRound,
+  };
+};
+
+export const getListAllRoundFailed = (err) => {
+  return {
+    type: GET_LIST_ALL_ROUND_FAILED,
     payload: err,
   };
 };

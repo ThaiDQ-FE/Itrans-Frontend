@@ -1,0 +1,21 @@
+.anac__button {
+    button {
+        background: #ff7d04;
+        border-color: #ff7d04;
+        text-transform: uppercase;
+        &:hover {
+            background: #f79031;
+            border-color: #f79031;
+        }
+        &:focus {
+            background: #f79031;
+            border-color: #f79031;
+        }
+    }
+}
+.anac__logo {
+    img {
+        width: 30px;
+        height: 30px;
+    }
+}

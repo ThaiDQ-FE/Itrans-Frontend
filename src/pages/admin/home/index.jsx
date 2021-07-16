@@ -1,11 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 
 import "./styles.scss";
 function AdminHome() {
-  
-  return (
-    <><a>admin</a>
-    </>
-  )
+  return <div className="adminHome__wrapper">home</div>;
 }
 export default AdminHome;

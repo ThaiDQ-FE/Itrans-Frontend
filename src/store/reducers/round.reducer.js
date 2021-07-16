@@ -3,6 +3,8 @@ import {
   GET_ALL_LIST_ROUND_ACTIVE_SUCCESS,
   GET_LIST_QUESTION_AND_ANSWER_FAIL,
   GET_LIST_QUESTION_AND_ANSWER_SUCCESS,
+  GET_LIST_ALL_ROUND_FAILED,
+  GET_LIST_ALL_ROUND_SUCCESS,
   GET_LIST_ROUND_ACTIVE_BY_ID_ORGANIZATION_FAILED,
   GET_LIST_ROUND_ACTIVE_BY_ID_ORGANIZATION_SUCCESS,
   GET_LIST_ROUND_BY_ID_INVESTOR_FAILED,
@@ -23,6 +25,7 @@ const initialState = {
   listRoundByIdInvestor: [],
   listRoundByIdOrganization: [],
   listQuestionAndAnswer:[],
+  listAllRound: [],
   errors: [],
 };
 
@@ -69,6 +72,13 @@ const roundReducer = (state = initialState, action) => {
       case GET_LIST_QUESTION_AND_ANSWER_SUCCESS:
       return { ...state, listQuestionAndAnswer: payload };
     case GET_LIST_QUESTION_AND_ANSWER_FAIL:
+    case GET_LIST_ALL_ROUND_SUCCESS:
+      if (payload === "No Data") {
+        return { ...state, listAllRound: [] };
+      } else {
+        return { ...state, listAllRound: payload };
+      }
+    case GET_LIST_ALL_ROUND_FAILED:
       return { ...state, errors: payload };
     default:
       return state;

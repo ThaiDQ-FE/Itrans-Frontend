@@ -1,5 +1,7 @@
 .modal__introduce {
     width: 640px !important;
+    top: 60px !important;
+    z-index: 110;
     .modal__form {
         .modal__iImage {
             padding: 10px;

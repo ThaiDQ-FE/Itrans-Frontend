@@ -3,7 +3,177 @@ import { Card, Button, Pagination, Tag } from "antd";
 import "antd/dist/antd.css";
 import "./styles.scss";
 import Images from "../../../../assets/images/images";
+import {
+  authorizationAccount,
+  checkEmailUser,
+  checkIdUser,
+  checkPathUrl,
+  pathQuanLyTaiKhoan,
+  showMessage,
+} from "../../../../assets/helper/helper";
+import ModalAddRound from "../../modal-create-round";
+import moment from "moment";
+import {
+  checkEnd,
+  checkMoney,
+  checkPercent,
+  checkStart,
+  checkSummary,
+} from "../../../../validate/create-round/round";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { defaultUrlAPI } from "../../../../configs/url";
+import { useDispatch } from "react-redux";
+import { getListRoundByIdOrganization } from "../../../../store/action/round.action";
+import message from "../../../../assets/message/text";
 function RoundByIdOrganization(props) {
+  const [openModal, setOpenModal] = useState(false);
+  const [thumbnail, setThumbnail] = useState("");
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [listCertificate, setListCertificate] = useState([]);
+  const dispatch = useDispatch();
+  // Error
+  const [startDateError, setStartDateError] = useState("");
+  const [endDateError, setEndDateError] = useState("");
+  const [fundingAmountError, setFundingAmountError] = useState("");
+  const [shareRequirementError, setShareRequirementError] = useState("");
+  const [summaryError, setSummaryError] = useState("");
+  //
+  const [infoRound, setInfoRound] = useState({
+    fundingAmount: "",
+    shareRequirement: "",
+    summary: "",
+  });
+  const dateFormat = "DD-MM-YYYY";
+  // call API
+  const postRound = (object) => {
+    axios({
+      method: "POST",
+      url: defaultUrlAPI() + "round",
+      data: object,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 201) {
+          showMessage("success", "Tạo vòng gọi vốn thành công");
+          setTimeout(() => {
+            handleClose();
+            dispatch(getListRoundByIdOrganization(checkIdUser()));
+          }, 2000);
+        } else {
+          showMessage("error", res.data);
+        }
+      })
+      .catch((err) => {
+        showMessage("error", message.CACTH_ERROR);
+      });
+  };
+  const handleOpen = () => {
+    setOpenModal(true);
+  };
+  const handleClose = () => {
+    setOpenModal(false);
+    setInfoRound({
+      fundingAmount: "",
+      shareRequirement: "",
+      summary: "",
+    });
+    setStartDate();
+    setEndDate();
+    setFundingAmountError("");
+    setShareRequirementError("");
+    setStartDateError("");
+    setEndDateError("");
+    setSummaryError("");
+    setThumbnail("");
+    setListCertificate([]);
+  };
+  const handleChangeInfoRound = (event) => {
+    const { name, value } = event.target;
+    setInfoRound({
+      ...infoRound,
+      [name]: value,
+    });
+  };
+  const handleBlurMoney = () => {
+    checkMoney(infoRound.fundingAmount, setFundingAmountError);
+  };
+  const handleBlurPercent = () => {
+    checkPercent(infoRound.shareRequirement, setShareRequirementError);
+  };
+  const hanldeBlurStart = () => {
+    checkStart(startDate, setStartDateError);
+  };
+  const handleBlurEnd = () => {
+    checkEnd(endDate, setEndDateError);
+  };
+  const handleBlurSum = () => {
+    checkSummary(infoRound.summary, setSummaryError);
+  };
+  const handleDelete = (index) => {
+    let tempListCertificate = [...listCertificate];
+    tempListCertificate.splice(index, 1);
+    setListCertificate(tempListCertificate);
+  };
+  const onSubmit = (values) => {
+    checkMoney(infoRound.fundingAmount, setFundingAmountError);
+    checkPercent(infoRound.shareRequirement, setShareRequirementError);
+    checkStart(startDate, setStartDateError);
+    checkEnd(endDate, setEndDateError);
+    checkSummary(infoRound.summary, setSummaryError);
+    if (infoRound.fundingAmount !== "") {
+      if (
+        fundingAmountError === "" &&
+        shareRequirementError === "" &&
+        startDateError === "" &&
+        endDateError === "" &&
+        summaryError === ""
+      ) {
+        if (values.form === undefined || values.form.length === 0) {
+          return showMessage("error", "Cần tối thiểu 1 tiêu đề và nội dung");
+        } else {
+          Swal.fire({
+            icon: "question",
+            title: "Bạn muốn tạo vòng gọi vốn này?",
+            heightAuto: true,
+            timerProgressBar: false,
+            showConfirmButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Đồng ý",
+            cancelButtonText: "Hủy",
+            confirmButtonColor: "#1890ff",
+            cancelButtonColor: "red",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              const finalStartDate = moment(startDate).format("DD-MM-YYYY");
+              const finalEndDate = moment(endDate).format("DD-MM-YYYY");
+              const money = parseFloat(infoRound.fundingAmount);
+              const finalMoney = money.toFixed(2);
+              const percent = parseFloat(infoRound.shareRequirement);
+              const finalPercent = percent.toFixed(2);
+              const object = {
+                fundingAmount: parseFloat(finalMoney),
+                shareRequirement: parseFloat(finalPercent),
+                startDate: finalStartDate,
+                endDate: finalEndDate,
+                summary: infoRound.summary,
+                thumbnail: thumbnail,
+                documents: listCertificate,
+                introduces: values.form,
+                mail: checkEmailUser(),
+              };
+              postRound(object);
+            }
+          });
+        }
+      }
+    }
+
+    console.log(values);
+  };
   const [length, setLength] = useState({
     minValue: 0,
     maxValue: 9,
@@ -30,21 +200,44 @@ function RoundByIdOrganization(props) {
       return <Tag className="rbio__expiration rbio__position">Hết hạn</Tag>;
     }
   };
+  const checkNoRound = () => {
+    if (checkPathUrl() === pathQuanLyTaiKhoan()) {
+      return (
+        <div className="rbio__noRound">
+          <p>Hiện tại bạn không có vòng gọi vốn</p>
+          <Button type="primary" size="large" onClick={handleOpen}>
+            Tạo vòng gọi vốn
+          </Button>
+        </div>
+      );
+    } else {
+      return (
+        <div className="rbio__noRound">
+          <p>Tổ chức này hiện không có vòng gọi vốn</p>
+        </div>
+      );
+    }
+  };
+  const checkHaveRound = () => {
+    if (checkPathUrl() === pathQuanLyTaiKhoan()) {
+      return (
+        <div className="rbio__addNewRound">
+          <Button size="large" type="primary" onClick={handleOpen}>
+            Tạo vòng gọi vốn
+          </Button>
+        </div>
+      );
+    } else {
+      return <></>;
+    }
+  };
   return (
     <div
       className={`rbio__wrapper${
         props.listRound.length > 0 ? "" : " rbio__warpperNormal"
       }`}
     >
-      {props.listRound.length > 0 ? (
-        <div className="rbio__addNewRound">
-          <Button size="large" type="primary">
-            Tạo vòng gọi vốn
-          </Button>
-        </div>
-      ) : (
-        <></>
-      )}
+      {props.listRound.length > 0 ? checkHaveRound() : <></>}
 
       <div className="rbio__container">
         <div
@@ -52,48 +245,37 @@ function RoundByIdOrganization(props) {
             props.listRound.length > 0 ? "" : " rbio__listRoundNormal"
           }`}
         >
-          {props.listRound && props.listRound.length > 0 ? (
-            props.listRound
-              .slice(length.minValue, length.maxValue)
-              .map((value, index) => (
-                <Card key={index} hoverable className="rbio__itemOrg">
-                  {renderTag(value.status)}
-                  <img
-                    src={
-                      value.thumbnail === "" ? Images.NO_IMAGE : value.thumbnail
-                    }
-                    alt="thumbnail"
-                  />
-                  <div className="ribo__stage">
-                    <span>Giai đoạn: </span>
-                    <span>{value.stage}</span>
-                  </div>
-                  <div className="rbio__startDate">
-                    <span>Ngày bắt đầu: </span>
-                    <span>{value.startDate}</span>
-                  </div>
-                  <div className="rbio__endDate">
-                    <span>Ngày kết thúc: </span>
-                    <span>{value.endDate}</span>
-                  </div>
-                  {value.summary === "" ? (
-                    <></>
-                  ) : (
-                    <div className="rbio__summary">
-                      <span>Mô tả: </span>
-                      <span>{value.summary}</span>
+          {props.listRound && props.listRound.length > 0
+            ? props.listRound
+                .slice(length.minValue, length.maxValue)
+                .map((value, index) => (
+                  <Card key={index} hoverable className="rbio__itemOrg">
+                    {renderTag(value.status)}
+                    <img
+                      src={
+                        value.thumbnail === ""
+                          ? Images.NO_IMAGE
+                          : value.thumbnail
+                      }
+                      alt="thumbnail"
+                    />
+                    <div className="ribo__stage">
+                      <span>{value.stage}</span>
                     </div>
-                  )}
-                </Card>
-              ))
-          ) : (
-            <div className="rbio__noRound">
-              <p>Hiện tại bạn không có vòng gọi vốn</p>
-              <Button type="primary" size="large">
-                Tạo vòng gọi vốn
-              </Button>
-            </div>
-          )}
+                    <div className="rbio__startDate">
+                      <span>{value.startDate} / </span>
+                      <span>{value.endDate}</span>
+                    </div>
+                    {value.summary === "" ? (
+                      <></>
+                    ) : (
+                      <div className="rbio__summary">
+                        <span>{value.summary}</span>
+                      </div>
+                    )}
+                  </Card>
+                ))
+            : checkNoRound()}
         </div>
         <div className="ol__paging">
           {props.listRound.length > 9 ? (
@@ -108,6 +290,32 @@ function RoundByIdOrganization(props) {
           )}
         </div>
       </div>
+      <ModalAddRound
+        open={openModal}
+        close={handleClose}
+        dateFormat={dateFormat}
+        thumbnail={thumbnail}
+        setThumbnail={setThumbnail}
+        handleChangeInfoRound={handleChangeInfoRound}
+        onSubmit={onSubmit}
+        startDate={startDate}
+        endDate={endDate}
+        setStartDate={setStartDate}
+        setEndDate={setEndDate}
+        fundingAmountError={fundingAmountError}
+        shareRequirementError={shareRequirementError}
+        summaryError={summaryError}
+        endDateError={endDateError}
+        startDateError={startDateError}
+        handleBlurMoney={handleBlurMoney}
+        handleBlurPercent={handleBlurPercent}
+        hanldeBlurStart={hanldeBlurStart}
+        handleBlurEnd={handleBlurEnd}
+        handleBlurSum={handleBlurSum}
+        listCertificate={listCertificate}
+        setListCertificate={setListCertificate}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 }

@@ -67,3 +67,18 @@ export const localStorages = (name, value) => {
 export const getLocalStorage = (name) => {
   return JSON.parse(localStorage.getItem(name));
 };
+
+export const checkPathUrl = () => {
+  const path = window.location.pathname;
+  return path;
+};
+
+export const pathQuanLyTaiKhoan = () => {
+  const path = "/quan-ly-tai-khoan";
+  return path;
+};
+
+export const pathToChuc = () => {
+  const path = "/to-chuc/chi-tiet";
+  return path;
+};

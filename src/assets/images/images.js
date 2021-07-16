@@ -32,6 +32,12 @@ import loading from "./loading.gif";
 import plus from "./plus.svg";
 import plus_add from "./plus-add.svg";
 import no_user from "./no-user.jpg";
+import calendar from "./calendar.svg";
+import employees from "./employees.svg";
+import gmail from "./gmail.svg";
+import minus from "./minus.svg";
+import oopss from "./oopss.PNG";
+import no_thumbnail from "./no-thumbnail.png";
 const Images = {
   LOGO_NAVY: logo_navy,
   LOGO_GREY: logo_grey,
@@ -67,6 +73,12 @@ const Images = {
   PLUS: plus,
   PLUS_ADD: plus_add,
   NO_USER: no_user,
+  CALENDAR: calendar,
+  EMPLOYEES: employees,
+  GMAIL: gmail,
+  MINUS: minus,
+  OOPSS: oopss,
+  NO_THUMBNAIL: no_thumbnail,
 };
 
 export default Images;
