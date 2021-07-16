@@ -5,7 +5,7 @@
     display: flex;
     justify-content: space-between;
     box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.3);
-    z-index: 1100;
+    z-index: 6000;
     position: fixed;
     top: 0;
     font-family: "Montserrat", sans-serif;
@@ -137,6 +137,7 @@
     margin: 3px 5px;
 }
 .menu__navbar {
+    z-index: 6001 !important;
     .MuiPopover-paper {
         top: 8% !important;
         left: unset !important;

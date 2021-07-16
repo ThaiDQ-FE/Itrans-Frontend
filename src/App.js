@@ -7,6 +7,7 @@ import RouterGeneralTemplate from "./templates/login";
 
 function App() {
   const userLogin = JSON.parse(localStorage.getItem("userInfo"));
+  console.log(userLogin);
   const checkRole = () => {
     if (userLogin !== null) return userLogin.role;
   };

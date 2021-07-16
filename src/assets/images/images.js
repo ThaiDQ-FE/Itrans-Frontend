@@ -28,6 +28,10 @@ import save from "./save.png";
 import accepted from "./yes.svg";
 import oops from "./oops.svg";
 import no_data from "./nodata.png";
+import loading from "./loading.gif";
+import plus from "./plus.svg";
+import plus_add from "./plus-add.svg";
+import no_user from "./no-user.jpg";
 const Images = {
   LOGO_NAVY: logo_navy,
   LOGO_GREY: logo_grey,
@@ -59,6 +63,10 @@ const Images = {
   ACCEPTED: accepted,
   OOPS: oops,
   NO_DATA: no_data,
+  LOADING: loading,
+  PLUS: plus,
+  PLUS_ADD: plus_add,
+  NO_USER: no_user,
 };
 
 export default Images;

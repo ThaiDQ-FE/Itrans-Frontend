@@ -4,11 +4,22 @@ import {
   checkIdUser,
   showMessage,
 } from "../../assets/helper/helper";
+import { defaultUrlAPIStringTemplate } from "../../configs/url";
 import {
+  CREATE_ANSWER_FAIL,
+  CREATE_ANSWER_SUCCESS,
+  CREATE_QUESTION_FAIL,
+  CREATE_QUESTION_SUCCESS,
   GET_ALL_LIST_ROUND_ACCTIVE_FAILED,
   GET_ALL_LIST_ROUND_ACTIVE_SUCCESS,
+  GET_LIST_QUESTION_AND_ANSWER_FAIL,
+  GET_LIST_QUESTION_AND_ANSWER_SUCCESS,
   GET_LIST_ROUND_ACTIVE_BY_ID_ORGANIZATION_FAILED,
   GET_LIST_ROUND_ACTIVE_BY_ID_ORGANIZATION_SUCCESS,
+  GET_LIST_ROUND_BY_ID_INVESTOR_FAILED,
+  GET_LIST_ROUND_BY_ID_INVESTOR_SUCCESS,
+  GET_LIST_ROUND_BY_ID_ORGANIZATION_FAILED,
+  GET_LIST_ROUND_BY_ID_ORGANIZATION_SUCCESS,
   GET_LIST_ROUND_PASS_BY_ID_ORGANIZATION_FAILED,
   GET_LIST_ROUND_PASS_BY_ID_ORGANIZATION_SUCCESS,
   GET_LIST_ROUND_PENDING_BY_ID_ORGANIZATION_FAILED,
@@ -242,6 +253,186 @@ export const getAllRoundsActiveSuccess = (listRoundsActive) => {
 export const getAllRoundsActiveFailed = (err) => {
   return {
     type: GET_ALL_LIST_ROUND_ACCTIVE_FAILED,
+    payload: err,
+  };
+};
+// v2
+export const getListRoundByIdInvestor = (id) => {
+  return (dispatch) => {
+    dispatch(startLoading());
+    axios({
+      method: "GET",
+      url: defaultUrlAPIStringTemplate() + `round/get-rounds-by-investor/${id}`,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        dispatch(stopLoading());
+        if (res.status === 200) {
+          dispatch(getListRoundByIdInvestorSuccess(res.data));
+        } else {
+          dispatch(getListRoundByIdInvestorFailed(res));
+        }
+      })
+      .catch((err) => {
+        dispatch(stopLoading());
+        dispatch(getListRoundByIdInvestorFailed(err));
+      });
+  };
+};
+
+export const getListRoundByIdInvestorSuccess = (listRound) => {
+  return {
+    type: GET_LIST_ROUND_BY_ID_INVESTOR_SUCCESS,
+    payload: listRound,
+  };
+};
+
+export const getListRoundByIdInvestorFailed = (err) => {
+  return {
+    type: GET_LIST_ROUND_BY_ID_INVESTOR_FAILED,
+    payload: err,
+  };
+};
+
+export const getListRoundByIdOrganization = (id) => {
+  return (dispatch) => {
+    dispatch(startLoading());
+    axios({
+      method: "GET",
+      url:
+        defaultUrlAPIStringTemplate() +
+        `round/get-rounds-by-organization/${id}`,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        dispatch(stopLoading());
+        if (res.status === 200) {
+          dispatch(getListRoundByIdOrganizationSuccess(res.data));
+        } else {
+          dispatch(getListRoundByIdOrganizationFailed(res));
+        }
+      })
+      .catch((err) => {
+        dispatch(stopLoading());
+        dispatch(getListRoundByIdOrganizationFailed(err));
+      });
+  };
+};
+
+export const getListRoundByIdOrganizationSuccess = (listRound) => {
+  return {
+    type: GET_LIST_ROUND_BY_ID_ORGANIZATION_SUCCESS,
+    payload: listRound,
+  };
+};
+
+export const getListRoundByIdOrganizationFailed = (err) => {
+  return {
+    type: GET_LIST_ROUND_BY_ID_ORGANIZATION_FAILED,
+    payload: err,
+  };
+};
+
+export const getListQuestionAndAnswer = (gmail,idRound) => {
+  return (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: "GET",
+      url: `http://localhost:8080/api/v1/question-and-answer?gmail=${gmail}&idRound=${idRound}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        dispatch(getListQuestionAndAnswerSuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(getListQuestionAndAnswerFailed(err));
+      });
+  };
+};
+
+export const getListQuestionAndAnswerSuccess = (roundDetail) => {
+  return {
+    type: GET_LIST_QUESTION_AND_ANSWER_SUCCESS,
+    payload: roundDetail,
+  };
+};
+
+export const getListQuestionAndAnswerFailed = (err) => {
+  return {
+    type: GET_LIST_QUESTION_AND_ANSWER_FAIL,
+    payload: err,
+  };
+};
+export const createQuestion = (question) => {
+  return (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: "POST",
+      url: `http://localhost:8080/api/v1/question`,
+      data:question,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        dispatch(createQuesttionSuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(createQuesttionFailed(err));
+      });
+  };
+};
+
+export const createQuesttionSuccess = (question) => {
+  return {
+    type: CREATE_QUESTION_SUCCESS,
+    payload: question,
+  };
+};
+
+export const createQuesttionFailed = (err) => {
+  return {
+    type: CREATE_QUESTION_FAIL,
+    payload: err,
+  };
+};
+
+export const createAnswer = (answer) => {
+  return (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: "POST",
+      url: `http://localhost:8080/api/v1/answer`,
+      data:answer,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        dispatch(createAnswerSuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(createAnswerFailed(err));
+      });
+  };
+};
+
+export const createAnswerSuccess = (question) => {
+  return {
+    type: CREATE_ANSWER_SUCCESS,
+    payload: question,
+  };
+};
+
+export const createAnswerFailed = (err) => {
+  return {
+    type: CREATE_ANSWER_FAIL,
     payload: err,
   };
 };

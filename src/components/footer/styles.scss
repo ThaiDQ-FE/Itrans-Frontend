@@ -5,40 +5,29 @@
     .uf__container {
         display: flex;
         justify-content: space-evenly;
-        .uf__one {
-            width: 30%;
-            .uf__logo {
-                img {
-                    width: 100px;
-                    height: 100px;
-                }
-            }
-            .uf__contact {
-                .uf__HCM,
-                .uf__HN,
-                .uf__CT,
-                .uf__QN,
-                .uf__DN {
-                    margin-bottom: 10px;
-                    .uf__truSo {
-                        margin-right: 5px;
-                        font-weight: 500;
-                        font-size: 20px;
-                    }
-                    .uf__diaChi {
-                        opacity: 0.8;
-                    }
-                }
+        .uf__logo {
+            img {
+                width: 100px;
+                height: 100px;
             }
         }
-        .uf__0,
-        .uf__1,
-        .uf__2 {
-            width: 20%;
-            .uf__title {
-                font-weight: 600;
-                font-size: 24px;
+        .uf__contact {
+            display: flex;
+            margin: auto;
+            .uf__HCM {
+                margin-bottom: 10px;
+                .uf__truSo {
+                    margin-right: 5px;
+                    font-weight: 500;
+                    font-size: 20px;
+                }
+                .uf__diaChi {
+                    opacity: 0.8;
+                }
             }
         }
     }
+}
+.uf__loading {
+    display: none;
 }
