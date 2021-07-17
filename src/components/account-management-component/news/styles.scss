@@ -3,6 +3,7 @@
     min-width: 480px;
     max-width: 960px;
     margin: auto;
+    position: relative;
     .nt__articleWrapper {
         display: flex;
         justify-content: space-between;
@@ -10,10 +11,19 @@
         box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);
         margin: 20px 0;
         &:hover {
+            cursor: pointer;
             box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.4), 0 3px 4px 0 rgba(0, 0, 0, 0.24),
                 0 1px 8px 0 rgba(0, 0, 0, 0.22);
         }
     }
+    .nt__createArticle {
+        position: absolute;
+        top: 30px;
+        right: -150px;
+    }
+}
+.nt__oneArticleWrapper {
+    padding: 61px 0 160px 0;
 }
 .nt__noArticleWrapper {
     padding: 168.5px 0;

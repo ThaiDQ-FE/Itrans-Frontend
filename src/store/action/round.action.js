@@ -121,7 +121,7 @@ export const updateStatusRound = (object) => {
           dispatch(getListRoundPassByIdOrganization(id));
         }
       })
-      .catch((err) => { });
+      .catch((err) => {});
   };
 };
 
@@ -298,9 +298,11 @@ export const getListRoundByIdInvestorFailed = (err) => {
   };
 };
 
-export const getListRoundByIdOrganization = (id) => {
+export const getListRoundByIdOrganization = (id, isSelected) => {
   return (dispatch) => {
-    dispatch(startLoading());
+    if (isSelected === false) {
+      dispatch(startLoading());
+    }
     axios({
       method: "GET",
       url:
@@ -339,7 +341,6 @@ export const getListRoundByIdOrganizationFailed = (err) => {
   };
 };
 
-
 export const getListQuestionAndAnswer = (gmail, idRound) => {
   return (dispatch) => {
     const token = authorizationAccount();
@@ -355,8 +356,8 @@ export const getListQuestionAndAnswer = (gmail, idRound) => {
       })
       .catch((err) => {
         dispatch(getListQuestionAndAnswerFailed(err));
-      })
-    }
+      });
+  };
 };
 
 export const getListAllRound = () => {
@@ -379,7 +380,6 @@ export const getListAllRound = () => {
       });
   };
 };
-
 
 export const getListQuestionAndAnswerSuccess = (roundDetail) => {
   return {

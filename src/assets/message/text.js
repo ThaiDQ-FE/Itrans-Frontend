@@ -98,6 +98,12 @@ const message = {
   MOADL_CD_PTCP_DECIMALS: "Phần trăm cổ phần có tối đa 2 số ở phần thập phân",
   // Error
   CACTH_ERROR: "Máy chủ đang bị lỗi. Hãy thử lại sau",
+  // EXAMPLE
+  EX_TITLE_ARTICLE:
+    "VD: TP.HCM tính đến kịch bản 60.000 ca nhiễm nCoV, điều trị F0 tại nhà",
+  EX_HASHTAG_ARTICLE: "VD: KHAI KHOÁNG XÂY DỰNG ... ",
+  EX_SUMMARY_ARTICLE:
+    "VD: Ban Chỉ đạo phòng, chống dịch Covid-19 quốc gia sẽ báo cáo Thủ tướng, Chính phủ để có chỉ đạo với tinh thần nâng cao cảnh giác, chuẩn bị cho tình huống xấu hơn.",
 };
 
 export default message;

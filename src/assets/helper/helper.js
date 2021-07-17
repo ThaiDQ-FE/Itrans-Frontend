@@ -82,3 +82,8 @@ export const pathToChuc = () => {
   const path = "/to-chuc/chi-tiet";
   return path;
 };
+
+export const pathNhaDauTu = () => {
+  const path = "/nha-dau-tu/chi-tiet";
+  return path;
+};

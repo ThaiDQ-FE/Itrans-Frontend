@@ -11,6 +11,8 @@ import {
   checkRoleUser,
   getLocalStorage,
   localStorages,
+  pathQuanLyTaiKhoan,
+  pathToChuc,
   showMessage,
 } from "../../../assets/helper/helper";
 import ModalMileStone from "../modal-milestone";
@@ -412,16 +414,37 @@ function OverviewTab(props) {
                   {props.detailCompany.email}
                 </span>
               </p>
-              {checkRoleUser() === "INVESTOR" ? (
-                <p className="ot__investorType">
-                  <span className="ot__investorTypeLabel">
-                    Loại nhà đầu tư:
-                  </span>
-                  <span className="ot__investorTypeText">
-                    {props.detailCompany.investorType}
-                  </span>
-                </p>
-              ) : (
+              {checkPathUrl() === pathQuanLyTaiKhoan() ? (
+                checkRoleUser() === "INVESTOR" ? (
+                  <p className="ot__investorType">
+                    <span className="ot__investorTypeLabel">
+                      Loại nhà đầu tư:
+                    </span>
+                    <span className="ot__investorTypeText">
+                      {props.detailCompany.investorType}
+                    </span>
+                  </p>
+                ) : (
+                  <>
+                    <p className="ot__currentStage">
+                      <span className="ot__currentStageLabel">
+                        Giai đoạn hiện tại:
+                      </span>
+                      <span className="ot__currentStageText">
+                        {props.detailCompany.currentStage}
+                      </span>
+                    </p>
+                    <p className="ot__industry">
+                      <span className="ot__industryLabel">
+                        Lĩnh vực kinh doanh:
+                      </span>
+                      <span className="ot__industryText">
+                        {props.detailCompany.industry}
+                      </span>
+                    </p>
+                  </>
+                )
+              ) : checkPathUrl() === pathToChuc() ? (
                 <>
                   <p className="ot__currentStage">
                     <span className="ot__currentStageLabel">
@@ -440,6 +463,15 @@ function OverviewTab(props) {
                     </span>
                   </p>
                 </>
+              ) : (
+                <p className="ot__investorType">
+                  <span className="ot__investorTypeLabel">
+                    Loại nhà đầu tư:
+                  </span>
+                  <span className="ot__investorTypeText">
+                    {props.detailCompany.investorType}
+                  </span>
+                </p>
               )}
             </>
           )}

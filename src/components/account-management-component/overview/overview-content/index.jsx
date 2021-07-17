@@ -14,8 +14,8 @@ import {
   checkPathUrl,
   getLocalStorage,
   localStorages,
+  pathNhaDauTu,
   pathQuanLyTaiKhoan,
-  pathToChuc,
   showMessage,
 } from "../../../../assets/helper/helper";
 import axios from "axios";
@@ -148,7 +148,7 @@ function OverviewContent(props) {
             </Button>
           </div>
         );
-      } else if (checkPathUrl() === pathToChuc) {
+      } else {
         return <></>;
       }
     }
@@ -602,7 +602,12 @@ function OverviewContent(props) {
       return (
         <div className="ot__rightNoData">
           <div className="ot__rightNoDataWrapper">
-            <p>Tổ chức này chưa đăng tải thông tin giới thiệu</p>
+            <p>
+              {checkPathUrl() === pathNhaDauTu()
+                ? "Nhà đầu tư này "
+                : "Tổ chức này "}{" "}
+              chưa đăng tải thông tin giới thiệu
+            </p>
           </div>
         </div>
       );
@@ -620,7 +625,16 @@ function OverviewContent(props) {
           </div>
         );
       } else {
-        return <></>;
+        return (
+          <div className="oc__noIntroduceRender">
+            <h4>
+              {checkPathUrl() === pathNhaDauTu()
+                ? "Nhà đầu tư này "
+                : "Tổ chức này "}
+              chưa cập nhật thông tin
+            </h4>
+          </div>
+        );
       }
     } else {
       if (checkPathUrl() === pathQuanLyTaiKhoan()) {

@@ -1,4 +1,4 @@
-.article__thumbnail {
+.news__thumbnail {
     width: 100px;
     height: 125px;
     margin: auto;
@@ -8,10 +8,10 @@
         height: 100%;
     }
 }
-.article__content {
+.news__content {
     width: 87%;
     padding: 10px;
-    .article__tags {
+    .news__tags {
         .ant-tag {
             background: #ff8412;
             border-color: #ff8412;
@@ -20,21 +20,22 @@
             border-radius: 9px;
         }
     }
-    .article__title {
+    .news__title {
         font-weight: 600;
         font-size: 18px;
     }
-    .article__description {
+    .news__description {
         width: 100%;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
         overflow: hidden;
+        display: -webkit-box;
         margin-bottom: 5px;
     }
-    .articles__bottomWrapper {
+    .newss__bottomWrapper {
         display: flex;
         position: relative;
-        .article__logo {
+        .news__logo {
             width: 30px;
             height: 30px;
             img {
@@ -42,11 +43,11 @@
                 height: 100%;
             }
         }
-        .article__owner {
+        .news__owner {
             margin-left: 20px;
             line-height: 2;
         }
-        .article__createAt {
+        .news__createAt {
             margin-left: 20px;
             line-height: 2;
         }
