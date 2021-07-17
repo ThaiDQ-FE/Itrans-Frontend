@@ -29,7 +29,7 @@ function Header({ history }) {
           <>
             <li className="header__features__li">
               <NavLink
-                activeClassName="active-nav-link-header"
+                activeClassName="active-nav-link-header-features"
                 className="header__vgv"
                 to="/to-chuc"
                 exact={true}
@@ -39,7 +39,7 @@ function Header({ history }) {
             </li>
             <li className="header__features__li">
               <NavLink
-                activeClassName="active-nav-link-header"
+                activeClassName="active-nav-link-header-features"
                 className="header__vgv"
                 to="/vong-goi-von"
                 exact={true}
@@ -53,7 +53,7 @@ function Header({ history }) {
         return (
           <li className="header__features__li">
             <NavLink
-              activeClassName="active-nav-link-header"
+              activeClassName="active-nav-link-header-features"
               className="header__vgv"
               to="/nha-dau-tu"
               exact={true}
@@ -78,11 +78,15 @@ function Header({ history }) {
           <img src={logo} alt="logo" />
         </NavLink>
       </div>
-      <div className="header__features">
+      <div
+        className={`header__features${
+          checkRoleUser() === "ORGANIZATION" ? " header__featuresRole" : ""
+        }`}
+      >
         <ul className="header__features__ul">
           <li className="header__features__li">
             <NavLink
-              activeClassName="active-nav-link-header"
+              activeClassName="active-nav-link-header-features"
               className="header__trangchu"
               to="/"
               exact={true}

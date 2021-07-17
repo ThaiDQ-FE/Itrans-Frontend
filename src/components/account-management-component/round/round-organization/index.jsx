@@ -61,7 +61,7 @@ function RoundByIdOrganization(props) {
           showMessage("success", "Tạo vòng gọi vốn thành công");
           setTimeout(() => {
             handleClose();
-            dispatch(getListRoundByIdOrganization(checkIdUser()));
+            dispatch(getListRoundByIdOrganization(checkIdUser(), true));
           }, 2000);
         } else {
           showMessage("error", res.data);

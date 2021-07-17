@@ -1,5 +1,5 @@
 import React from "react";
-import ListFollowItem from "../list-follow-item";
+import ListFollowItem from "./list-follow-item";
 import "./styles.scss";
 function ListFollow() {
   return (
