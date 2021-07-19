@@ -16,6 +16,7 @@ import {
   localStorages,
   pathQuanLyTaiKhoan,
   pathToChuc,
+  sessionTimeOut,
   showMessage,
 } from "../../../assets/helper/helper";
 import axios from "axios";
@@ -31,6 +32,7 @@ import {
   checkName,
   checkPos,
 } from "../../../validate/create-team/team";
+import { withRouter } from "react-router-dom";
 function TeamMember(props) {
   const [openModal, setOpenModal] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
@@ -73,7 +75,7 @@ function TeamMember(props) {
     }
     return finalUrlLinkCv;
   };
-  const postTeam = (object) => {
+  const postTeam = (object, history) => {
     axios({
       method: "POST",
       url: "http://localhost:8080/api/v1/auth/team",
@@ -89,10 +91,10 @@ function TeamMember(props) {
         }
       })
       .catch((err) => {
-        showMessage("error", message.CACTH_ERROR);
+        sessionTimeOut(err, history);
       });
   };
-  const putTeam = (object) => {
+  const putTeam = (object, history) => {
     axios({
       method: "PUT",
       url: `http://localhost:8080/api/v1/team?id=${
@@ -113,7 +115,7 @@ function TeamMember(props) {
         }
       })
       .catch((err) => {
-        showMessage("error", message.CACTH_ERROR);
+        sessionTimeOut(err, history);
       });
   };
   const handleClickDelete = (id, name, vitri) => {
@@ -257,7 +259,7 @@ function TeamMember(props) {
                   userInfo.chucVu
                 )
               );
-              postTeam(arrayTemp);
+              postTeam(arrayTemp, props.history);
             } else {
               let arrayTemp = [];
               arrayTemp.push(
@@ -270,7 +272,7 @@ function TeamMember(props) {
                   userInfo.chucVu
                 )
               );
-              postTeam(arrayTemp);
+              postTeam(arrayTemp, props.history);
             }
           }
         });
@@ -300,7 +302,7 @@ function TeamMember(props) {
               name: userInfo.name,
               position: userInfo.chucVu,
             };
-            putTeam(object);
+            putTeam(object, props.history);
           }
         });
       }
@@ -403,4 +405,4 @@ function TeamMember(props) {
   );
 }
 
-export default TeamMember;
+export default withRouter(TeamMember);

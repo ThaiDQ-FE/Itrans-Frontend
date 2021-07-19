@@ -94,6 +94,7 @@ function InfoInputCreateRound(props) {
             color="red"
           >
             <DatePicker
+              dropdownClassName="round__dropdown"
               className={props.startDateError !== "" ? "error__input" : ""}
               value={props.startDate}
               onChange={props.setStartDate}
@@ -110,6 +111,7 @@ function InfoInputCreateRound(props) {
           <label className="modal__labelAddRound">Ngày kết thúc</label>
           <Tooltip title={props.endDateError} placement="topRight" color="red">
             <DatePicker
+              dropdownClassName="round__dropdown"
               className={props.endDateError !== "" ? "error__input" : ""}
               value={props.endDate}
               onChange={props.setEndDate}

@@ -9,6 +9,7 @@ import {
   checkIdUser,
   checkPathUrl,
   pathQuanLyTaiKhoan,
+  sessionTimeOut,
   showMessage,
 } from "../../../../assets/helper/helper";
 import ModalAddRound from "../../modal-create-round";
@@ -27,6 +28,7 @@ import { defaultUrlAPI } from "../../../../configs/url";
 import { useDispatch } from "react-redux";
 import { getListRoundByIdOrganization } from "../../../../store/action/round.action";
 import message from "../../../../assets/message/text";
+import { withRouter } from "react-router-dom";
 function RoundByIdOrganization(props) {
   const [openModal, setOpenModal] = useState(false);
   const [thumbnail, setThumbnail] = useState("");
@@ -49,7 +51,7 @@ function RoundByIdOrganization(props) {
   });
   const dateFormat = "DD-MM-YYYY";
   // call API
-  const postRound = (object) => {
+  const postRound = (object, history) => {
     axios({
       method: "POST",
       url: defaultUrlAPI() + "round",
@@ -70,7 +72,7 @@ function RoundByIdOrganization(props) {
         }
       })
       .catch((err) => {
-        showMessage("error", message.CACTH_ERROR);
+        sessionTimeOut(err, history);
       });
   };
   const handleOpen = () => {
@@ -170,7 +172,7 @@ function RoundByIdOrganization(props) {
                 introduces: values.form,
                 mail: checkEmailUser(),
               };
-              postRound(object);
+              postRound(object, props.history);
             }
           });
         }
@@ -325,4 +327,4 @@ function RoundByIdOrganization(props) {
   );
 }
 
-export default RoundByIdOrganization;
+export default withRouter(RoundByIdOrganization);
