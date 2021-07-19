@@ -65,3 +65,11 @@ export const checkSummary = (sum, setSum) => {
     setSum("");
   }
 };
+
+export const checkThumb = (thumb, setThumb) => {
+  if (thumb === "") {
+    return setThumb("Hình mô tả không được để trống");
+  } else {
+    setThumb("");
+  }
+};

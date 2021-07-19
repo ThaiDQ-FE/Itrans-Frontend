@@ -2,33 +2,63 @@ import React from "react";
 import Images from "../../../assets/images/images";
 import { NavLink, withRouter } from "react-router-dom";
 import "./styles.scss";
-import { getLocalStorage } from "../../../assets/helper/helper";
+import { checkRoleUser, getLocalStorage } from "../../../assets/helper/helper";
+import authMessage from "../../../validate/message/authMessage";
 function NotAuth() {
-  const content = () => {
-    const local = getLocalStorage("userInfo");
-    if (local === null) {
-      return;
+  const checkMess = () => {
+    if (getLocalStorage("userInfo") === null) {
+      return authMessage.not_login;
     } else {
+      const path = window.location.pathname;
+      if (
+        path.includes("/to-chuc") &&
+        (checkRoleUser() === "ADMIN" || checkRoleUser() === "ORGANIZATION")
+      ) {
+        return authMessage.wrong_role;
+      }
+      if (
+        path.includes("/nha-dau-tu") &&
+        (checkRoleUser() === "ADMIN" || checkRoleUser() === "INVESTOR")
+      ) {
+        return authMessage.wrong_role;
+      }
+      if (path === "/dang-nhap") {
+        return authMessage.logined;
+      } else {
+        return authMessage.wrong_role;
+      }
+    }
+  };
+  return (
+    <div className="notAuth__wrapper">
       <div className="notAuth__container">
-        <h2>Rất tiếc, bạn không bạn không đủ quyển để vào trang này</h2>
-        <h5>Hãy chắc chắn rằng bạn đã đăng nhập đùng tài khoản</h5>
+        <h2>{authMessage.default}</h2>
+        <h5>{checkMess()}</h5>
         <img src={Images.OOPSS} alt="error" />
         <h5>
           Nhấn{" "}
           <NavLink
             activeClassName="active-nav-link-header"
             className="notAuth__nav"
-            to="/to-chuc"
+            to={
+              getLocalStorage("userInfo") === null
+                ? "/dang-nhap"
+                : checkRoleUser() === "ADMIN"
+                ? "/admin"
+                : "/"
+            }
             exact={true}
           >
             trở lại
           </NavLink>
-          {" để quay lại trang chủ."}
+          {getLocalStorage("userInfo") === null
+            ? authMessage.back_login
+            : authMessage.back_home}
         </h5>
-      </div>;
-    }
-  };
-  return <div className="notAuth__wrapper">{content()}</div>;
+      </div>
+      ;
+    </div>
+  );
 }
 
 export default withRouter(NotAuth);

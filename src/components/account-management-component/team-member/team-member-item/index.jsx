@@ -5,7 +5,7 @@ function TeamMemberItem(props) {
   return (
     <>
       {props.linkCv === "" ? (
-        <div className="tm__link">
+        <div className="tm__link tm__noLink">
           <div className="tm__img">
             <img
               src={props.image === "" ? Images.NO_USER : props.image}

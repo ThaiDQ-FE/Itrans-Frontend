@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import "./styles.scss";
 import FilterInvestorComponent from "./filter-investor";
 import CardInvestorComponent from "./card-investor";
-function InvestorManagementComponent() {
+function InvestorManagementComponent(props) {
+  const [selectedProvince, setSelectedProvince] = useState([]);
+  const [selectedType, setSelectedType] = useState([]);
   return (
     <>
-      <FilterInvestorComponent />
+      <FilterInvestorComponent
+        selectedProvince={selectedProvince}
+        selectedType={selectedType}
+        setSelectedProvince={setSelectedProvince}
+        setSelectedType={setSelectedType}
+      />
       <hr className="imc__hr" />
-      <CardInvestorComponent />
+      <CardInvestorComponent
+        selectedProvince={selectedProvince}
+        selectedType={selectedType}
+      />
     </>
   );
 }

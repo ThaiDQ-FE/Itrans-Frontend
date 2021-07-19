@@ -19,6 +19,7 @@ import {
   checkPercent,
   checkStart,
   checkSummary,
+  checkThumb,
 } from "../../../../validate/create-round/round";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -39,6 +40,7 @@ function RoundByIdOrganization(props) {
   const [fundingAmountError, setFundingAmountError] = useState("");
   const [shareRequirementError, setShareRequirementError] = useState("");
   const [summaryError, setSummaryError] = useState("");
+  const [thumbnailError, setThumbnailError] = useState("");
   //
   const [infoRound, setInfoRound] = useState({
     fundingAmount: "",
@@ -90,6 +92,7 @@ function RoundByIdOrganization(props) {
     setSummaryError("");
     setThumbnail("");
     setListCertificate([]);
+    setThumbnailError("");
   };
   const handleChangeInfoRound = (event) => {
     const { name, value } = event.target;
@@ -124,13 +127,15 @@ function RoundByIdOrganization(props) {
     checkStart(startDate, setStartDateError);
     checkEnd(endDate, setEndDateError);
     checkSummary(infoRound.summary, setSummaryError);
+    checkThumb(thumbnail, setThumbnailError);
     if (infoRound.fundingAmount !== "") {
       if (
         fundingAmountError === "" &&
         shareRequirementError === "" &&
         startDateError === "" &&
         endDateError === "" &&
-        summaryError === ""
+        summaryError === "" &&
+        thumbnailError === ""
       ) {
         if (values.form === undefined || values.form.length === 0) {
           return showMessage("error", "Cần tối thiểu 1 tiêu đề và nội dung");
@@ -171,8 +176,6 @@ function RoundByIdOrganization(props) {
         }
       }
     }
-
-    console.log(values);
   };
   const [length, setLength] = useState({
     minValue: 0,
@@ -315,6 +318,8 @@ function RoundByIdOrganization(props) {
         listCertificate={listCertificate}
         setListCertificate={setListCertificate}
         handleDelete={handleDelete}
+        thumbnailError={thumbnailError}
+        setThumbnailError={setThumbnailError}
       />
     </div>
   );

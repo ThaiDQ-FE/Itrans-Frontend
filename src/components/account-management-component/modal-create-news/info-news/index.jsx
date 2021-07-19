@@ -24,9 +24,8 @@ function InfoNews(props) {
   const handleChangeThumbnail = (e) => {
     if (e.target.files[0]) {
       let media = e.target.files[0];
-      console.log(media);
       if (media.type.includes("image/")) {
-        if (media.name.length > 50) {
+        if (media.name.length > 40) {
           return props.setThumbnailError("Tên hình chỉ tối đa 40 ký tự");
         } else if (media.size > 4194304) {
           return props.setThumbnailError("Kích thước hình ảnh tối đa 4MB");
@@ -85,6 +84,7 @@ function InfoNews(props) {
               placeholder={message.EX_HASHTAG_ARTICLE}
               onChange={props.handleChangeValue}
               onBlur={props.handleBlurHash}
+              dropdownClassName="modal__articleDrop"
             >
               {list}
             </Select>
@@ -152,6 +152,7 @@ function InfoNews(props) {
       <div className="modal__infoNewsLineThree">
         <label className="modal__spanWeight">Nội dung</label>
         <ContentNews
+          loading={loading}
           handleCreate={props.handleCreate}
           content={props.content}
           setContent={props.setContent}

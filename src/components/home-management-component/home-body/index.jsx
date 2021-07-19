@@ -10,7 +10,7 @@ function HomeBody(props) {
         listHash={props.list.articleIndustries}
         loading={props.loading}
       />
-      <ListFollow />
+      <ListFollow loading={props.loading} />
     </div>
   );
 }

@@ -13,6 +13,7 @@ import {
   localStorages,
   pathQuanLyTaiKhoan,
   pathToChuc,
+  sessionTimeOut,
   showMessage,
 } from "../../../assets/helper/helper";
 import ModalMileStone from "../modal-milestone";
@@ -25,6 +26,7 @@ import {
 } from "../../../store/action/milestone.action";
 import OverviewContent from "./overview-content";
 import message from "../../../assets/message/text";
+import { withRouter } from "react-router-dom";
 function OverviewTab(props) {
   const [milestoneModal, setMilestoneModal] = useState(false);
   const [editMilestone, setEditMilestone] = useState(false);
@@ -38,7 +40,7 @@ function OverviewTab(props) {
     title: "",
     content: "",
   });
-  const postMilestone = (object) => {
+  const postMilestone = (object, history) => {
     const token = authorizationAccount();
     axios({
       method: "POST",
@@ -58,10 +60,10 @@ function OverviewTab(props) {
         }
       })
       .catch((err) => {
-        showMessage("error", message.CACTH_ERROR);
+        sessionTimeOut(err, history);
       });
   };
-  const putMilestone = (object) => {
+  const putMilestone = (object, history) => {
     const token = authorizationAccount();
     axios({
       method: "PUT",
@@ -81,7 +83,7 @@ function OverviewTab(props) {
         }
       })
       .catch((err) => {
-        showMessage("error", message.CACTH_ERROR);
+        sessionTimeOut(err, history);
       });
   };
   const handleOpenModalMilestone = () => {
@@ -192,7 +194,7 @@ function OverviewTab(props) {
       cancelButtonColor: "red",
     }).then((result) => {
       if (result.isConfirmed) {
-        postMilestone(object);
+        postMilestone(object, props.history);
       }
     });
   };
@@ -223,7 +225,7 @@ function OverviewTab(props) {
         cancelButtonColor: "red",
       }).then((result) => {
         if (result.isConfirmed) {
-          putMilestone(object);
+          putMilestone(object, props.history);
         }
       });
     } else if (date !== undefined) {
@@ -246,7 +248,7 @@ function OverviewTab(props) {
         cancelButtonColor: "red",
       }).then((result) => {
         if (result.isConfirmed) {
-          putMilestone(object);
+          putMilestone(object, props.history);
         }
       });
     }
@@ -266,7 +268,7 @@ function OverviewTab(props) {
       cancelButtonColor: "red",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteMilestoneById(id));
+        dispatch(deleteMilestoneById(id, props.history));
       }
     });
   };
@@ -482,4 +484,4 @@ function OverviewTab(props) {
     </div>
   );
 }
-export default OverviewTab;
+export default withRouter(OverviewTab);

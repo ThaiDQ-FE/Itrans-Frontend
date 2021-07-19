@@ -24,7 +24,7 @@ function ArticlesItem(props) {
         <div className="newss__bottomWrapper">
           <div className="news__logo">
             <img
-              src={props.logo === null ? Images.NO_IMAGE : props.logo}
+              src={props.logo === "" ? Images.NO_IMAGE : props.logo}
               alt="logo owner"
             />
           </div>

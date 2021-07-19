@@ -1,10 +1,10 @@
 import React from "react";
 import ListFollowItem from "./list-follow-item";
 import "./styles.scss";
-function ListFollow() {
+function ListFollow(props) {
   return (
     <div className="lf__wrapper">
-      <ListFollowItem />
+      <ListFollowItem loading={props.loading} />
     </div>
   );
 }

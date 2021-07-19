@@ -6,7 +6,7 @@ function DetailArticleComponent(props) {
   return (
     <div className="dac__wrapper">
       <DetailArticle article={props.article} loading={props.loading} />
-      <ListAnotherArticle />
+      <ListAnotherArticle another={props.another} />
     </div>
   );
 }

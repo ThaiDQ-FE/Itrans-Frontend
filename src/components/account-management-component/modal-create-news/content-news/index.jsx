@@ -25,6 +25,8 @@ function ContentNews(props) {
               setLoading(false);
             });
           },
+          language: "vi",
+          language_url: "/langs/vi.js",
           image_dimensions: false,
           image_class_list: [{ title: "Tự động", value: "img-responsive" }],
           width: 980,
@@ -62,7 +64,6 @@ function ContentNews(props) {
             input.onchange = function () {
               var file = input.files[0];
               var reader = new FileReader();
-              console.log(file);
               reader.onload = function (e) {
                 const uploadTask = storage.ref(`images/${file.name}`).put(file);
                 uploadTask.on(
@@ -95,7 +96,12 @@ function ContentNews(props) {
         className={loading === false ? "button__notDis" : "button__dis"}
         style={{ textAlign: "right", marginTop: 20 }}
       >
-        <Button type="primary" size="large" onClick={props.handleCreate}>
+        <Button
+          type="primary"
+          size="large"
+          onClick={props.handleCreate}
+          disabled={props.loading === true}
+        >
           Tạo bài đăng
         </Button>
       </div>

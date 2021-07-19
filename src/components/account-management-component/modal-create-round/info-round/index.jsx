@@ -1,35 +1,49 @@
 import React from "react";
-import { Input, Tooltip, DatePicker } from "antd";
+import { Input, Tooltip, DatePicker, Spin } from "antd";
 import "antd/dist/antd.css";
 import "./styles.scss";
 import Images from "../../../../assets/images/images";
-import { showMessage } from "../../../../assets/helper/helper";
 import { storage } from "../../../../configs/firebase";
+import configConstFirebase from "../../../../assets/helper/firebase/firebase";
 function InfoInputCreateRound(props) {
   const { TextArea } = Input;
   const handleChangeThumbnail = (e) => {
     let thumbnail = e.target.files[0];
     if (e.target.files[0]) {
-      if (thumbnail.type.includes("image")) {
-        const uploadThmbnail = storage
-          .ref(`images/${thumbnail.name}`)
-          .put(thumbnail);
-        uploadThmbnail.on(
-          "state_changed",
-          (snapshot) => {},
-          (error) => {},
-          () => {
-            storage
-              .ref("images")
-              .child(thumbnail.name)
-              .getDownloadURL()
-              .then((url) => {
-                props.setThumbnail(url);
-              });
+      if (thumbnail.type.includes("image/")) {
+        if (thumbnail.name.length > configConstFirebase.name) {
+          props.setThumbnailError(configConstFirebase.errorName);
+        } else {
+          if (thumbnail.size > configConstFirebase.size) {
+            props.setThumbnailError(configConstFirebase.errorSize);
+          } else {
+            const uploadThmbnail = storage
+              .ref(`images/${thumbnail.name}`)
+              .put(thumbnail);
+            uploadThmbnail.on(
+              "state_changed",
+              (snapshot) => {
+                if (snapshot.state === "running") {
+                  props.setLoading(true);
+                }
+              },
+              (error) => {},
+              () => {
+                storage
+                  .ref("images")
+                  .child(thumbnail.name)
+                  .getDownloadURL()
+                  .then((url) => {
+                    props.setLoading(false);
+                    props.setThumbnailError("");
+                    props.setThumbnail(url);
+                  });
+              }
+            );
           }
-        );
+        }
       } else {
-        showMessage("error", "Vui lòng chọn hình ảnh");
+        props.setThumbnailError(configConstFirebase.errorTypeImage);
       }
     }
   };
@@ -129,7 +143,9 @@ function InfoInputCreateRound(props) {
             <img
               src={props.thumbnail === "" ? Images.NO_IMAGE : props.thumbnail}
               alt="user"
-              className="modal__crIMG"
+              className={`modal__crIMG${
+                props.thumbnailError !== "" ? " modal__crIMGEror" : ""
+              }`}
             />
             <input
               className="modal__crFILE"
@@ -138,18 +154,28 @@ function InfoInputCreateRound(props) {
               accept="image/*"
               onChange={handleChangeThumbnail}
             />
-            <label
-              htmlFor="file"
-              className="modal__crLABEL"
-              onChange={handleChangeThumbnail}
+            <Tooltip
+              title={props.thumbnailError}
+              color="red"
+              placement="topRight"
             >
-              <img
-                src={Images.CAMERA}
-                alt="camera"
-                className="modal__crCAMERA"
-                onChange={handleChangeThumbnail}
-              />
-            </label>
+              {props.loading === true ? (
+                <Spin className="modal__crLoading" />
+              ) : (
+                <label
+                  htmlFor="file"
+                  className="modal__crLABEL"
+                  onChange={handleChangeThumbnail}
+                >
+                  <img
+                    src={Images.CAMERA}
+                    alt="camera"
+                    className="modal__crCAMERA"
+                    onChange={handleChangeThumbnail}
+                  />
+                </label>
+              )}
+            </Tooltip>
           </div>
         </div>
       </div>

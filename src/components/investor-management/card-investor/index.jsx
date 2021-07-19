@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { Card, Button, Tooltip, Pagination } from "antd";
 import "antd/dist/antd.css";
 import "./styles.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import Images from "../../../assets/images/images";
-import { localStorages } from "../../../assets/helper/helper";
-function CardInvestorComponent({ history }) {
+import { checkEmailUser, localStorages } from "../../../assets/helper/helper";
+import { postFollow, putUnfollow } from "../../../store/action/interest.action";
+import Swal from "sweetalert2";
+function CardInvestorComponent(props) {
+  const dispatch = useDispatch();
   const { listInvestorFilter } = useSelector((state) => state.investor);
-  const { Meta } = Card;
   const [length, setLength] = useState({
     minValue: 0,
     maxValue: 12,
@@ -30,8 +32,38 @@ function CardInvestorComponent({ history }) {
     localStorages("gmailInvestorToDetail", gmail);
     localStorages("idInvestorToDetail", id);
     setTimeout(() => {
-      history.push("/nha-dau-tu/chi-tiet");
+      props.history.push("/nha-dau-tu/chi-tiet");
     }, 500);
+  };
+  const handleClickFollow = (status, gmail, name) => {
+    const object = {
+      follow: checkEmailUser(),
+      followed: gmail,
+    };
+    const objectDispath = {
+      arrayProvince: props.selectedProvince,
+      arrayType: props.selectedType,
+    };
+    if (status === "Chưa theo dõi") {
+      dispatch(postFollow(object, objectDispath));
+    } else {
+      Swal.fire({
+        icon: "question",
+        title: "Bạn muốn hủy theo dõi tổ chức " + name,
+        heightAuto: true,
+        timerProgressBar: false,
+        showConfirmButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Đồng ý",
+        cancelButtonText: "Hủy",
+        confirmButtonColor: "#1890ff",
+        cancelButtonColor: "red",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          dispatch(putUnfollow(object, objectDispath));
+        }
+      });
+    }
   };
   return (
     <div
@@ -49,19 +81,17 @@ function CardInvestorComponent({ history }) {
             listInvestorFilter
               .slice(length.minValue, length.maxValue)
               .map((value, index) => (
-                <Card
-                  key={index}
-                  hoverable
-                  className="il__itemInvestor"
-                  onClick={() => {
-                    handleClickDetail(value.gmail, value.idInvestor);
-                  }}
-                >
+                <Card key={index} hoverable className="il__itemInvestor">
                   <img
                     alt="logo"
                     src={value.logo === "" ? Images.NO_IMAGE : value.logo}
                   />
-                  <div className="il__name">
+                  <div
+                    className="il__name"
+                    onClick={() => {
+                      handleClickDetail(value.gmail, value.idInvestor);
+                    }}
+                  >
                     <span>{value.nameInvestor}</span>
                   </div>
                   <div className="il__headquarter">
@@ -74,15 +104,25 @@ function CardInvestorComponent({ history }) {
                     <span>{value.linkWebsite}</span>
                   </div>
 
-                  {value.status === "Chưa theo dõi" ? (
-                    <Button className="il__follow" type="primary">
-                      Theo dõi
-                    </Button>
-                  ) : (
-                    <Button className="il__unFollow" type="primary">
-                      Hủy theo dõi
-                    </Button>
-                  )}
+                  <Button
+                    className={
+                      value.status === "Chưa theo dõi"
+                        ? "il__follow"
+                        : "il__unFollow"
+                    }
+                    type="primary"
+                    onClick={() =>
+                      handleClickFollow(
+                        value.status,
+                        value.gmail,
+                        value.nameInvestor
+                      )
+                    }
+                  >
+                    {value.status === "Chưa theo dõi"
+                      ? "Theo dõi"
+                      : "Hủy theo dõi"}
+                  </Button>
                 </Card>
               ))
           ) : (

@@ -5,7 +5,12 @@ import logo from "../../assets/images/logo-grey.png";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Images from "../../assets/images/images";
-import { checkRoleUser, getLocalStorage } from "../../assets/helper/helper";
+import { Redirect } from "react-router-dom";
+import {
+  checkRoleUser,
+  getLocalStorage,
+  localStorages,
+} from "../../assets/helper/helper";
 function Header({ history }) {
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const [openMenu, setOpenMenu] = useState(null);
@@ -30,6 +35,16 @@ function Header({ history }) {
             <li className="header__features__li">
               <NavLink
                 activeClassName="active-nav-link-header-features"
+                className="header__trangchu"
+                to="/"
+                exact={true}
+              >
+                Trang chủ
+              </NavLink>
+            </li>
+            <li className="header__features__li">
+              <NavLink
+                activeClassName="active-nav-link-header-features"
                 className="header__vgv"
                 to="/to-chuc"
                 exact={true}
@@ -51,23 +66,41 @@ function Header({ history }) {
         );
       } else if (userLogin.role === "ORGANIZATION") {
         return (
-          <li className="header__features__li">
-            <NavLink
-              activeClassName="active-nav-link-header-features"
-              className="header__vgv"
-              to="/nha-dau-tu"
-              exact={true}
-            >
-              Nhà đầu tư
-            </NavLink>
-          </li>
+          <>
+            <li className="header__features__li">
+              <NavLink
+                activeClassName="active-nav-link-header-features"
+                className="header__trangchu"
+                to="/"
+                exact={true}
+              >
+                Trang chủ
+              </NavLink>
+            </li>
+            <li className="header__features__li">
+              <NavLink
+                activeClassName="active-nav-link-header-features"
+                className="header__vgv"
+                to="/nha-dau-tu"
+                exact={true}
+              >
+                Nhà đầu tư
+              </NavLink>
+            </li>
+          </>
         );
       }
     }
   };
 
   return (
-    <div className="header__container">
+    <div
+      className={`header__container${
+        getLocalStorage("userInfo") === null || checkRoleUser() === "ADMIN"
+          ? " class_disable"
+          : ""
+      }`}
+    >
       <div className="header__logo">
         <NavLink
           activeClassName="active-nav-link"
@@ -83,20 +116,7 @@ function Header({ history }) {
           checkRoleUser() === "ORGANIZATION" ? " header__featuresRole" : ""
         }`}
       >
-        <ul className="header__features__ul">
-          <li className="header__features__li">
-            <NavLink
-              activeClassName="active-nav-link-header-features"
-              className="header__trangchu"
-              to="/"
-              exact={true}
-            >
-              Trang chủ
-            </NavLink>
-          </li>
-
-          {renderTabs()}
-        </ul>
+        <ul className="header__features__ul">{renderTabs()}</ul>
       </div>
       <div className="header__login">
         {user !== null ? (

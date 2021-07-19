@@ -39,6 +39,7 @@ import minus from "./minus.svg";
 import oopss from "./oopss.PNG";
 import no_thumbnail from "./no-thumbnail.png";
 import background from "./background.jpg";
+import empty_box from "./box.png";
 const Images = {
   LOGO_NAVY: logo_navy,
   LOGO_GREY: logo_grey,
@@ -81,6 +82,7 @@ const Images = {
   OOPSS: oopss,
   NO_THUMBNAIL: no_thumbnail,
   BACKGROUND: background,
+  EMPTY_BOX: empty_box,
 };
 
 export default Images;

@@ -5,16 +5,17 @@ import message from "../../../assets/message/text";
 import { getOrganizationFilter } from "../../../store/action/organization.action";
 import OrganizationManagementComponent from "../../../components/organization-management";
 import "./styles.scss";
-import { getLocalStorage } from "../../../assets/helper/helper";
+import { checkRoleUser, getLocalStorage } from "../../../assets/helper/helper";
 import {
   getListIndustry,
   getListProvince,
   getListRegion,
   getListStage,
 } from "../../../store/action/register.action";
-function OrganizationManagement() {
+import NotAuth from "../../error/auth";
+function OrganizationManagement(props) {
   const dispatch = useDispatch();
-  useEffect(() => {
+  const getData = (isLoading) => {
     const arrayIndustry = [0];
     const arrayProvince = [0];
     const arrayRegion = [0];
@@ -37,7 +38,8 @@ function OrganizationManagement() {
           arrayProvince,
           arrayRegion,
           arrayStage,
-          userLogin.gmail
+          userLogin.gmail,
+          isLoading
         )
       );
     }
@@ -45,18 +47,30 @@ function OrganizationManagement() {
     dispatch(getListProvince());
     dispatch(getListRegion());
     dispatch(getListIndustry());
+  };
+  useEffect(() => {
+    getData();
   }, []);
-  return (
-    <div className="om__wrapper">
-      <div className="om__banner">
-        <div className="om__title">{message.OM_TITLE}</div>
-        <div className="om__slogan">
-          "{message.OM_SLOGAN}" {message.OM_SLOGAN_TAIL}
+  if (getLocalStorage("userInfo") === null) {
+    return <NotAuth />;
+  } else if (
+    checkRoleUser() === "ADMIN" ||
+    checkRoleUser() === "ORGANIZATION"
+  ) {
+    return <NotAuth />;
+  } else {
+    return (
+      <div className="om__wrapper">
+        <div className="om__banner">
+          <div className="om__title">{message.OM_TITLE}</div>
+          <div className="om__slogan">
+            "{message.OM_SLOGAN}" {message.OM_SLOGAN_TAIL}
+          </div>
         </div>
+        <OrganizationManagementComponent getData={getData} />
       </div>
-      <OrganizationManagementComponent />
-    </div>
-  );
+    );
+  }
 }
 
 export default OrganizationManagement;
