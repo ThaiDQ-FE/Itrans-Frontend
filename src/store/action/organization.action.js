@@ -1,5 +1,8 @@
 import axios from "axios";
-import { authorizationAccount } from "../../assets/helper/helper";
+import {
+  authorizationAccount,
+  sessionTimeOut,
+} from "../../assets/helper/helper";
 import { GET_ALL_FREE_TIME_LIST_FAILED } from "../constants/freeTime.const";
 import { GET_ORGANIZATION_FILTER_SUCCESS } from "../constants/organization.const";
 import { startLoading, stopLoading } from "./loading.action";
@@ -9,7 +12,8 @@ export const getOrganizationFilter = (
   arrayProvince,
   arrayRegion,
   arrayStage,
-  gmail
+  gmail,
+  isLoading
 ) => {
   let baseUrl = "http://localhost:8080/api/v1/auth/filter-organization?";
   let tailUrl = "";
@@ -52,7 +56,9 @@ export const getOrganizationFilter = (
 
   let gmailTail = `mail=${gmail}`;
   return (dispatch) => {
-    dispatch(startLoading());
+    if (isLoading === true) {
+      dispatch(startLoading());
+    }
     axios({
       method: "GET",
       url: baseUrl + tailUrl + gmailTail,

@@ -1,32 +1,94 @@
 import React from "react";
 import "./styles.scss";
-import data from "./data.json";
-import { Button } from "@material-ui/core";
-function ListFollowItem() {
-  const renderListFollow = () => {
-    return data.map((follow, index) => {
-      return (
-        <div className="lfi__container">
-          <div className="lfi__top">
-            <div className="lfi__img">
-              <img src={follow.logo} alt="" />
-            </div>
-            <div className="lfi__name">
-              <p className="lfi__p">{follow.name}</p>
-            </div>
+import "antd/dist/antd.css";
+import "./styles.scss";
+import { Skeleton, Button } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import Images from "../../../../../assets/images/images";
+import {
+  checkEmailUser,
+  checkRoleUser,
+  localStorages,
+} from "../../../../../assets/helper/helper";
+import { withRouter } from "react-router-dom";
+import { postFollow } from "../../../../../store/action/interest.action";
+function ListFollowItem(props) {
+  const dispatch = useDispatch();
+  const { listOrgOrInvNotFollow } = useSelector((state) => state.interest);
+  const handleClickDetail = (gmail, id) => {
+    if (checkRoleUser() === "INVESTOR") {
+      localStorages("gmailOrganizationToDetail", gmail);
+      localStorages("idOrganizationToDetail", id);
+      setTimeout(() => {
+        props.history.push("/to-chuc/chi-tiet");
+      }, 500);
+    } else {
+      localStorages("gmailInvestorToDetail", gmail);
+      localStorages("idInvestorToDetail", id);
+      setTimeout(() => {
+        props.history.push("/nha-dau-tu/chi-tiet");
+      }, 500);
+    }
+  };
+  const handleClickFollow = (gmail, name) => {
+    const object = {
+      follow: checkEmailUser(),
+      followed: gmail,
+    };
+    dispatch(postFollow(object, null, name, props.history));
+  };
+  return (
+    <div className="lfi__wrapper">
+      {props.loading === true ? (
+        <div className="lfi__skeleton">
+          <div className="lfi__skeleOne">
+            <Skeleton.Avatar active />
+            <Skeleton.Input style={{ width: 200, marginLeft: 10 }} active />
           </div>
-          <div className="lfi__content">
-            <p className="lfi__contentP">{follow.content}</p>
-          </div>
-          <div className="lfi__button">
-            <Button variant="outlined" color="primary">
-              Theo dõi
-            </Button>
+          <div className="lfi__skeleOne" style={{ marginTop: 25 }}>
+            <Skeleton.Avatar active />
+            <Skeleton.Input style={{ width: 200, marginLeft: 10 }} active />
           </div>
         </div>
-      );
-    });
-  };
-  return <div className="lfi__wrapper">{renderListFollow()}</div>;
+      ) : listOrgOrInvNotFollow.length > 0 ? (
+        listOrgOrInvNotFollow.map((item, index) => (
+          <div className="lfi__container" key={index}>
+            <div className="lfi__top">
+              <div className="lfi__img">
+                <img
+                  src={item.logo === "" ? Images.NO_IMAGE : item.logo}
+                  alt="logo"
+                />
+              </div>
+              <div className="lfi__name">
+                <span
+                  className="lfi__p"
+                  onClick={() => handleClickDetail(item.gmail, item.id)}
+                >
+                  {item.name}
+                </span>
+                <p className="lfi__pF">
+                  {item.numberOfFollowed < 1
+                    ? ""
+                    : "Được theo dõi: " + item.numberOfFollowed}
+                </p>
+              </div>
+            </div>
+            <div className="lfi__action">
+              <Button
+                className="lfi__button"
+                type="primary"
+                onClick={() => handleClickFollow(item.gmail, item.name)}
+              >
+                Theo dõi
+              </Button>
+            </div>
+          </div>
+        ))
+      ) : (
+        "abc"
+      )}
+    </div>
+  );
 }
-export default ListFollowItem;
+export default withRouter(ListFollowItem);

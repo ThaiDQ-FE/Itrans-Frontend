@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "antd";
+import { Button, Pagination } from "antd";
 import ArticlesItem from "./article-item";
 import "./styles.scss";
 import "antd/dist/antd.css";
@@ -7,6 +7,7 @@ import {
   authorizationAccount,
   checkEmailUser,
   checkPathUrl,
+  localStorages,
   pathNhaDauTu,
   pathQuanLyTaiKhoan,
   showMessage,
@@ -40,6 +41,23 @@ function NewsTab(props) {
   const [sumError, setSumError] = useState("");
   const [thumbnailError, setThumbnailError] = useState("");
   const [hashTagError, setHashTagError] = useState("");
+  const [length, setLength] = useState({
+    minValue: 0,
+    maxValue: 5,
+  });
+  const handleChange = (value) => {
+    if (value <= 1) {
+      setLength({
+        minValue: 0,
+        maxValue: 5,
+      });
+    } else {
+      setLength({
+        minValue: length.maxValue,
+        maxValue: value * 5,
+      });
+    }
+  };
   const handleOpen = () => {
     setOpenModal(true);
   };
@@ -66,8 +84,8 @@ function NewsTab(props) {
     });
   };
   const handleChangeValue = (value) => {
-    if (arrayIndustries.length > 3) {
-      setHashTagError("Chỉ được chọn tối đa 3 hashtag");
+    if (arrayIndustries.length > 5) {
+      setHashTagError("Chỉ được chọn tối đa 5 ngành nghề");
     } else {
       setHashTagError("");
     }
@@ -155,28 +173,6 @@ function NewsTab(props) {
   const handleClickArticle = (id) => {
     props.history.push(`/tin-tuc/chi-tiet/${id}`);
   };
-  const renderListArticle = () => {
-    return props.article.map((item, index) => {
-      return (
-        <div
-          className="nt__articleWrapper"
-          key={index}
-          onClick={() => handleClickArticle(item.idArticle)}
-        >
-          <ArticlesItem
-            id={item.idArticle}
-            owner={item.accountCreate}
-            listIndustries={item.articleIndustries}
-            createAt={item.createAt}
-            description={item.description}
-            logo={item.logo}
-            thumbnail={item.thumbnail}
-            title={item.title}
-          />
-        </div>
-      );
-    });
-  };
   return (
     <div
       className={`nt__wrapper${
@@ -203,9 +199,27 @@ function NewsTab(props) {
       ) : (
         <></>
       )}
-
-      {props.article.length !== 0 ? (
-        renderListArticle()
+      {props.article && props.article.length > 0 ? (
+        props.article
+          .slice(length.minValue, length.maxValue)
+          .map((value, index) => (
+            <div
+              className="nt__articleWrapper"
+              key={index}
+              onClick={() => handleClickArticle(value.idArticle)}
+            >
+              <ArticlesItem
+                id={value.idArticle}
+                owner={value.accountCreate}
+                listIndustries={value.articleIndustries}
+                createAt={value.createAt}
+                description={value.description}
+                logo={value.logo}
+                thumbnail={value.thumbnail}
+                title={value.title}
+              />
+            </div>
+          ))
       ) : checkPathUrl() === pathQuanLyTaiKhoan() ? (
         <div className="nt__noArticle">
           <p>Hiện tại bạn không có tin tức nào được đăng tải</p>
@@ -223,6 +237,18 @@ function NewsTab(props) {
           </p>
         </div>
       )}
+      <div style={{ textAlign: "center", marginTop: 50, marginBottom: 60 }}>
+        {props.article.length > 5 ? (
+          <Pagination
+            defaultPageSize={5}
+            defaultCurrent={1}
+            onChange={handleChange}
+            total={props.article.length}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
       <ModalCreateNews
         open={openModal}
         close={handleClose}

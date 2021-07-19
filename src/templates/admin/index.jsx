@@ -6,21 +6,6 @@ import AdminSidebar from "../../components/admin/sidebar";
 import NotAuth from "../../pages/error/auth";
 import "./styles.scss";
 function AdminTemplate(props) {
-  // if (getLocalStorage("userInfo") === "ADMIN") {
-  //   return (
-  //     <div className="adminTemplate__wrapper">
-  //       <AdminSidebar />
-  //       <div className="adminTemplate__container">
-  //         <div className="adminTemplate__menu">
-  //           <AdminMenuIcon />
-  //         </div>
-  //         <>{props.children}</>
-  //       </div>
-  //     </div>
-  //   );
-  // } else {
-  //   return <NotAuth />;
-  // }
   return (
     <div className="adminTemplate__wrapper">
       <AdminSidebar />

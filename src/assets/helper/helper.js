@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+import message from "../message/text";
 
 export const checkRoleUser = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -25,25 +26,19 @@ export const showMessage = (icon, mess) => {
     timerProgressBar: false,
     showConfirmButton: false,
     timer: 2000,
+    allowOutsideClick: false,
   });
 };
-export const showMessageWithConfirm = (icon, mess, action) => {
+export const showMessageHTML = (icon, mess, html) => {
   return Swal.fire({
     icon: icon,
     title: mess,
+    html: html,
     heightAuto: true,
     timerProgressBar: false,
-    showConfirmButton: true,
-    showCancelButton: true,
-    confirmButtonText: "Đồng ý",
-    cancelButtonText: "Hủy",
-    confirmButtonColor: "#1890ff",
-    cancelButtonColor: "red",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      return action;
-    } else {
-    }
+    showConfirmButton: false,
+    timer: 2000,
+    allowOutsideClick: false,
   });
 };
 
@@ -86,4 +81,26 @@ export const pathToChuc = () => {
 export const pathNhaDauTu = () => {
   const path = "/nha-dau-tu/chi-tiet";
   return path;
+};
+
+export const sessionTimeOut = (err, history) => {
+  if (err.message === "Request failed with status code 403") {
+    Swal.fire({
+      icon: "error",
+      title: "Thời gian truy cập của bạn đã hết hãy đăng nhập lại",
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      allowOutsideClick: false,
+    }).then((result) => {
+      if (result.dismiss === Swal.DismissReason.timer) {
+        localStorage.removeItem("userInfo");
+        history.push("/dang-nhap");
+      }
+    });
+  } else {
+    showMessage("error", message.CACTH_ERROR);
+  }
 };

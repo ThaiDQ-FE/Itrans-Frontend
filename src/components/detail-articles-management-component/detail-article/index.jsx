@@ -4,7 +4,6 @@ import "antd/dist/antd.css";
 import "./styles.scss";
 import Images from "../../../assets/images/images";
 function DetailArticle(props) {
-  console.log(props.article);
   const listIndus = props.article.articleIndustries;
   const renderHashTag = () => {
     if (listIndus) {
@@ -17,18 +16,11 @@ function DetailArticle(props) {
       });
     }
   };
+  const renderHTML = (rawHTML) =>
+    React.createElement("div", {
+      dangerouslySetInnerHTML: { __html: rawHTML },
+    });
   const content = props.article.content;
-  const renderContent = () => {
-    if (content) {
-      let detailAContent = document.getElementById("detailA__content");
-      return (
-        <>
-          {detailAContent !== null ? (detailAContent.innerHTML = content) : ""}
-        </>
-      );
-    }
-  };
-
   if (props.loading === true) {
     return (
       <div className="detailA__loading">
@@ -66,11 +58,9 @@ function DetailArticle(props) {
             </div>
           </div>
           <div className="detailA__summary">{props.article.description}</div>
-          <div
-            className="deatiA__content"
-            id="detailA__content"
-            onLoad={renderContent()}
-          ></div>
+          <div className="deatiA__content" id="detailA__content">
+            {renderHTML(content)}
+          </div>
           <div
             className="detailA__end"
             style={{ fontSize: 18, fontWeight: 600, textAlign: "center" }}

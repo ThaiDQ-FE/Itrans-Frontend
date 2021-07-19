@@ -39,6 +39,12 @@ import minus from "./minus.svg";
 import oopss from "./oopss.PNG";
 import no_thumbnail from "./no-thumbnail.png";
 import background from "./background.jpg";
+import empty_box from "./box.png";
+import number_employess from "./two-users.png";
+import gmailround from "./gmail.png";
+import timetable from "./timetable.png";
+import stage from "./4357.png";
+import document from "./document.png";
 const Images = {
   LOGO_NAVY: logo_navy,
   LOGO_GREY: logo_grey,
@@ -81,6 +87,12 @@ const Images = {
   OOPSS: oopss,
   NO_THUMBNAIL: no_thumbnail,
   BACKGROUND: background,
+  EMPTY_BOX: empty_box,
+  NUMBER_EMPLOYESS: number_employess,
+  GMAILROUND: gmailround,
+  TIMETABLE: timetable,
+  STAGE: stage,
+  DOCUMENT: document,
 };
 
 export default Images;

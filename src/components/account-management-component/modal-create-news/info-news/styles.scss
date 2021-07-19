@@ -47,6 +47,9 @@
                 justify-content: center;
                 margin: auto;
                 position: relative;
+                .modal__inIMG {
+                    object-fit: contain;
+                }
                 .modal__inFILE {
                     display: none;
                 }
@@ -101,4 +104,10 @@
     &:hover {
         border: 1px solid red;
     }
+}
+.swal2-popup {
+    z-index: 6000;
+}
+.modal__articleDrop {
+    z-index: 1052 !important;
 }

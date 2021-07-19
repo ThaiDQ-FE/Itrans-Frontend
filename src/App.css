@@ -44,3 +44,6 @@ html,
 body {
   font-family: "Montserrat", sans-serif;
 }
+.ant-modal-wrap {
+  z-index: 1052 !important;
+}

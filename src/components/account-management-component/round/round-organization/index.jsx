@@ -9,6 +9,7 @@ import {
   checkIdUser,
   checkPathUrl,
   pathQuanLyTaiKhoan,
+  sessionTimeOut,
   showMessage,
 } from "../../../../assets/helper/helper";
 import ModalAddRound from "../../modal-create-round";
@@ -19,6 +20,7 @@ import {
   checkPercent,
   checkStart,
   checkSummary,
+  checkThumb,
 } from "../../../../validate/create-round/round";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -26,6 +28,7 @@ import { defaultUrlAPI } from "../../../../configs/url";
 import { useDispatch } from "react-redux";
 import { getListRoundByIdOrganization } from "../../../../store/action/round.action";
 import message from "../../../../assets/message/text";
+import { withRouter } from "react-router-dom";
 function RoundByIdOrganization(props) {
   const [openModal, setOpenModal] = useState(false);
   const [thumbnail, setThumbnail] = useState("");
@@ -39,6 +42,7 @@ function RoundByIdOrganization(props) {
   const [fundingAmountError, setFundingAmountError] = useState("");
   const [shareRequirementError, setShareRequirementError] = useState("");
   const [summaryError, setSummaryError] = useState("");
+  const [thumbnailError, setThumbnailError] = useState("");
   //
   const [infoRound, setInfoRound] = useState({
     fundingAmount: "",
@@ -47,7 +51,7 @@ function RoundByIdOrganization(props) {
   });
   const dateFormat = "DD-MM-YYYY";
   // call API
-  const postRound = (object) => {
+  const postRound = (object, history) => {
     axios({
       method: "POST",
       url: defaultUrlAPI() + "round",
@@ -68,7 +72,7 @@ function RoundByIdOrganization(props) {
         }
       })
       .catch((err) => {
-        showMessage("error", message.CACTH_ERROR);
+        sessionTimeOut(err, history);
       });
   };
   const handleOpen = () => {
@@ -90,6 +94,7 @@ function RoundByIdOrganization(props) {
     setSummaryError("");
     setThumbnail("");
     setListCertificate([]);
+    setThumbnailError("");
   };
   const handleChangeInfoRound = (event) => {
     const { name, value } = event.target;
@@ -124,13 +129,15 @@ function RoundByIdOrganization(props) {
     checkStart(startDate, setStartDateError);
     checkEnd(endDate, setEndDateError);
     checkSummary(infoRound.summary, setSummaryError);
+    checkThumb(thumbnail, setThumbnailError);
     if (infoRound.fundingAmount !== "") {
       if (
         fundingAmountError === "" &&
         shareRequirementError === "" &&
         startDateError === "" &&
         endDateError === "" &&
-        summaryError === ""
+        summaryError === "" &&
+        thumbnailError === ""
       ) {
         if (values.form === undefined || values.form.length === 0) {
           return showMessage("error", "Cần tối thiểu 1 tiêu đề và nội dung");
@@ -165,14 +172,12 @@ function RoundByIdOrganization(props) {
                 introduces: values.form,
                 mail: checkEmailUser(),
               };
-              postRound(object);
+              postRound(object, props.history);
             }
           });
         }
       }
     }
-
-    console.log(values);
   };
   const [length, setLength] = useState({
     minValue: 0,
@@ -315,9 +320,11 @@ function RoundByIdOrganization(props) {
         listCertificate={listCertificate}
         setListCertificate={setListCertificate}
         handleDelete={handleDelete}
+        thumbnailError={thumbnailError}
+        setThumbnailError={setThumbnailError}
       />
     </div>
   );
 }
 
-export default RoundByIdOrganization;
+export default withRouter(RoundByIdOrganization);

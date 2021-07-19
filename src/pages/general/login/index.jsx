@@ -12,7 +12,10 @@ import { postCheckLogin } from "../../../store/action/user.action";
 import { useHistory } from "react-router";
 import { validGmail } from "../../../configs/regex";
 import Messages from "../../../assets/message/text";
-function Login() {
+import { withRouter } from "react-router-dom";
+import NotAuth from "../../error/auth";
+import { getLocalStorage } from "../../../assets/helper/helper";
+function Login(props) {
   const dispatch = useDispatch();
   const history = useHistory();
   const themeMenu = createMuiTheme({
@@ -84,61 +87,55 @@ function Login() {
       dispatch(postCheckLogin(user.gmail, user.password, history));
     }
   };
-  return (
-    <div className="login__wrapper">
-      <div className="login__container">
-        <HeaderGeneral />
-        <div className="login__form">
-          <div className="login__title">Đăng nhập</div>
-          <MuiThemeProvider theme={themeMenu}>
-            <form onSubmit={handleSubmit}>
-              <div className="wrapper__gmail">
-                <TextField
-                  id="outlined-basic"
-                  label="Gmail"
-                  variant="outlined"
-                  type="gmail"
-                  className="login__gmail"
-                  onChange={handleChange}
-                  onFocus={handleGmailFocus}
-                  onBlur={handleGmailBlur}
-                  name="gmail"
-                />
-                {gmailErr !== "" ? <small>{gmailErr}</small> : ""}
-              </div>
-              <div className="wrapper__password">
-                <TextField
-                  id="outlined-basic"
-                  label="Mật khẩu"
-                  variant="outlined"
-                  type="password"
-                  className="login__matKhau"
-                  onChange={handleChange}
-                  onBlur={handlePasswordBlur}
-                  name="password"
-                />
-                {passwordErr !== "" ? <small>{passwordErr}</small> : ""}
-              </div>
-
-              {/* <div className="login__remember">
-                <input
-                  type="checkbox"
-                  id="vehicle1"
-                  name="vehicle1"
-                  defaultValue="Bike"
-                />
-                <label htmlFor="vehicle1"> Ghi nhớ mật khẩu</label>
-              </div> */}
-              <div className="login__button">
-                <Button variant="contained" color="primary" type="submit">
-                  Đăng nhập
-                </Button>
-              </div>
-            </form>
-          </MuiThemeProvider>
+  if (getLocalStorage("userInfo") !== null) {
+    return <NotAuth />;
+  } else {
+    return (
+      <div className="login__wrapper">
+        <div className="login__container">
+          <HeaderGeneral />
+          <div className="login__form">
+            <div className="login__title">Đăng nhập</div>
+            <MuiThemeProvider theme={themeMenu}>
+              <form onSubmit={handleSubmit}>
+                <div className="wrapper__gmail">
+                  <TextField
+                    id="outlined-basic"
+                    label="Gmail"
+                    variant="outlined"
+                    type="gmail"
+                    className="login__gmail"
+                    onChange={handleChange}
+                    onFocus={handleGmailFocus}
+                    onBlur={handleGmailBlur}
+                    name="gmail"
+                  />
+                  {gmailErr !== "" ? <small>{gmailErr}</small> : ""}
+                </div>
+                <div className="wrapper__password">
+                  <TextField
+                    id="outlined-basic"
+                    label="Mật khẩu"
+                    variant="outlined"
+                    type="password"
+                    className="login__matKhau"
+                    onChange={handleChange}
+                    onBlur={handlePasswordBlur}
+                    name="password"
+                  />
+                  {passwordErr !== "" ? <small>{passwordErr}</small> : ""}
+                </div>
+                <div className="login__button">
+                  <Button variant="contained" color="primary" type="submit">
+                    Đăng nhập
+                  </Button>
+                </div>
+              </form>
+            </MuiThemeProvider>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
-export default Login;
+export default withRouter(Login);

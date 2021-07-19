@@ -5,15 +5,14 @@ import "antd/dist/antd.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getLocalStorage } from "../../../assets/helper/helper";
 import { getInvestorFilter } from "../../../store/action/investor.action";
-function FilterInvestorComponent() {
+function FilterInvestorComponent(props) {
   const { listProvince, listInvestorType } = useSelector(
     (state) => state.register
   );
   const { loading } = useSelector((state) => state.loading);
   const { Option } = Select;
   const dispatch = useDispatch();
-  const [selectedProvince, setSelectedProvince] = useState([]);
-  const [selectedType, setSelectedType] = useState([]);
+
   const province = [];
   const type = [];
   // eslint-disable-next-line array-callback-return
@@ -33,10 +32,10 @@ function FilterInvestorComponent() {
     );
   });
   const handleChangeProvince = (value) => {
-    setSelectedProvince(value);
+    props.setSelectedProvince(value);
   };
   const handleChangeType = (value) => {
-    setSelectedType(value);
+    props.setSelectedType(value);
   };
   const renderSelect = (placeholder, defaultValue, value, change, child) => {
     return (
@@ -56,16 +55,22 @@ function FilterInvestorComponent() {
   const handleFilterData = () => {
     const userLogin = getLocalStorage("userInfo");
     if (userLogin === null) {
-      dispatch(getInvestorFilter(selectedProvince, selectedType, ` `));
+      dispatch(
+        getInvestorFilter(props.selectedProvince, props.selectedType, ` `)
+      );
     } else if (userLogin !== null) {
       dispatch(
-        getInvestorFilter(selectedProvince, selectedType, userLogin.gmail)
+        getInvestorFilter(
+          props.selectedProvince,
+          props.selectedType,
+          userLogin.gmail
+        )
       );
     }
   };
   const handleClear = () => {
-    setSelectedProvince([]);
-    setSelectedType([]);
+    props.setSelectedProvince([]);
+    props.setSelectedType([]);
     const userLogin = getLocalStorage("userInfo");
     let tempProvince = [];
     let tempType = [];
@@ -86,8 +91,8 @@ function FilterInvestorComponent() {
             ) : (
               renderSelect(
                 "Chọn tỉnh/thành",
-                selectedProvince,
-                selectedProvince,
+                props.selectedProvince,
+                props.selectedProvince,
                 handleChangeProvince,
                 province
               )
@@ -100,8 +105,8 @@ function FilterInvestorComponent() {
             ) : (
               renderSelect(
                 "Chọn loại nhà đầu tư",
-                selectedType,
-                selectedType,
+                props.selectedType,
+                props.selectedType,
                 handleChangeType,
                 type
               )

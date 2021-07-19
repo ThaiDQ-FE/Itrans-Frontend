@@ -55,6 +55,7 @@ function ModalMileStone(props) {
             <Tooltip title={props.dateError} color="red" placement="topRight">
               {props.editMilestone === false ? (
                 <DatePicker
+                  dropdownClassName="mileStone__dropdown"
                   className={
                     props.dateError !== "" ? "milestone__dateError" : ""
                   }

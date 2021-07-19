@@ -1,11 +1,17 @@
 import axios from "axios";
-import { authorizationAccount } from "../../assets/helper/helper";
+import {
+  authorizationAccount,
+  getLocalStorage,
+  sessionTimeOut,
+} from "../../assets/helper/helper";
 import {
   defaultUrlAPI,
   defaultUrlAPIAuthStringTemplate,
   defaultUrlAPIStringTemplate,
 } from "../../configs/url";
 import {
+  GET_ANOTHER_ARTICLE_FAILED,
+  GET_ANOTHER_ARTICLE_SUCCESS,
   GET_DETAIL_ARTICLE_BY_ID_FAILED,
   GET_DETAIL_ARTICLE_BY_ID_SUCCESS,
   GET_LIST_ARTICLE_FAILED,
@@ -51,7 +57,7 @@ const getListArticleByGmailFailed = (err) => {
   };
 };
 
-export const getListViewArticle = (gmail, isSelect) => {
+export const getListViewArticle = (gmail, isSelect, history) => {
   return (dispatch) => {
     if (isSelect === false) {
       dispatch(startLoading());
@@ -72,6 +78,9 @@ export const getListViewArticle = (gmail, isSelect) => {
       .catch((err) => {
         dispatch(stopLoading());
         dispatch(getListViewArticleFailed(err));
+        if (getLocalStorage("userInfo") !== null) {
+          sessionTimeOut(err, history);
+        }
       });
   };
 };
@@ -90,7 +99,7 @@ const getListViewArticleFailed = (err) => {
   };
 };
 
-export const getDetailArticlesByID = (id) => {
+export const getDetailArticlesByID = (id, history) => {
   return (dispatch) => {
     dispatch(startLoading());
     axios({
@@ -109,6 +118,9 @@ export const getDetailArticlesByID = (id) => {
       .catch((err) => {
         dispatch(stopLoading());
         dispatch(getDetailArticlesByIDFailed(err));
+        if (getLocalStorage("userInfo") !== null) {
+          sessionTimeOut(err, history);
+        }
       });
   };
 };
@@ -123,6 +135,38 @@ const getDetailArticlesByIDSuccess = (detail) => {
 const getDetailArticlesByIDFailed = (err) => {
   return {
     type: GET_DETAIL_ARTICLE_BY_ID_FAILED,
+    payload: err,
+  };
+};
+
+export const getAnotherArticle = (id) => {
+  return (dispatch) => {
+    axios({
+      method: "GET",
+      url: defaultUrlAPIStringTemplate() + `other-article?idArticle=${id}`,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        dispatch(getAnotherArticleSuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(getAnotherArticleFailed(err));
+      });
+  };
+};
+
+export const getAnotherArticleSuccess = (list) => {
+  return {
+    type: GET_ANOTHER_ARTICLE_SUCCESS,
+    payload: list,
+  };
+};
+
+export const getAnotherArticleFailed = (err) => {
+  return {
+    type: GET_ANOTHER_ARTICLE_FAILED,
     payload: err,
   };
 };

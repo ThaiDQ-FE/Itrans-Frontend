@@ -4,22 +4,40 @@ import "./styles.scss";
 import { withRouter } from "react-router";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDetailArticlesByID } from "../../../store/action/artical.action";
+import {
+  getAnotherArticle,
+  getDetailArticlesByID,
+} from "../../../store/action/artical.action";
+import NotAuth from "../../error/auth";
+import { checkRoleUser, getLocalStorage } from "../../../assets/helper/helper";
 function DetailArticlesManagement(props) {
-  const { detailArticle } = useSelector((state) => state.article);
+  const { detailArticle, listAnotherArticle } = useSelector(
+    (state) => state.article
+  );
   const { loading } = useSelector((state) => state.loading);
   const dispatch = useDispatch();
+  const {
+    params: { id },
+  } = props.match;
   useEffect(() => {
-    const {
-      params: { id },
-    } = props.match;
-    dispatch(getDetailArticlesByID(id));
-  }, []);
-  return (
-    <div className="detailArticlesManagement">
-      <DetailArticleComponent article={detailArticle} loading={loading} />
-    </div>
-  );
+    dispatch(getDetailArticlesByID(id, props.history));
+    dispatch(getAnotherArticle(id));
+  }, [id]);
+  if (getLocalStorage("userInfo") === null) {
+    return <NotAuth />;
+  } else if (checkRoleUser() === "ADMIN") {
+    return <NotAuth />;
+  } else {
+    return (
+      <div className="detailArticlesManagement">
+        <DetailArticleComponent
+          article={detailArticle}
+          loading={loading}
+          another={listAnotherArticle}
+        />
+      </div>
+    );
+  }
 }
 
 export default withRouter(DetailArticlesManagement);

@@ -2,6 +2,8 @@ import axios from "axios";
 import {
   authorizationAccount,
   checkIdUser,
+  getLocalStorage,
+  sessionTimeOut,
   showMessage,
 } from "../../assets/helper/helper";
 import { defaultUrlAPI, defaultUrlAPIStringTemplate } from "../../configs/url";
@@ -26,6 +28,10 @@ import {
   GET_LIST_ROUND_PASS_BY_ID_ORGANIZATION_SUCCESS,
   GET_LIST_ROUND_PENDING_BY_ID_ORGANIZATION_FAILED,
   GET_LIST_ROUND_PENDING_BY_ID_ORGANIZATION_SUCCESS,
+  GET_ROUND_AND_ORGANIZATION_SUCCESS,
+  GET_ROUND_AND_ORGANIZATION_FAIL,
+  GET_LIST_DEAL_BY_ROUND_FAIL,
+  GET_LIST_DEAL_BY_ROUND_SUCCESS,
 } from "../constants/round.const";
 import { startLoading, stopLoading } from "./loading.action";
 const id = checkIdUser();
@@ -259,7 +265,7 @@ export const getAllRoundsActiveFailed = (err) => {
   };
 };
 // v2
-export const getListRoundByIdInvestor = (id) => {
+export const getListRoundByIdInvestor = (id, history) => {
   return (dispatch) => {
     dispatch(startLoading());
     axios({
@@ -280,6 +286,9 @@ export const getListRoundByIdInvestor = (id) => {
       .catch((err) => {
         dispatch(stopLoading());
         dispatch(getListRoundByIdInvestorFailed(err));
+        if (getLocalStorage("userInfo") !== null) {
+          sessionTimeOut(err, history);
+        }
       });
   };
 };
@@ -298,7 +307,7 @@ export const getListRoundByIdInvestorFailed = (err) => {
   };
 };
 
-export const getListRoundByIdOrganization = (id, isSelected) => {
+export const getListRoundByIdOrganization = (id, isSelected, history) => {
   return (dispatch) => {
     if (isSelected === false) {
       dispatch(startLoading());
@@ -323,6 +332,9 @@ export const getListRoundByIdOrganization = (id, isSelected) => {
       .catch((err) => {
         dispatch(stopLoading());
         dispatch(getListRoundByIdOrganizationFailed(err));
+        if (getLocalStorage("userInfo") !== null) {
+          sessionTimeOut(err, history);
+        }
       });
   };
 };
@@ -475,3 +487,71 @@ export const getListAllRoundFailed = (err) => {
     payload: err,
   };
 };
+
+export const getRoundAndOrganization = (idRound) => {
+  console.log(idRound)
+  return (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: "GET",
+      url: `http://localhost:8080/api/v1/round-and-organization-by-id-round?idRound=${idRound}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        dispatch(getRoundAndOrganizationSucess(res.data));
+      })
+      .catch((err) => {
+        dispatch(getRoundAndOrganizationFailed(err));
+      });
+  };
+};
+
+export const getRoundAndOrganizationSucess = (round) => {
+  return {
+    type: GET_ROUND_AND_ORGANIZATION_SUCCESS,
+    payload: round,
+  };
+};
+
+export const getRoundAndOrganizationFailed = (err) => {
+  return {
+    type: GET_ROUND_AND_ORGANIZATION_FAIL,
+    payload: err,
+  };
+};
+
+export const getDealByRound = (gmail,roundId) => {
+  return (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: "GET",
+      url: `http://localhost:8080/api/v1/deal-by-round?gmail=${gmail}&roundId=${roundId}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        dispatch(getDealByRoundSucess(res.data));
+      })
+      .catch((err) => {
+        dispatch(getDealByRoundFailed(err));
+      });
+  };
+};
+
+export const getDealByRoundSucess = (deal) => {
+  return {
+    type: GET_LIST_DEAL_BY_ROUND_SUCCESS,
+    payload: deal,
+  };
+};
+
+export const getDealByRoundFailed = (err) => {
+  return {
+    type: GET_LIST_DEAL_BY_ROUND_FAIL,
+    payload: err,
+  };
+};
+

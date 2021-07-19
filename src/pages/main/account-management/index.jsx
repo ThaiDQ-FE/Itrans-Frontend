@@ -30,7 +30,9 @@ import {
   getListRoundByIdOrganization,
 } from "../../../store/action/round.action";
 import { getListIndustry } from "../../../store/action/register.action";
-function AccountManagement() {
+import NotAuth from "../../error/auth";
+import { withRouter } from "react-router-dom";
+function AccountManagement(props) {
   const { TabPane } = Tabs;
   const dispatch = useDispatch();
   const { detailCompany } = useSelector((state) => state.detailCompany);
@@ -57,9 +59,11 @@ function AccountManagement() {
         dispatch(getListMilestone(checkIdUser()));
       }
       if (checkRoleUser() === "INVESTOR") {
-        dispatch(getListRoundByIdInvestor(checkIdUser()));
+        dispatch(getListRoundByIdInvestor(checkIdUser(), props.history));
       } else {
-        dispatch(getListRoundByIdOrganization(checkIdUser(), false));
+        dispatch(
+          getListRoundByIdOrganization(checkIdUser(), false, props.history)
+        );
       }
     } else if (path === "/to-chuc/chi-tiet") {
       const gmail = getLocalStorage("gmailOrganizationToDetail");
@@ -70,7 +74,7 @@ function AccountManagement() {
       dispatch(getListIntroduceByGmail(gmail));
       dispatch(getListTeamMember(gmail, false));
       dispatch(getListMilestone(id));
-      dispatch(getListRoundByIdOrganization(id, false));
+      dispatch(getListRoundByIdOrganization(id, false, props.history));
     } else if (path === "/nha-dau-tu/chi-tiet") {
       const gmail = getLocalStorage("gmailInvestorToDetail");
       const id = getLocalStorage("idInvestorToDetail");
@@ -78,7 +82,7 @@ function AccountManagement() {
       dispatch(getListMediaById(gmail));
       dispatch(getListIntroduceByGmail(gmail));
       dispatch(getListTeamMember(gmail, false));
-      dispatch(getListRoundByIdInvestor(id));
+      dispatch(getListRoundByIdInvestor(id, props.history));
       dispatch(getListArticleByGmail(gmail, false));
     }
   }, []);
@@ -102,55 +106,61 @@ function AccountManagement() {
       </div>
     );
   }
-  return (
-    <div className="am__wrapper">
-      <div className="am__container">
-        <div className="am__image">
-          <img
-            src={
-              detailCompany.logo === "" ? Images.NO_IMAGE : detailCompany.logo
-            }
-            alt="logo company"
-          />
-        </div>
-        <div className="am__info">
-          <span>{detailCompany.name}</span>
-          <br />
-          <span>
-            {detailCompany.numberOfEmp} thành viên - Thành lập năm{" "}
-            {detailCompany.foundedYear}
-          </span>
-        </div>
-        <Tabs defaultActiveKey="1" type="card" size="large">
-          <TabPane tab="Tổng quan" key="1">
-            <OverviewTab
-              detailCompany={detailCompany}
-              listMilestone={listMilestone}
-              loading={loading}
-              media={listMedia}
-              introduce={listIntroduce}
+  if (getLocalStorage("userInfo") === null) {
+    return <NotAuth />;
+  } else if (checkRoleUser() === "ADMIN") {
+    return <NotAuth />;
+  } else {
+    return (
+      <div className="am__wrapper">
+        <div className="am__container">
+          <div className="am__image">
+            <img
+              src={
+                detailCompany.logo === "" ? Images.NO_IMAGE : detailCompany.logo
+              }
+              alt="logo company"
             />
-          </TabPane>
-          <TabPane tab={checkRole()} key="2">
-            <RoundById
-              listRoundByIdInvestor={listRoundByIdInvestor}
-              listRoundByIdOrganization={listRoundByIdOrganization}
-            />
-          </TabPane>
-          {detailCompany.investorType !== "Nhà đầu tư thiên thần" ? (
-            <TabPane tab="Thành viên chủ chốt" key="3">
-              <TeamMember teamMember={listTeamMember} />
+          </div>
+          <div className="am__info">
+            <span>{detailCompany.name}</span>
+            <br />
+            <span>
+              {detailCompany.numberOfEmp} thành viên - Thành lập năm{" "}
+              {detailCompany.foundedYear}
+            </span>
+          </div>
+          <Tabs defaultActiveKey="1" type="card" size="large">
+            <TabPane tab="Tổng quan" key="1">
+              <OverviewTab
+                detailCompany={detailCompany}
+                listMilestone={listMilestone}
+                loading={loading}
+                media={listMedia}
+                introduce={listIntroduce}
+              />
             </TabPane>
-          ) : (
-            <></>
-          )}
+            <TabPane tab={checkRole()} key="2">
+              <RoundById
+                listRoundByIdInvestor={listRoundByIdInvestor}
+                listRoundByIdOrganization={listRoundByIdOrganization}
+              />
+            </TabPane>
+            {detailCompany.investorType !== "Nhà đầu tư thiên thần" ? (
+              <TabPane tab="Thành viên chủ chốt" key="3">
+                <TeamMember teamMember={listTeamMember} />
+              </TabPane>
+            ) : (
+              <></>
+            )}
 
-          <TabPane tab="Tin tức" key="4">
-            <NewsTab article={listArticle} industry={listIndustry} />
-          </TabPane>
-        </Tabs>
+            <TabPane tab="Tin tức" key="4">
+              <NewsTab article={listArticle} industry={listIndustry} />
+            </TabPane>
+          </Tabs>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
-export default AccountManagement;
+export default withRouter(AccountManagement);

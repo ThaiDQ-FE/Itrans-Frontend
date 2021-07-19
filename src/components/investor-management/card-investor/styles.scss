@@ -48,13 +48,24 @@
                         span {
                             font-weight: 600;
                             font-size: 18px;
+                            &:hover {
+                                border-bottom: 1px solid black;
+                            }
                         }
                     }
 
-                    .il__follow,
-                    .il__unFollow {
+                    .il__follow {
                         background: #ff8412;
                         border-color: #ff8412;
+                        margin-top: 10px;
+                        &:hover {
+                            font-weight: 600;
+                            background: rgb(252, 155, 65);
+                            border-color: #fc9b41;
+                            box-shadow: 0px 5px 10px 0px rgba(252, 155, 65, 0.3);
+                        }
+                    }
+                    .il__unFollow {
                         margin-top: 10px;
                     }
                 }
