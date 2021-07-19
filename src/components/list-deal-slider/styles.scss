@@ -24,7 +24,7 @@
         
         img {
             text-align: center;
-            width: 190px;
+            width: 200px;
             height :170px;
             border: 1px solid rgb(194, 194, 194);
             padding: 20px;
@@ -59,4 +59,34 @@
 .span_text
 {
     font-weight: 650;     
+}
+.lds__name{
+    text-align: center;
+}
+#lds_accept {
+    background: #56db56;
+    color: white;
+    border-color: #56db56;
+    font-weight: 600;
+}
+#lds_reject {
+    background: #c0c0c0;
+    color: black;
+    border-color: #c0c0c0;
+    font-weight: 600;
+}
+#lds_pending {
+    background: orange;
+    color: white;
+    border-color: orange;
+    font-weight: 600;
+}
+.ant-modal-close-x{
+    width: 30px;
+    line-height: 25px;
+}
+.lds_textDeal{
+    border-radius: 5px;
+    box-shadow: 0 1px 2px 2px rgba(0, 0, 0, 0.06), 0 3px 6px 2px rgba(0, 0, 0, 0.02),
+                    0 5px 12px 4px rgba(0, 0, 0, 0.03);
 }

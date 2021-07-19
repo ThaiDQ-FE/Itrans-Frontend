@@ -3,48 +3,93 @@ import { Modal, Button, Input, Card } from "antd";
 import Slider from "react-slick";
 import "antd/dist/antd.css";
 import "./styles.scss";
+import { useSelector } from "react-redux";
+import Images from "../../assets/images/images";
+import { useDispatch } from "react-redux";
+import { updateAcceptDeal, updateDealAccept } from "../../store/action/deal.action";
 function ModalDealDetail(props) {
     const { TextArea } = Input;
+    const { detailDeal } = useSelector((deal) => deal.deal);
+    let tasteProvinceRegionString = "";
+    if (detailDeal.tasteProvinceRegion) {
+        detailDeal.tasteProvinceRegion.map((value, index) => {
+            if (detailDeal.tasteProvinceRegion.length != (index + 1)) {
+                tasteProvinceRegionString += value + ", ";
+            }else {
+                tasteProvinceRegionString += value;
+            }
+        })
+    }
+    let investmentIndustryString = "";
+    if (detailDeal.investmentIndustry) {
+        detailDeal.investmentIndustry.map((value, index) => {
+            if (detailDeal.investmentIndustry.length != (index + 1)) {
+                investmentIndustryString += value + "/";
+            }else {
+                investmentIndustryString += value;
+            }
+        })
+    }
+ 
     return (
         <Modal
             className="modal-deal-detail"
-            visible={props.openModal}
+            maskClosable={true}
             footer={null}
-            closable={false}
+            closable={true}
             destroyOnClose={true}
+            visible={props.openModal}
             onCancel={props.closeModal}
         >
             <div>
-                <img style={{width:400, height:250}}
-                    src="https://i.imgur.com/KhYwqoU.png"
-                    alt="thumbnail"
-                />
+                <div id="test">
+                    <img style={{ width: 40, height: 40, marginLeft: 100 }}
+                        src={Images.ACCEPTED}
+                        alt="thumbnail"
+                    />
+                    <span style={{ marginLeft: 5 }} className="span_text">{detailDeal.nameInvestor}</span>
 
-                <div style={{fontSize:20}} className="lds__capital">
-                    <span>Nhà đầu tư navy</span>
+                    <div style={{ display: 'flex' }}>
+                        <div style={{ width: 225 }}>
+                            <span className="span_text">Giai đoạn đầu tư: </span>
+                            <span>{detailDeal.investmentStages}</span>
+                        </div>
+                        <span className="span_text">Số tiền đầu tư: </span>
+                        <span> {detailDeal.minInvestment} - {detailDeal.maxInvestment} Tỷ </span>
+                    </div>
+                    <div className="lds__capital" >
+                        <span className="span_text">Lĩnh vực đầu tư: </span>
+                        <span>{investmentIndustryString}</span>
+                    </div>
+                    <div className="lds__capital" >
+                        <span className="span_text">Khu vực đầu tư: </span>
+                        <span>{tasteProvinceRegionString}</span>
+                    </div>
                 </div>
-                <div style={{marginTop:10}} className="lds__share">
-                    <span className="span_text">Khu vực muốn đầu tư: </span>
-                    <span>Long An</span>
+                <div style={{ marginTop: 10, textAlign: 'center' }} >
+                    <span className="span_text">Thông tin về đầu tư</span>
+
                 </div>
-                <div style={{marginTop:10}} className="rbii__startDate">
-                    <span className="span_text">Giai đoạn đầu tư: </span>
-                    <span>Preseed</span>
-                </div>
-                <div style={{marginTop:10}} className="rbii__startDate">
+                <div style={{ marginTop: 10 }} >
                     <span className="span_text">Số tiền đầu tư: </span>
-                    <span>5 Tỉ</span>
+                    <span>{detailDeal.capitalInvestment} Tỷ</span>
                 </div>
-                <div style={{marginTop:10}} className="rbii__startDate">
+                <div style={{ marginTop: 10 }}>
                     <span className="span_text">Ngày bắt đầu: </span>
-                    <span>22/12/2021</span>
+                    <span>{detailDeal.date}</span>
                 </div>
-                <div style={{marginTop:10}} className="rbii__startDate">
+                <div style={{ marginTop: 10 }} >
+                    <span className="span_text">Phần trăm cổ phần: </span>
+                    <span>{detailDeal.shareRequirement} % </span>
+                </div>
+                <div style={{ marginTop: 10 }}>
                     <span className="span_text">Mô tả: </span>
-                    <span>Với mục tiêu phát triển tiên phong và bền vững từ khi thành lập,Ánh dương vi na đã xây dựng
-          cho doanh nghiệp đó tầm nhìn và sứ mệnh như sau</span>
+                    <span>{detailDeal.description}</span>
                 </div>
-                <div style={{textAlign:"end"}}><Button onClick={props.handleCancel} style={{backgroundColor:"#FF7D04", color:"#FFFFFF"}}>Hủy </Button> </div>
+                <div style={{ display: "flex", marginTop: 10 }}>
+                    <div style={{ marginLeft: 'auto' }} ><Button onClick={props.handleAccept} style={{ backgroundColor: "#56db56", color: "#FFFFFF" }}>Chấp nhận </Button> </div>
+                    <div style={{ paddingLeft: 5 }}><Button onClick={props.handleReject} style={{ backgroundColor: "red", color: "#FFFFFF" }}>Từ chối </Button> </div>
+                </div>
             </div>
         </Modal>
     );

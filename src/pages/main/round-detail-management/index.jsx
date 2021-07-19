@@ -7,19 +7,27 @@ import RoundDeail from "../../../components/round-detail";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getLocalStorage } from "../../../assets/helper/helper";
-import { getListQuestionAndAnswer } from "../../../store/action/round.action";
+import { getDealByRound, getListQuestionAndAnswer, getRoundAndOrganization } from "../../../store/action/round.action";
 import { useSelector } from "react-redux";
+import { getListDocumentByRoundId, getListIntroduceByRoundId } from "../../../store/action/introduce.action";
+import DocumentRound from "../../../components/document-round";
 function RoundDetailManagement() {
   const dispatch = useDispatch();
   const userLogin = getLocalStorage("userInfo");
   useEffect(() => {
     dispatch(getListQuestionAndAnswer(userLogin.gmail,1));
+    dispatch(getRoundAndOrganization(1));
+    dispatch(getDealByRound(userLogin.gmail,1));
+    dispatch(getListIntroduceByRoundId(1));
+    dispatch(getListDocumentByRoundId(1));
   })
   return (
     <div style={{ marginTop: 100, marginBottom: 100 }}>
       <RoundDeail />
       <ListDealSlider />
+      <hr id='style-four'/>
       <IntroduceRound />
+      <DocumentRound/>
       <CommentRound/>
     </div>
   )

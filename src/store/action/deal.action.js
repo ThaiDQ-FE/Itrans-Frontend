@@ -1,9 +1,12 @@
 import axios from "axios";
 import {
   authorizationAccount,
+  getLocalStorage,
   showMessage,
 } from "../../assets/helper/helper";
 import {
+  CREATE_DEAL_FAIL,
+  CREATE_DEAL_SUCCESS,
   GET_CURRENT_DEAL_CANCEL_FAIL,
   GET_CURRENT_DEAL_CANCEL_SUCCESS,
   GET_CURRENT_DEAL_DONE_FAIL,
@@ -11,9 +14,17 @@ import {
   GET_CURRENT_DEAL_SUCCESS,
   GET_DEAL_BY_ID_FAILD,
   GET_DEAL_BY_ID_SUCCESS,
+  GET_DETAIL_DEAL_FAIL,
+  GET_DETAIL_DEAL_SUCCESS,
+  UPDATE_DEAL_ACCEPT_FAIL,
+  UPDATE_DEAL_ACCEPT_SUCCESS,
+  UPDATE_DEAL_REJECT_FAIL,
+  UPDATE_DEAL_REJECT_SUCCESS,
 } from "../constants/deal.const";
 import { checkIdUser } from "../../assets/helper/helper";
 import { startLoading,stopLoading } from "./loading.action";
+import { defaultUrlAPIStringTemplate } from "../../configs/url";
+import { getDealByRound } from "./round.action";
 export const getListDealByIdOrganization = (idOrganization) => {
   return (dispatch) => {
     dispatch(startLoading());
@@ -195,6 +206,130 @@ const getCancelDealSuccess = (listDealCancel) => {
 const getCancelDealFail = (error) => {
   return {
     type: GET_CURRENT_DEAL_CANCEL_FAIL,
+    payload: error
+  };
+};
+
+export const getDetailDeal = (idDeal) => {
+  return  (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: 'GET',
+      url: defaultUrlAPIStringTemplate()+`detail-deal?idDeal=${idDeal}`,
+      data: null,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
+      dispatch(getDetaillDealSuccess(res.data))
+    }).catch((err) => {
+      dispatch(getDetailDealFail(err))
+    })
+  }
+}
+const getDetaillDealSuccess = (detailDeal) => {
+  return {
+    type: GET_DETAIL_DEAL_SUCCESS,
+    payload: detailDeal
+  };
+};
+const getDetailDealFail = (error) => {
+  return {
+    type: GET_DETAIL_DEAL_FAIL,
+    payload: error
+  };
+};
+
+export const updateAcceptDeal = (idDeal) => {
+  return  (dispatch) => {
+    const userLogin = getLocalStorage("userInfo");
+    const token = authorizationAccount();
+    axios({
+      method: 'PUT',
+      url: defaultUrlAPIStringTemplate()+`accept-deal?id-deal=${idDeal}`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
+      dispatch(updateAcceptDealSuccess(res.data))
+      dispatch(getDealByRound(userLogin.gmail,1));
+    }).catch((err) => {
+      dispatch(updateAcceptDealFail(err))
+    })
+  }
+}
+const updateAcceptDealSuccess = (detailDeal) => {
+  return {
+    type: UPDATE_DEAL_ACCEPT_SUCCESS,
+    payload: detailDeal
+  };
+};
+const updateAcceptDealFail = (error) => {
+  return {
+    type: UPDATE_DEAL_ACCEPT_FAIL,
+    payload: error
+  };
+};
+
+export const updateRejectDeal = (idDeal) => {
+  return  (dispatch) => {
+    const userLogin = getLocalStorage("userInfo");
+    const token = authorizationAccount();
+    axios({
+      method: 'PUT',
+      url: defaultUrlAPIStringTemplate()+`reject-deal?id-deal=${idDeal}`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
+      dispatch(updateRejectDealSuccess(res.data))
+      dispatch(getDealByRound(userLogin.gmail,1));
+    }).catch((err) => {
+      dispatch(updateRejectDealFail(err))
+    })
+  }
+}
+const updateRejectDealSuccess = (detailDeal) => {
+  return {
+    type: UPDATE_DEAL_REJECT_SUCCESS,
+    payload: detailDeal
+  };
+};
+const updateRejectDealFail = (error) => {
+  return {
+    type: UPDATE_DEAL_REJECT_FAIL,
+    payload: error
+  };
+};
+
+export const createDeal = (object) => {
+  return  (dispatch) => {
+    const userLogin = getLocalStorage("userInfo");
+    const token = authorizationAccount();
+    axios({
+      method: 'POST',
+      url: defaultUrlAPIStringTemplate()+`deal`,
+      data:object,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
+      dispatch(createDealSuccess(res.data))
+      dispatch(getDealByRound(userLogin.gmail,1));
+    }).catch((err) => {
+      dispatch(createDealFail(err))
+    })
+  }
+}
+const createDealSuccess = (detailDeal) => {
+  return {
+    type: CREATE_DEAL_SUCCESS,
+    payload: detailDeal
+  };
+};
+const createDealFail = (error) => {
+  return {
+    type: CREATE_DEAL_FAIL,
     payload: error
   };
 };

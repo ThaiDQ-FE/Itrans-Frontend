@@ -85,13 +85,7 @@ function CommentRound() {
                 value: '',
                 comments: arrayComment
             });
-            const answerObj =
-            {
-                idInvestor: 1,
-                idRound: 1,
-                question: state.value
-              };
-            dispatch(createAnswer(answerObj));
+           
         }
     }, [listQuestionAndAnswer])
     const handleClick = (e) => {
@@ -125,7 +119,7 @@ function CommentRound() {
                     {
                         objComment:
                         {
-                            author: 'Giang',
+                            author: userLogin.name,
                             avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
                             content: <p>{state.value}</p>,
                             datetime: moment().format("DD-MM-YYYY hh:mm"),
@@ -161,7 +155,7 @@ function CommentRound() {
                     let haha = state.comments[index].objList;
                     let a =
                     {
-                        author: "giang",
+                        author: userLogin.name,
                         avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
                         content: <p>{idQuestion.valueAnswer}</p>,
                         datetime: moment().format("DD-MM-YYYY hh:mm"),
@@ -181,6 +175,13 @@ function CommentRound() {
                     })
                 }
             }
+            const answerObj =
+            {
+                answer: idQuestion.valueAnswer,
+                gmail: userLogin.gmail,
+                idQuestion:idQuestion.id
+              };
+            dispatch(createAnswer(answerObj));
         }, 1000);
 
     };
@@ -203,7 +204,7 @@ function CommentRound() {
 
     return (
         <div className="comment">
-            <Comment
+            { userLogin.role !="ORGANIZATION" && <Comment
                 avatar={
                     <Avatar
                         src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
@@ -217,7 +218,7 @@ function CommentRound() {
                         value={state.value}
                     />
                 }
-            />
+            />}
             {state.comments.length > 0 && <CommentList onClick={handleClick} comments={state.comments} idQuestion={idQuestion.id}>  <Comment
                 avatar={
                     <Avatar

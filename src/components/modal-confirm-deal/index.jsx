@@ -16,7 +16,7 @@ function ModalConfirmDeal(props) {
         visible={props.openModal}
         onCancel={props.closeModal}
       >
-        <h3 style={{ textAlign: "center" }}>Xác nhận lại deal</h3>
+        <h3 style={{ textAlign: "center" }}>Thông tin muốn đầu tư</h3>
         <form className="cfr__form" id="cfr__form">
           <div className="cfr__lineOne">
             <div className="cfr__wrapperSTKG">
@@ -25,7 +25,7 @@ function ModalConfirmDeal(props) {
                 size="large"
                 type="number"
                 className="cfr__formSTKG"
-                addonAfter=".000.000 VNĐ"
+                addonAfter="Tỷ VNĐ"
                 placeholder="Số tiền đầu tư"
                 onChange={props.handleChangeValue}
                 name="soTienDauTu"
