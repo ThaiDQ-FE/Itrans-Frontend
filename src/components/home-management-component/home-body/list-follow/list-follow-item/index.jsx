@@ -17,16 +17,16 @@ function ListFollowItem(props) {
   const { listOrgOrInvNotFollow } = useSelector((state) => state.interest);
   const handleClickDetail = (gmail, id) => {
     if (checkRoleUser() === "INVESTOR") {
-      localStorages("gmailInvestorToDetail", gmail);
-      localStorages("idInvestorToDetail", id);
-      setTimeout(() => {
-        props.history.push("/nha-dau-tu/chi-tiet");
-      }, 500);
-    } else {
       localStorages("gmailOrganizationToDetail", gmail);
       localStorages("idOrganizationToDetail", id);
       setTimeout(() => {
         props.history.push("/to-chuc/chi-tiet");
+      }, 500);
+    } else {
+      localStorages("gmailInvestorToDetail", gmail);
+      localStorages("idInvestorToDetail", id);
+      setTimeout(() => {
+        props.history.push("/nha-dau-tu/chi-tiet");
       }, 500);
     }
   };
