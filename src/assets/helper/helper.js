@@ -25,7 +25,7 @@ export const showMessage = (icon, mess) => {
     heightAuto: true,
     timerProgressBar: false,
     showConfirmButton: false,
-    timer: 2000,
+    timer: 3000,
     allowOutsideClick: false,
   });
 };
@@ -80,6 +80,16 @@ export const pathToChuc = () => {
 
 export const pathNhaDauTu = () => {
   const path = "/nha-dau-tu/chi-tiet";
+  return path;
+};
+
+export const pathAdminTinTuc = () => {
+  const path = "/admin/quan-ly-tin-tuc";
+  return path;
+};
+
+export const pathAdminTinTucChiTiet = () => {
+  const path = "/admin/quan-ly-tin-tuc/chi-tiet";
   return path;
 };
 

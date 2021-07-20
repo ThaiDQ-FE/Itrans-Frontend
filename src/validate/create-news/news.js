@@ -35,8 +35,8 @@ export const checkSummary = (sum, setSum) => {
 };
 
 export const checkHash = (hash, setHash) => {
-  if (hash.length > 3) {
-    return setHash("Chỉ được chọn tối đa 3 hashtag");
+  if (hash.length > 5) {
+    return setHash("Chỉ được chọn tối đa 5 hashtag");
   } else {
     setHash("");
   }

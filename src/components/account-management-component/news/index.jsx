@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Pagination } from "antd";
+import { Button, Pagination, Tooltip } from "antd";
 import ArticlesItem from "./article-item";
 import "./styles.scss";
 import "antd/dist/antd.css";
@@ -7,9 +7,9 @@ import {
   authorizationAccount,
   checkEmailUser,
   checkPathUrl,
-  localStorages,
   pathNhaDauTu,
   pathQuanLyTaiKhoan,
+  sessionTimeOut,
   showMessage,
 } from "../../../assets/helper/helper";
 import ModalCreateNews from "../modal-create-news";
@@ -23,16 +23,21 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { defaultUrlAPI } from "../../../configs/url";
 import { useDispatch } from "react-redux";
-import { getListArticleByGmail } from "../../../store/action/artical.action";
-import message from "../../../assets/message/text";
+import {
+  deleleArticleById,
+  getListArticleByGmail,
+} from "../../../store/action/artical.action";
 import { withRouter } from "react-router";
+import Images from "../../../assets/images/images";
 function NewsTab(props) {
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
+  const [openModalUpdate, setOpenModalUpdate] = useState(false);
   const [infoNews, setInfoNews] = useState({
     title: "",
     description: "",
   });
+  const [idArticle, setIdArticle] = useState("");
   const [content, setContent] = useState("");
   const [arrayIndustries, setArrayIndustries] = useState([]);
   const [thumbnail, setThumbnail] = useState("");
@@ -63,6 +68,7 @@ function NewsTab(props) {
   };
   const handleClose = () => {
     setOpenModal(false);
+    setOpenModalUpdate(false);
     setThumbnail("");
     setInfoNews({
       title: "",
@@ -70,6 +76,7 @@ function NewsTab(props) {
     });
     setArrayIndustries([]);
     setContent("");
+    setIdArticle("");
     //error
     setTitleError("");
     setSumError("");
@@ -115,10 +122,10 @@ function NewsTab(props) {
       ) {
         if (content === "") {
           return showMessage("error", "Nội dung không được bỏ trống");
-        } else {
+        } else if (openModal === true && openModalUpdate === true) {
           Swal.fire({
             icon: "question",
-            title: "Bạn muốn tạo Tin tức này?",
+            title: "Bạn muốn cập nhật tin tức này?",
             heightAuto: true,
             timerProgressBar: false,
             showConfirmButton: true,
@@ -127,6 +134,33 @@ function NewsTab(props) {
             cancelButtonText: "Hủy",
             confirmButtonColor: "#1890ff",
             cancelButtonColor: "red",
+            allowOutsideClick: false,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              const object = {
+                content: content,
+                description: infoNews.description,
+                idArticle: idArticle,
+                idIndustries: arrayIndustries,
+                linkThumbnail: thumbnail,
+                title: infoNews.title,
+              };
+              updateArticle(object, props.history);
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "question",
+            title: "Bạn muốn tạo tin tức này?",
+            heightAuto: true,
+            timerProgressBar: false,
+            showConfirmButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Đồng ý",
+            cancelButtonText: "Hủy",
+            confirmButtonColor: "#1890ff",
+            cancelButtonColor: "red",
+            allowOutsideClick: false,
           }).then((result) => {
             if (result.isConfirmed) {
               const object = {
@@ -137,7 +171,7 @@ function NewsTab(props) {
                 linkThumbnail: thumbnail,
                 title: infoNews.title,
               };
-              createArticle(object);
+              createArticle(object, props.history);
             }
           });
         }
@@ -145,7 +179,7 @@ function NewsTab(props) {
     }
   };
 
-  const createArticle = (object) => {
+  const createArticle = (object, history) => {
     axios({
       method: "POST",
       url: defaultUrlAPI() + "article",
@@ -166,9 +200,93 @@ function NewsTab(props) {
         }
       })
       .catch((err) => {
-        console.log(err);
-        showMessage("error", message.CACTH_ERROR);
+        sessionTimeOut(err, history);
       });
+  };
+  const updateArticle = (object, history) => {
+    axios({
+      method: "PUT",
+      url: defaultUrlAPI() + "article",
+      data: object,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          showMessage("success", "Cập nhật tin tức thành công");
+          setTimeout(() => {
+            handleClose();
+            dispatch(getListArticleByGmail(checkEmailUser(), true));
+          }, 2000);
+        } else {
+          showMessage("error", "Cập nhật tin tức thất bại");
+        }
+      })
+      .catch((err) => {
+        sessionTimeOut(err, history);
+      });
+  };
+  const handleDeleteArticle = (id, title) => {
+    Swal.fire({
+      icon: "question",
+      title: "Bạn muốn xóa tin tức này?",
+      html: `<b>${title}</b>`,
+      heightAuto: true,
+      timerProgressBar: false,
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Đồng ý",
+      cancelButtonText: "Hủy",
+      confirmButtonColor: "#1890ff",
+      cancelButtonColor: "red",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleleArticleById(id, props.history));
+      }
+    });
+    console.log(id, title);
+  };
+  const handleEditArticle = (value) => {
+    console.log(value);
+    setInfoNews({
+      title: value.title,
+      description: value.description,
+    });
+    setThumbnail(value.thumbnail);
+    for (let i = 0; i < value.articleIndustries.length; i++) {
+      arrayIndustries.push(value.articleIndustries[i].idIndustry);
+    }
+    setContent(value.content);
+    setIdArticle(value.idArticle);
+    Swal.fire({
+      icon: "question",
+      title: "Bạn muốn sửa tin tức này?",
+      html: `<b>${value.title}</b>`,
+      heightAuto: true,
+      timerProgressBar: false,
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Đồng ý",
+      cancelButtonText: "Hủy",
+      confirmButtonColor: "#1890ff",
+      cancelButtonColor: "red",
+      allowOutsideClick: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setOpenModalUpdate(true);
+        setOpenModal(true);
+      } else {
+        setInfoNews({
+          title: "",
+          description: "",
+        });
+        setThumbnail("");
+        setArrayIndustries([]);
+        setContent("");
+        setIdArticle("");
+      }
+    });
   };
   const handleClickArticle = (id) => {
     props.history.push(`/tin-tuc/chi-tiet/${id}`);
@@ -203,21 +321,47 @@ function NewsTab(props) {
         props.article
           .slice(length.minValue, length.maxValue)
           .map((value, index) => (
-            <div
-              className="nt__articleWrapper"
-              key={index}
-              onClick={() => handleClickArticle(value.idArticle)}
-            >
-              <ArticlesItem
-                id={value.idArticle}
-                owner={value.accountCreate}
-                listIndustries={value.articleIndustries}
-                createAt={value.createAt}
-                description={value.description}
-                logo={value.logo}
-                thumbnail={value.thumbnail}
-                title={value.title}
-              />
+            <div className="nt__articleWrappers">
+              <div
+                className="nt__articleWrapper"
+                key={index}
+                onClick={() => handleClickArticle(value.idArticle)}
+              >
+                <ArticlesItem
+                  id={value.idArticle}
+                  owner={value.accountCreate}
+                  listIndustries={value.articleIndustries}
+                  createAt={value.createAt}
+                  description={value.description}
+                  logo={value.logo}
+                  thumbnail={value.thumbnail}
+                  title={value.title}
+                />
+              </div>
+              {checkPathUrl() === pathQuanLyTaiKhoan() ? (
+                <div className="nt__articleAction">
+                  <Tooltip title="Chỉnh sửa">
+                    <img
+                      className="nt__articleEdit"
+                      src={Images.PENCIL}
+                      alt="edit"
+                      onClick={() => handleEditArticle(value)}
+                    />
+                  </Tooltip>
+                  <Tooltip title="Xóa">
+                    <img
+                      className="nt__articleDelete"
+                      src={Images.RED_CANCEL}
+                      alt="delete"
+                      onClick={() =>
+                        handleDeleteArticle(value.idArticle, value.title)
+                      }
+                    />
+                  </Tooltip>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           ))
       ) : checkPathUrl() === pathQuanLyTaiKhoan() ? (
@@ -251,8 +395,12 @@ function NewsTab(props) {
       </div>
       <ModalCreateNews
         open={openModal}
+        openUpdate={openModalUpdate}
         close={handleClose}
         thumbnail={thumbnail}
+        content={content}
+        infoNews={infoNews}
+        arrayIndustries={arrayIndustries}
         setThumbnail={setThumbnail}
         handleChangeInfo={handleChangeInfo}
         handleChangeValue={handleChangeValue}
@@ -266,7 +414,6 @@ function NewsTab(props) {
         handleBlurSum={handleBlurSum}
         hashTagError={hashTagError}
         handleBlurHash={handleBlurHash}
-        content={content}
         setContent={setContent}
         handleChangeContent={handleChangeContent}
       />

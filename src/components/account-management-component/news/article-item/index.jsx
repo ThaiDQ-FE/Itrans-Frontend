@@ -6,7 +6,7 @@ import "./styles.scss";
 function ArticlesItem(props) {
   const renderListIndustries = () => {
     return props.listIndustries.map((item, index) => {
-      return <Tag key={index}>{item}</Tag>;
+      return <Tag key={index}>{item.nameIndustry}</Tag>;
     });
   };
   return (

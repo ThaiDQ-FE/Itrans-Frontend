@@ -16,7 +16,11 @@ function ModalCreateNews(props) {
     >
       <div className="modal__addNewsWrapper">
         <InfoNews
+          open={props.open}
+          openUpdate={props.openUpdate}
+          infoNews={props.infoNews}
           thumbnail={props.thumbnail}
+          arrayIndustries={props.arrayIndustries}
           setThumbnail={props.setThumbnail}
           handleChangeInfo={props.handleChangeInfo}
           handleChangeValue={props.handleChangeValue}

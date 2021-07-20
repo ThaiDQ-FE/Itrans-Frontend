@@ -44,6 +44,7 @@ function AMGColumnRegion(props) {
   ];
   return (
     <Table
+      className="table__disable"
       bordered
       loading={props.loading}
       size="middle"
