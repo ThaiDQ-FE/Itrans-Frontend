@@ -1,10 +1,18 @@
 import axios from "axios";
-import { authorizationAccount } from "../../assets/helper/helper";
+import {
+  authorizationAccount,
+  sessionTimeOut,
+} from "../../assets/helper/helper";
 import { defaultUrlAPI, defaultUrlAPIStringTemplate } from "../../configs/url";
 import "antd/dist/antd.css";
 import { notification } from "antd";
 import { getValueListIndustry, getValueListStage } from "./value.action";
 import message from "../../assets/message/text";
+import {
+  GET_VALUE_ARTICLE_FAILED,
+  GET_VALUE_ARTICLE_SUCCESS,
+} from "../constants/value.const";
+import { startLoading, stopLoading } from "./loading.action";
 export const updateStage = (object) => {
   return (dispatch) => {
     axios({
@@ -196,5 +204,45 @@ export const deleteIndustry = (object) => {
           message: message.CACTH_ERROR,
         });
       });
+  };
+};
+
+export const getValueArticle = (isLoading, history) => {
+  return (dispatch) => {
+    if (isLoading === true) {
+      dispatch(startLoading());
+    }
+    axios({
+      method: "GET",
+      url: defaultUrlAPI() + "all-article-active",
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        dispatch(stopLoading());
+        if (res.status === 200) {
+          dispatch(getValueArticleSuccess(res.data));
+        }
+      })
+      .catch((err) => {
+        dispatch(stopLoading());
+        dispatch(getValueArticleFailed(err));
+        sessionTimeOut(err, history);
+      });
+  };
+};
+
+const getValueArticleSuccess = (list) => {
+  return {
+    type: GET_VALUE_ARTICLE_SUCCESS,
+    payload: list,
+  };
+};
+
+const getValueArticleFailed = (err) => {
+  return {
+    type: GET_VALUE_ARTICLE_FAILED,
+    payload: err,
   };
 };

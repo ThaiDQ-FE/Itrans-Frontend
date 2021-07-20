@@ -1,8 +1,14 @@
+import { notification } from "antd";
 import axios from "axios";
 import {
   authorizationAccount,
+  checkEmailUser,
+  checkPathUrl,
   getLocalStorage,
+  pathAdminTinTuc,
+  pathAdminTinTucChiTiet,
   sessionTimeOut,
+  showMessage,
 } from "../../assets/helper/helper";
 import {
   defaultUrlAPI,
@@ -19,6 +25,7 @@ import {
   GET_LIST_VIEW_ARTICLE_FAILED,
   GET_LIST_VIEW_ARTICLE_SUCCESS,
 } from "../constants/article.const";
+import { getValueArticle } from "./admin.action";
 import { startLoading, stopLoading } from "./loading.action";
 
 export const getListArticleByGmail = (gmail, isSelected) => {
@@ -99,9 +106,11 @@ const getListViewArticleFailed = (err) => {
   };
 };
 
-export const getDetailArticlesByID = (id, history) => {
+export const getDetailArticlesByID = (id, history, isLoading) => {
   return (dispatch) => {
-    dispatch(startLoading());
+    if (isLoading === true) {
+      dispatch(startLoading());
+    }
     axios({
       method: "GET",
       url: defaultUrlAPIStringTemplate() + `article/${id}`,
@@ -168,5 +177,50 @@ export const getAnotherArticleFailed = (err) => {
   return {
     type: GET_ANOTHER_ARTICLE_FAILED,
     payload: err,
+  };
+};
+
+export const deleleArticleById = (id, history) => {
+  return (dispatch) => {
+    axios({
+      method: "PUT",
+      url: defaultUrlAPIStringTemplate() + `delete-article?idArticle=${id}`,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          if (checkPathUrl() === pathAdminTinTuc()) {
+            notification["success"]({
+              message: "Xóa tin tức thành công",
+            });
+            dispatch(getValueArticle(false, history));
+          } else if (checkPathUrl().includes(pathAdminTinTucChiTiet())) {
+            showMessage("success", "Xóa tin tức thành công");
+            dispatch({
+              type: GET_DETAIL_ARTICLE_BY_ID_SUCCESS,
+              payload: [],
+            });
+            setTimeout(() => {
+              history.push("/admin/quan-ly-tin-tuc");
+            }, 3000);
+          } else {
+            showMessage("success", "Xóa tin tức thành công");
+            dispatch(getListArticleByGmail(checkEmailUser(), true));
+          }
+        } else {
+          if (checkPathUrl() === pathAdminTinTuc()) {
+            notification["error"]({
+              message: "Xóa tin tức thất bại",
+            });
+          } else {
+            showMessage("error", "Xóa tin tức thất bại");
+          }
+        }
+      })
+      .catch((err) => {
+        sessionTimeOut(err, history);
+      });
   };
 };

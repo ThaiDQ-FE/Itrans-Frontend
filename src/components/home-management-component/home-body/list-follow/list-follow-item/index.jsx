@@ -1,5 +1,4 @@
 import React from "react";
-import "./styles.scss";
 import "antd/dist/antd.css";
 import "./styles.scss";
 import { Skeleton, Button } from "antd";
@@ -86,7 +85,12 @@ function ListFollowItem(props) {
           </div>
         ))
       ) : (
-        "abc"
+        <div className="lfi__lackOfFollow">
+          <img className="lfi__emptyBox" src={Images.EMPTY_BOX} alt="empty" />
+          {checkRoleUser() === "ORGANIZATION"
+            ? "Hiện tại bạn đã theo dõi tất cả nhà đầu tư"
+            : "Hiện tại bạn đã theo dõi tất cả tổ chức"}
+        </div>
       )}
     </div>
   );

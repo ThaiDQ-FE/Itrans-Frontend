@@ -106,6 +106,9 @@ function AdminManagementGenneralComponent(props) {
           />
         </div>
         <div className="amgc__box3">
+          <div className="disable__function">
+            <span className="disable__span">Đã vô hiệu</span>
+          </div>
           <AMGColumnProvince
             loading={props.loading}
             province={props.province}
@@ -113,6 +116,9 @@ function AdminManagementGenneralComponent(props) {
           />
         </div>
         <div className="amgc__box4">
+          <div className="disable__function">
+            <span className="disable__span">Đã vô hiệu</span>
+          </div>
           <AMGColumnRegion
             loading={props.loading}
             region={props.region}

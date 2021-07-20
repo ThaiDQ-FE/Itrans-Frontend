@@ -1,6 +1,8 @@
+import AdminArticleDetail from "../components/admin/admin-detail-article";
 import AdminManagementAccount from "../pages/admin/account-management";
 import AdminDetailAccountManagement from "../pages/admin/account-management/account-detail";
 import AdminHome from "../pages/admin/home";
+import AdminManagementArticle from "../pages/admin/other-management/article-management";
 import AdminManagementGenneral from "../pages/admin/other-management/genneral-management";
 import AdminManagementRound from "../pages/admin/other-management/round-management";
 import Login from "../pages/general/login";
@@ -99,6 +101,16 @@ export const adminRouter = [
     path: "/admin/quan-ly-vong-goi-von",
     exact: true,
     Component: AdminManagementRound,
+  },
+  {
+    path: "/admin/quan-ly-tin-tuc",
+    exact: true,
+    Component: AdminManagementArticle,
+  },
+  {
+    path: "/admin/quan-ly-tin-tuc/chi-tiet/:id",
+    exact: true,
+    Component: AdminArticleDetail,
   },
   {
     path: "/admin/quan-ly-chung",

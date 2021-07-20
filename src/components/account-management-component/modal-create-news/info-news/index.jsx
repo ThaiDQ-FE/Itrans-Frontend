@@ -68,6 +68,7 @@ function InfoNews(props) {
               type="text"
               placeholder={message.EX_TITLE_ARTICLE}
               name="title"
+              defaultValue={props.infoNews.title}
               onChange={props.handleChangeInfo}
               onBlur={props.handleBlurTitle}
             />
@@ -81,6 +82,7 @@ function InfoNews(props) {
               className={`mino__select${
                 props.hashTagError === "" ? "" : " modal__inputNewsError"
               }`}
+              defaultValue={props.arrayIndustries}
               placeholder={message.EX_HASHTAG_ARTICLE}
               onChange={props.handleChangeValue}
               onBlur={props.handleBlurHash}
@@ -98,6 +100,7 @@ function InfoNews(props) {
             <TextArea
               className={props.sumError === "" ? "" : "modal__inputNewsError"}
               name="description"
+              defaultValue={props.infoNews.description}
               onBlur={props.handleBlurSum}
               onChange={props.handleChangeInfo}
               rows={4}
@@ -157,6 +160,8 @@ function InfoNews(props) {
           content={props.content}
           setContent={props.setContent}
           handleChangeContent={props.handleChangeContent}
+          open={props.open}
+          openUpdate={props.openUpdate}
         />
       </div>
     </div>
