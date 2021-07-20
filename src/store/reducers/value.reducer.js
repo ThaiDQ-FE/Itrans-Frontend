@@ -1,4 +1,6 @@
 import {
+  GET_VALUE_ARTICLE_FAILED,
+  GET_VALUE_ARTICLE_SUCCESS,
   GET_VALUE_LIST_INDUSTRY_FAILED,
   GET_VALUE_LIST_INDUSTRY_SUCCESS,
   GET_VALUE_LIST_PROVINCE_FAILED,
@@ -14,6 +16,7 @@ const initialState = {
   listValueStage: [],
   listValueIndustry: [],
   listValueRegion: [],
+  listValueArticle: [],
   errors: [],
 };
 
@@ -35,6 +38,10 @@ const valueReducer = (state = initialState, action) => {
     case GET_VALUE_LIST_REGION_SUCCESS:
       return { ...state, listValueRegion: payload };
     case GET_VALUE_LIST_REGION_FAILED:
+      return { ...state, errors: payload };
+    case GET_VALUE_ARTICLE_SUCCESS:
+      return { ...state, listValueArticle: payload };
+    case GET_VALUE_ARTICLE_FAILED:
       return { ...state, errors: payload };
     default:
       return state;

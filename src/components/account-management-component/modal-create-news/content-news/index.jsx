@@ -8,7 +8,6 @@ import { keyTinyMCE } from "../../../../configs/tinyMCE";
 function ContentNews(props) {
   const [loading, setLoading] = useState(true);
   const handleEditorChange = (e) => {
-    console.log(e.target.getContent());
     props.setContent(e.target.getContent());
   };
   return (
@@ -23,6 +22,7 @@ function ContentNews(props) {
             ed.on("init", function (args) {
               document.getElementById("loading_gfx").style.display = "none";
               setLoading(false);
+              ed.setContent(props.content);
             });
           },
           language: "vi",
@@ -102,7 +102,9 @@ function ContentNews(props) {
           onClick={props.handleCreate}
           disabled={props.loading === true}
         >
-          Tạo bài đăng
+          {props.open === true && props.openUpdate === true
+            ? "Cập nhật tin tức"
+            : "Tạo tin tức"}
         </Button>
       </div>
     </>

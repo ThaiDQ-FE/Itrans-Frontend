@@ -40,9 +40,9 @@ import oopss from "./oopss.PNG";
 import no_thumbnail from "./no-thumbnail.png";
 import number_employess from "./two-users.png";
 import gmailround from "./gmail.png";
-import timetable from "./timetable.png"
-import stage from "./4357.png"
-import document from "./document.png"
+import timetable from "./timetable.png";
+import stage from "./4357.png";
+import document from "./document.png";
 import background from "./background.jpg";
 import empty_box from "./box.png";
 const Images = {

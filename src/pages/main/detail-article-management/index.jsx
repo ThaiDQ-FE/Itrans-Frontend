@@ -20,7 +20,7 @@ function DetailArticlesManagement(props) {
     params: { id },
   } = props.match;
   useEffect(() => {
-    dispatch(getDetailArticlesByID(id, props.history));
+    dispatch(getDetailArticlesByID(id, props.history, true));
     dispatch(getAnotherArticle(id));
   }, [id]);
   if (getLocalStorage("userInfo") === null) {

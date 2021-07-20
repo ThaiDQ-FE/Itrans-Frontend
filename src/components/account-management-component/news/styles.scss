@@ -4,18 +4,48 @@
     max-width: 960px;
     margin: auto;
     position: relative;
-    .nt__articleWrapper {
-        display: flex;
-        justify-content: space-between;
-        max-height: 200px;
-        box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);
-        margin: 20px 0;
+    .nt__articleWrappers {
+        position: relative;
+        .nt__articleWrapper {
+            display: flex;
+            justify-content: space-between;
+            max-height: 200px;
+            box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14),
+                0 1px 8px 0 rgba(0, 0, 0, 0.12);
+            margin: 20px 0;
+            position: relative;
+            &:hover {
+                cursor: pointer;
+                box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.4), 0 3px 4px 0 rgba(0, 0, 0, 0.24),
+                    0 1px 8px 0 rgba(0, 0, 0, 0.22);
+            }
+        }
         &:hover {
-            cursor: pointer;
-            box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.4), 0 3px 4px 0 rgba(0, 0, 0, 0.24),
-                0 1px 8px 0 rgba(0, 0, 0, 0.22);
+            .nt__articleAction {
+                opacity: 1;
+            }
+        }
+        .nt__articleAction {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            opacity: 0;
+            .nt__articleEdit,
+            .nt__articleDelete {
+                width: 12px;
+                height: 12px;
+                opacity: 0.5;
+                &:hover {
+                    opacity: 1;
+                    cursor: pointer;
+                }
+            }
+            .nt__articleDelete {
+                margin-left: 10px;
+            }
         }
     }
+
     .nt__createArticle {
         position: absolute;
         top: 30px;

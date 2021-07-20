@@ -71,7 +71,7 @@ function ANACTablePending(props) {
       loading={props.loading}
       columns={column}
       dataSource={props.listAccount}
-      key={props.listAccount.gmail}
+      key={Math.random(9999)}
       pagination={
         props.listAccount.length < 6
           ? false

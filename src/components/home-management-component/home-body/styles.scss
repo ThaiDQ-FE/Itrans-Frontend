@@ -1,5 +1,14 @@
 .hb__wrapper {
-    padding: 100px 50px;
-    display: flex;
-    justify-content: space-evenly;
+    .hb__search {
+        width: 400px;
+        margin: auto;
+        margin-top: 50px;
+        .hb__searchInput {
+        }
+    }
+    .hb__container {
+        padding: 50px 50px 100px 50px;
+        display: flex;
+        justify-content: space-evenly;
+    }
 }

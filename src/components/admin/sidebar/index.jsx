@@ -8,6 +8,7 @@ import {
   UserOutlined,
   AppstoreOutlined,
   AreaChartOutlined,
+  ContainerOutlined,
 } from "@ant-design/icons";
 import Images from "../../../assets/images/images";
 function AdminSidebar() {
@@ -28,8 +29,13 @@ function AdminSidebar() {
       path === "/admin/quan-ly-vong-goi-von/chi-tiet"
     ) {
       selected = ["3"];
-    } else if (path === "/admin/quan-ly-chung") {
+    } else if (
+      path === "/admin/quan-ly-tin-tuc" ||
+      path.includes("/admin/quan-ly-tin-tuc/chi-tiet")
+    ) {
       selected = ["4"];
+    } else if (path === "/admin/quan-ly-chung") {
+      selected = ["5"];
     }
     return selected;
   };
@@ -88,7 +94,17 @@ function AdminSidebar() {
               VÒNG GỌI VỐN
             </NavLink>
           </Menu.Item>
-          <Menu.Item key="4" icon={<AppstoreOutlined />}>
+          <Menu.Item key="4" icon={<ContainerOutlined />}>
+            <NavLink
+              activeClassName="active-nav-link-header"
+              className="adminSidebar__item"
+              to="/admin/quan-ly-tin-tuc"
+              exact={true}
+            >
+              QUẢN LÝ TIN TỨC
+            </NavLink>
+          </Menu.Item>
+          <Menu.Item key="5" icon={<AppstoreOutlined />}>
             <NavLink
               activeClassName="active-nav-link-header"
               className="adminSidebar__item"
