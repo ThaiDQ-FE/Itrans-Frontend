@@ -74,7 +74,12 @@ function FormCreateRound(props) {
         </div>
       </div>
       <div style={{ textAlign: "right", marginTop: 20 }}>
-        <Button size="large" type="primary" htmlType="submit">
+        <Button
+          size="large"
+          type="primary"
+          htmlType="submit"
+          disabled={props.loading === true}
+        >
           Tạo vòng gọi vốn
         </Button>
       </div>

@@ -2,8 +2,10 @@ import axios from "axios";
 import {
   authorizationAccount,
   checkIdUser,
+  sessionTimeOut,
   showMessage,
 } from "../../assets/helper/helper";
+import message from "../../assets/message/text";
 import {
   GET_LIST_MILESTONE_FAILED,
   GET_LIST_MILESTONE_SUCCESS,
@@ -28,7 +30,7 @@ export const getListMilestone = (idOrg) => {
   };
 };
 
-export const deleteMilestoneById = (id) => {
+export const deleteMilestoneById = (id, history) => {
   return (dispatch) => {
     const token = authorizationAccount();
     axios({
@@ -46,7 +48,7 @@ export const deleteMilestoneById = (id) => {
         }
       })
       .catch((err) => {
-        showMessage("error", "Xóa thành tựu thất bại hãy thử lại sau");
+        sessionTimeOut(err, history);
       });
   };
 };

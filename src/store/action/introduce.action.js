@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   authorizationAccount,
   checkEmailUser,
+  sessionTimeOut,
   showMessage,
 } from "../../assets/helper/helper";
 import message from "../../assets/message/text";
@@ -12,6 +13,8 @@ import {
   GET_LIST_INTRODUCE_BY_ROUND_SUCCESS,
   GET_LIST_INTRODUCE_FAILED,
   GET_LIST_INTRODUCE_SUCCESS,
+  UPDATE_INTRODUCE_FAILED,
+  UPDATE_INTRODUCE_SUCCESS,
 } from "../constants/introduce.const";
 import { startLoading, stopLoading } from "./loading.action";
 
@@ -33,7 +36,7 @@ export const getListIntroduceByGmail = (gmail) => {
   };
 };
 
-export const deleteIntroduceById = (id) => {
+export const deleteIntroduceById = (id, history) => {
   return (dispatch) => {
     const token = authorizationAccount();
     axios({
@@ -52,7 +55,7 @@ export const deleteIntroduceById = (id) => {
         }
       })
       .catch((err) => {
-        showMessage("error", message.CACTH_ERROR);
+        sessionTimeOut(err, history);
       });
   };
 };
@@ -136,3 +139,58 @@ const getListDocumentByRoundIdFailed = (err) => {
     payload: err,
   };
 };
+
+export const updateIntroduce = (idIntroduce,object,idRound) => {
+  return (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: "PUT",
+      url: `http://localhost:8080/api/v1/introduce?idIntroduce=${idIntroduce}`,
+      data:object,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+      .then((res) => {
+        dispatch(updateIntroduceSuccess(res.data));
+        dispatch(getListIntroduceByRoundId(idRound));
+      })
+      .catch((err) => {
+        dispatch(updateIntroduceFailed(err));
+      });
+  };
+};
+
+const updateIntroduceSuccess = (listIntroduce) => {
+  return {
+    type: UPDATE_INTRODUCE_SUCCESS,
+    payload: listIntroduce,
+  };
+};
+
+const updateIntroduceFailed = (err) => {
+  return {
+    type: UPDATE_INTRODUCE_FAILED,
+    payload: err,
+  };
+};
+
+export const deleteIntroduce = (idIntroduce,idRound) => {
+  return (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: "PUT",
+      url: `http://localhost:8080/api/v1/delete-introduce?idIntroduce=${idIntroduce}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+      .then((res) => {
+        dispatch(getListIntroduceByRoundId(idRound));
+      })
+      .catch((err) => {
+      });
+  };
+};
+
+

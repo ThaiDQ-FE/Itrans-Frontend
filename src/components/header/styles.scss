@@ -5,7 +5,7 @@
     display: flex;
     justify-content: space-between;
     box-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.3);
-    z-index: 100;
+    z-index: 1051;
     position: fixed;
     top: 0;
     font-family: "Montserrat", sans-serif;
@@ -45,8 +45,13 @@
                         opacity: 0.8;
                     }
                 }
+                .active-nav-link-header-features {
+                }
             }
         }
+    }
+    .header__featuresRole {
+        width: 30%;
     }
     .header__login {
         width: 18%;
@@ -143,4 +148,7 @@
         left: unset !important;
         right: 3% !important;
     }
+}
+.class_disable {
+    display: none;
 }

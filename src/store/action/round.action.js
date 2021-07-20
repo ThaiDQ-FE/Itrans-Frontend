@@ -2,6 +2,8 @@ import axios from "axios";
 import {
   authorizationAccount,
   checkIdUser,
+  getLocalStorage,
+  sessionTimeOut,
   showMessage,
 } from "../../assets/helper/helper";
 import { defaultUrlAPI, defaultUrlAPIStringTemplate } from "../../configs/url";
@@ -125,7 +127,7 @@ export const updateStatusRound = (object) => {
           dispatch(getListRoundPassByIdOrganization(id));
         }
       })
-      .catch((err) => { });
+      .catch((err) => {});
   };
 };
 
@@ -263,7 +265,7 @@ export const getAllRoundsActiveFailed = (err) => {
   };
 };
 // v2
-export const getListRoundByIdInvestor = (id) => {
+export const getListRoundByIdInvestor = (id, history) => {
   return (dispatch) => {
     dispatch(startLoading());
     axios({
@@ -284,6 +286,9 @@ export const getListRoundByIdInvestor = (id) => {
       .catch((err) => {
         dispatch(stopLoading());
         dispatch(getListRoundByIdInvestorFailed(err));
+        if (getLocalStorage("userInfo") !== null) {
+          sessionTimeOut(err, history);
+        }
       });
   };
 };
@@ -302,9 +307,11 @@ export const getListRoundByIdInvestorFailed = (err) => {
   };
 };
 
-export const getListRoundByIdOrganization = (id) => {
+export const getListRoundByIdOrganization = (id, isSelected, history) => {
   return (dispatch) => {
-    dispatch(startLoading());
+    if (isSelected === false) {
+      dispatch(startLoading());
+    }
     axios({
       method: "GET",
       url:
@@ -325,6 +332,9 @@ export const getListRoundByIdOrganization = (id) => {
       .catch((err) => {
         dispatch(stopLoading());
         dispatch(getListRoundByIdOrganizationFailed(err));
+        if (getLocalStorage("userInfo") !== null) {
+          sessionTimeOut(err, history);
+        }
       });
   };
 };
@@ -343,7 +353,6 @@ export const getListRoundByIdOrganizationFailed = (err) => {
   };
 };
 
-
 export const getListQuestionAndAnswer = (gmail, idRound) => {
   return (dispatch) => {
     const token = authorizationAccount();
@@ -359,8 +368,8 @@ export const getListQuestionAndAnswer = (gmail, idRound) => {
       })
       .catch((err) => {
         dispatch(getListQuestionAndAnswerFailed(err));
-      })
-    }
+      });
+  };
 };
 
 export const getListAllRound = () => {
@@ -383,7 +392,6 @@ export const getListAllRound = () => {
       });
   };
 };
-
 
 export const getListQuestionAndAnswerSuccess = (roundDetail) => {
   return {

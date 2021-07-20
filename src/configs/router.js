@@ -7,6 +7,7 @@ import Login from "../pages/general/login";
 import Register from "../pages/general/register";
 import AccountManagement from "../pages/main/account-management";
 import DealManagement from "../pages/main/deal-management";
+import DetailArticlesManagement from "../pages/main/detail-article-management";
 import FundingRound from "../pages/main/funding-round";
 import FundraisingManagement from "../pages/main/fundraising-management";
 import UserHome from "../pages/main/home";
@@ -70,6 +71,11 @@ export const mainRouter = [
     path: "/to-chuc/chi-tiet",
     exact: true,
     Component: AccountManagement,
+  },
+  {
+    path: "/tin-tuc/chi-tiet/:id",
+    exact: true,
+    Component: DetailArticlesManagement,
   },
 ];
 

@@ -43,6 +43,8 @@ import gmailround from "./gmail.png";
 import timetable from "./timetable.png"
 import stage from "./4357.png"
 import document from "./document.png"
+import background from "./background.jpg";
+import empty_box from "./box.png";
 const Images = {
   LOGO_NAVY: logo_navy,
   LOGO_GREY: logo_grey,
@@ -88,7 +90,9 @@ const Images = {
   GMAILROUND:gmailround,
   TIMETABLE:timetable,
   STAGE:stage,
-  DOCUMENT:document
+  DOCUMENT:document,
+  BACKGROUND: background,
+  EMPTY_BOX: empty_box,
 };
 
 export default Images;

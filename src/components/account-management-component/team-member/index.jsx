@@ -16,6 +16,7 @@ import {
   localStorages,
   pathQuanLyTaiKhoan,
   pathToChuc,
+  sessionTimeOut,
   showMessage,
 } from "../../../assets/helper/helper";
 import axios from "axios";
@@ -26,6 +27,12 @@ import {
   getListTeamMember,
 } from "../../../store/action/team.action";
 import message from "../../../assets/message/text";
+import {
+  checkImg,
+  checkName,
+  checkPos,
+} from "../../../validate/create-team/team";
+import { withRouter } from "react-router-dom";
 function TeamMember(props) {
   const [openModal, setOpenModal] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
@@ -38,6 +45,7 @@ function TeamMember(props) {
   const [webLinkCv, setWebLinkCv] = useState(null);
   const [nameError, setNameError] = useState("");
   const [chucVuError, setChucVuError] = useState("");
+  const [avataError, setAvataError] = useState("");
   const dispatch = useDispatch();
   const finalObject = (
     idInvestor,
@@ -57,15 +65,7 @@ function TeamMember(props) {
     };
     return object;
   };
-  const checkUrlImage = () => {
-    let finalUrlAvata;
-    if (urlAvata === null) {
-      finalUrlAvata = "";
-    } else {
-      finalUrlAvata = urlAvata;
-    }
-    return finalUrlAvata;
-  };
+
   const checkUrlLinkCv = () => {
     let finalUrlLinkCv;
     if (webLinkCv === null || webLinkCv === "") {
@@ -75,7 +75,7 @@ function TeamMember(props) {
     }
     return finalUrlLinkCv;
   };
-  const postTeam = (object) => {
+  const postTeam = (object, history) => {
     axios({
       method: "POST",
       url: "http://localhost:8080/api/v1/auth/team",
@@ -91,10 +91,10 @@ function TeamMember(props) {
         }
       })
       .catch((err) => {
-        showMessage("error", message.CACTH_ERROR);
+        sessionTimeOut(err, history);
       });
   };
-  const putTeam = (object) => {
+  const putTeam = (object, history) => {
     axios({
       method: "PUT",
       url: `http://localhost:8080/api/v1/team?id=${
@@ -115,7 +115,7 @@ function TeamMember(props) {
         }
       })
       .catch((err) => {
-        showMessage("error", message.CACTH_ERROR);
+        sessionTimeOut(err, history);
       });
   };
   const handleClickDelete = (id, name, vitri) => {
@@ -228,112 +228,91 @@ function TeamMember(props) {
     setWebLinkCv(null);
     localStorage.removeItem("objectTeam");
     setOpenEdit(false);
+    setAvataError("");
   };
   const handleClickButtonThem = (e) => {
     e.preventDefault();
-    if (userInfo.name === "" && userInfo.chucVu === "") {
-      setNameError("Tên thành viên không được bỏ trống");
-      setChucVuError("Chức vụ không được bỏ trống");
-      return;
-    } else {
-      setNameError("");
-      setChucVuError("");
-    }
-    if (userInfo.name === "") {
-      return setNameError("Tên thành viên không được bỏ trống");
-    } else {
-      setNameError("");
-    }
-    if (userInfo.chucVu === "") {
-      return setChucVuError("Chức vụ không được bỏ trống");
-    } else {
-      setChucVuError("");
-    }
-    Swal.fire({
-      title: "Bạn chắc chắn muốn thêm thành viên này?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Đồng ý",
-      cancelButtonText: "Hủy",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        if (checkRoleUser() === "INVESTOR") {
-          let arrayTemp = [];
-          arrayTemp.push(
-            finalObject(
-              checkIdUser(),
-              null,
-              checkUrlImage(),
-              checkUrlLinkCv(),
-              userInfo.name,
-              userInfo.chucVu
-            )
-          );
-          postTeam(arrayTemp);
-        } else {
-          let arrayTemp = [];
-          arrayTemp.push(
-            finalObject(
-              null,
-              checkIdUser(),
-              checkUrlImage(),
-              checkUrlLinkCv(),
-              userInfo.name,
-              userInfo.chucVu
-            )
-          );
-          postTeam(arrayTemp);
-        }
+    checkName(userInfo.name, setNameError);
+    checkPos(userInfo.chucVu, setChucVuError);
+    checkImg(urlAvata, setAvataError);
+    if (userInfo.name !== "") {
+      if (nameError === "" && chucVuError === "" && avataError === "") {
+        Swal.fire({
+          title: "Bạn chắc chắn muốn thêm thành viên này?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Đồng ý",
+          cancelButtonText: "Hủy",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            if (checkRoleUser() === "INVESTOR") {
+              let arrayTemp = [];
+              arrayTemp.push(
+                finalObject(
+                  checkIdUser(),
+                  null,
+                  urlAvata,
+                  checkUrlLinkCv(),
+                  userInfo.name,
+                  userInfo.chucVu
+                )
+              );
+              postTeam(arrayTemp, props.history);
+            } else {
+              let arrayTemp = [];
+              arrayTemp.push(
+                finalObject(
+                  null,
+                  checkIdUser(),
+                  urlAvata,
+                  checkUrlLinkCv(),
+                  userInfo.name,
+                  userInfo.chucVu
+                )
+              );
+              postTeam(arrayTemp, props.history);
+            }
+          }
+        });
       }
-    });
+    }
   };
   const handleClickButtonUpdate = (e) => {
     e.preventDefault();
-    if (userInfo.name === "" && userInfo.chucVu === "") {
-      setNameError("Tên thành viên không được bỏ trống");
-      setChucVuError("Chức vụ không được bỏ trống");
-      return;
-    } else {
-      setNameError("");
-      setChucVuError("");
-    }
-    if (userInfo.name === "") {
-      return setNameError("Tên thành viên không được bỏ trống");
-    } else {
-      setNameError("");
-    }
-    if (userInfo.chucVu === "") {
-      return setChucVuError("Chức vụ không được bỏ trống");
-    } else {
-      setChucVuError("");
-    }
-    Swal.fire({
-      title: "Bạn chắc chắn muốn cập nhật thông tin của thành viên này?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Đồng ý",
-      cancelButtonText: "Hủy",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const object = {
-          image: urlAvata,
-          linkCv: webLinkCv,
-          name: userInfo.name,
-          position: userInfo.chucVu,
-        };
-        putTeam(object);
+    checkName(userInfo.name, setNameError);
+    checkPos(userInfo.chucVu, setChucVuError);
+    checkImg(urlAvata, setAvataError);
+    if (userInfo.name !== "") {
+      if (nameError === "" && chucVuError === "" && avataError === "") {
+        Swal.fire({
+          title: "Bạn chắc chắn muốn cập nhật thông tin của thành viên này?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Đồng ý",
+          cancelButtonText: "Hủy",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            const object = {
+              image: urlAvata,
+              linkCv: webLinkCv,
+              name: userInfo.name,
+              position: userInfo.chucVu,
+            };
+            putTeam(object, props.history);
+          }
+        });
       }
-    });
+    }
   };
   const handleBlurName = () => {
-    if (userInfo.name !== "") return setNameError("");
+    checkName(userInfo.name, setNameError);
   };
   const handleBlurChucVu = () => {
-    if (userInfo.chucVu !== "") return setChucVuError("");
+    checkPos(userInfo.chucVu, setChucVuError);
   };
   const handleChangeValue = (event) => {
     const { name, value } = event.target;
@@ -419,9 +398,11 @@ function TeamMember(props) {
         linkCv={linkCv}
         openEdit={openEdit}
         handleClickUpdate={handleClickButtonUpdate}
+        avataError={avataError}
+        setAvataError={setAvataError}
       />
     </div>
   );
 }
 
-export default TeamMember;
+export default withRouter(TeamMember);

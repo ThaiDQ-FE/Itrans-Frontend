@@ -6,17 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getLocalStorage } from "../../../assets/helper/helper";
 import { getOrganizationFilter } from "../../../store/action/organization.action";
 
-function FilterOrganizationComponent() {
+function FilterOrganizationComponent(props) {
   const { listStage, listRegion, listProvince, listIndustry } = useSelector(
     (state) => state.register
   );
   const { loading } = useSelector((state) => state.loading);
   const { Option } = Select;
   const dispatch = useDispatch();
-  const [selectedStage, setSelectedStage] = useState([]);
-  const [selectedRegion, setSelectedRegion] = useState([]);
-  const [selectedProvince, setSelectedProvince] = useState([]);
-  const [selectedIndustry, setSelectedIndustry] = useState([]);
   const stage = [];
   const region = [];
   const province = [];
@@ -54,17 +50,17 @@ function FilterOrganizationComponent() {
     );
   });
   const handleChangeStage = (value) => {
-    setSelectedStage(value);
+    props.setSelectedStage(value);
   };
 
   const handleChangeRegion = (value) => {
-    setSelectedRegion(value);
+    props.setSelectedRegion(value);
   };
   const handleChangeProvince = (value) => {
-    setSelectedProvince(value);
+    props.setSelectedProvince(value);
   };
   const handleChangeIndustry = (value) => {
-    setSelectedIndustry(value);
+    props.setSelectedIndustry(value);
   };
   const renderSelect = (placeholder, defaultValue, value, change, child) => {
     return (
@@ -86,30 +82,32 @@ function FilterOrganizationComponent() {
     if (userLogin === null) {
       dispatch(
         getOrganizationFilter(
-          selectedIndustry,
-          selectedProvince,
-          selectedRegion,
-          selectedStage,
-          `""`
+          props.selectedIndustry,
+          props.selectedProvince,
+          props.selectedRegion,
+          props.selectedStage,
+          `""`,
+          true
         )
       );
     } else if (userLogin !== null) {
       dispatch(
         getOrganizationFilter(
-          selectedIndustry,
-          selectedProvince,
-          selectedRegion,
-          selectedStage,
-          userLogin.gmail
+          props.selectedIndustry,
+          props.selectedProvince,
+          props.selectedRegion,
+          props.selectedStage,
+          userLogin.gmail,
+          true
         )
       );
     }
   };
   const handleClear = () => {
-    setSelectedStage([]);
-    setSelectedRegion([]);
-    setSelectedProvince([]);
-    setSelectedIndustry([]);
+    props.setSelectedStage([]);
+    props.setSelectedRegion([]);
+    props.setSelectedProvince([]);
+    props.setSelectedIndustry([]);
     const userLogin = getLocalStorage("userInfo");
     let tempIndustry = [];
     let tempProvince = [];
@@ -122,7 +120,8 @@ function FilterOrganizationComponent() {
           tempProvince,
           tempRegion,
           tempStage,
-          `""`
+          `""`,
+          true
         )
       );
     } else if (userLogin !== null) {
@@ -132,7 +131,8 @@ function FilterOrganizationComponent() {
           tempProvince,
           tempRegion,
           tempStage,
-          userLogin.gmail
+          userLogin.gmail,
+          true
         )
       );
     }
@@ -149,8 +149,8 @@ function FilterOrganizationComponent() {
             ) : (
               renderSelect(
                 "Chọn giai đoạn",
-                selectedStage,
-                selectedStage,
+                props.selectedStage,
+                props.selectedStage,
                 handleChangeStage,
                 stage
               )
@@ -163,8 +163,8 @@ function FilterOrganizationComponent() {
             ) : (
               renderSelect(
                 "Chọn tỉnh/thành",
-                selectedProvince,
-                selectedProvince,
+                props.selectedProvince,
+                props.selectedProvince,
                 handleChangeProvince,
                 province
               )
@@ -177,8 +177,8 @@ function FilterOrganizationComponent() {
             ) : (
               renderSelect(
                 "Chọn khu vục",
-                selectedRegion,
-                selectedRegion,
+                props.selectedRegion,
+                props.selectedRegion,
                 handleChangeRegion,
                 region
               )
@@ -191,8 +191,8 @@ function FilterOrganizationComponent() {
             ) : (
               renderSelect(
                 "Chọn lĩnh vực",
-                selectedIndustry,
-                selectedIndustry,
+                props.selectedIndustry,
+                props.selectedIndustry,
                 handleChangeIndustry,
                 industry
               )

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modal } from "antd";
 import "antd/dist/antd.css";
 import "./styles.scss";
@@ -6,6 +6,7 @@ import FormCreateRound from "./form-round";
 import CertificateRound from "./list-certificate";
 import InfoInputCreateRound from "./info-round";
 function ModalAddRound(props) {
+  const [loading, setLoading] = useState(false);
   return (
     <Modal
       className="modal__addRound"
@@ -36,6 +37,10 @@ function ModalAddRound(props) {
           hanldeBlurStart={props.hanldeBlurStart}
           handleBlurEnd={props.handleBlurEnd}
           handleBlurSum={props.handleBlurSum}
+          thumbnailError={props.thumbnailError}
+          setThumbnailError={props.setThumbnailError}
+          loading={loading}
+          setLoading={setLoading}
         />
         <div className="modal__addRoundLineThree">
           <div className="modal__labelAddRound">
@@ -45,11 +50,13 @@ function ModalAddRound(props) {
             listCertificate={props.listCertificate}
             setListCertificate={props.setListCertificate}
             handleDelete={props.handleDelete}
+            loading={loading}
+            setLoading={setLoading}
           />
         </div>
         <div className="modal__addRoundLineFour">
           <label className="modal__labelAddRound">Tiêu đề - Nội dung</label>
-          <FormCreateRound onSubmit={props.onSubmit} />
+          <FormCreateRound onSubmit={props.onSubmit} loading={loading} />
         </div>
       </div>
     </Modal>

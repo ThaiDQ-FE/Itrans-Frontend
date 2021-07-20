@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   authorizationAccount,
   checkEmailUser,
+  sessionTimeOut,
   showMessage,
 } from "../../assets/helper/helper";
 import message from "../../assets/message/text";
@@ -29,7 +30,7 @@ export const getListMediaById = (gmail) => {
   };
 };
 
-export const deleteMedia = (id) => {
+export const deleteMedia = (id, history) => {
   return (dispatch) => {
     const token = authorizationAccount();
     axios({
@@ -48,7 +49,7 @@ export const deleteMedia = (id) => {
         }
       })
       .catch((err) => {
-        showMessage("error", message.CACTH_ERROR);
+        sessionTimeOut(err, history);
       });
   };
 };

@@ -5,7 +5,12 @@ import {
 } from "../constants/investor.const";
 import { startLoading, stopLoading } from "./loading.action";
 
-export const getInvestorFilter = (arrayProvince, arrayType, gmail) => {
+export const getInvestorFilter = (
+  arrayProvince,
+  arrayType,
+  gmail,
+  isLoading
+) => {
   let baseUrl = "http://localhost:8080/api/v1/auth/investor?";
   let tailUrl = "";
   if (arrayProvince.length === 0) {
@@ -28,7 +33,9 @@ export const getInvestorFilter = (arrayProvince, arrayType, gmail) => {
   }
   let gmailTail = `mail=${gmail}`;
   return (dispatch) => {
-    dispatch(startLoading());
+    if (isLoading === true) {
+      dispatch(startLoading());
+    }
     axios({
       method: "GET",
       url: baseUrl + tailUrl + gmailTail,

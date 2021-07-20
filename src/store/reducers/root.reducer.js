@@ -14,6 +14,7 @@ import introduceReducer from "./introduce.reducer";
 import articleReducer from "./article.reducer";
 import teamMemberReducer from "./team.reducer";
 import valueReducer from "./value.reducer";
+import interestRuducer from "./interest.reducer";
 const rootReducer = combineReducers({
   user: userReducer,
   freeTime: freeTimeReducer,
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   article: articleReducer,
   teamMember: teamMemberReducer,
   value: valueReducer,
+  interest: interestRuducer,
 });
 
 export default rootReducer;

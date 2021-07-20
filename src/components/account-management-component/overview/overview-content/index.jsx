@@ -14,8 +14,9 @@ import {
   checkPathUrl,
   getLocalStorage,
   localStorages,
+  pathNhaDauTu,
   pathQuanLyTaiKhoan,
-  pathToChuc,
+  sessionTimeOut,
   showMessage,
 } from "../../../../assets/helper/helper";
 import axios from "axios";
@@ -30,6 +31,7 @@ import {
   getListIntroduceByGmail,
 } from "../../../../store/action/introduce.action";
 import Images from "../../../../assets/images/images";
+import { withRouter } from "react-router-dom";
 function OverviewContent(props) {
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
@@ -58,7 +60,7 @@ function OverviewContent(props) {
       cancelButtonColor: "red",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteMedia(id));
+        dispatch(deleteMedia(id, props.history));
       }
     });
   };
@@ -78,7 +80,7 @@ function OverviewContent(props) {
       cancelButtonColor: "red",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteIntroduceById(id));
+        dispatch(deleteIntroduceById(id, props.history));
       }
     });
   };
@@ -148,7 +150,7 @@ function OverviewContent(props) {
             </Button>
           </div>
         );
-      } else if (checkPathUrl() === pathToChuc) {
+      } else {
         return <></>;
       }
     }
@@ -328,7 +330,7 @@ function OverviewContent(props) {
     setListMedia(tempListMedia);
   };
   // create introduce
-  const postIntroduce = (media, gmail, intro) => {
+  const postIntroduce = (media, gmail, intro, history) => {
     const token = authorizationAccount();
     axios({
       method: "POST",
@@ -359,18 +361,18 @@ function OverviewContent(props) {
               }
             })
             .catch((err) => {
-              showMessage("error", message.CACTH_ERROR);
+              sessionTimeOut(err, history);
             });
         } else {
           showMessage("error", "Thêm hình ảnh - video thất bại");
         }
       })
       .catch((err) => {
-        showMessage("error", message.CACTH_ERROR);
+        sessionTimeOut(err, history);
       });
   };
   // create media
-  const postMedia = (media, gmail) => {
+  const postMedia = (media, gmail, history) => {
     const token = authorizationAccount();
     axios({
       method: "POST",
@@ -390,11 +392,11 @@ function OverviewContent(props) {
         }
       })
       .catch((err) => {
-        showMessage("error", message.CACTH_ERROR);
+        sessionTimeOut(err, history);
       });
   };
   // create intro
-  const postIntro = (intro, gmail) => {
+  const postIntro = (intro, gmail, history) => {
     const token = authorizationAccount();
     axios({
       method: "POST",
@@ -414,11 +416,11 @@ function OverviewContent(props) {
         }
       })
       .catch((err) => {
-        showMessage("error", message.CACTH_ERROR);
+        sessionTimeOut(err, history);
       });
   };
   // update intro
-  const putIntro = (object, id) => {
+  const putIntro = (object, id, history) => {
     const token = authorizationAccount();
     axios({
       method: "PUT",
@@ -438,7 +440,7 @@ function OverviewContent(props) {
         }
       })
       .catch((err) => {
-        showMessage("error", message.CACTH_ERROR);
+        sessionTimeOut(err, history);
       });
   };
   // submit
@@ -468,7 +470,7 @@ function OverviewContent(props) {
       cancelButtonColor: "red",
     }).then((result) => {
       if (result.isConfirmed) {
-        postIntroduce(listMedia, checkEmailUser(), values.form);
+        postIntroduce(listMedia, checkEmailUser(), values.form, props.history);
       }
     });
   };
@@ -490,7 +492,7 @@ function OverviewContent(props) {
       cancelButtonColor: "red",
     }).then((result) => {
       if (result.isConfirmed) {
-        postMedia(listMedia, checkEmailUser());
+        postMedia(listMedia, checkEmailUser(), props.history);
       }
     });
   };
@@ -512,7 +514,7 @@ function OverviewContent(props) {
       cancelButtonColor: "red",
     }).then((result) => {
       if (result.isConfirmed) {
-        postIntro(values.form, checkEmailUser());
+        postIntro(values.form, checkEmailUser(), props.history);
       }
     });
   };
@@ -581,7 +583,11 @@ function OverviewContent(props) {
         cancelButtonColor: "red",
       }).then((result) => {
         if (result.isConfirmed) {
-          putIntro(object, getLocalStorage("infoIntro").idIntroduce);
+          putIntro(
+            object,
+            getLocalStorage("infoIntro").idIntroduce,
+            props.history
+          );
         }
       });
     }
@@ -602,7 +608,12 @@ function OverviewContent(props) {
       return (
         <div className="ot__rightNoData">
           <div className="ot__rightNoDataWrapper">
-            <p>Tổ chức này chưa đăng tải thông tin giới thiệu</p>
+            <p>
+              {checkPathUrl() === pathNhaDauTu()
+                ? "Nhà đầu tư này "
+                : "Tổ chức này "}{" "}
+              chưa đăng tải thông tin giới thiệu
+            </p>
           </div>
         </div>
       );
@@ -620,7 +631,16 @@ function OverviewContent(props) {
           </div>
         );
       } else {
-        return <></>;
+        return (
+          <div className="oc__noIntroduceRender">
+            <h4>
+              {checkPathUrl() === pathNhaDauTu()
+                ? "Nhà đầu tư này "
+                : "Tổ chức này "}
+              chưa cập nhật thông tin
+            </h4>
+          </div>
+        );
       }
     } else {
       if (checkPathUrl() === pathQuanLyTaiKhoan()) {
@@ -693,4 +713,4 @@ function OverviewContent(props) {
   );
 }
 
-export default OverviewContent;
+export default withRouter(OverviewContent);
