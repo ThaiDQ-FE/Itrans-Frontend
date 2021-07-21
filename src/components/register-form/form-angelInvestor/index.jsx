@@ -2,8 +2,8 @@ import React from "react";
 import { Input, Button, Select } from "antd";
 import "./styles.scss";
 import "antd/dist/antd.css";
-import Messages from "../../assets/message/text";
-import Images from "../../assets/images/images";
+import Messages from "../../../assets/message/text";
+import Images from "../../../assets/images/images";
 function FormAngelInvestorInformation(props) {
   const { Option } = Select;
   const { TextArea } = Input;
@@ -13,8 +13,7 @@ function FormAngelInvestorInformation(props) {
       <Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>
     );
   }
-  const handleChange = (value) => {
-  };
+  const handleChange = (value) => {};
   return (
     <div className="faii__wrapper">
       <div className="faii__container">

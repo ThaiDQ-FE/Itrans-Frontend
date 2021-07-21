@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import "./styles.scss";
 import "antd/dist/antd.css";
 import { Input, Select, Tooltip } from "antd";
-import Messages from "../../assets/message/text";
-import Images from "../../assets/images/images";
+import Messages from "../../../assets/message/text";
+import Images from "../../../assets/images/images";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getListIndustry,
   getListProvince,
   getListRegion,
   getListStage,
-} from "../../store/action/register.action";
-import { storage } from "../../configs/firebase";
-import { SAVE_IMAGE_SUCCESS } from "../../store/constants/register.const";
+} from "../../../store/action/register.action";
+import { storage } from "../../../configs/firebase";
 function FormInvestor(props) {
   const { Option } = Select;
   const { TextArea } = Input;

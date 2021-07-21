@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import "./styles.scss";
-import {
-  Button,
-  createMuiTheme,
-  MuiThemeProvider,
-  TextField,
-} from "@material-ui/core";
+import { Button, Input, Tooltip } from "antd";
+import "antd/dist/antd.css";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import HeaderGeneral from "../../../components/header-general";
 import { useDispatch } from "react-redux";
 import { postCheckLogin } from "../../../store/action/user.action";
@@ -15,35 +12,11 @@ import Messages from "../../../assets/message/text";
 import { withRouter } from "react-router-dom";
 import NotAuth from "../../error/auth";
 import { getLocalStorage } from "../../../assets/helper/helper";
+import { checkGamil, checkPassword } from "../../../validate/login/login";
 function Login(props) {
   const dispatch = useDispatch();
   const history = useHistory();
-  const themeMenu = createMuiTheme({
-    overrides: {
-      MuiOutlinedInput: {
-        notchedOutline: {
-          top: 0,
-          borderColor: "#FF8412 !important",
-        },
-      },
-      MuiInputLabel: {
-        outlined: {
-          backgroundColor: "#ffffff",
-        },
-      },
-      MuiButton: {
-        root: {
-          padding: "6px 28px",
-        },
-        containedPrimary: {
-          backgroundColor: "#FF7D04",
-          "&:hover": {
-            backgroundColor: "#ff7b00",
-          },
-        },
-      },
-    },
-  });
+
   const [gmailErr, setGmailErr] = useState("");
   const [passwordErr, setPasswordErr] = useState("");
   const [user, setUser] = useState({
@@ -57,22 +30,11 @@ function Login(props) {
       [name]: value,
     });
   };
-  const handleGmailFocus = () => {};
   const handleGmailBlur = () => {
-    if (user.gmail === "") {
-      setGmailErr(Messages.GMAIL_NULL);
-    } else if (validGmail.test(user.gmail) === false) {
-      setGmailErr(Messages.GMAIL_REG);
-    } else {
-      setGmailErr("");
-    }
+    checkGamil(user.gmail, setGmailErr);
   };
   const handlePasswordBlur = () => {
-    if (user.password === "") {
-      setPasswordErr(Messages.PASSWORD_NULL);
-    } else {
-      setPasswordErr("");
-    }
+    checkPassword(user.password, setPasswordErr);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -96,42 +58,48 @@ function Login(props) {
           <HeaderGeneral />
           <div className="login__form">
             <div className="login__title">Đăng nhập</div>
-            <MuiThemeProvider theme={themeMenu}>
-              <form onSubmit={handleSubmit}>
-                <div className="wrapper__gmail">
-                  <TextField
-                    id="outlined-basic"
-                    label="Gmail"
-                    variant="outlined"
-                    type="gmail"
-                    className="login__gmail"
-                    onChange={handleChange}
-                    onFocus={handleGmailFocus}
-                    onBlur={handleGmailBlur}
+            <form>
+              <div className="wrapper__gmail">
+                <label className="login__inputLabel">Gmail</label>
+                <Tooltip title={gmailErr} color="red" placement="topRight">
+                  <Input
+                    className={gmailErr !== "" ? "login_iInput" : ""}
+                    type="text"
                     name="gmail"
+                    size="large"
+                    placeholder="taikhoangmail@gmail.com"
+                    onChange={handleChange}
+                    onBlur={handleGmailBlur}
                   />
-                  {gmailErr !== "" ? <small>{gmailErr}</small> : ""}
-                </div>
-                <div className="wrapper__password">
-                  <TextField
-                    id="outlined-basic"
-                    label="Mật khẩu"
-                    variant="outlined"
-                    type="password"
-                    className="login__matKhau"
+                </Tooltip>
+              </div>
+              <div className="wrapper__password">
+                <label className="login__inputLabel">Mật khẩu</label>
+                <Tooltip title={passwordErr} color="red" placement="topRight">
+                  <Input.Password
+                    className={passwordErr !== "" ? "login_iInput" : ""}
+                    placeholder="**********"
+                    name="password"
+                    size="large"
                     onChange={handleChange}
                     onBlur={handlePasswordBlur}
-                    name="password"
+                    iconRender={(visible) =>
+                      visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                    }
                   />
-                  {passwordErr !== "" ? <small>{passwordErr}</small> : ""}
-                </div>
-                <div className="login__button">
-                  <Button variant="contained" color="primary" type="submit">
-                    Đăng nhập
-                  </Button>
-                </div>
-              </form>
-            </MuiThemeProvider>
+                </Tooltip>
+              </div>
+              <div className="login__button">
+                <Button
+                  onClick={handleSubmit}
+                  className="login__loginButton"
+                  type="primary"
+                  size="large"
+                >
+                  Đăng nhập
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

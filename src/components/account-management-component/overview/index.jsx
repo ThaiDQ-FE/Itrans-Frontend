@@ -25,13 +25,18 @@ import {
   getListMilestone,
 } from "../../../store/action/milestone.action";
 import OverviewContent from "./overview-content";
-import message from "../../../assets/message/text";
 import { withRouter } from "react-router-dom";
+import {
+  checkContentMile,
+  checkDateMile,
+  checkTitleMile,
+} from "../../../validate/create/mile";
 function OverviewTab(props) {
   const [milestoneModal, setMilestoneModal] = useState(false);
   const [editMilestone, setEditMilestone] = useState(false);
   const [titleError, setTitleError] = useState("");
   const [dateError, setDateError] = useState("");
+  const [contentError, setContentError] = useState("");
   const [date, setDate] = useState();
   const dispatch = useDispatch();
   var formatDate = moment(date).format("DD-MM-YYYY");
@@ -56,7 +61,7 @@ function OverviewTab(props) {
         } else if (res.status === 200) {
           showMessage("success", "Thêm thành tựu thành công");
           handleCloseModalMilestone();
-          dispatch(getListMilestone(checkIdUser()));
+          dispatch(getListMilestone(checkIdUser(), false));
         }
       })
       .catch((err) => {
@@ -77,7 +82,7 @@ function OverviewTab(props) {
         if (res.status === 200) {
           showMessage("success", "Cập nhật thành tựu thành công");
           handleCloseModalMilestone();
-          dispatch(getListMilestone(checkIdUser()));
+          dispatch(getListMilestone(checkIdUser(), false));
         } else {
           showMessage("error", res.data);
         }
@@ -97,7 +102,7 @@ function OverviewTab(props) {
     Swal.fire({
       icon: "question",
       title: "Bạn muốn sửa thành tựu này?",
-      text: dateTime + " " + title,
+      html: `Ngày đạt: ${dateTime} <br/> ${title}`,
       heightAuto: true,
       timerProgressBar: false,
       showConfirmButton: true,
@@ -146,98 +151,29 @@ function OverviewTab(props) {
   };
 
   const handleBlurTitle = () => {
-    if (form.title !== "") {
-      return setTitleError("");
-    }
+    checkTitleMile(form.title, setTitleError);
   };
   const handleBlurDate = () => {
-    if (date !== undefined) {
-      return setDateError("");
-    }
+    checkDateMile(date, setDateError);
+  };
+  const handleBlurContent = () => {
+    checkContentMile(form.content, setContentError);
   };
   const handleClickButtonThem = (e) => {
     e.preventDefault();
-    if (form.title === "" && date === undefined) {
-      setTitleError("Tiêu đề không được bỏ trống");
-      setDateError("Ngày đạt không được bỏ trống");
-      return;
-    } else {
-      setTitleError("");
-      setDateError("");
-    }
-    if (form.title === "") {
-      return setTitleError("Tiêu đề không được bỏ trống");
-    } else {
-      setTitleError("");
-    }
-    if (date === undefined) {
-      return setDateError("Ngày đạt không được bỏ trống");
-    } else {
-      setDateError("");
-    }
-    const object = {
-      content: form.content,
-      date: formatDate,
-      idOrganization: checkIdUser(),
-      title: form.title,
-    };
-    Swal.fire({
-      icon: "warning",
-      title: "Bạn muốn thêm thành tựu này?",
-      heightAuto: true,
-      timerProgressBar: false,
-      showConfirmButton: true,
-      showCancelButton: true,
-      confirmButtonText: "Đồng ý",
-      cancelButtonText: "Hủy",
-      confirmButtonColor: "#1890ff",
-      cancelButtonColor: "red",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        postMilestone(object, props.history);
-      }
-    });
-  };
-  const handleClickButtonCapNhat = (e) => {
-    e.preventDefault();
-    if (form.title === "") {
-      return setTitleError("Tiêu đề không được bỏ trống");
-    } else {
-      setTitleError("");
-    }
-    if (date === undefined) {
-      const object = {
-        content: form.content,
-        date: getLocalStorage("dateTimeMilestone"),
-        idMilestone: getLocalStorage("idMilestone"),
-        title: form.title,
-      };
-      Swal.fire({
-        icon: "warning",
-        title: "Bạn chắc chắn muốn cập nhật thành tựu này?",
-        heightAuto: true,
-        timerProgressBar: false,
-        showConfirmButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Đồng ý",
-        cancelButtonText: "Hủy",
-        confirmButtonColor: "#1890ff",
-        cancelButtonColor: "red",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          putMilestone(object, props.history);
-        }
-      });
-    } else if (date !== undefined) {
+    handleBlurTitle();
+    handleBlurDate();
+    handleBlurContent();
+    if (form.title !== "" && date !== undefined) {
       const object = {
         content: form.content,
         date: formatDate,
-        idMilestone: getLocalStorage("idMilestone"),
+        idOrganization: checkIdUser(),
         title: form.title,
       };
       Swal.fire({
         icon: "warning",
-        title: "Bạn chắc chắn muốn cập nhật thành tựu này?",
+        title: "Bạn muốn thêm thành tựu này?",
         heightAuto: true,
         timerProgressBar: false,
         showConfirmButton: true,
@@ -248,16 +184,70 @@ function OverviewTab(props) {
         cancelButtonColor: "red",
       }).then((result) => {
         if (result.isConfirmed) {
-          putMilestone(object, props.history);
+          postMilestone(object, props.history);
         }
       });
+    }
+  };
+  const handleClickButtonCapNhat = (e) => {
+    e.preventDefault();
+    checkTitleMile(form.title, setTitleError);
+    checkContentMile(form.content, setContentError);
+    if (titleError === "" && contentError === "") {
+      if (date === undefined) {
+        const object = {
+          content: form.content,
+          date: getLocalStorage("dateTimeMilestone"),
+          idMilestone: getLocalStorage("idMilestone"),
+          title: form.title,
+        };
+        Swal.fire({
+          icon: "warning",
+          title: "Bạn chắc chắn muốn cập nhật thành tựu này?",
+          heightAuto: true,
+          timerProgressBar: false,
+          showConfirmButton: true,
+          showCancelButton: true,
+          confirmButtonText: "Đồng ý",
+          cancelButtonText: "Hủy",
+          confirmButtonColor: "#1890ff",
+          cancelButtonColor: "red",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            putMilestone(object, props.history);
+          }
+        });
+      } else if (date !== undefined) {
+        const object = {
+          content: form.content,
+          date: formatDate,
+          idMilestone: getLocalStorage("idMilestone"),
+          title: form.title,
+        };
+        Swal.fire({
+          icon: "warning",
+          title: "Bạn chắc chắn muốn cập nhật thành tựu này?",
+          heightAuto: true,
+          timerProgressBar: false,
+          showConfirmButton: true,
+          showCancelButton: true,
+          confirmButtonText: "Đồng ý",
+          cancelButtonText: "Hủy",
+          confirmButtonColor: "#1890ff",
+          cancelButtonColor: "red",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            putMilestone(object, props.history);
+          }
+        });
+      }
     }
   };
   const handleClickDeleteTimeline = (title, dateTime, id) => {
     Swal.fire({
       icon: "warning",
       title: "Bạn muốn xóa thành tựu này?",
-      text: dateTime + " " + title,
+      html: `Ngày đạt: ${dateTime} <br/> ${title}`,
       heightAuto: true,
       timerProgressBar: false,
       showConfirmButton: true,
@@ -379,8 +369,10 @@ function OverviewTab(props) {
       <ModalMileStone
         handleBlurTitle={handleBlurTitle}
         handleBlurDate={handleBlurDate}
+        handleBlurContent={handleBlurContent}
         titleError={titleError}
         dateError={dateError}
+        contentError={contentError}
         handleSubmit={handleClickButtonThem}
         handleUpdata={handleClickButtonCapNhat}
         dateFormat={dateFormat}

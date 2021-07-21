@@ -25,7 +25,7 @@ export const showMessage = (icon, mess) => {
     heightAuto: true,
     timerProgressBar: false,
     showConfirmButton: false,
-    timer: 3000,
+    timer: 2000,
     allowOutsideClick: false,
   });
 };

@@ -51,12 +51,12 @@ function AccountManagement(props) {
     if (path === "/quan-ly-tai-khoan") {
       dispatch(getListIndustry());
       dispatch(getDeatilCompany(checkEmailUser()));
-      dispatch(getListMediaById(checkEmailUser()));
+      dispatch(getListMediaById(checkEmailUser(), true));
       dispatch(getListArticleByGmail(checkEmailUser(), false));
-      dispatch(getListIntroduceByGmail(checkEmailUser()));
+      dispatch(getListIntroduceByGmail(checkEmailUser(), true));
       dispatch(getListTeamMember(checkEmailUser(), false));
       if (checkRoleUser() === "ORGANIZATION") {
-        dispatch(getListMilestone(checkIdUser()));
+        dispatch(getListMilestone(checkIdUser(), true));
       }
       if (checkRoleUser() === "INVESTOR") {
         dispatch(getListRoundByIdInvestor(checkIdUser(), props.history));
@@ -69,18 +69,18 @@ function AccountManagement(props) {
       const gmail = getLocalStorage("gmailOrganizationToDetail");
       const id = getLocalStorage("idOrganizationToDetail");
       dispatch(getDeatilCompany(gmail));
-      dispatch(getListMediaById(gmail));
+      dispatch(getListMediaById(gmail, true));
       dispatch(getListArticleByGmail(gmail, false));
-      dispatch(getListIntroduceByGmail(gmail));
+      dispatch(getListIntroduceByGmail(gmail, true));
       dispatch(getListTeamMember(gmail, false));
-      dispatch(getListMilestone(id));
+      dispatch(getListMilestone(id, true));
       dispatch(getListRoundByIdOrganization(id, false, props.history));
     } else if (path === "/nha-dau-tu/chi-tiet") {
       const gmail = getLocalStorage("gmailInvestorToDetail");
       const id = getLocalStorage("idInvestorToDetail");
       dispatch(getDeatilCompany(gmail));
-      dispatch(getListMediaById(gmail));
-      dispatch(getListIntroduceByGmail(gmail));
+      dispatch(getListMediaById(gmail, true));
+      dispatch(getListIntroduceByGmail(gmail, true));
       dispatch(getListTeamMember(gmail, false));
       dispatch(getListRoundByIdInvestor(id, props.history));
       dispatch(getListArticleByGmail(gmail, false));

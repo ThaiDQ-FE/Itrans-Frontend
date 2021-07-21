@@ -99,11 +99,13 @@ function ModalTeamMember(props) {
         <img
           src={checkUrlImage()}
           alt="user"
-          className={props.avataError !== "" ? "modal__userAvata" : ""}
+          className={`modal__TImageimg${
+            props.avataError !== "" ? " modal__userAvata" : ""
+          }`}
         />
         <input
           className="modal__file"
-          type="file"
+          type={loading === true ? "text" : "file"}
           id="file"
           accept="image/*"
           onChange={handleChangeAvata}

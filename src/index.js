@@ -15,6 +15,7 @@ import "../node_modules/slick-carousel/slick/slick-theme.css";
 // redux
 import store from "./store";
 import { Provider } from "react-redux";
+
 ReactDOM.render(
   <Provider store={store}>
     <App />

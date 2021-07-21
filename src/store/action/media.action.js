@@ -12,9 +12,11 @@ import {
 } from "../constants/media.const";
 import { startLoading, stopLoading } from "./loading.action";
 
-export const getListMediaById = (gmail) => {
+export const getListMediaById = (gmail, isLoading) => {
   return (dispatch) => {
-    dispatch(startLoading());
+    if (isLoading === true) {
+      dispatch(startLoading());
+    }
     axios({
       method: "GET",
       url: `http://localhost:8080/api/v1/auth/media/${gmail}`,
@@ -43,7 +45,7 @@ export const deleteMedia = (id, history) => {
       .then((res) => {
         if (res.status === 200) {
           showMessage("success", "Xóa hình ảnh - video thành công");
-          dispatch(getListMediaById(checkEmailUser()));
+          dispatch(getListMediaById(checkEmailUser(), false));
         } else {
           showMessage("error", "Xóa hình ảnh - video thất bại");
         }

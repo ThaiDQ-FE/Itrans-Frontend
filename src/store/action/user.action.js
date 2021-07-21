@@ -8,10 +8,19 @@ import {
   LOGIN_SUCCESS,
 } from "../constants/user.const";
 import Swal from "sweetalert2";
-import { authorizationAccount, showMessage } from "../../assets/helper/helper";
+import {
+  authorizationAccount,
+  sessionTimeOut,
+  showMessage,
+} from "../../assets/helper/helper";
 import { defaultUrlAPI, defaultUrlAPIStringTemplate } from "../../configs/url";
 import { startLoading, stopLoading } from "./loading.action";
 import message from "../../assets/message/text";
+import { sendMailHTML } from "./mail.action";
+import {
+  contentAcceptAccount,
+  titleAcceptAccount,
+} from "../../configs/sendMail";
 export const postCheckLogin = (gmail, password, history) => {
   return (dispatch) => {
     axios({
@@ -153,17 +162,20 @@ export const putAccountToConfirm = (gmail, history) => {
     })
       .then((res) => {
         if (res.status === 200) {
-          showMessage("success", "Duyệt tài khoản thành công");
-          dispatch(getListAccountNotConfirm());
-          setTimeout(() => {
-            history.push("/admin/quan-ly-tai-khoan");
-          }, 2000);
+          dispatch(
+            sendMailHTML(contentAcceptAccount(), titleAcceptAccount(), gmail)
+          );
+          // showMessage("success", "Duyệt tài khoản thành công");
+          // dispatch(getListAccountNotConfirm());
+          // setTimeout(() => {
+          //   history.push("/admin/quan-ly-tai-khoan");
+          // }, 2000);
         } else {
           showMessage("error", "Duyệt tài khoản thất bại");
         }
       })
       .catch((err) => {
-        showMessage("error", message.CACTH_ERROR);
+        sessionTimeOut(err, history);
       });
   };
 };

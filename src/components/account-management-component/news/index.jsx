@@ -18,7 +18,7 @@ import {
   checkSummary,
   checkThumbnail,
   checkTitle,
-} from "../../../validate/create-news/news";
+} from "../../../validate/create/news";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { defaultUrlAPI } from "../../../configs/url";

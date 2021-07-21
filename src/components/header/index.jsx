@@ -171,13 +171,27 @@ function Header({ history }) {
             exact={false}
           >
             <div className="header__menuAccount">
+              <img src={Images.BUILDINGS} alt="" />
+              <span>Cài đặt tài khoản</span>
+            </div>
+          </NavLink>
+        </MenuItem>
+        <hr className="header__hr" />
+        <MenuItem>
+          <NavLink
+            activeClassName="active-nav-link"
+            className="header__navlink__quanLyTaiKhoan"
+            to="/quan-ly-tai-khoan"
+            exact={false}
+          >
+            <div className="header__menuAccount">
               <img src={Images.SETTING} alt="" />
               <span>Tổ chức của tôi</span>
             </div>
           </NavLink>
         </MenuItem>
         <hr className="header__hr" />
-        <MenuItem>
+        {/* <MenuItem>
           <NavLink
             activeClassName="active-nav-link"
             className="header__navlink__quanLyThoiGian"
@@ -211,8 +225,8 @@ function Header({ history }) {
               </span>
             </div>
           </NavLink>
-        </MenuItem>
-        <hr className="header__hr" />
+        </MenuItem> */}
+        {/* <hr className="header__hr" /> */}
         <MenuItem onClick={handleLogoutAccount}>
           <div className="header__menuLogout">
             <img src={Images.LOGOUT} alt="" />

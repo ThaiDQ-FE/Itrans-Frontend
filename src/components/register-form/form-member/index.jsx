@@ -1,11 +1,11 @@
 import { Input, Button, Tooltip } from "antd";
 import React, { useState } from "react";
 import "./styles.scss";
-import Messages from "../../assets/message/text";
-import Images from "../../assets/images/images";
+import Messages from "../../../assets/message/text";
+import Images from "../../../assets/images/images";
 import { useDispatch } from "react-redux";
-import { postBasicInformation } from "../../store/action/register.action";
-import { storage } from "../../configs/firebase";
+import { postBasicInformation } from "../../../store/action/register.action";
+import { storage } from "../../../configs/firebase";
 function FormMember(props) {
   const [teamMember, setTeamMember] = useState({
     name: "",
@@ -17,55 +17,55 @@ function FormMember(props) {
   const [errors, setErrors] = useState({
     name: "",
     position: "",
-    linkCv: ""
+    linkCv: "",
   });
   const [color, setColor] = useState({
     name: "",
     position: "",
-    linkCv: ""
+    linkCv: "",
   });
   let check = 0;
   const validate = (values) => {
     let errors = {};
     if (!values.name) {
-      errors.name = 'Họ và tên không được để trống';
+      errors.name = "Họ và tên không được để trống";
     } else {
-      errors.name = '';
+      errors.name = "";
       check++;
     }
     if (!values.position) {
-      errors.position = 'Chức vụ không được để trống';
+      errors.position = "Chức vụ không được để trống";
     } else {
-      errors.position = '';
+      errors.position = "";
       check++;
     }
     if (!values.linkCv) {
-      errors.linkCv = 'Link CV không được để trống';
+      errors.linkCv = "Link CV không được để trống";
     } else {
-      errors.linkCv = '';
+      errors.linkCv = "";
       check++;
     }
     return errors;
-  }
+  };
   const validateColor = (values) => {
     let errors = {};
     if (!values.name) {
-      errors.name = '1px solid red';
+      errors.name = "1px solid red";
     } else {
-      errors.name = '';
+      errors.name = "";
     }
     if (!values.position) {
-      errors.position = '1px solid red';
+      errors.position = "1px solid red";
     } else {
-      errors.position = '';
+      errors.position = "";
     }
     if (!values.linkCv) {
-      errors.linkCv = '1px solid red';
+      errors.linkCv = "1px solid red";
     } else {
-      errors.linkCv = '';
+      errors.linkCv = "";
     }
     return errors;
-  }
+  };
   const [url, setUrl] = useState("");
   const handleChangeImage = (e) => {
     document.getElementById("name").disabled = true;
@@ -77,12 +77,13 @@ function FormMember(props) {
       const upload = storage.ref(`images/${image.name}`).put(image);
       upload.on(
         "state_changed",
-        snapshot => { },
-        error => {
+        (snapshot) => {},
+        (error) => {
           console.log(error);
         },
         () => {
-          storage.ref("images")
+          storage
+            .ref("images")
             .child(image.name)
             .getDownloadURL()
             .then((url) => {
@@ -93,9 +94,9 @@ function FormMember(props) {
               document.getElementById("position").disabled = false;
               document.getElementById("linkCv").disabled = false;
               document.getElementById("submit").disabled = false;
-            })
+            });
         }
-      )
+      );
     } else {
       setUrl(Images.USER_AVATA);
       document.getElementById("name").disabled = false;
@@ -103,8 +104,7 @@ function FormMember(props) {
       document.getElementById("linkCv").disabled = false;
       document.getElementById("submit").disabled = false;
     }
-
-  }
+  };
   const handleChangeInput = (event) => {
     const { value, name } = event.target;
     setTeamMember({
@@ -119,7 +119,7 @@ function FormMember(props) {
         <>
           <div>Thêm thành viên nếu có</div>
         </>
-      )
+      );
     } else {
       return teamMember.map((item, index) => {
         return (
@@ -127,8 +127,8 @@ function FormMember(props) {
             <img src={item.image} />
             <div>{item.position}</div>
           </>
-        )
-      })
+        );
+      });
     }
   };
 
@@ -136,32 +136,32 @@ function FormMember(props) {
     setErrors(validate(teamMember));
     setColor(validateColor(teamMember));
     console.log(check);
-    if(check == 3){
-    if (!localStorage.getItem("TeamMember")) {
-      localStorage.setItem("TeamMember", JSON.stringify([teamMember]));
-      setTeamMember({
-        ...teamMember,
-        name: "",
-        linkCv: "",
-        image: "",
-        position: ""
-      })
-      setUrl(Images.USER_AVATA);
-    } else {
-      let listTeamMember = localStorage.getItem("TeamMember");
-      let listTeamMemberNew = JSON.parse(listTeamMember);
-      listTeamMemberNew.push(teamMember);
-      localStorage.setItem("TeamMember", JSON.stringify(listTeamMemberNew));
-      setTeamMember({
-        ...teamMember,
-        name: "",
-        linkCv: "",
-        image: "",
-        position: ""
-      })
-      setUrl(Images.USER_AVATA);
+    if (check == 3) {
+      if (!localStorage.getItem("TeamMember")) {
+        localStorage.setItem("TeamMember", JSON.stringify([teamMember]));
+        setTeamMember({
+          ...teamMember,
+          name: "",
+          linkCv: "",
+          image: "",
+          position: "",
+        });
+        setUrl(Images.USER_AVATA);
+      } else {
+        let listTeamMember = localStorage.getItem("TeamMember");
+        let listTeamMemberNew = JSON.parse(listTeamMember);
+        listTeamMemberNew.push(teamMember);
+        localStorage.setItem("TeamMember", JSON.stringify(listTeamMemberNew));
+        setTeamMember({
+          ...teamMember,
+          name: "",
+          linkCv: "",
+          image: "",
+          position: "",
+        });
+        setUrl(Images.USER_AVATA);
+      }
     }
-  }
   };
   const handleConfirm = () => {
     const user = JSON.parse(localStorage.getItem("Form1"));
@@ -175,8 +175,17 @@ function FormMember(props) {
           <div className="fm__formLeft">
             <form className="fm__form">
               <div className="fm__avata">
-                <img src={url || Images.USER_AVATA} alt="" className="fm__userAvata" />
-                <input className="fm__file" type="file" id="file" onChange={handleChangeImage} />
+                <img
+                  src={url || Images.USER_AVATA}
+                  alt=""
+                  className="fm__userAvata"
+                />
+                <input
+                  className="fm__file"
+                  type="file"
+                  id="file"
+                  onChange={handleChangeImage}
+                />
                 <label htmlFor="file" className="fm__span">
                   <img
                     src="https://i.ibb.co/jZmmMRz/camera.png"
@@ -187,10 +196,11 @@ function FormMember(props) {
               </div>
               <div className="fm__hoVaTen">
                 <small>Họ và Tên</small>
-                <Tooltip title={errors.name} placement='topRight' color='red'>
+                <Tooltip title={errors.name} placement="topRight" color="red">
                   <Input
-                    value={teamMember.name} style={{ 'border': color.name }}
-                    id='name'
+                    value={teamMember.name}
+                    style={{ border: color.name }}
+                    id="name"
                     onChange={handleChangeInput}
                     name="name"
                     size="large"
@@ -199,10 +209,15 @@ function FormMember(props) {
               </div>
               <div className="fm__chucVu">
                 <small>Chức vụ</small>
-                <Tooltip title={errors.position} placement='topRight' color='red' >
+                <Tooltip
+                  title={errors.position}
+                  placement="topRight"
+                  color="red"
+                >
                   <Input
                     id="position"
-                    value={teamMember.position} style={{ 'border': color.position }}
+                    value={teamMember.position}
+                    style={{ border: color.position }}
                     onChange={handleChangeInput}
                     name="position"
                     size="large"
@@ -219,10 +234,11 @@ function FormMember(props) {
             </div> */}
               <div className="fm__linkCv">
                 <small>Link CV</small>
-                <Tooltip title={errors.linkCv} placement='topRight' color='red'  >
+                <Tooltip title={errors.linkCv} placement="topRight" color="red">
                   <Input
                     id="linkCv"
-                    value={teamMember.linkCv} style={{ 'border': color.linkCv }}
+                    value={teamMember.linkCv}
+                    style={{ border: color.linkCv }}
                     onChange={handleChangeInput}
                     name="linkCv"
                     size="large"
@@ -241,16 +257,15 @@ function FormMember(props) {
                 </div>
               </div>
               <div className="fm__buttonThem">
-                <Button id='submit' onClick={handleAdd}>Thêm thành viên</Button>
+                <Button id="submit" onClick={handleAdd}>
+                  Thêm thành viên
+                </Button>
               </div>
             </form>
           </div>
           <div className="fm__formMiddle"></div>
           <div className="fm__formRight">
-            <div className="fm__member">
-              {member()}
-
-            </div>
+            <div className="fm__member">{member()}</div>
           </div>
         </div>
 
