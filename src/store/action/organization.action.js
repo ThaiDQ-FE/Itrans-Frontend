@@ -65,6 +65,7 @@ export const getOrganizationFilter = (
       data: null,
     })
       .then((res) => {
+        console.log(res.data);
         dispatch(stopLoading());
         dispatch(getOrganizationFilterSuccess(res.data));
       })

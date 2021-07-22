@@ -15,27 +15,27 @@ function FilterFundingRound() {
   const userLogin = getLocalStorage("userInfo");
   const dispatch = useDispatch();
   const [selectedStage, setSelectedStage] = useState([]);
+  const [selectedS, setSelectedS] = useState([]);
   const [valueInput, setValueInput] = useState({
     min: "",
     max: "",
   });
   const { Option } = Select;
   const stage = [];
-  // eslint-disable-next-line array-callback-return
-  listStage.map((item, index) => {
+  let arrayS = [];
+  for (let i = 0; i < listStage.length; i++) {
     stage.push(
-      <Option name="stage" value={item.idStage} key={index}>
-        {item.name}
+      <Option key={listStage[i].idStage} value={listStage[i].name}>
+        {listStage[i].name}
       </Option>
     );
-  });
-  const renderSelect = (placeholder, defaultValue, value, change, child) => {
+  }
+  const renderSelect = (placeholder, value, change, child) => {
     return (
       <Select
         mode="multiple"
         placeholder={placeholder}
         style={{ width: "100%" }}
-        defaultValue={defaultValue}
         onChange={change}
         value={value}
         maxTagCount="responsive"
@@ -44,8 +44,12 @@ function FilterFundingRound() {
       </Select>
     );
   };
-  const handleChangeStage = (value) => {
-    setSelectedStage(value);
+  const handleChangeStage = (value, action) => {
+    for (let i = 0; i < action.length; i++) {
+      arrayS.push(Number(action[i].key));
+    }
+    setSelectedStage(arrayS);
+    setSelectedS(value);
   };
   const handleChangeValue = (event) => {
     const { name, value } = event.target;
@@ -84,6 +88,8 @@ function FilterFundingRound() {
       max: "",
     });
     setSelectedStage([]);
+    setSelectedS([]);
+    arrayS = [];
     let tempStage = [0];
     if (userLogin === null) {
       dispatch(getAllRoundsActive(` `, max, min, tempStage));
@@ -103,8 +109,7 @@ function FilterFundingRound() {
               ) : (
                 renderSelect(
                   "Chọn giai đoạn",
-                  selectedStage,
-                  selectedStage,
+                  selectedS,
                   handleChangeStage,
                   stage
                 )

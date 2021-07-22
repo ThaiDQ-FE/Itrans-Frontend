@@ -7,16 +7,14 @@ import ContentNews from "../content-news";
 import message from "../../../../assets/message/text";
 import { storage } from "../../../../configs/firebase";
 function InfoNews(props) {
+  console.log(props.arrayIndus);
   const [loading, setLoading] = useState(false);
   const { Option } = Select;
   const { TextArea } = Input;
   const list = [];
   for (let i = 0; i < props.industry.length; i++) {
     list.push(
-      <Option
-        key={props.industry[i].idIndustry}
-        value={props.industry[i].idIndustry}
-      >
+      <Option key={props.industry[i].idIndustry} value={props.industry[i].name}>
         {props.industry[i].name}
       </Option>
     );
@@ -82,7 +80,7 @@ function InfoNews(props) {
               className={`mino__select${
                 props.hashTagError === "" ? "" : " modal__inputNewsError"
               }`}
-              defaultValue={props.arrayIndustries}
+              defaultValue={props.arrayIndus}
               placeholder={message.EX_HASHTAG_ARTICLE}
               onChange={props.handleChangeValue}
               onBlur={props.handleBlurHash}

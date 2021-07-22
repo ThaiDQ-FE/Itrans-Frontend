@@ -1,6 +1,23 @@
 .ada__wrapper {
     height: 100%;
     padding: 20px 30px 40px 30px;
+    position: relative;
+    .ada__loadingWrapper {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 2;
+        border-radius: 8px;
+        .ada__loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
     .ada__infoTop {
         height: 30%;
         display: flex;
@@ -75,6 +92,21 @@
                         margin-left: 20px;
                     }
                 }
+                .ada__website {
+                    display: flex;
+                    position: relative;
+                    margin-left: 50px;
+                    .ada__websiteImg {
+                        position: absolute;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        width: 16px;
+                        height: 16px;
+                    }
+                    .ada__websiteSpan {
+                        margin-left: 20px;
+                    }
+                }
             }
         }
     }
@@ -113,7 +145,7 @@
             padding: 20px;
             display: grid;
             grid-gap: 20px;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 3fr 3fr 3fr;
             overflow: auto;
 
             .ada__rightLink {
@@ -133,6 +165,8 @@
                     .ada__rightBoxImg {
                         width: 100px;
                         height: 100px;
+                        object-fit: cover;
+                        object-position: top;
                     }
                     .ada__rigtName {
                         font-weight: 600;
@@ -153,6 +187,8 @@
                         0 1px 8px 0 rgba(0, 0, 0, 0.12);
                 }
                 .ada__rightBoxImg {
+                    object-fit: cover;
+                    object-position: top;
                     width: 100px;
                     height: 100px;
                 }

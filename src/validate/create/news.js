@@ -4,8 +4,8 @@ export const checkTitle = (title, setTitle) => {
   } else {
     setTitle("");
   }
-  if (title.length < 40) {
-    return setTitle("Tiêu đề tối thiểu 40 ký tự");
+  if (title.length < 10) {
+    return setTitle("Tiêu đề tối thiểu 10 ký tự");
   } else {
     setTitle("");
   }
@@ -22,8 +22,8 @@ export const checkSummary = (sum, setSum) => {
   } else {
     setSum("");
   }
-  if (sum.length < 40) {
-    return setSum("Tóm tắt tối thiểu 40 ký tự");
+  if (sum.length < 10) {
+    return setSum("Tóm tắt tối thiểu 10 ký tự");
   } else {
     setSum("");
   }

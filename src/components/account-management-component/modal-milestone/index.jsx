@@ -68,6 +68,7 @@ function ModalMileStone(props) {
                 />
               ) : (
                 <DatePicker
+                  dropdownClassName="mileStone__dropdown"
                   className={
                     props.dateError !== "" ? "milestone__dateError" : ""
                   }
@@ -86,30 +87,50 @@ function ModalMileStone(props) {
         </div>
         <div className="milestone__content">
           <small>Nội dung</small>
-          {props.editMilestone === false ? (
-            <TextArea
-              style={{ resize: "none" }}
-              rows={5}
-              onChange={props.handleChangeValue}
-              name="content"
-            />
-          ) : (
-            <TextArea
-              style={{ resize: "none" }}
-              defaultValue={getLocalStorage("contentMilestone")}
-              rows={5}
-              onChange={props.handleChangeValue}
-              name="content"
-            />
-          )}
+          <Tooltip title={props.contentError} color="red" placement="topRight">
+            {props.editMilestone === false ? (
+              <TextArea
+                style={{ resize: "none" }}
+                rows={5}
+                onChange={props.handleChangeValue}
+                name="content"
+                onBlur={props.handleBlurContent}
+              />
+            ) : (
+              <TextArea
+                style={{ resize: "none" }}
+                defaultValue={getLocalStorage("contentMilestone")}
+                rows={5}
+                onChange={props.handleChangeValue}
+                name="content"
+                onBlur={props.handleBlurContent}
+              />
+            )}
+          </Tooltip>
         </div>
         <div className="milestone__button">
           {props.editMilestone === false ? (
-            <Button type="primary" onClick={props.handleSubmit}>
+            <Button
+              type="primary"
+              onClick={props.handleSubmit}
+              disabled={
+                props.titleError !== "" ||
+                props.dateError !== "" ||
+                props.contentError !== ""
+              }
+            >
               Thêm
             </Button>
           ) : (
-            <Button type="primary" onClick={props.handleUpdata}>
+            <Button
+              type="primary"
+              onClick={props.handleUpdata}
+              disabled={
+                props.titleError !== "" ||
+                props.dateError !== "" ||
+                props.contentError !== ""
+              }
+            >
               Cập nhật
             </Button>
           )}

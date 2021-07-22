@@ -15,35 +15,46 @@ function FilterInvestorComponent(props) {
 
   const province = [];
   const type = [];
-  // eslint-disable-next-line array-callback-return
-  listProvince.map((item, index) => {
+  let arrayP = [];
+  let arrayT = [];
+  for (let i = 0; i < listProvince.length; i++) {
     province.push(
-      <Option name="stage" value={item.idProvince} key={index}>
-        {item.name}
+      <Option key={listProvince[i].idProvince} value={listProvince[i].name}>
+        {listProvince[i].name}
       </Option>
     );
-  });
-  // eslint-disable-next-line array-callback-return
-  listInvestorType.map((item, index) => {
+  }
+
+  for (let i = 0; i < listInvestorType.length; i++) {
     type.push(
-      <Option name="stage" value={item.idInvestorType} key={index}>
-        {item.name}
+      <Option
+        key={listInvestorType[i].idInvestorType}
+        value={listInvestorType[i].name}
+      >
+        {listInvestorType[i].name}
       </Option>
     );
-  });
-  const handleChangeProvince = (value) => {
-    props.setSelectedProvince(value);
+  }
+  const handleChangeProvince = (value, action) => {
+    for (let i = 0; i < action.length; i++) {
+      arrayP.push(Number(action[i].key));
+    }
+    props.setSelectedProvince(arrayP);
+    props.setSelectedP(value);
   };
-  const handleChangeType = (value) => {
-    props.setSelectedType(value);
+  const handleChangeType = (value, action) => {
+    for (let i = 0; i < action.length; i++) {
+      arrayT.push(Number(action[i].key));
+    }
+    props.setSelectedType(arrayT);
+    props.setSelectedT(value);
   };
-  const renderSelect = (placeholder, defaultValue, value, change, child) => {
+  const renderSelect = (placeholder, change, child, value) => {
     return (
       <Select
         mode="multiple"
         placeholder={placeholder}
         style={{ width: "100%" }}
-        defaultValue={defaultValue}
         onChange={change}
         value={value}
         // maxTagCount="responsive"
@@ -71,6 +82,10 @@ function FilterInvestorComponent(props) {
   const handleClear = () => {
     props.setSelectedProvince([]);
     props.setSelectedType([]);
+    props.setSelectedP([]);
+    props.setSelectedT([]);
+    arrayP = [];
+    arrayT = [];
     const userLogin = getLocalStorage("userInfo");
     let tempProvince = [];
     let tempType = [];
@@ -91,10 +106,9 @@ function FilterInvestorComponent(props) {
             ) : (
               renderSelect(
                 "Chọn tỉnh/thành",
-                props.selectedProvince,
-                props.selectedProvince,
                 handleChangeProvince,
-                province
+                province,
+                props.selectedP
               )
             )}
           </div>
@@ -105,10 +119,9 @@ function FilterInvestorComponent(props) {
             ) : (
               renderSelect(
                 "Chọn loại nhà đầu tư",
-                props.selectedType,
-                props.selectedType,
                 handleChangeType,
-                type
+                type,
+                props.selectedT
               )
             )}
             <div className="filter__button">

@@ -1,14 +1,14 @@
-import { Button } from "@material-ui/core";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import Images from "../../assets/images/images";
-import Messages from "../../assets/message/text";
-import HeaderGeneral from "../header-general";
+import Images from "../../../assets/images/images";
+import Messages from "../../../assets/message/text";
+import HeaderGeneral from "../../header-general";
 import "./styles.scss";
-import { localStorages } from "../../assets/helper/helper";
+import { localStorages } from "../../../assets/helper/helper";
+import { Button } from "antd";
 function FormRole(props) {
-  const {listInvestorType} = useSelector((state)=>state.register);
-  console.log(listInvestorType)
+  const { listInvestorType } = useSelector((state) => state.register);
+  console.log(listInvestorType);
   const jsonFile = [
     {
       image: Images.ORGANIZATION_REGISTER,
@@ -48,19 +48,19 @@ function FormRole(props) {
     if (choose === "INVESTOR") {
       if (chooseSubRole === null) {
       } else {
-        localStorages("roleName","INVESTOR");
+        localStorages("roleName", "INVESTOR");
         return props.setStateSubRole(chooseSubRole);
       }
     } else {
-      localStorages("roleName","ORGANIZATION");
+      localStorages("roleName", "ORGANIZATION");
       return props.setStateRole(choose);
     }
   };
-  const handleClickSubRole = (index,name,id) => {
+  const handleClickSubRole = (index, name, id) => {
     switch (index) {
       case index:
         setChooseSubRole(name);
-        localStorages("idInvestorType",id);
+        localStorages("idInvestorType", id);
         break;
       default:
         setChooseSubRole(name);
@@ -74,7 +74,9 @@ function FormRole(props) {
         <p
           className={index === subRoleClicked ? "active__subrole" : ""}
           key={index}
-          onClick={() => handleClickSubRole(index,sub.name,sub.idInvestorType)}
+          onClick={() =>
+            handleClickSubRole(index, sub.name, sub.idInvestorType)
+          }
         >
           {sub.name}
         </p>
@@ -118,6 +120,21 @@ function FormRole(props) {
       );
     });
   };
+  const checkDisableButton = () => {
+    let boolen = false;
+    if (choose === null) {
+      boolen = true;
+    } else if (choose === "INVESTOR") {
+      if (chooseSubRole === null) {
+        boolen = true;
+      } else {
+        boolen = false;
+      }
+    } else {
+      boolen = false;
+    }
+    return boolen;
+  };
   return (
     <div className="formRole__wrapper">
       <HeaderGeneral />
@@ -127,10 +144,11 @@ function FormRole(props) {
       <div className="formRole__container">{renderContent()}</div>
       <div className="formRole__button">
         <Button
-          disabled={choose === null}
-          variant="contained"
-          color="primary"
+          className="formRole__Button"
+          disabled={checkDisableButton()}
+          type="primary"
           onClick={handleClickButton}
+          size="large"
         >
           Tiếp theo
         </Button>

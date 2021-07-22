@@ -45,6 +45,8 @@ import stage from "./4357.png";
 import document from "./document.png";
 import background from "./background.jpg";
 import empty_box from "./box.png";
+import website from "./world-wide-web.svg";
+import setting_color from "./settings.svg";
 const Images = {
   LOGO_NAVY: logo_navy,
   LOGO_GREY: logo_grey,
@@ -86,13 +88,15 @@ const Images = {
   MINUS: minus,
   OOPSS: oopss,
   NO_THUMBNAIL: no_thumbnail,
-  NUMBER_EMPLOYESS:number_employess,
-  GMAILROUND:gmailround,
-  TIMETABLE:timetable,
-  STAGE:stage,
-  DOCUMENT:document,
+  NUMBER_EMPLOYESS: number_employess,
+  GMAILROUND: gmailround,
+  TIMETABLE: timetable,
+  STAGE: stage,
+  DOCUMENT: document,
   BACKGROUND: background,
   EMPTY_BOX: empty_box,
+  WEBSITE: website,
+  SETTING_COLOR: setting_color,
 };
 
 export default Images;

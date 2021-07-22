@@ -12,9 +12,11 @@ import {
 } from "../constants/milestone.const";
 import { startLoading, stopLoading } from "./loading.action";
 
-export const getListMilestone = (idOrg) => {
+export const getListMilestone = (idOrg, isLoading) => {
   return (dispatch) => {
-    dispatch(startLoading());
+    if (isLoading === true) {
+      dispatch(startLoading());
+    }
     axios({
       method: "GET",
       url: `http://localhost:8080/api/v1/auth/get-milestoneByOrganizationId/${idOrg}`,
@@ -44,7 +46,7 @@ export const deleteMilestoneById = (id, history) => {
       .then((res) => {
         if (res.status === 200) {
           showMessage("success", "Xóa thành tựu thành công");
-          dispatch(getListMilestone(checkIdUser()));
+          dispatch(getListMilestone(checkIdUser(), false));
         }
       })
       .catch((err) => {

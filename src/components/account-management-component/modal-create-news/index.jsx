@@ -21,6 +21,7 @@ function ModalCreateNews(props) {
           infoNews={props.infoNews}
           thumbnail={props.thumbnail}
           arrayIndustries={props.arrayIndustries}
+          arrayIndus={props.arrayIndus}
           setThumbnail={props.setThumbnail}
           handleChangeInfo={props.handleChangeInfo}
           handleChangeValue={props.handleChangeValue}

@@ -50,13 +50,13 @@ function AccountManagement(props) {
     const path = window.location.pathname;
     if (path === "/quan-ly-tai-khoan") {
       dispatch(getListIndustry());
-      dispatch(getDeatilCompany(checkEmailUser()));
-      dispatch(getListMediaById(checkEmailUser()));
+      dispatch(getDeatilCompany(checkEmailUser(), true));
+      dispatch(getListMediaById(checkEmailUser(), true));
       dispatch(getListArticleByGmail(checkEmailUser(), false));
-      dispatch(getListIntroduceByGmail(checkEmailUser()));
+      dispatch(getListIntroduceByGmail(checkEmailUser(), true));
       dispatch(getListTeamMember(checkEmailUser(), false));
       if (checkRoleUser() === "ORGANIZATION") {
-        dispatch(getListMilestone(checkIdUser()));
+        dispatch(getListMilestone(checkIdUser(), true));
       }
       if (checkRoleUser() === "INVESTOR") {
         dispatch(getListRoundByIdInvestor(checkIdUser(), props.history));
@@ -68,19 +68,19 @@ function AccountManagement(props) {
     } else if (path === "/to-chuc/chi-tiet") {
       const gmail = getLocalStorage("gmailOrganizationToDetail");
       const id = getLocalStorage("idOrganizationToDetail");
-      dispatch(getDeatilCompany(gmail));
-      dispatch(getListMediaById(gmail));
+      dispatch(getDeatilCompany(gmail), true);
+      dispatch(getListMediaById(gmail, true));
       dispatch(getListArticleByGmail(gmail, false));
-      dispatch(getListIntroduceByGmail(gmail));
+      dispatch(getListIntroduceByGmail(gmail, true));
       dispatch(getListTeamMember(gmail, false));
-      dispatch(getListMilestone(id));
+      dispatch(getListMilestone(id, true));
       dispatch(getListRoundByIdOrganization(id, false, props.history));
     } else if (path === "/nha-dau-tu/chi-tiet") {
       const gmail = getLocalStorage("gmailInvestorToDetail");
       const id = getLocalStorage("idInvestorToDetail");
-      dispatch(getDeatilCompany(gmail));
-      dispatch(getListMediaById(gmail));
-      dispatch(getListIntroduceByGmail(gmail));
+      dispatch(getDeatilCompany(gmail), true);
+      dispatch(getListMediaById(gmail, true));
+      dispatch(getListIntroduceByGmail(gmail, true));
       dispatch(getListTeamMember(gmail, false));
       dispatch(getListRoundByIdInvestor(id, props.history));
       dispatch(getListArticleByGmail(gmail, false));

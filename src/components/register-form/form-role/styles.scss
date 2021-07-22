@@ -59,19 +59,6 @@
             }
             .formRole__button {
                 display: flex;
-                span {
-                    margin: auto;
-                    padding: 10px 45px;
-                    background-color: #ff8412;
-                    border-radius: 50px;
-                    font-weight: 600;
-                    cursor: pointer;
-                    &:hover {
-                        color: #ffffff;
-                        background-color: #fd800a;
-                        box-shadow: 6px 6px 18px -5px rgba(80, 83, 85, 0.75);
-                    }
-                }
             }
             .fr__subRoleActive {
                 position: absolute;
@@ -138,11 +125,20 @@
         text-align: right;
         padding: 0 22%;
         margin-top: 50px;
-        button {
+        .formRole__Button {
             background-color: #ff8412;
+            border-color: #ff8412;
             &:hover {
-                background-color: #fd800a;
-                box-shadow: 6px 6px 18px -5px rgba(80, 83, 85, 0.75);
+                font-weight: 600;
+                background-color: #ff9f45;
+                border-color: #ff9f45;
+            }
+            &:disabled {
+                background: rgb(199, 199, 199);
+                border-color: rgb(199, 199, 199);
+                &:hover {
+                    font-weight: unset;
+                }
             }
         }
     }

@@ -20,9 +20,11 @@ import {
 } from "../constants/introduce.const";
 import { startLoading, stopLoading } from "./loading.action";
 
-export const getListIntroduceByGmail = (gmail) => {
+export const getListIntroduceByGmail = (gmail, isLoading) => {
   return (dispatch) => {
-    dispatch(startLoading());
+    if (isLoading === true) {
+      dispatch(startLoading());
+    }
     axios({
       method: "GET",
       url: `http://localhost:8080/api/v1/auth/introduces/${gmail}`,
@@ -51,7 +53,7 @@ export const deleteIntroduceById = (id, history) => {
       .then((res) => {
         if (res.status === 200) {
           showMessage("success", "Xóa tiêu đề - nội dung thành công");
-          dispatch(getListIntroduceByGmail(checkEmailUser()));
+          dispatch(getListIntroduceByGmail(checkEmailUser(), false));
         } else {
           showMessage("error", "Xóa tiêu đề nội dung thất bại");
         }
@@ -84,7 +86,7 @@ export const getListIntroduceByRoundId = (idRound) => {
       url: `http://localhost:8080/api/v1/introduces-by-round?idRound=${idRound}`,
       headers: {
         Authorization: `Bearer ${token}`,
-      }
+      },
     })
       .then((res) => {
         dispatch(getListIntroduceByRoundIdSuccess(res.data));
@@ -117,7 +119,7 @@ export const getListDocumentByRoundId = (idRound) => {
       url: `http://localhost:8080/api/v1/document?idRound=${idRound}`,
       headers: {
         Authorization: `Bearer ${token}`,
-      }
+      },
     })
       .then((res) => {
         dispatch(getListDocumentByRoundIdSuccess(res.data));

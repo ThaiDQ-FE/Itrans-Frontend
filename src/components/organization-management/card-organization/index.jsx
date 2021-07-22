@@ -41,11 +41,12 @@ function OrganizationListComponent(props) {
       followed: gmail,
     };
     const objectDispath = {
-      arrayIndustry: props.selectedStage,
+      arrayIndustry: props.selectedIndustry,
       arrayProvince: props.selectedProvince,
       arrayRegion: props.selectedRegion,
-      arrayStage: props.selectedIndustry,
+      arrayStage: props.selectedStage,
     };
+    console.log(objectDispath);
     if (status === "Chưa theo dõi") {
       dispatch(postFollow(object, objectDispath, null, props.history));
     } else {

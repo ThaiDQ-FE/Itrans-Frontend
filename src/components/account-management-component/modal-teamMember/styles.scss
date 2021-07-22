@@ -20,6 +20,10 @@
                 position: relative;
                 margin-bottom: 20px;
                 margin-top: 20px;
+                .modal__TImageimg {
+                    object-fit: cover;
+                    object-position: top;
+                }
                 .modal__userAvata {
                     border: 1px dashed red;
                 }

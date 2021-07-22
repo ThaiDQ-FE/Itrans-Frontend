@@ -13,7 +13,6 @@
             transform: translate(-50%, -50%);
             min-width: 420px;
             max-width: 430px;
-            min-height: 450px;
             background-color: #ffffff;
             border-radius: 12px;
             padding: 50px 50px 30px 50px;
@@ -22,43 +21,42 @@
                 text-align: center;
                 text-transform: uppercase;
                 font-weight: 600;
-                font-size: 26px;
-                margin-bottom: 50px;
+                font-size: 30px;
+                margin-bottom: 30px;
             }
             form {
-                .wrapper__gmail,
+                .wrapper__gmail {
+                    .login_iInput {
+                        border-color: red;
+                    }
+                    margin-bottom: 20px;
+                    .login__inputLabel {
+                        font-weight: 600;
+                        opacity: 0.7;
+                    }
+                }
                 .wrapper__password {
-                    small {
-                        color: red;
+                    .login_iInput {
+                        border-color: red;
                     }
-                }
-                .login__gmail {
-                    width: 100%;
-                }
-                .login__matKhau {
-                    width: 100%;
-                    margin-top: 20px;
-                }
-                .login__remember {
-                    position: relative;
-                    margin-top: 20px;
-                    input {
-                        position: absolute;
-                        width: 16px;
-                        height: 16px;
-                        top: 3px;
-                    }
-                    label {
-                        opacity: 0.8;
-                        margin-left: 20px;
-                        &:hover {
-                            opacity: 1;
-                        }
+                    .login__inputLabel {
+                        font-weight: 600;
+                        opacity: 0.7;
                     }
                 }
                 .login__button {
-                    margin-top: 20px;
                     text-align: right;
+                    margin-top: 30px;
+                    .login__loginButton {
+                        text-transform: uppercase;
+                        background: #ff8412;
+                        border-color: #ff8412;
+                        &:hover {
+                            background: #fd9c40;
+                            border-color: #fd9c40;
+                            font-weight: 600;
+                        }
+                    }
                 }
             }
         }
