@@ -187,6 +187,7 @@ function FormInformationAboutTheOrganization(props) {
   }
   const handleChangeInput = (event) => {
     const { value, name } = event.target;
+ 
     setInformation({
       ...information,
       [name]: value,
@@ -217,7 +218,7 @@ function FormInformationAboutTheOrganization(props) {
   const renderListProvince = () => {
     return listProvince.map((item, index) => {
       return (
-        <Option name="province" value={item.idProvince} key={index}>
+        <Option name="province" value={item.idProvince} key={item.idProvince}>
           {item.name}
         </Option>
       );

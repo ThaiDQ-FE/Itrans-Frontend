@@ -1,0 +1,15 @@
+.rd__content{
+.rd__action {
+    opacity: 0;
+    img {
+        float:right;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+} &:hover {
+    .rd__action {
+        opacity: 1;
+    }
+}
+}

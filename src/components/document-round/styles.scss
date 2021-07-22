@@ -1,33 +1,42 @@
-.ir__introduceWrapper {
+.dr__introduceWrapper {
     margin: 0 auto;
     width: 70%;
     height: 50%;
     position: relative;
     word-break: break-word;
-    .ir__title {
+    .dr__title {
         font-weight: 600;
         font-size: 26px;
     }
-    .ir__content {
+    .dr__documentWrapper{
+        position: relative;
+        .dr__action {
+            position: absolute;
+            top: 0;
+            right: 0;
+            opacity: 0;
+            img {
+                margin: 0 5px;
+                width: 10px;
+                height: 10px;
+                cursor: pointer;
+                opacity: .5;
+                &:hover{
+                    opacity: 1;
+                }
+            }
+        }
+        &:hover {
+            .dr__action {
+                opacity: 1;
+            }
+        }
+    }
+    .dr__content {
         margin: 0;
         font-size: 18px;
         padding: 0 45px;
     }
-    .ir__action {
-        position: absolute;
-        top: 10px;
-        right: 0;
-        opacity: 0;
-        img {
-            margin: 0 5px;
-            width: 10px;
-            height: 10px;
-            cursor: pointer;
-        }
-    }
-    &:hover {
-        .ir__action {
-            opacity: 1;
-        }
-    }
+    
+    
 }

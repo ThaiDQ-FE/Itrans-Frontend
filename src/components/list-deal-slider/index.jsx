@@ -98,7 +98,7 @@ function ListDealSlider() {
                 handleReject={handleReject}
             />
             {userInfo.role == "ORGANIZATION" ?
-                <div className="lds__mid">
+                (listDealByRound.length !== 0 && <div className="lds__mid">
                     <div style={{ fontWeight: 700 }}><p>Thông tin những yêu cầu muốn đầu tư: </p></div>
                     <Slider {...settings}>
                         {listDealByRound.map((value) =>
@@ -133,7 +133,7 @@ function ListDealSlider() {
                         )}
 
                     </Slider>
-                </div>
+                </div>)
                 : (listDealByRound != "No Data") &&
                 <div style={{ width: 1250, marginLeft: 150, marginTop: 25 }}>
                     <p>

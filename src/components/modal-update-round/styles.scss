@@ -1,0 +1,32 @@
+.modal__update__round {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    .ur__form {
+        .ur__line1 {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            .ur__title {
+                width: 70%;
+                .ud__titleError {
+                    border: 1px solid red;
+                }
+            }
+            .ur__date {
+                width: 25%;
+                .ud__dateError {
+                    border: 1px solid red;
+                }
+            }
+        }
+        .ur__button {
+            margin-top: 20px;
+            text-align: right;
+        }
+    }
+}
+.ur__dropdown {
+    z-index: 1053 !important;
+}

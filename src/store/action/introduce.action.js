@@ -7,6 +7,8 @@ import {
 } from "../../assets/helper/helper";
 import message from "../../assets/message/text";
 import {
+  CREATE_INTRODUCE_FAILED,
+  CREATE_INTRODUCE_SUCCESS,
   GET_LIST_DOCUMENT_BY_ROUND_FAILED,
   GET_LIST_DOCUMENT_BY_ROUND_SUCCESS,
   GET_LIST_INTRODUCE_BY_ROUND_FAILED,
@@ -190,6 +192,42 @@ export const deleteIntroduce = (idIntroduce,idRound) => {
       })
       .catch((err) => {
       });
+  };
+};
+
+export const createIntroduce = (gmail,object,idRound) => {
+  return (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: "POST",
+      url: `http://localhost:8080/api/v1/introduces?gmail=${gmail}`,
+      data:object,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+      .then((res) => {
+        console.log(res.data);
+        dispatch(createIntroduceSuccess(res.data));
+        dispatch(getListIntroduceByRoundId(idRound));
+      })
+      .catch((err) => {
+        dispatch(createIntroduceFailed(err));
+      });
+  };
+};
+
+const createIntroduceSuccess = (listIntroduce) => {
+  return {
+    type: CREATE_INTRODUCE_SUCCESS,
+    payload: listIntroduce,
+  };
+};
+
+const createIntroduceFailed = (err) => {
+  return {
+    type: CREATE_INTRODUCE_FAILED,
+    payload: err,
   };
 };
 
