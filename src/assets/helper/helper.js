@@ -114,3 +114,27 @@ export const sessionTimeOut = (err, history) => {
     showMessage("error", message.CACTH_ERROR);
   }
 };
+
+export const doccumentAddDis = (id) => {
+  return document.getElementById(id).setAttribute("disabled", true);
+};
+
+export const doccumentRemoveDis = (id) => {
+  return document.getElementById(id).removeAttribute("disabled");
+};
+
+export const doccumentAddClass = (id) => {
+  return document.getElementById(id).classList.add("fr__defaulted");
+};
+
+export const doccumentRemoveClass = (id) => {
+  return document.getElementById(id).classList.remove("fr__defaulted");
+};
+
+export const doccumentAddClassWeight = (id) => {
+  return document.getElementById(id).classList.add("active__subrole");
+};
+
+export const doccumentRemoveClassWeight = (id) => {
+  return document.getElementById(id).classList.remove("active__subrole");
+};

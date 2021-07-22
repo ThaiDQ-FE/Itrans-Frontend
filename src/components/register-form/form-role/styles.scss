@@ -82,9 +82,43 @@
                     }
                 }
                 .active__subrole {
-                    background-color: #e2e2e4;
+                    background: #e2e2e4;
+                    border-color: #e2e2e4;
                     box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.2);
                     font-weight: 600;
+                }
+                .fr__default {
+                    background: #f0f2f5;
+                    border-color: #f0f2f5;
+                    box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.1);
+                    width: 100%;
+                    color: black;
+                    &:nth-child(even) {
+                        margin: 20px 0;
+                    }
+                    &:hover {
+                        background: #e2e2e4;
+                        border-color: #e2e2e4;
+                        box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.2);
+                        font-weight: 600;
+                    }
+                }
+                .fr__defaulted {
+                    background: #f0f2f5;
+                    border-color: #f0f2f5;
+                    box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.1);
+                    width: 100%;
+                    color: black;
+                    opacity: 0.5;
+                    &:nth-child(even) {
+                        margin: 20px 0;
+                    }
+                    &:hover {
+                        background: #f0f2f5;
+                        border-color: #f0f2f5;
+                        box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.1);
+                        font-weight: unset;
+                    }
                 }
             }
         }

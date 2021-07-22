@@ -98,6 +98,10 @@ function Register() {
     setSubRole(newSubRole);
     setFinalRole("investor");
   };
+  //
+  const [array, setArray] = useState([]);
+  const [arrayOther, setArrayOther] = useState([]);
+  //
   const getSteps = () => {
     if (role === "ORGANIZATION") {
       return [
@@ -180,6 +184,10 @@ function Register() {
         <FormRole
           setStateRole={setStateRole}
           setStateSubRole={setStateSubRole}
+          array={array}
+          arrayOther={arrayOther}
+          setArray={setArray}
+          setArrayOther={setArrayOther}
         />
       ) : (
         <MuiThemeProvider

@@ -4,11 +4,18 @@ import Images from "../../../assets/images/images";
 import Messages from "../../../assets/message/text";
 import HeaderGeneral from "../../header-general";
 import "./styles.scss";
-import { localStorages } from "../../../assets/helper/helper";
+import {
+  doccumentAddClass,
+  doccumentAddClassWeight,
+  doccumentAddDis,
+  doccumentRemoveClass,
+  doccumentRemoveClassWeight,
+  doccumentRemoveDis,
+  localStorages,
+} from "../../../assets/helper/helper";
 import { Button } from "antd";
 function FormRole(props) {
   const { listInvestorType } = useSelector((state) => state.register);
-  console.log(listInvestorType);
   const jsonFile = [
     {
       image: Images.ORGANIZATION_REGISTER,
@@ -26,6 +33,9 @@ function FormRole(props) {
   const [chooseSubRole, setChooseSubRole] = useState(null);
   const [subRole, setSubRole] = useState(false);
   const [subRoleClicked, setSubRoleClicked] = useState(null);
+  const [subRoleName, setSubRoleName] = useState(null);
+  //
+
   const handleClickBlock = (index) => {
     setClick(index);
     if (index === 0) {
@@ -36,6 +46,8 @@ function FormRole(props) {
       setSubRole(false);
       setChooseSubRole(null);
       setSubRoleClicked(null);
+      props.setArray([]);
+      props.setArrayOther([]);
     } else {
       setChoose("INVESTOR");
       document.getElementById("block1").classList.add("fr__rotate");
@@ -48,6 +60,11 @@ function FormRole(props) {
     if (choose === "INVESTOR") {
       if (chooseSubRole === null) {
       } else {
+        if (chooseSubRole === "Nhà đầu tư thiên thần") {
+          localStorages("investerType", props.array);
+        } else {
+          localStorages("investerType", props.arrayOther);
+        }
         localStorages("roleName", "INVESTOR");
         return props.setStateSubRole(chooseSubRole);
       }
@@ -56,30 +73,82 @@ function FormRole(props) {
       return props.setStateRole(choose);
     }
   };
-  const handleClickSubRole = (index, name, id) => {
-    switch (index) {
-      case index:
-        setChooseSubRole(name);
-        localStorages("idInvestorType", id);
-        break;
-      default:
-        setChooseSubRole(name);
-        break;
+  const magicBehind = (id) => {
+    if (props.array.length > 0) {
+      doccumentAddClassWeight("nhadautu0");
+      doccumentAddDis("nhadautu1");
+      doccumentAddDis("nhadautu2");
+      doccumentAddDis("nhadautu3");
+      doccumentAddDis("nhadautu4");
+      doccumentAddClass("nhadautu1");
+      doccumentAddClass("nhadautu2");
+      doccumentAddClass("nhadautu3");
+      doccumentAddClass("nhadautu4");
+    } else {
+      doccumentRemoveClassWeight("nhadautu0");
+      doccumentRemoveDis("nhadautu1");
+      doccumentRemoveDis("nhadautu2");
+      doccumentRemoveDis("nhadautu3");
+      doccumentRemoveDis("nhadautu4");
+      doccumentRemoveClass("nhadautu1");
+      doccumentRemoveClass("nhadautu2");
+      doccumentRemoveClass("nhadautu3");
+      doccumentRemoveClass("nhadautu4");
+      props.setArray([]);
     }
+  };
+  const magicalBehind = (index, id) => {
+    if (props.arrayOther.length > 0) {
+      const pos = props.arrayOther.indexOf(id);
+      if (pos > -1) {
+        doccumentAddClassWeight("nhadautu" + index);
+      }
+      doccumentAddDis("nhadautu0");
+      doccumentAddClass("nhadautu0");
+    } else {
+      doccumentRemoveDis("nhadautu0");
+      doccumentRemoveClass("nhadautu0");
+    }
+  };
+  const handleClickSubRole = (index, name, id) => {
+    if (name === "Nhà đầu tư thiên thần") {
+      const pos = props.array.indexOf(id);
+      if (pos > -1) {
+        props.array.splice(pos, 1);
+        magicBehind(id);
+      } else {
+        props.array.push(id);
+        magicBehind(id);
+      }
+    } else {
+      const pos = props.arrayOther.indexOf(id);
+      if (pos > -1) {
+        props.arrayOther.splice(pos, 1);
+        doccumentRemoveClassWeight("nhadautu" + index);
+        magicalBehind(index, id);
+      } else {
+        props.arrayOther.push(id);
+        magicalBehind(index, id);
+      }
+    }
+    setChooseSubRole(name);
     setSubRoleClicked(index);
   };
   const renderSubRole = () => {
     return listInvestorType.map((sub, index) => {
       return (
-        <p
-          className={index === subRoleClicked ? "active__subrole" : ""}
+        <Button
+          type="primary"
+          size="large"
+          id={"nhadautu" + index}
+          className="fr__default"
           key={index}
           onClick={() =>
             handleClickSubRole(index, sub.name, sub.idInvestorType)
           }
         >
           {sub.name}
-        </p>
+        </Button>
       );
     });
   };
