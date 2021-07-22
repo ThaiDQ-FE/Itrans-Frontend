@@ -5,10 +5,12 @@ import {
   showMessage,
 } from "../../assets/helper/helper";
 import { defaultUrlAPI } from "../../configs/url";
+import { startLoadingComponent, stopLoadingComponent } from "./loading.action";
 import { getListAccountNotConfirm } from "./user.action";
 
 export const sendMailHTML = (content, title, gmail, history) => {
   return (dispatch) => {
+    dispatch(startLoadingComponent());
     axios({
       method: "POST",
       url: defaultUrlAPI() + "send-mail/send-mail-html",
@@ -22,6 +24,7 @@ export const sendMailHTML = (content, title, gmail, history) => {
       },
     })
       .then((res) => {
+        dispatch(stopLoadingComponent());
         if (res.status === 200) {
           showMessage("success", "Duyệt tài khoản thành công");
           dispatch(getListAccountNotConfirm());
@@ -33,6 +36,7 @@ export const sendMailHTML = (content, title, gmail, history) => {
         }
       })
       .catch((err) => {
+        dispatch(stopLoadingComponent());
         sessionTimeOut(err, history);
       });
   };

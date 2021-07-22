@@ -94,10 +94,17 @@
             display: flex;
             padding: 10%;
             padding-right: 20%;
+            cursor: pointer;
+
             img {
+                border-radius: 50%;
                 width: 35px;
                 height: 35px;
-                cursor: pointer;
+            }
+            span {
+                margin-left: 5px;
+                color: white;
+                font-weight: 600;
             }
         }
     }
@@ -127,6 +134,15 @@
     }
     span {
         margin-left: 25px;
+    }
+}
+.header__menuAccount {
+    span {
+        color: #000;
+        &:hover {
+            color: #000;
+            font-weight: 600;
+        }
     }
 }
 .header__navlink__quanLyTaiKhoan,

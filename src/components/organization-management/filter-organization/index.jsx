@@ -17,58 +17,74 @@ function FilterOrganizationComponent(props) {
   const region = [];
   const province = [];
   const industry = [];
-  // eslint-disable-next-line array-callback-return
-  listStage.map((item, index) => {
+  let arrayS = [];
+  let arrayR = [];
+  let arrayP = [];
+  let arrayI = [];
+  for (let i = 0; i < listStage.length; i++) {
     stage.push(
-      <Option name="stage" value={item.idStage} key={index}>
-        {item.name}
+      <Option key={listStage[i].idStage} value={listStage[i].name}>
+        {listStage[i].name}
       </Option>
     );
-  });
-  // eslint-disable-next-line array-callback-return
-  listRegion.map((item, index) => {
+  }
+  for (let i = 0; i < listRegion.length; i++) {
     region.push(
-      <Option name="region" value={item.idRegion} key={index}>
-        {item.name}
+      <Option key={listRegion[i].idRegion} value={listRegion[i].name}>
+        {listRegion[i].name}
       </Option>
     );
-  });
-  // eslint-disable-next-line array-callback-return
-  listProvince.map((item, index) => {
+  }
+  for (let i = 0; i < listProvince.length; i++) {
     province.push(
-      <Option name="province" value={item.idProvince} key={index}>
-        {item.name}
+      <Option key={listProvince[i].idProvince} value={listProvince[i].name}>
+        {listProvince[i].name}
       </Option>
     );
-  });
-  // eslint-disable-next-line array-callback-return
-  listIndustry.map((item, index) => {
+  }
+  for (let i = 0; i < listIndustry.length; i++) {
     industry.push(
-      <Option name="industry" value={item.idIndustry} key={index}>
-        {item.name}
+      <Option key={listIndustry[i].idIndustry} value={listIndustry[i].name}>
+        {listIndustry[i].name}
       </Option>
     );
-  });
-  const handleChangeStage = (value) => {
-    props.setSelectedStage(value);
+  }
+
+  const handleChangeStage = (value, action) => {
+    for (let i = 0; i < action.length; i++) {
+      arrayS.push(Number(action[i].key));
+    }
+    props.setSelectedStage(arrayS);
+    props.setSelectedS(value);
   };
 
-  const handleChangeRegion = (value) => {
-    props.setSelectedRegion(value);
+  const handleChangeRegion = (value, action) => {
+    for (let i = 0; i < action.length; i++) {
+      arrayR.push(Number(action[i].key));
+    }
+    props.setSelectedRegion(arrayR);
+    props.setSelectedR(value);
   };
-  const handleChangeProvince = (value) => {
-    props.setSelectedProvince(value);
+  const handleChangeProvince = (value, action) => {
+    for (let i = 0; i < action.length; i++) {
+      arrayP.push(Number(action[i].key));
+    }
+    props.setSelectedProvince(arrayP);
+    props.setSelectedP(value);
   };
-  const handleChangeIndustry = (value) => {
-    props.setSelectedIndustry(value);
+  const handleChangeIndustry = (value, action) => {
+    for (let i = 0; i < action.length; i++) {
+      arrayI.push(Number(action[i].key));
+    }
+    props.setSelectedIndustry(arrayI);
+    props.setSelectedI(value);
   };
-  const renderSelect = (placeholder, defaultValue, value, change, child) => {
+  const renderSelect = (placeholder, value, change, child) => {
     return (
       <Select
         mode="multiple"
         placeholder={placeholder}
         style={{ width: "100%" }}
-        defaultValue={defaultValue}
         onChange={change}
         value={value}
         // maxTagCount="responsive"
@@ -108,6 +124,14 @@ function FilterOrganizationComponent(props) {
     props.setSelectedRegion([]);
     props.setSelectedProvince([]);
     props.setSelectedIndustry([]);
+    props.setSelectedS([]);
+    props.setSelectedR([]);
+    props.setSelectedP([]);
+    props.setSelectedI([]);
+    arrayI = [];
+    arrayP = [];
+    arrayR = [];
+    arrayS = [];
     const userLogin = getLocalStorage("userInfo");
     let tempIndustry = [];
     let tempProvince = [];
@@ -149,8 +173,7 @@ function FilterOrganizationComponent(props) {
             ) : (
               renderSelect(
                 "Chọn giai đoạn",
-                props.selectedStage,
-                props.selectedStage,
+                props.selectedS,
                 handleChangeStage,
                 stage
               )
@@ -163,8 +186,7 @@ function FilterOrganizationComponent(props) {
             ) : (
               renderSelect(
                 "Chọn tỉnh/thành",
-                props.selectedProvince,
-                props.selectedProvince,
+                props.selectedP,
                 handleChangeProvince,
                 province
               )
@@ -177,8 +199,7 @@ function FilterOrganizationComponent(props) {
             ) : (
               renderSelect(
                 "Chọn khu vục",
-                props.selectedRegion,
-                props.selectedRegion,
+                props.selectedR,
                 handleChangeRegion,
                 region
               )
@@ -191,8 +212,7 @@ function FilterOrganizationComponent(props) {
             ) : (
               renderSelect(
                 "Chọn lĩnh vực",
-                props.selectedIndustry,
-                props.selectedIndustry,
+                props.selectedI,
                 handleChangeIndustry,
                 industry
               )

@@ -150,7 +150,7 @@ const getListAccountNotConfirmFailed = (err) => {
   };
 };
 
-export const putAccountToConfirm = (gmail, history) => {
+export const putAccountToConfirm = (gmail, history, checkType) => {
   return (dispatch) => {
     const token = authorizationAccount();
     axios({
@@ -161,10 +161,35 @@ export const putAccountToConfirm = (gmail, history) => {
       },
     })
       .then((res) => {
+        console.log(res);
         if (res.status === 200) {
-          dispatch(
-            sendMailHTML(contentAcceptAccount(), titleAcceptAccount(), gmail)
-          );
+          if (checkType.investorType === null) {
+            dispatch(
+              sendMailHTML(
+                contentAcceptAccount(
+                  gmail,
+                  "Đăng tải vòng gọi vốn",
+                  " nhà đầu tư"
+                ),
+                titleAcceptAccount(),
+                gmail,
+                history
+              )
+            );
+          } else {
+            dispatch(
+              sendMailHTML(
+                contentAcceptAccount(
+                  "Tham gia vào các vòng gọi vốn",
+                  " tổ chức"
+                ),
+                titleAcceptAccount(),
+                gmail,
+                history
+              )
+            );
+          }
+
           // showMessage("success", "Duyệt tài khoản thành công");
           // dispatch(getListAccountNotConfirm());
           // setTimeout(() => {

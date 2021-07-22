@@ -8,6 +8,10 @@ import {
 import message from "../../../assets/message/text";
 import InvestorManagementComponent from "../../../components/investor-management";
 import { getInvestorFilter } from "../../../store/action/investor.action";
+import {
+  getListInvestorType,
+  getListProvince,
+} from "../../../store/action/register.action";
 
 import NotAuth from "../../error/auth";
 import "./styles.scss";
@@ -19,6 +23,8 @@ function InvestorManagement() {
     dispatch(
       getInvestorFilter(arrayProvince, arrayType, checkEmailUser(), true)
     );
+    dispatch(getListInvestorType());
+    dispatch(getListProvince());
   }, []);
   if (getLocalStorage("userInfo") === null) {
     return <NotAuth />;

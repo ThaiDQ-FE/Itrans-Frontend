@@ -1,14 +1,17 @@
 import React from "react";
-import { Button, Tooltip } from "antd";
+import { Button, Spin, Tooltip } from "antd";
 import "antd/dist/antd.css";
 import "./styles.scss";
 import Images from "../../../assets/images/images";
 import Swal from "sweetalert2";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getLocalStorage } from "../../../assets/helper/helper";
 import { putAccountToConfirm } from "../../../store/action/user.action";
 import { useHistory } from "react-router-dom";
+import AdminDetailInfo from "./admin-detail-info";
 function AdminDetailAccount(props) {
+  console.log(props);
+  const { loadingComponent, loading } = useSelector((state) => state.loading);
   const history = useHistory();
   const dispatch = useDispatch();
   const renderListMember = () => {
@@ -73,56 +76,7 @@ function AdminDetailAccount(props) {
       });
     }
   };
-  const renderSpan = () => {
-    const local = getLocalStorage("adminDetailAccount");
-    if (local !== null) {
-      if (local.role === "ORGANIZATION") {
-        return (
-          <>
-            <div className="ada__box">
-              <span className="ada__spanWeight">Lĩnh vực kinh doanh</span>
-            </div>
-            <div className="ada__box">
-              <Tooltip placement="topRight" title={props.detail.industry + ""}>
-                <span>{props.detail.industry + ""}</span>
-              </Tooltip>
-            </div>
-            <div className="ada__box">
-              <span className="ada__spanWeight">Giai đoạn phát triển</span>
-            </div>
-            <div className="ada__box">
-              <span>{props.detail.currentStage}</span>
-            </div>
-            <div className="ada__box">
-              <span className="ada__spanWeight">Khu vực hoạt động</span>
-            </div>
-            <div className="ada__box">
-              <span>{props.detail.province + ""}</span>
-            </div>
-          </>
-        );
-      } else {
-        return (
-          <>
-            <div className="ada__box">
-              <span className="ada__spanWeight">Loại nhà đầu tư</span>
-            </div>
-            <div className="ada__box">
-              <Tooltip placement="topRight" title={props.detail.investorType}>
-                <span>{props.detail.investorType}</span>
-              </Tooltip>
-            </div>
-            <div className="ada__box">
-              <span className="ada__spanWeight">Trụ sở chính</span>
-            </div>
-            <div className="ada__box">
-              <span>{props.detail.province + ""}</span>
-            </div>
-          </>
-        );
-      }
-    }
-  };
+
   const handleConfirmAccount = () => {
     Swal.fire({
       icon: "warning",
@@ -136,12 +90,22 @@ function AdminDetailAccount(props) {
       cancelButtonColor: "red",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        dispatch(putAccountToConfirm(props.detail.email, history));
+        dispatch(
+          putAccountToConfirm(props.detail.email, history, props.detail)
+        );
       }
     });
   };
   return (
     <div className="ada__wrapper">
+      {loadingComponent === true || loading ? (
+        <div className="ada__loadingWrapper">
+          <Spin className="ada__loading" />
+        </div>
+      ) : (
+        <></>
+      )}
+
       <div className="ada__infoTop">
         <div className="ada__itLeft">
           <img
@@ -177,20 +141,28 @@ function AdminDetailAccount(props) {
               <img src={Images.GMAIL} alt="gmail" className="ada__gmailImg" />
               <div className="ada__gmailSpan">{props.detail.email}</div>
             </div>
+            <div className="ada__website">
+              <img
+                src={Images.WEBSITE}
+                alt="website"
+                className="ada__websiteImg"
+              />
+              <a href={props.detail.website} target="_blank" rel="noreferrer">
+                <div className="ada__websiteSpan">{props.detail.website}</div>
+              </a>
+            </div>
           </div>
         </div>
       </div>
       <hr className="ada__hr" />
       <div className="ada__infoBottom">
-        <div className="ada__ibLeft">
-          {renderSpan()}
-          <div className="ada__box">
-            <span className="ada__spanWeight">Địa chỉ website</span>
-          </div>
-          <div className="ada__box">
-            <span>{props.detail.website}</span>
-          </div>
-        </div>
+        <AdminDetailInfo
+          detail={props.detail}
+          indus={props.indus}
+          pro={props.pro}
+          stage={props.stage}
+          region={props.region}
+        />
         <div
           className={`ada__ibRight${
             props.team.length === 0 ? " ada__ibNoTeam" : ""

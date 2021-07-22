@@ -31,6 +31,7 @@ import {
   checkDateMile,
   checkTitleMile,
 } from "../../../validate/create/mile";
+import OverViewInfoComponent from "./overview-info";
 function OverviewTab(props) {
   const [milestoneModal, setMilestoneModal] = useState(false);
   const [editMilestone, setEditMilestone] = useState(false);
@@ -384,92 +385,14 @@ function OverviewTab(props) {
         editMilestone={editMilestone}
       />
       <div className="ot__left">
-        <div className="ot__info">
-          <p className="ot__thongTin">Thông tin</p>
-          {props.loading === true ? (
-            <Skeleton active />
-          ) : (
-            <>
-              <p className="ot__truSoChinh">
-                <span className="ot__truSoChinhLabel">Trụ sở chính:</span>
-                <span className="ot__truSoChinhText">
-                  {props.detailCompany.province}
-                </span>
-              </p>
-              <p className="ot__webSite">
-                <span className="ot__webSiteLabel">Website:</span>
-                <span className="ot__webSiteText">
-                  {props.detailCompany.website}
-                </span>
-              </p>
-              <p className="ot__email">
-                <span className="ot__emailLabel">Email:</span>
-                <span className="ot__emailText">
-                  {props.detailCompany.email}
-                </span>
-              </p>
-              {checkPathUrl() === pathQuanLyTaiKhoan() ? (
-                checkRoleUser() === "INVESTOR" ? (
-                  <p className="ot__investorType">
-                    <span className="ot__investorTypeLabel">
-                      Loại nhà đầu tư:
-                    </span>
-                    <span className="ot__investorTypeText">
-                      {props.detailCompany.investorType}
-                    </span>
-                  </p>
-                ) : (
-                  <>
-                    <p className="ot__currentStage">
-                      <span className="ot__currentStageLabel">
-                        Giai đoạn hiện tại:
-                      </span>
-                      <span className="ot__currentStageText">
-                        {props.detailCompany.currentStage}
-                      </span>
-                    </p>
-                    <p className="ot__industry">
-                      <span className="ot__industryLabel">
-                        Lĩnh vực kinh doanh:
-                      </span>
-                      <span className="ot__industryText">
-                        {props.detailCompany.industry}
-                      </span>
-                    </p>
-                  </>
-                )
-              ) : checkPathUrl() === pathToChuc() ? (
-                <>
-                  <p className="ot__currentStage">
-                    <span className="ot__currentStageLabel">
-                      Giai đoạn hiện tại:
-                    </span>
-                    <span className="ot__currentStageText">
-                      {props.detailCompany.currentStage}
-                    </span>
-                  </p>
-                  <p className="ot__industry">
-                    <span className="ot__industryLabel">
-                      Lĩnh vực kinh doanh:
-                    </span>
-                    <span className="ot__industryText">
-                      {props.detailCompany.industry}
-                    </span>
-                  </p>
-                </>
-              ) : (
-                <p className="ot__investorType">
-                  <span className="ot__investorTypeLabel">
-                    Loại nhà đầu tư:
-                  </span>
-                  <span className="ot__investorTypeText">
-                    {props.detailCompany.investorType}
-                  </span>
-                </p>
-              )}
-            </>
-          )}
-        </div>
+        <OverViewInfoComponent
+          detail={props.detailCompany}
+          indus={props.detailCompany.industries}
+          pro={props.detailCompany.provinces}
+          stage={props.detailCompany.stages}
+          region={props.detailCompany.regions}
+          loading={props.loading}
+        />
         {checkPath()}
       </div>
       <OverviewContent media={props.media} introduce={props.introduce} />

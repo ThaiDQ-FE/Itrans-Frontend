@@ -14,7 +14,6 @@ function AdminArticleDetail(props) {
   const { loading } = useSelector((state) => state.loading);
   const dispatch = useDispatch();
   const listIndus = detailArticle.articleIndustries;
-
   const renderHashTag = () => {
     if (listIndus) {
       return detailArticle.articleIndustries.map((item, index) => {

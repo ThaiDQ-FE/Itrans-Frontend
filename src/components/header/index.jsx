@@ -5,21 +5,31 @@ import logo from "../../assets/images/logo-grey.png";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Images from "../../assets/images/images";
-import { Redirect } from "react-router-dom";
-import {
-  checkRoleUser,
-  getLocalStorage,
-  localStorages,
-} from "../../assets/helper/helper";
+import { checkRoleUser, getLocalStorage } from "../../assets/helper/helper";
+import { useSelector } from "react-redux";
+import ModalAccountHome from "./modal-account";
 function Header({ history }) {
+  const { detailCompany } = useSelector((state) => state.detailCompany);
+  const [check, setCheck] = useState(false);
+  const [avataError, setAvataError] = useState("");
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const [openMenu, setOpenMenu] = useState(null);
+  const [openEdit, setOpenEdit] = useState(false);
 
   const handleOpenMenu = (event) => {
     setOpenMenu(event.currentTarget);
   };
   const handleCloseMenu = () => {
     setOpenMenu(null);
+  };
+  const handleCloseModal = () => {
+    setOpenEdit(false);
+    setCheck(false);
+    setAvataError("");
+  };
+  const handleOpenModal = () => {
+    setOpenMenu(null);
+    setOpenEdit(true);
   };
   const handleLogoutAccount = () => {
     setOpenMenu(null);
@@ -120,8 +130,16 @@ function Header({ history }) {
       </div>
       <div className="header__login">
         {user !== null ? (
-          <div className="header__logined">
-            <img src={Images.USER_AVATA} alt="" onClick={handleOpenMenu} />
+          <div className="header__logined" onClick={handleOpenMenu}>
+            <img
+              src={
+                detailCompany.logo === ""
+                  ? Images.USER_AVATA
+                  : detailCompany.logo
+              }
+              alt=""
+            />
+            <span>{user !== null ? user.gmail : ""}</span>
           </div>
         ) : (
           <ul className="header__login__ul">
@@ -157,9 +175,9 @@ function Header({ history }) {
         className="menu__navbar"
       >
         <MenuItem>
-          <div className="header__menuAvata">
-            <img src={Images.USER_AVATA} alt="" />
-            <span>{user !== null ? user.gmail : ""}</span>
+          <div className="header__menuAccount" onClick={handleOpenModal}>
+            <img src={Images.SETTING_COLOR} alt="" />
+            <span>Cài đặt tài khoản</span>
           </div>
         </MenuItem>
         <hr className="header__hr" />
@@ -172,61 +190,11 @@ function Header({ history }) {
           >
             <div className="header__menuAccount">
               <img src={Images.BUILDINGS} alt="" />
-              <span>Cài đặt tài khoản</span>
-            </div>
-          </NavLink>
-        </MenuItem>
-        <hr className="header__hr" />
-        <MenuItem>
-          <NavLink
-            activeClassName="active-nav-link"
-            className="header__navlink__quanLyTaiKhoan"
-            to="/quan-ly-tai-khoan"
-            exact={false}
-          >
-            <div className="header__menuAccount">
-              <img src={Images.SETTING} alt="" />
               <span>Tổ chức của tôi</span>
             </div>
           </NavLink>
         </MenuItem>
         <hr className="header__hr" />
-        {/* <MenuItem>
-          <NavLink
-            activeClassName="active-nav-link"
-            className="header__navlink__quanLyThoiGian"
-            to="/quan-ly-thoi-gian"
-            exact={false}
-          >
-            <div className="header__menuTime">
-              <img src={Images.TIMETABLE} alt="" />
-              <span>Quản lý thời gian</span>
-            </div>
-          </NavLink>
-        </MenuItem>
-        <hr className="header__hr" />
-        <MenuItem>
-          <NavLink
-            activeClassName="active-nav-link"
-            className="header__navlink__quanLyThoiGian"
-            to={
-              checkRoleUser() === "INVESTOR"
-                ? "/quan-ly-deal"
-                : "/quan-ly-vong-goi-von"
-            }
-            exact={false}
-          >
-            <div className="header__menuCapital">
-              <img src={Images.CALL_CAPITAL} alt="" />
-              <span>
-                {checkRoleUser() === "INVESTOR"
-                  ? "Quản lý deal"
-                  : "Quản lý vòng gọi vốn"}
-              </span>
-            </div>
-          </NavLink>
-        </MenuItem> */}
-        {/* <hr className="header__hr" /> */}
         <MenuItem onClick={handleLogoutAccount}>
           <div className="header__menuLogout">
             <img src={Images.LOGOUT} alt="" />
@@ -234,6 +202,15 @@ function Header({ history }) {
           </div>
         </MenuItem>
       </Menu>
+      <ModalAccountHome
+        openEdit={openEdit}
+        close={handleCloseModal}
+        data={detailCompany}
+        check={check}
+        setCheck={setCheck}
+        avataError={avataError}
+        setAvataError={setAvataError}
+      />
     </div>
   );
 }

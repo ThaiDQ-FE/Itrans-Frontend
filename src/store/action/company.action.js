@@ -5,9 +5,11 @@ import {
 } from "../constants/company.const";
 import { startLoading, stopLoading } from "./loading.action";
 
-export const getDeatilCompany = (gmail) => {
+export const getDeatilCompany = (gmail, isLoading) => {
   return (dispatch) => {
-    dispatch(startLoading());
+    if (isLoading === true) {
+      dispatch(startLoading());
+    }
     axios({
       method: "GET",
       url: `http://localhost:8080/api/v1/auth/company/${gmail}`,

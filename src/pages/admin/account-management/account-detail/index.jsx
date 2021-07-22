@@ -12,13 +12,20 @@ function AdminDetailAccountManagement() {
   useEffect(() => {
     const local = getLocalStorage("adminDetailAccount");
     if (local !== null) {
-      dispatch(getDeatilCompany(local.gmail));
+      dispatch(getDeatilCompany(local.gmail, true));
       dispatch(getListTeamMember(local.gmail, false));
     }
   }, []);
   return (
     <div className="adminDetailAccountManagement__wrapper">
-      <AdminDetailAccount detail={detailCompany} team={listTeamMember} />
+      <AdminDetailAccount
+        detail={detailCompany}
+        team={listTeamMember}
+        indus={detailCompany.industries}
+        pro={detailCompany.provinces}
+        stage={detailCompany.stages}
+        region={detailCompany.regions}
+      />
     </div>
   );
 }
