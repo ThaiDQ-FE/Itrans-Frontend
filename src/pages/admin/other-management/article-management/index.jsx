@@ -9,7 +9,7 @@ import AdminManagementArticleComponent from "../../../../components/admin/admin-
 
 function AdminManagementArticle(props) {
   const { listValueArticle } = useSelector((state) => state.value);
-  console.log(listValueArticle);
+  const { listSearchAdmin } = useSelector((state) => state.article);
   const { loading } = useSelector((state) => state.loading);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -20,6 +20,7 @@ function AdminManagementArticle(props) {
       <AdminManagementArticleComponent
         loading={loading}
         list={listValueArticle}
+        listSearch={listSearchAdmin}
         listAr={listValueArticle.articleIndustries}
       />
     </div>

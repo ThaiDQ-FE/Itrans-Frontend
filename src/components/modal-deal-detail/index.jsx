@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import Images from "../../assets/images/images";
 import { useDispatch } from "react-redux";
 import { updateAcceptDeal, updateDealAccept } from "../../store/action/deal.action";
+import { getLocalStorage } from "../../assets/helper/helper";
 function ModalDealDetail(props) {
     const { TextArea } = Input;
     const { detailDeal } = useSelector((deal) => deal.deal);
@@ -20,6 +21,7 @@ function ModalDealDetail(props) {
             }
         })
     }
+    const statusDeal = getLocalStorage("statusDeal");
     let investmentIndustryString = "";
     if (detailDeal.investmentIndustry) {
         detailDeal.investmentIndustry.map((value, index) => {
@@ -86,10 +88,12 @@ function ModalDealDetail(props) {
                     <span className="span_text">Mô tả: </span>
                     <span>{detailDeal.description}</span>
                 </div>
+                {statusDeal === "PENDING" &&
                 <div style={{ display: "flex", marginTop: 10 }}>
                     <div style={{ marginLeft: 'auto' }} ><Button onClick={props.handleAccept} style={{ backgroundColor: "#56db56", color: "#FFFFFF" }}>Chấp nhận </Button> </div>
                     <div style={{ paddingLeft: 5 }}><Button onClick={props.handleReject} style={{ backgroundColor: "red", color: "#FFFFFF" }}>Từ chối </Button> </div>
                 </div>
+                }
             </div>
         </Modal>
     );

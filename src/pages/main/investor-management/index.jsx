@@ -7,18 +7,40 @@ import {
 } from "../../../assets/helper/helper";
 import message from "../../../assets/message/text";
 import InvestorManagementComponent from "../../../components/investor-management";
-import { getInvestorFilter } from "../../../store/action/investor.action";
+import { getInvestorFilterV2 } from "../../../store/action/investor.action";
+import {
+  getListIndustry,
+  getListInvestorType,
+  getListProvince,
+  getListStage,
+} from "../../../store/action/register.action";
 
 import NotAuth from "../../error/auth";
 import "./styles.scss";
 function InvestorManagement() {
   const dispatch = useDispatch();
   useEffect(() => {
-    const arrayType = [0];
-    const arrayProvince = [0];
+    const amount = NaN;
+    const listHead = [0];
+    const listIndus = [0];
+    const listPro = [0];
+    const listStage = [0];
+    const listType = [0];
     dispatch(
-      getInvestorFilter(arrayProvince, arrayType, checkEmailUser(), true)
+      getInvestorFilterV2(
+        amount,
+        listHead,
+        listIndus,
+        listPro,
+        listStage,
+        listType,
+        checkEmailUser()
+      )
     );
+    dispatch(getListProvince());
+    dispatch(getListIndustry());
+    dispatch(getListStage());
+    dispatch(getListInvestorType());
   }, []);
   if (getLocalStorage("userInfo") === null) {
     return <NotAuth />;

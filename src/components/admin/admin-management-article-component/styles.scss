@@ -65,6 +65,21 @@
             height: 60px;
         }
     }
+    .adminArticle__noBox {
+        display: block;
+        margin-top: 150px;
+        text-align: center;
+        .adminArticle__empty {
+            width: 75px;
+            height: 75px;
+            display: block;
+            margin: auto;
+        }
+        .adminArticle__noArticle {
+            font-weight: 600;
+            font-size: 18px;
+        }
+    }
     .amac__paging {
         text-align: right;
         position: absolute;

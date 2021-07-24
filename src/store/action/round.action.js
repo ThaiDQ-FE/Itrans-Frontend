@@ -32,7 +32,16 @@ import {
   GET_ROUND_AND_ORGANIZATION_FAIL,
   GET_LIST_DEAL_BY_ROUND_FAIL,
   GET_LIST_DEAL_BY_ROUND_SUCCESS,
+  UPDATE_ROUND_SUCCESS,
+  UPDATE_ROUND_FAILED,
+  UPDATE_DOCUMENT_SUCCESS,
+  UPDATE_DOCUMENT_FAILED,
+  DELETE_DOCUMENT_SUCCESS,
+  DELETE_DOCUMENT_FAILED,
+  UPDATE_ROUND_STATUS_SUCCESS,
+  UPDATE_ROUND_STATUS_FAILED,
 } from "../constants/round.const";
+import { getListDocumentByRoundId } from "./introduce.action";
 import { startLoading, stopLoading } from "./loading.action";
 const id = checkIdUser();
 export const getListRoundActiveByIdOrganization = (id) => {
@@ -551,6 +560,146 @@ export const getDealByRoundSucess = (deal) => {
 export const getDealByRoundFailed = (err) => {
   return {
     type: GET_LIST_DEAL_BY_ROUND_FAIL,
+    payload: err,
+  };
+};
+
+export const updateRound = (object) => {
+  return (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: "PUT",
+      url: `http://localhost:8080/api/v1/round/updateRound`,
+      data:object,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        console.log(res.data)
+        dispatch(updateRoundSucess(res.data));
+        dispatch(getRoundAndOrganization(object.id));
+      })
+      .catch((err) => {
+        dispatch(updateRoundFailed(err));
+      });
+  };
+};
+
+export const updateRoundSucess = (deal) => {
+  return {
+    type: UPDATE_ROUND_SUCCESS,
+    payload: deal,
+  };
+};
+
+export const updateRoundFailed = (err) => {
+  return {
+    type: UPDATE_ROUND_FAILED,
+    payload: err,
+  };
+};
+
+export const updateDocument = (object,id) => {
+  return (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: "PUT",
+      url: `http://localhost:8080/api/v1/document`,
+      data:object,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        dispatch(updateDocumentSucess(res.data));
+        dispatch(getListDocumentByRoundId(id));
+      })
+      .catch((err) => {
+        dispatch(updateDocumentFailed(err));
+      });
+  };
+};
+
+export const updateDocumentSucess = (deal) => {
+  return {
+    type: UPDATE_DOCUMENT_SUCCESS,
+    payload: deal,
+  };
+};
+
+export const updateDocumentFailed = (err) => {
+  return {
+    type: UPDATE_DOCUMENT_FAILED,
+    payload: err,
+  };
+};
+
+export const deleteDocument = (idDocument , idRound) => {
+  return (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: "PUT",
+      url: `http://localhost:8080/api/v1/delete-document?idDocument=${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        dispatch(deleteDocumentSucess(res.data));
+        dispatch(getListDocumentByRoundId(idRound));
+      })
+      .catch((err) => {
+        dispatch(deleteDocumentFailed(err));
+      });
+  };
+};
+
+export const deleteDocumentSucess = (deal) => {
+  return {
+    type: DELETE_DOCUMENT_SUCCESS,
+    payload: deal,
+  };
+};
+
+export const deleteDocumentFailed = (err) => {
+  return {
+    type: DELETE_DOCUMENT_FAILED,
+    payload: err,
+  };
+};
+
+export const updateStatusRoundDetail = (object, idRound) => {
+  return (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: "PUT",
+      url: `http://localhost:8080/api/v1/round/updateStatusRound`,
+      data:object,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        dispatch(updateRoundStatusSucess(res.data));
+        dispatch(getRoundAndOrganization(idRound));
+      })
+      .catch((err) => {
+        dispatch(updateRoundStatusFailed(err));
+      });
+  };
+};
+
+export const updateRoundStatusSucess = (deal) => {
+  return {
+    type: UPDATE_ROUND_STATUS_SUCCESS,
+    payload: deal,
+  };
+};
+
+export const updateRoundStatusFailed = (err) => {
+  return {
+    type: UPDATE_ROUND_STATUS_FAILED,
     payload: err,
   };
 };

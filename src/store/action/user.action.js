@@ -8,10 +8,19 @@ import {
   LOGIN_SUCCESS,
 } from "../constants/user.const";
 import Swal from "sweetalert2";
-import { authorizationAccount, showMessage } from "../../assets/helper/helper";
+import {
+  authorizationAccount,
+  sessionTimeOut,
+  showMessage,
+} from "../../assets/helper/helper";
 import { defaultUrlAPI, defaultUrlAPIStringTemplate } from "../../configs/url";
 import { startLoading, stopLoading } from "./loading.action";
 import message from "../../assets/message/text";
+import { sendMailHTML } from "./mail.action";
+import {
+  contentAcceptAccount,
+  titleAcceptAccount,
+} from "../../configs/sendMail";
 export const postCheckLogin = (gmail, password, history) => {
   return (dispatch) => {
     axios({
@@ -141,7 +150,7 @@ const getListAccountNotConfirmFailed = (err) => {
   };
 };
 
-export const putAccountToConfirm = (gmail, history) => {
+export const putAccountToConfirm = (gmail, history, checkType) => {
   return (dispatch) => {
     const token = authorizationAccount();
     axios({
@@ -152,18 +161,83 @@ export const putAccountToConfirm = (gmail, history) => {
       },
     })
       .then((res) => {
+        console.log(res);
         if (res.status === 200) {
-          showMessage("success", "Duyệt tài khoản thành công");
-          dispatch(getListAccountNotConfirm());
-          setTimeout(() => {
-            history.push("/admin/quan-ly-tai-khoan");
-          }, 2000);
+          if (checkType.investorType === null) {
+            dispatch(
+              sendMailHTML(
+                contentAcceptAccount(
+                  gmail,
+                  "Đăng tải vòng gọi vốn",
+                  " nhà đầu tư"
+                ),
+                titleAcceptAccount(),
+                gmail,
+                history
+              )
+            );
+          } else {
+            dispatch(
+              sendMailHTML(
+                contentAcceptAccount(
+                  "Tham gia vào các vòng gọi vốn",
+                  " tổ chức"
+                ),
+                titleAcceptAccount(),
+                gmail,
+                history
+              )
+            );
+          }
+
+          // showMessage("success", "Duyệt tài khoản thành công");
+          // dispatch(getListAccountNotConfirm());
+          // setTimeout(() => {
+          //   history.push("/admin/quan-ly-tai-khoan");
+          // }, 2000);
         } else {
           showMessage("error", "Duyệt tài khoản thất bại");
         }
       })
       .catch((err) => {
-        showMessage("error", message.CACTH_ERROR);
+        sessionTimeOut(err, history);
+      });
+  };
+};
+
+export const changePassword = (object, history) => {
+  return (dispatch) => {
+    axios({
+      method: "PUT",
+      url: defaultUrlAPI() + "change-password",
+      data: object,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          Swal.fire({
+            icon: "success",
+            title: "Đổi mật khẩu thành công. Vui lòng đăng nhập lại.",
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+            allowOutsideClick: false,
+          }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+              localStorage.removeItem("userInfo");
+              history.push("/dang-nhap");
+            }
+          });
+        } else {
+          showMessage("error", "Mật khẩu cũ không chính xác");
+        }
+      })
+      .catch((err) => {
+        sessionTimeOut(err, history);
       });
   };
 };

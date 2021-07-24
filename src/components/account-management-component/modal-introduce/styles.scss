@@ -48,7 +48,7 @@
                     }
                 }
                 .modal__liImageAdd {
-                    border: 1px dotted rgb(160, 159, 159);
+                    border: 1px dashed rgb(160, 159, 159);
                     border-radius: 9px;
                     margin: auto 0;
                     .modal__addImage {
@@ -56,7 +56,6 @@
                         height: 100%;
                         position: relative;
                         opacity: 0.4;
-                        cursor: pointer;
                         .modal__file {
                             display: none;
                         }
@@ -82,8 +81,18 @@
                             bottom: 0;
                             width: 100%;
                             height: 100%;
+                            position: relative;
+                            .modal__introduceSpin {
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                            }
                         }
                     }
+                }
+                .modal__liIntroduceDefaultError {
+                    border-color: red;
                 }
             }
         }
@@ -123,7 +132,13 @@
         }
         .modal__iButtonThem {
             text-align: right;
-            margin-top: 10px;
+            margin-top: 30px;
+            margin-bottom: 0;
+            .modal__ibThem {
+                &:hover {
+                    font-weight: 600;
+                }
+            }
         }
     }
 }

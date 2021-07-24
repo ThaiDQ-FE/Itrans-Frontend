@@ -1,13 +1,13 @@
 .detailA__wrapper {
     display: flex;
-
+    justify-content: space-between;
     .detailA__left,
     .detailA__right {
-        width: 18%;
+        width: 15%;
     }
     .detailA__center {
         background: white;
-        width: 64%;
+        width: 67.2%;
         padding: 50px 2% 0 2%;
         .detailA__hashTag {
             .detailA__tag {

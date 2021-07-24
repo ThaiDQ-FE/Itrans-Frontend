@@ -94,10 +94,17 @@
             display: flex;
             padding: 10%;
             padding-right: 20%;
+            cursor: pointer;
+
             img {
+                border-radius: 50%;
                 width: 35px;
                 height: 35px;
-                cursor: pointer;
+            }
+            span {
+                margin-left: 5px;
+                color: white;
+                font-weight: 600;
             }
         }
     }
@@ -129,6 +136,15 @@
         margin-left: 25px;
     }
 }
+.header__menuAccount {
+    span {
+        color: #000;
+        &:hover {
+            color: #000;
+            font-weight: 600;
+        }
+    }
+}
 .header__navlink__quanLyTaiKhoan,
 .header__navlink__quanLyThoiGian {
     color: #000;
@@ -151,4 +167,8 @@
 }
 .class_disable {
     display: none;
+}
+
+.text__workBreak {
+    word-break: break-all;
 }

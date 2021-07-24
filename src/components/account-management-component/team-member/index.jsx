@@ -26,12 +26,7 @@ import {
   deleteTeamMember,
   getListTeamMember,
 } from "../../../store/action/team.action";
-import message from "../../../assets/message/text";
-import {
-  checkImg,
-  checkName,
-  checkPos,
-} from "../../../validate/create-team/team";
+import { checkImg, checkName, checkPos } from "../../../validate/create/team";
 import { withRouter } from "react-router-dom";
 function TeamMember(props) {
   const [openModal, setOpenModal] = useState(false);

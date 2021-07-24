@@ -7,18 +7,24 @@ import {
 } from "../../assets/helper/helper";
 import message from "../../assets/message/text";
 import {
+  CREATE_INTRODUCE_FAILED,
+  CREATE_INTRODUCE_SUCCESS,
   GET_LIST_DOCUMENT_BY_ROUND_FAILED,
   GET_LIST_DOCUMENT_BY_ROUND_SUCCESS,
   GET_LIST_INTRODUCE_BY_ROUND_FAILED,
   GET_LIST_INTRODUCE_BY_ROUND_SUCCESS,
   GET_LIST_INTRODUCE_FAILED,
   GET_LIST_INTRODUCE_SUCCESS,
+  UPDATE_INTRODUCE_FAILED,
+  UPDATE_INTRODUCE_SUCCESS,
 } from "../constants/introduce.const";
 import { startLoading, stopLoading } from "./loading.action";
 
-export const getListIntroduceByGmail = (gmail) => {
+export const getListIntroduceByGmail = (gmail, isLoading) => {
   return (dispatch) => {
-    dispatch(startLoading());
+    if (isLoading === true) {
+      dispatch(startLoading());
+    }
     axios({
       method: "GET",
       url: `http://localhost:8080/api/v1/auth/introduces/${gmail}`,
@@ -47,7 +53,7 @@ export const deleteIntroduceById = (id, history) => {
       .then((res) => {
         if (res.status === 200) {
           showMessage("success", "Xóa tiêu đề - nội dung thành công");
-          dispatch(getListIntroduceByGmail(checkEmailUser()));
+          dispatch(getListIntroduceByGmail(checkEmailUser(), false));
         } else {
           showMessage("error", "Xóa tiêu đề nội dung thất bại");
         }
@@ -80,7 +86,7 @@ export const getListIntroduceByRoundId = (idRound) => {
       url: `http://localhost:8080/api/v1/introduces-by-round?idRound=${idRound}`,
       headers: {
         Authorization: `Bearer ${token}`,
-      }
+      },
     })
       .then((res) => {
         dispatch(getListIntroduceByRoundIdSuccess(res.data));
@@ -113,7 +119,7 @@ export const getListDocumentByRoundId = (idRound) => {
       url: `http://localhost:8080/api/v1/document?idRound=${idRound}`,
       headers: {
         Authorization: `Bearer ${token}`,
-      }
+      },
     })
       .then((res) => {
         dispatch(getListDocumentByRoundIdSuccess(res.data));
@@ -137,3 +143,94 @@ const getListDocumentByRoundIdFailed = (err) => {
     payload: err,
   };
 };
+
+export const updateIntroduce = (idIntroduce,object,idRound) => {
+  return (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: "PUT",
+      url: `http://localhost:8080/api/v1/introduce?idIntroduce=${idIntroduce}`,
+      data:object,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+      .then((res) => {
+        dispatch(updateIntroduceSuccess(res.data));
+        dispatch(getListIntroduceByRoundId(idRound));
+      })
+      .catch((err) => {
+        dispatch(updateIntroduceFailed(err));
+      });
+  };
+};
+
+const updateIntroduceSuccess = (listIntroduce) => {
+  return {
+    type: UPDATE_INTRODUCE_SUCCESS,
+    payload: listIntroduce,
+  };
+};
+
+const updateIntroduceFailed = (err) => {
+  return {
+    type: UPDATE_INTRODUCE_FAILED,
+    payload: err,
+  };
+};
+
+export const deleteIntroduce = (idIntroduce,idRound) => {
+  return (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: "PUT",
+      url: `http://localhost:8080/api/v1/delete-introduce?idIntroduce=${idIntroduce}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+      .then((res) => {
+        dispatch(getListIntroduceByRoundId(idRound));
+      })
+      .catch((err) => {
+      });
+  };
+};
+
+export const createIntroduce = (object,idRound) => {
+  return (dispatch) => {
+    const token = authorizationAccount();
+    axios({
+      method: "POST",
+      url: `http://localhost:8080/api/v1/introduce-round?idRound=${idRound}`,
+      data:object,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+      .then((res) => {
+        console.log(res.data);
+        dispatch(createIntroduceSuccess(res.data));
+        dispatch(getListIntroduceByRoundId(idRound));
+      })
+      .catch((err) => {
+        dispatch(createIntroduceFailed(err));
+      });
+  };
+};
+
+const createIntroduceSuccess = (listIntroduce) => {
+  return {
+    type: CREATE_INTRODUCE_SUCCESS,
+    payload: listIntroduce,
+  };
+};
+
+const createIntroduceFailed = (err) => {
+  return {
+    type: CREATE_INTRODUCE_FAILED,
+    payload: err,
+  };
+};
+
+

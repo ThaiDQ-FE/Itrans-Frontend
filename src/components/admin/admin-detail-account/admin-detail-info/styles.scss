@@ -1,0 +1,23 @@
+.admindi__wrapper {
+    width: 48%;
+    max-height: calc(100% - 38px);
+    .admindi__displayGrid {
+        display: grid;
+        grid-template-columns: 4fr 6fr;
+        grid-gap: 20px 10px;
+        .admindi__item {
+            .admindi__wordBreak {
+                word-break: break-all;
+            }
+            .admindi__ul {
+                padding-left: 0;
+                margin-bottom: 0;
+                list-style-type: none;
+            }
+            .admindi__fontWeight {
+                font-weight: 600;
+                font-size: 18px;
+            }
+        }
+    }
+}

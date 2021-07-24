@@ -41,10 +41,10 @@ function OrganizationListComponent(props) {
       followed: gmail,
     };
     const objectDispath = {
-      arrayIndustry: props.selectedStage,
+      arrayIndustry: props.selectedIndustry,
       arrayProvince: props.selectedProvince,
       arrayRegion: props.selectedRegion,
-      arrayStage: props.selectedIndustry,
+      arrayStage: props.selectedStage,
     };
     if (status === "Chưa theo dõi") {
       dispatch(postFollow(object, objectDispath, null, props.history));
@@ -132,7 +132,7 @@ function OrganizationListComponent(props) {
               ))
           ) : (
             <div className="olc__noData">
-              <img src={Images.NO_DATA} alt="no data" />
+              <img src={Images.EMPTY_BOX} alt="no data" />
               <p>Không có dữ liệu</p>
             </div>
           )}

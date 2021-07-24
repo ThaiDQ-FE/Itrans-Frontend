@@ -21,13 +21,12 @@ import {
   checkStart,
   checkSummary,
   checkThumb,
-} from "../../../../validate/create-round/round";
+} from "../../../../validate/create/round";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { defaultUrlAPI } from "../../../../configs/url";
 import { useDispatch } from "react-redux";
 import { getListRoundByIdOrganization } from "../../../../store/action/round.action";
-import message from "../../../../assets/message/text";
 import { withRouter } from "react-router-dom";
 function RoundByIdOrganization(props) {
   const [openModal, setOpenModal] = useState(false);

@@ -25,37 +25,26 @@ function ContentNews(props) {
               ed.setContent(props.content);
             });
           },
-          language: "vi",
-          language_url: "/langs/vi.js",
-          image_dimensions: false,
-          image_class_list: [{ title: "Tự động", value: "img-responsive" }],
           width: 980,
           height: 350,
           menubar: false,
+          language: "vi",
+          language_url: "/langs/vi.js",
+          image_dimensions: false,
+          image_title: false,
+          // image_caption: true,
+          image_class_list: [{ title: "Tự động", value: "img-responsive" }],
+          resize_img_proportional: false,
           fontsize_formats:
             "8pt 9pt 10pt 11pt 12pt 14pt 18pt 24pt 30pt 36pt 48pt 60pt 72pt 96pt",
           selector: "textarea",
-          image_title: true,
-          /* enable automatic uploads of images represented by blob or data URIs*/
           automatic_uploads: true,
           plugins: [
-            "advlist autolink lists link image",
-            "charmap print preview anchor help",
-            "searchreplace visualblocks code",
-            "insertdatetime media table paste wordcount",
+            "advlist autolink lists link image preview charmap print preview anchor help searchreplace visualblocks code insertdatetime media table paste wordcount",
           ],
           toolbar:
-            // eslint-disable-next-line no-multi-str
-            "undo redo | formatselect | fontsizeselect | bold italic | \
-    alignleft aligncenter alignright |forecolor backcolor| link image |\
-    bullist numlist outdent indent | help | media",
+            "undo redo | formatselect | fontsizeselect | bold italic | alignleft aligncenter alignright |forecolor backcolor| link image | bullist numlist outdent indent | help | media",
           toolbar_mode: "floating",
-          tinycomments_mode: "embedded",
-          tinycomments_author: "Author name",
-          // eslint-disable-next-line no-dupe-keys
-          image_title: true,
-          // eslint-disable-next-line no-dupe-keys
-          automatic_uploads: true,
           file_picker_types: "image media",
           file_picker_callback: function (cb, value, meta) {
             var input = document.createElement("input");

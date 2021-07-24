@@ -4,38 +4,59 @@ import ListNews from "./list-news";
 import "antd/dist/antd.css";
 import "./styles.scss";
 import { Input } from "antd";
+import ListSearch from "./list-search";
+import { useDispatch } from "react-redux";
+import { searchArticle } from "../../../store/action/artical.action";
+import { checkEmailUser } from "../../../assets/helper/helper";
 
 function HomeBody(props) {
+  const dispatch = useDispatch();
   const { Search } = Input;
-  const handleChangeValue = (event) => {
-    let a = event.target.value;
-    if (a.length === 0) {
-      console.log("ok");
+  const onSearch = (value, event) => {
+    if (event.key === "Enter") {
+      if (value === "") {
+        props.setSearch(false);
+      } else {
+        dispatch(searchArticle(checkEmailUser(), value, props.history));
+        props.setSearch(true);
+      }
+    } else {
+      if (value === "") {
+        props.setSearch(false);
+      } else {
+        dispatch(searchArticle(checkEmailUser(), value, props.history));
+        props.setSearch(true);
+      }
     }
   };
-  const onSearch = (value) => {
-    setTimeout(() => {
-      console.log(value);
-    }, 2000);
-  };
+
   return (
     <div className="hb__wrapper">
       <div className="hb__search">
         <Search
+          id="hb__search"
           className="hb__searchInput"
           placeholder="Tìm kiếm tiêu đề ... "
           enterButton="Tìm kiếm"
           size="large"
-          onChange={handleChangeValue}
           onSearch={onSearch}
         />
       </div>
       <div className="hb__container">
-        <ListNews
-          list={props.list}
-          listHash={props.list.articleIndustries}
-          loading={props.loading}
-        />
+        {props.search === false ? (
+          <ListNews
+            list={props.list}
+            listHash={props.list.articleIndustries}
+            loading={props.loading}
+          />
+        ) : (
+          <ListSearch
+            listS={props.listS}
+            listHash={props.listS.articleIndustries}
+            loading={props.loading}
+          />
+        )}
+
         <ListFollow loading={props.loading} />
       </div>
     </div>

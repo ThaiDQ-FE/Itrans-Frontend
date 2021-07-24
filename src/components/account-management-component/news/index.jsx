@@ -18,7 +18,7 @@ import {
   checkSummary,
   checkThumbnail,
   checkTitle,
-} from "../../../validate/create-news/news";
+} from "../../../validate/create/news";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { defaultUrlAPI } from "../../../configs/url";
@@ -40,6 +40,7 @@ function NewsTab(props) {
   const [idArticle, setIdArticle] = useState("");
   const [content, setContent] = useState("");
   const [arrayIndustries, setArrayIndustries] = useState([]);
+  const [arrayIndus, setArrayyIndus] = useState([]);
   const [thumbnail, setThumbnail] = useState("");
   // error
   const [titleError, setTitleError] = useState("");
@@ -75,6 +76,7 @@ function NewsTab(props) {
       description: "",
     });
     setArrayIndustries([]);
+    setArrayyIndus([]);
     setContent("");
     setIdArticle("");
     //error
@@ -90,14 +92,22 @@ function NewsTab(props) {
       [name]: value,
     });
   };
-  const handleChangeValue = (value) => {
-    if (arrayIndustries.length > 5) {
+  const handleChangeValue = (value, action) => {
+    let array = [];
+    for (let i = 0; i < action.length; i++) {
+      array.push(Number(action[i].key));
+    }
+    if (array.length > 5) {
+      setArrayIndustries(array);
+      setArrayyIndus(value);
       setHashTagError("Chỉ được chọn tối đa 5 ngành nghề");
     } else {
+      setArrayIndustries(array);
+      setArrayyIndus(value);
       setHashTagError("");
     }
-    setArrayIndustries(value);
   };
+
   const handleChangeContent = (e) => {};
   const handleBlurHash = () => {
     checkHash(arrayIndustries, setHashTagError);
@@ -245,10 +255,8 @@ function NewsTab(props) {
         dispatch(deleleArticleById(id, props.history));
       }
     });
-    console.log(id, title);
   };
   const handleEditArticle = (value) => {
-    console.log(value);
     setInfoNews({
       title: value.title,
       description: value.description,
@@ -256,6 +264,9 @@ function NewsTab(props) {
     setThumbnail(value.thumbnail);
     for (let i = 0; i < value.articleIndustries.length; i++) {
       arrayIndustries.push(value.articleIndustries[i].idIndustry);
+    }
+    for (let i = 0; i < value.articleIndustries.length; i++) {
+      arrayIndus.push(value.articleIndustries[i].nameIndustry);
     }
     setContent(value.content);
     setIdArticle(value.idArticle);
@@ -285,6 +296,7 @@ function NewsTab(props) {
         setArrayIndustries([]);
         setContent("");
         setIdArticle("");
+        setArrayyIndus([]);
       }
     });
   };
@@ -321,10 +333,9 @@ function NewsTab(props) {
         props.article
           .slice(length.minValue, length.maxValue)
           .map((value, index) => (
-            <div className="nt__articleWrappers">
+            <div className="nt__articleWrappers" key={index}>
               <div
                 className="nt__articleWrapper"
-                key={index}
                 onClick={() => handleClickArticle(value.idArticle)}
               >
                 <ArticlesItem
@@ -401,6 +412,7 @@ function NewsTab(props) {
         content={content}
         infoNews={infoNews}
         arrayIndustries={arrayIndustries}
+        arrayIndus={arrayIndus}
         setThumbnail={setThumbnail}
         handleChangeInfo={handleChangeInfo}
         handleChangeValue={handleChangeValue}

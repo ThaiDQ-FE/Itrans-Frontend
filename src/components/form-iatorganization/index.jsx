@@ -52,7 +52,6 @@ function FormInformationAboutTheOrganization(props) {
     numberOfEmployee: "",
     province: "",
     link: "",
-    description: "",
   });
   const [errors, setErrors] = useState({
     name: "",
@@ -62,7 +61,6 @@ function FormInformationAboutTheOrganization(props) {
     numberOfEmployee: "",
     province: "",
     link: "",
-    description: "",
   });
   const [color, setColor] = useState({
     name: "",
@@ -72,7 +70,6 @@ function FormInformationAboutTheOrganization(props) {
     numberOfEmployee: "",
     province: "",
     link: "",
-    description: "",
   });
   let check = 0;
   const regex = new RegExp("^[0-9]*$");
@@ -131,12 +128,6 @@ function FormInformationAboutTheOrganization(props) {
       errors.province = '';
       check++;
     }
-    if (!values.description) {
-      errors.description = 'Mô tả về doanh nghiệp không được để trống';
-    } else {
-      errors.description = '';
-      check++;
-    }
     return errors;
   };
   const validateColor = (values) => {
@@ -187,11 +178,6 @@ function FormInformationAboutTheOrganization(props) {
     } else {
       errors.province = '';
     }
-    if (!values.description) {
-      errors.description = '1px solid red';
-    } else {
-      errors.description = '';
-    }
 
     return errors;
   };
@@ -201,6 +187,7 @@ function FormInformationAboutTheOrganization(props) {
   }
   const handleChangeInput = (event) => {
     const { value, name } = event.target;
+ 
     setInformation({
       ...information,
       [name]: value,
@@ -210,7 +197,7 @@ function FormInformationAboutTheOrganization(props) {
     localStorage.setItem("Form2", JSON.stringify(information));
     setErrors(validate(information));
     setColor(validateColor(information));
-    if (check == 8) {
+    if (check == 7) {
       props.handleNext();
     }
 
@@ -231,7 +218,7 @@ function FormInformationAboutTheOrganization(props) {
   const renderListProvince = () => {
     return listProvince.map((item, index) => {
       return (
-        <Option name="province" value={item.idProvince} key={index}>
+        <Option name="province" value={item.idProvince} key={item.idProvince}>
           {item.name}
         </Option>
       );
@@ -369,7 +356,7 @@ function FormInformationAboutTheOrganization(props) {
             </div>
           </div>
           <div className="fiato__lineFour">
-            <div className="fiato__moTaVeDoanhNghiep">
+            {/* <div className="fiato__moTaVeDoanhNghiep">
               <small>Mô tả về doanh nghiệp</small>
               <Tooltip title={errors.description} placement='topRight' color='red' >
                 <TextArea
@@ -380,7 +367,7 @@ function FormInformationAboutTheOrganization(props) {
                   size="large"
                 />
               </Tooltip>
-            </div>
+            </div> */}
             <div className="fiato__logo">
             <small>&nbsp;</small>
               <img src={url || Images.NO_IMAGE} alt="" className="fiato__userLogo" />

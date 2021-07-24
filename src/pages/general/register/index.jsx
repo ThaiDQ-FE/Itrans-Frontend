@@ -4,14 +4,14 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import HeaderGeneral from "../../../components/header-general";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import FormRole from "../../../components/form-role";
+import FormRole from "../../../components/register-form/form-role";
 import Messages from "../../../assets/message/text";
 import "./styles.scss";
-import FormBasicInformation from "../../../components/form-basicInfomation";
-import FormInformationAboutTheOrganization from "../../../components/form-iatorganization";
-import FormMember from "../../../components/form-member";
-import FormAngelInvestorInformation from "../../../components/form-angelInvestor";
-import FormInvestor from "../../../components/form-investor";
+import FormBasicInformation from "../../../components/register-form/form-basicInfomation";
+import FormInformationAboutTheOrganization from "../../../components/register-form/form-iatorganization";
+import FormMember from "../../../components/register-form/form-member";
+import FormAngelInvestorInformation from "../../../components/register-form/form-angelInvestor";
+import FormInvestor from "../../../components/register-form/form-investor";
 import { getListInvestorType } from "../../../store/action/register.action";
 import { useDispatch, useSelector } from "react-redux";
 function Register() {
@@ -98,6 +98,10 @@ function Register() {
     setSubRole(newSubRole);
     setFinalRole("investor");
   };
+  //
+  const [array, setArray] = useState([]);
+  const [arrayOther, setArrayOther] = useState([]);
+  //
   const getSteps = () => {
     if (role === "ORGANIZATION") {
       return [
@@ -180,6 +184,10 @@ function Register() {
         <FormRole
           setStateRole={setStateRole}
           setStateSubRole={setStateSubRole}
+          array={array}
+          arrayOther={arrayOther}
+          setArray={setArray}
+          setArrayOther={setArrayOther}
         />
       ) : (
         <MuiThemeProvider

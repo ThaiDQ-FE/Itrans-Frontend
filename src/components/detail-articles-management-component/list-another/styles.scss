@@ -1,12 +1,13 @@
 .listAA__wrapper {
     display: flex;
+    justify-content: space-between;
     .listAA__left,
     .listAA__right {
-        width: 18%;
+        width: 15%;
     }
     .listAA__center {
         background: white;
-        width: 64%;
+        width: 67.2%;
         padding: 0 2% 50px 2%;
         .listAA__title {
             font-size: 20px;

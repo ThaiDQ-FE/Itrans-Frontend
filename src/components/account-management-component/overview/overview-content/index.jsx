@@ -20,7 +20,6 @@ import {
   showMessage,
 } from "../../../../assets/helper/helper";
 import axios from "axios";
-import message from "../../../../assets/message/text";
 import { useDispatch } from "react-redux";
 import {
   deleteMedia,
@@ -45,6 +44,8 @@ function OverviewContent(props) {
     title: "",
     content: "",
   });
+
+  const [mediaError, setMediaError] = useState("");
   // delete media
   const handleDeleteMediaItem = (id) => {
     Swal.fire({
@@ -66,7 +67,6 @@ function OverviewContent(props) {
   };
   // delete intro
   const handleDeleteIntro = (id) => {
-    console.log(id);
     Swal.fire({
       icon: "warning",
       title: "Bạn muốn xóa tiêu đề - nội dung vừa chọn?",
@@ -321,6 +321,7 @@ function OverviewContent(props) {
     setAddMoreIntro(false);
     setEditIntro(false);
     setListMedia([]);
+    setMediaError("");
     localStorage.removeItem("infoIntro");
   };
   // delete item
@@ -354,8 +355,8 @@ function OverviewContent(props) {
               if (res.status === 200) {
                 showMessage("success", "Thêm thông tin giới thiệu thành công");
                 handleCloseModal();
-                dispatch(getListMediaById(checkEmailUser()));
-                dispatch(getListIntroduceByGmail(checkEmailUser()));
+                dispatch(getListMediaById(checkEmailUser(), false));
+                dispatch(getListIntroduceByGmail(checkEmailUser(), false));
               } else {
                 showMessage("error", "Thêm thông tin giới thiệu thất bại");
               }
@@ -386,7 +387,7 @@ function OverviewContent(props) {
         if (res.status === 200) {
           showMessage("success", "Thêm hình ảnh - video thành công");
           handleCloseModal();
-          dispatch(getListMediaById(checkEmailUser()));
+          dispatch(getListMediaById(checkEmailUser(), false));
         } else {
           showMessage("error", "Thêm hình ảnh - video thất bại");
         }
@@ -410,7 +411,7 @@ function OverviewContent(props) {
         if (res.status === 200) {
           showMessage("success", "Thêm thông tin giới thiệu thành công");
           handleCloseModal();
-          dispatch(getListIntroduceByGmail(checkEmailUser()));
+          dispatch(getListIntroduceByGmail(checkEmailUser(), false));
         } else {
           showMessage("error", "Thêm thông tin giới thiệu thất bại");
         }
@@ -434,7 +435,7 @@ function OverviewContent(props) {
         if (res.status === 200) {
           showMessage("success", "Cập nhật tiêu đề - nội dung thành công");
           handleCloseModal();
-          dispatch(getListIntroduceByGmail(checkEmailUser()));
+          dispatch(getListIntroduceByGmail(checkEmailUser(), false));
         } else {
           showMessage("error", "Thêm thông tin giới thiệu thất bại");
         }
@@ -597,9 +598,9 @@ function OverviewContent(props) {
       return (
         <div className="ot__rightNoData">
           <div className="ot__rightNoDataWrapper">
-            <p>Bạn chưa có thông tin giới thiệu. Hãy tạo ngay nào</p>
+            <p>Bạn chưa có thông tin giới thiệu</p>
             <Button type="primary" size="large" onClick={handleOpenModal}>
-              Tạo thông tin giới thiệu
+              Thêm thông tin giới thiệu
             </Button>
           </div>
         </div>
@@ -685,6 +686,8 @@ function OverviewContent(props) {
         setListMedia={setListMedia}
         handleDelete={handleDeleteItem}
         handleOnFinish={handleOnFinish}
+        mediaError={mediaError}
+        setMediaError={setMediaError}
       />
       <ModalAddMedia
         addMoreMedia={addMoreMedia}
@@ -693,6 +696,8 @@ function OverviewContent(props) {
         setListMedia={setListMedia}
         handleDelete={handleDeleteItem}
         onSubmit={handleSubmitMediaModal}
+        mediaError={mediaError}
+        setMediaError={setMediaError}
       />
       <ModalAddIntro
         addMoreIntro={addMoreIntro}

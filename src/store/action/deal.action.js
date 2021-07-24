@@ -7,6 +7,8 @@ import {
 import {
   CREATE_DEAL_FAIL,
   CREATE_DEAL_SUCCESS,
+  DELETE_DEAL_FAIL,
+  DELETE_DEAL_SUCCESS,
   GET_CURRENT_DEAL_CANCEL_FAIL,
   GET_CURRENT_DEAL_CANCEL_SUCCESS,
   GET_CURRENT_DEAL_DONE_FAIL,
@@ -18,8 +20,10 @@ import {
   GET_DETAIL_DEAL_SUCCESS,
   UPDATE_DEAL_ACCEPT_FAIL,
   UPDATE_DEAL_ACCEPT_SUCCESS,
+  UPDATE_DEAL_FAIL,
   UPDATE_DEAL_REJECT_FAIL,
   UPDATE_DEAL_REJECT_SUCCESS,
+  UPDATE_DEAL_SUCCESS,
 } from "../constants/deal.const";
 import { checkIdUser } from "../../assets/helper/helper";
 import { startLoading,stopLoading } from "./loading.action";
@@ -330,6 +334,69 @@ const createDealSuccess = (detailDeal) => {
 const createDealFail = (error) => {
   return {
     type: CREATE_DEAL_FAIL,
+    payload: error
+  };
+};
+
+export const updateDealInRound = (object) => {
+  return  (dispatch) => {
+    const userLogin = getLocalStorage("userInfo");
+    const token = authorizationAccount();
+    axios({
+      method: 'PUT',
+      url: defaultUrlAPIStringTemplate()+`deal`,
+      data:object,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
+      dispatch(updateDealSuccess(res.data))
+      dispatch(getDealByRound(userLogin.gmail,1));
+    }).catch((err) => {
+      dispatch(updateDealFail(err))
+    })
+  }
+}
+const updateDealSuccess = (detailDeal) => {
+  return {
+    type: UPDATE_DEAL_SUCCESS,
+    payload: detailDeal
+  };
+};
+const updateDealFail = (error) => {
+  return {
+    type: UPDATE_DEAL_FAIL,
+    payload: error
+  };
+};
+
+export const deleteDealInRound = (idDeal) => {
+  return  (dispatch) => {
+    const userLogin = getLocalStorage("userInfo");
+    const token = authorizationAccount();
+    axios({
+      method: 'PUT',
+      url: `http://localhost:8080/api/v1/deal-status-delete-cancel?id-deal=${idDeal}&status=DELETE`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((res) => {
+      dispatch(deleteDealSuccess(res.data))
+      dispatch(getDealByRound(userLogin.gmail,1));
+    }).catch((err) => {
+      dispatch(deleteDealFail(err))
+    })
+  }
+}
+const deleteDealSuccess = (detailDeal) => {
+  return {
+    type: DELETE_DEAL_SUCCESS,
+    payload: detailDeal
+  };
+};
+const deleteDealFail = (error) => {
+  return {
+    type: DELETE_DEAL_FAIL,
     payload: error
   };
 };
