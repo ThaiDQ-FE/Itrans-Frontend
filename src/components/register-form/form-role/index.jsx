@@ -88,7 +88,7 @@ function FormRole(props) {
       return props.setStateRole(choose);
     }
   };
-  const magicBehind = (id) => {
+  const magicBehind = (id, name) => {
     if (props.array.length > 0) {
       doccumentAddClassWeight("nhadautu0");
       doccumentAddDis("nhadautu1");
@@ -99,7 +99,9 @@ function FormRole(props) {
       doccumentAddClass("nhadautu2");
       doccumentAddClass("nhadautu3");
       doccumentAddClass("nhadautu4");
+      setChooseSubRole(name);
     } else {
+      setChooseSubRole(null);
       doccumentRemoveClassWeight("nhadautu0");
       doccumentRemoveDis("nhadautu1");
       doccumentRemoveDis("nhadautu2");
@@ -112,7 +114,7 @@ function FormRole(props) {
       props.setArray([]);
     }
   };
-  const magicalBehind = (index, id) => {
+  const magicalBehind = (index, id, name) => {
     if (props.arrayOther.length > 0) {
       const pos = props.arrayOther.indexOf(id);
       if (pos > -1) {
@@ -120,7 +122,9 @@ function FormRole(props) {
       }
       doccumentAddDis("nhadautu0");
       doccumentAddClass("nhadautu0");
+      setChooseSubRole(name);
     } else {
+      setChooseSubRole(null);
       doccumentRemoveDis("nhadautu0");
       doccumentRemoveClass("nhadautu0");
     }
@@ -130,23 +134,23 @@ function FormRole(props) {
       const pos = props.array.indexOf(id);
       if (pos > -1) {
         props.array.splice(pos, 1);
-        magicBehind(id);
+        magicBehind(id, name);
       } else {
         props.array.push(id);
-        magicBehind(id);
+        magicBehind(id, name);
       }
     } else {
       const pos = props.arrayOther.indexOf(id);
       if (pos > -1) {
         props.arrayOther.splice(pos, 1);
         doccumentRemoveClassWeight("nhadautu" + index);
-        magicalBehind(index, id);
+        magicalBehind(index, id, name);
       } else {
         props.arrayOther.push(id);
-        magicalBehind(index, id);
+        magicalBehind(index, id, name);
       }
     }
-    setChooseSubRole(name);
+
     setSubRoleClicked(index);
   };
   const renderSubRole = () => {
@@ -205,7 +209,7 @@ function FormRole(props) {
     });
   };
   const checkDisableButton = () => {
-    let boolen = false;
+    let boolen;
     if (choose === null) {
       boolen = true;
     } else if (choose === "INVESTOR") {
@@ -231,6 +235,7 @@ function FormRole(props) {
     }
     return boolen;
   };
+  console.log(chooseSubRole);
   return (
     <div className="formRole__wrapper">
       <HeaderGeneral />
