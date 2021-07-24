@@ -48,6 +48,21 @@ function FormRole(props) {
       setSubRoleClicked(null);
       props.setArray([]);
       props.setArrayOther([]);
+      doccumentRemoveClassWeight("nhadautu0");
+      doccumentRemoveClassWeight("nhadautu1");
+      doccumentRemoveClassWeight("nhadautu2");
+      doccumentRemoveClassWeight("nhadautu3");
+      doccumentRemoveClassWeight("nhadautu4");
+      doccumentRemoveDis("nhadautu0");
+      doccumentRemoveDis("nhadautu1");
+      doccumentRemoveDis("nhadautu2");
+      doccumentRemoveDis("nhadautu3");
+      doccumentRemoveDis("nhadautu4");
+      doccumentRemoveClass("nhadautu0");
+      doccumentRemoveClass("nhadautu1");
+      doccumentRemoveClass("nhadautu2");
+      doccumentRemoveClass("nhadautu3");
+      doccumentRemoveClass("nhadautu4");
     } else {
       setChoose("INVESTOR");
       document.getElementById("block1").classList.add("fr__rotate");
@@ -197,7 +212,19 @@ function FormRole(props) {
       if (chooseSubRole === null) {
         boolen = true;
       } else {
-        boolen = false;
+        if (chooseSubRole === "Nhà đầu tư thiên thần") {
+          if (props.array.length === 0) {
+            boolen = true;
+          } else {
+            boolen = false;
+          }
+        } else {
+          if (props.arrayOther.length === 0) {
+            boolen = true;
+          } else {
+            boolen = false;
+          }
+        }
       }
     } else {
       boolen = false;
