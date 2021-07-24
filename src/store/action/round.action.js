@@ -669,7 +669,7 @@ export const deleteDocumentFailed = (err) => {
   };
 };
 
-export const updateStatusRoundDetail = (object) => {
+export const updateStatusRoundDetail = (object, idRound) => {
   return (dispatch) => {
     const token = authorizationAccount();
     axios({
@@ -681,8 +681,8 @@ export const updateStatusRoundDetail = (object) => {
       },
     })
       .then((res) => {
-        console.log(res)
         dispatch(updateRoundStatusSucess(res.data));
+        dispatch(getRoundAndOrganization(idRound));
       })
       .catch((err) => {
         dispatch(updateRoundStatusFailed(err));

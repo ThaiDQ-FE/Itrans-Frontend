@@ -197,12 +197,12 @@ export const deleteIntroduce = (idIntroduce,idRound) => {
   };
 };
 
-export const createIntroduce = (gmail,object,idRound) => {
+export const createIntroduce = (object,idRound) => {
   return (dispatch) => {
     const token = authorizationAccount();
     axios({
       method: "POST",
-      url: `http://localhost:8080/api/v1/introduces?gmail=${gmail}`,
+      url: `http://localhost:8080/api/v1/introduce-round?idRound=${idRound}`,
       data:object,
       headers: {
         Authorization: `Bearer ${token}`,

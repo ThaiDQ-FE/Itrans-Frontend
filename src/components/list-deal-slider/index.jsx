@@ -4,10 +4,12 @@ import Slider from "react-slick";
 import Images from "../../assets/images/images";
 import Swal from "sweetalert2";
 import ModalDealDetail from "../modal-deal-detail";
-import { Card, Modal, Tag } from "antd";
+import { Card, Modal, Tag, Tooltip } from "antd";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { getDetailDeal, updateAcceptDeal, updateRejectDeal } from "../../store/action/deal.action";
+import { deleteDealInRound, getDetailDeal, updateAcceptDeal, updateDealInRound, updateRejectDeal } from "../../store/action/deal.action";
+import ModalUpdateDeal from "../modal-update-deal";
+import { getLocalStorage, localStorages } from "../../assets/helper/helper";
 
 function ListDealSlider() {
     const { listDealByRound } = useSelector(
@@ -15,8 +17,6 @@ function ListDealSlider() {
     );
     const { detailDeal } = useSelector((deal) => deal.deal);
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    console.log(listDealByRound);
-    console.log(listDealByRound == "No Data");
     const dispatch = useDispatch();
     var settings = {
         dots: true,
@@ -29,6 +29,97 @@ function ListDealSlider() {
         }
     };
     const [openModal, setOpenModal] = useState(false);
+    const [openModalUpdate, setOpenModalUpdate] = useState(false);
+    const [dataDeal, setDataDeal] = useState({
+        soTienDauTu: "",
+        phanTramCoPhan: "",
+        moTa: ""
+    });
+    const handleChangeValueUpdate = (event) => {
+        const { value, name } = event.target;
+        setDataDeal({
+            ...dataDeal,
+            [name]: value,
+        });
+    };
+    const handleCloseModalUpdate = () => {
+        setOpenModalUpdate(false);
+        localStorage.removeItem("listDealByRound");
+    }
+    const handleUpdateDealForm = () => {
+        if (getLocalStorage("listDealByRound") !== null) {
+            const object = {
+                capitalInvestment: dataDeal.soTienDauTu,
+                description: dataDeal.moTa,
+                idDeal: listDealByRound.idDeal,
+                shareRequirement: dataDeal.phanTramCoPhan
+            };
+            Swal.fire({
+                icon: "warning",
+                title: "Bạn chắc chắn thỏa thuận này?",
+                heightAuto: true,
+                timerProgressBar: false,
+                showConfirmButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Đồng ý",
+                cancelButtonText: "Hủy",
+                confirmButtonColor: "#1890ff",
+                cancelButtonColor: "red",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    dispatch(updateDealInRound(object));
+                    setOpenModalUpdate(false);
+                }
+            });
+        }
+
+    }
+    
+
+    const handleDeletetDeal = () => {
+        Swal.fire({
+          icon: "warning",
+          title: "Bạn muốn xóa thỏa thuận vừa chọn?",
+          heightAuto: true,
+          timerProgressBar: false,
+          showConfirmButton: true,
+          showCancelButton: true,
+          confirmButtonText: "Đồng ý",
+          cancelButtonText: "Hủy",
+          confirmButtonColor: "#1890ff",
+          cancelButtonColor: "red",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            dispatch(deleteDealInRound(listDealByRound.idDeal))
+          }
+        });
+      };
+    const handleEditDeal = () => {
+        localStorages("listDealByRound", listDealByRound);
+        Swal.fire({
+            icon: "question",
+            title: "Bạn muốn chỉnh sửa thỏa thuận này?",
+            heightAuto: true,
+            timerProgressBar: false,
+            showConfirmButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Đồng ý",
+            cancelButtonText: "Hủy",
+            confirmButtonColor: "#1890ff",
+            cancelButtonColor: "red",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setOpenModalUpdate(true);
+                setDataDeal({
+                 soTienDauTu:listDealByRound.capitalInvestment,
+                 moTa:listDealByRound.description,
+                 phanTramCoPhan:listDealByRound.shareRequirement
+                });
+            } else {
+                localStorage.removeItem("listDealByRound");
+            }
+        });
+    };
     const handleChange = (e) => {
         setOpenModal(true);
     }
@@ -97,12 +188,20 @@ function ListDealSlider() {
                 handleAccept={handleAccept}
                 handleReject={handleReject}
             />
+            <ModalUpdateDeal
+                openModalUpdate={openModalUpdate}
+                closeModalUpdate={handleCloseModalUpdate}
+                handleChangeValueUpdate={handleChangeValueUpdate}
+                handleUpdateDealForm={handleUpdateDealForm}
+            />
             {userInfo.role == "ORGANIZATION" ?
                 (listDealByRound.length !== 0 && <div className="lds__mid">
                     <div style={{ fontWeight: 700 }}><p>Thông tin những yêu cầu muốn đầu tư: </p></div>
                     <Slider {...settings}>
                         {listDealByRound.map((value) =>
-                            <div className="lds__container" onClick={() => { dispatch(getDetailDeal(value.idDeal)) }}>
+                            <div className="lds__container" onClick={() => { dispatch(getDetailDeal(value.idDeal))
+                                localStorages("statusDeal",value.statusDeal)
+                            }}>
                                 <div
                                     className="lds__listRound"
                                 >
@@ -139,7 +238,30 @@ function ListDealSlider() {
                     <p>
                         <span className="span_text" style={{ fontSize: 20 }}>Thông tin thỏa thuận </span>
                     </p>
+
                     <div className="lds_textDeal" style={{ border: 'groove 1px', paddingLeft: 10, padding: 10 }}>
+                        <div className="lds__introduceWrapper" >
+                            <div className="lds__action">
+                                <Tooltip title="Chỉnh sửa">
+                                    <img
+                                        src={Images.PENCIL}
+                                        alt="edit"
+                                        onClick={() => {
+                                            handleEditDeal();
+                                        }}
+                                    />
+                                </Tooltip>
+                                <Tooltip title="Xóa">
+                                    <img
+                                        src={Images.RED_CANCEL}
+                                        alt="clear"
+                                        onClick={() => {
+                                            handleDeletetDeal();
+                                        }}
+                                    />
+                                </Tooltip>
+                            </div>
+                        </div>
                         <p><span className="span_text">Số tiền đầu tư:  </span>
                             <span>{listDealByRound.capitalInvestment} Tỷ</span>
                             <span style={{ marginLeft: 150 }} className="span_text">Phần trăm cổ phần: </span>

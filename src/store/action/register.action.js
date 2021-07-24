@@ -25,6 +25,8 @@ import {
   CREATE_TASTE_PROVINCE_REGION_SUCCESS,
   CREATE_TEAM_MEMBER_FAIL,
   CREATE_TEAM_MEMBER_SUCCESS,
+  CREATE_TYPE_OF_INVESTOR_FAIL,
+  CREATE_TYPE_OF_INVESTOR_SUCCESS,
   GET_LIST_INDUSTRY_FAIL,
   GET_LIST_INDUSTRY_SUCCESS,
   GET_LIST_INVESTOR_TYPE_SUCCESS,
@@ -85,8 +87,8 @@ export const postBasicInformation = (gmail, password) => {
           const objInvestor = Object.assign({}, gmailObj, investor);
           const logo = JSON.parse(localStorage.getItem("image"));
           objInvestor.logo = logo;
-          const idInvestorType = JSON.parse(localStorage.getItem("idInvestorType"));
-          objInvestor.idInvestorType = idInvestorType;
+          // const idInvestorType = JSON.parse(localStorage.getItem("idInvestorType"));
+          // objInvestor.idInvestorType = idInvestorType;
           const newObjInvestor = objInvestor;
           delete newObjInvestor.province;
           delete newObjInvestor.stage;
@@ -126,7 +128,7 @@ export const postIAOTOrganization = (organization) => {
         dispatch(createIAOTOrganizationSuccess(res.data));
         const teamMember = JSON.parse(localStorage.getItem("TeamMember"));
         for (let index = 0; index < teamMember.length; index++) {
-          teamMember[index].idOrganization=res.data;
+          teamMember[index].idOrganization = res.data;
         }
         dispatch(postTeamMember(teamMember));
         localStorage.removeItem("TeamMember");
@@ -417,9 +419,20 @@ export const postInvestor = (investor) => {
         dispatch(createInvestorSuccess(res.data));
         const teamMember = JSON.parse(localStorage.getItem("TeamMember"));
         for (let index = 0; index < teamMember.length; index++) {
-          teamMember[index].idInvestor=res.data;
+          teamMember[index].idInvestor = res.data;
         }
         dispatch(postTeamMember(teamMember));
+        const idInvestorType = JSON.parse(localStorage.getItem("investerType"));
+        const typeOfInvestor = [];
+        for (let index = 0; index < idInvestorType.length; index++) {
+          const object = {
+            idInvestor: res.data,
+            idInvestorType:idInvestorType[index]
+          }
+          typeOfInvestor.push(object);
+        }
+        console.log(typeOfInvestor);
+        dispatch(postTypeOfInvestor(typeOfInvestor));
         localStorage.removeItem("TeamMember");
         const investor = JSON.parse(localStorage.getItem("Form2Investor"));
         const objInvestorTaste = {
@@ -479,6 +492,7 @@ export const postInvestorTaste = (investorTaste) => {
           provinceRegionList.push(provinceRegion);
         }
         dispatch(postTasteProvinceRegion(provinceRegionList))
+
       })
       .catch((err) => {
         dispatch(createInvestorTasteFail(err));
@@ -618,6 +632,34 @@ const createTeamMemberSuccess = (object) => {
 const createTeamMemberFail = (err) => {
   return {
     type: CREATE_TEAM_MEMBER_FAIL,
+    payload: err,
+  };
+};
+
+export const postTypeOfInvestor = (type) => {
+  return (dispatch) => {
+    axios({
+      method: "Post",
+      url: "http://localhost:8080/api/v1/auth/type-of-investor",
+      data: type,
+    })
+      .then((res) => {
+        dispatch(createTypeOfInvestorSuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(createTypeOfInvestorFail(err));
+      });
+  };
+};
+const createTypeOfInvestorSuccess = (object) => {
+  return {
+    type: CREATE_TYPE_OF_INVESTOR_SUCCESS,
+    payload: object,
+  };
+};
+const createTypeOfInvestorFail = (err) => {
+  return {
+    type: CREATE_TYPE_OF_INVESTOR_FAIL,
     payload: err,
   };
 };
