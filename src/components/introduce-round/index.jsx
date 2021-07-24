@@ -153,7 +153,7 @@ function IntroduceRound() {
         cancelButtonColor: "red",
       }).then((result) => {
         if (result.isConfirmed) {
-          dispatch(createIntroduce(userInfo.gmail,[valueAdd],roundAndOrganization.idRound));
+          dispatch(createIntroduce(valueAdd,roundAndOrganization.idRound));
           setAddIntro(false);
         }
       });
@@ -161,7 +161,7 @@ function IntroduceRound() {
   return (
     <>
       <div style={{ float: 'right', width: 300, marginTop: 25 }}>
-        <Button onClick={() => { handleAddIntro() }} type="primary" size="middle">Thêm</Button>
+        <Button onClick={() => { handleAddIntro() }} type="primary" size="middle">Thêm bài giới thiệu</Button>
       </div>
       <div style={{ marginTop: 75 }}>
         {

@@ -51,7 +51,6 @@ function RoundDeail() {
             ...form,
             [name]: value,
         });
-        console.log(form);
     };
     const handleClickButtonCapNhat = (e) => {
         e.preventDefault();
@@ -200,7 +199,7 @@ function RoundDeail() {
     }
     const handleClickEnd = () => {
         const obj = {
-            id:  roundAndOrganization.idRound,
+            id: roundAndOrganization.idRound,
             status: "Kết thúc"
         }
         Swal.fire({
@@ -216,7 +215,7 @@ function RoundDeail() {
             confirmButtonColor: "#112D4E",
         }).then(async (result) => {
             if (result.isConfirmed) {
-                dispatch(updateStatusRoundDetail(obj))
+                dispatch(updateStatusRoundDetail(obj, roundAndOrganization.idRound))
             }
         });
     }
@@ -304,20 +303,19 @@ function RoundDeail() {
                                     />{roundAndOrganization.stage}
                                 </span>
                             </p>
-                            <p>
-                                {roundAndOrganization.summary}
-                            </p>
+
                         </div>
                     </div>
                 </Card>
                 <div className="rd__content">
-                    <div className="rd__action">
+                    {userInfo.role === "ORGANIZATION" && <div className="rd__action">
                         <img
                             src={Images.PENCIL}
                             alt="edit"
                             onClick={handleOpenModalUr}
                         />
                     </div>
+                    }
                     <div style={{ marginTop: 20, marginLeft: 50, fontWeight: 700 }}><p>Thông tin gọi vốn:</p></div>
                     <div style={{ marginTop: 10, marginLeft: 200 }}>
                         <p><span style={{ fontWeight: 600 }}>Số tiền muốn kêu gọi: </span>
@@ -332,18 +330,21 @@ function RoundDeail() {
                         <p><span style={{ fontWeight: 600 }}>Ngày kết thúc: </span>
                             <span>{roundAndOrganization.endDate}</span>
                         </p>
+                        <p>
+                            {roundAndOrganization.summary}
+                        </p>
                     </div>
                     {(userInfo.role == "INVESTOR") &&
                         <div style={{ float: 'right' }}>
-                            {(listDealByRound == "No Data") && <Button onClick={handleClick} style={{ backgroundColor: "#0f327d", color: "#FFFFFF" }}>Tham gia </Button>}
+                            {(listDealByRound == "No Data" && roundAndOrganization.status !== "EXPIRATION") && <Button onClick={handleClick} style={{ backgroundColor: "#0f327d", color: "#FFFFFF" }}>Tham gia </Button>}
                             <Button style={{ backgroundColor: "#778899", color: "#FFFFFF" }}>Theo dõi </Button>
                         </div>
                     }
                 </div>
-                {((userInfo.role == "ORGANIZATION" )&& listDealByRound.length === 0) &&
-                        <div style={{ float: 'right' }}>
-                            <Button onClick={handleClickEnd} style={{ backgroundColor: "#778899", color: "#FFFFFF" }}>Kết thúc vòng gọi vốn</Button>
-                        </div>}
+                {((userInfo.role == "ORGANIZATION") && (listDealByRound.length === 0) && (roundAndOrganization.status !== 'EXPIRATION')) &&
+                    <div style={{ float: 'right' }}>
+                        <Button size="middle" onClick={handleClickEnd} style={{ backgroundColor: "#778899", color: "#FFFFFF" }}>Kết thúc vòng gọi vốn</Button>
+                    </div>}
                 <ModalConfirmDeal
                     openModal={openModal}
                     closeModal={handleCloseModal}
