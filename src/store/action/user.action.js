@@ -204,3 +204,40 @@ export const putAccountToConfirm = (gmail, history, checkType) => {
       });
   };
 };
+
+export const changePassword = (object, history) => {
+  return (dispatch) => {
+    axios({
+      method: "PUT",
+      url: defaultUrlAPI() + "change-password",
+      data: object,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          Swal.fire({
+            icon: "success",
+            title: "Đổi mật khẩu thành công. Vui lòng đăng nhập lại.",
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+            allowOutsideClick: false,
+          }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+              localStorage.removeItem("userInfo");
+              history.push("/dang-nhap");
+            }
+          });
+        } else {
+          showMessage("error", "Mật khẩu cũ không chính xác");
+        }
+      })
+      .catch((err) => {
+        sessionTimeOut(err, history);
+      });
+  };
+};

@@ -67,7 +67,6 @@ function OverviewContent(props) {
   };
   // delete intro
   const handleDeleteIntro = (id) => {
-    console.log(id);
     Swal.fire({
       icon: "warning",
       title: "Bạn muốn xóa tiêu đề - nội dung vừa chọn?",

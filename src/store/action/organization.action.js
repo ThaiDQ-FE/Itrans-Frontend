@@ -17,6 +17,7 @@ export const getOrganizationFilter = (
 ) => {
   let baseUrl = "http://localhost:8080/api/v1/auth/filter-organization?";
   let tailUrl = "";
+  let amountUrl = "";
   if (arrayIndustry.length === 0) {
     let params = `idIndustry=0`;
     tailUrl = tailUrl + params + `&`;

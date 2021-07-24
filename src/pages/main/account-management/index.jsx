@@ -8,7 +8,10 @@ import NewsTab from "../../../components/account-management-component/news";
 import RoundById from "../../../components/account-management-component/round";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDeatilCompany } from "../../../store/action/company.action";
+import {
+  getDeatilCompany,
+  getDeatilCompanyView,
+} from "../../../store/action/company.action";
 import {
   checkEmailUser,
   checkIdUser,
@@ -22,7 +25,10 @@ import {
 import { getListMilestone } from "../../../store/action/milestone.action";
 import { getListMediaById } from "../../../store/action/media.action";
 import { getListIntroduceByGmail } from "../../../store/action/introduce.action";
-import { getListArticleByGmail } from "../../../store/action/artical.action";
+import {
+  getListArticleByGmail,
+  getListFollowed,
+} from "../../../store/action/artical.action";
 import TeamMember from "../../../components/account-management-component/team-member";
 import { getListTeamMember } from "../../../store/action/team.action";
 import {
@@ -32,15 +38,18 @@ import {
 import { getListIndustry } from "../../../store/action/register.action";
 import NotAuth from "../../error/auth";
 import { withRouter } from "react-router-dom";
+import AccountManagementFollow from "../../../components/account-management-component/follow";
 function AccountManagement(props) {
   const { TabPane } = Tabs;
   const dispatch = useDispatch();
-  const { detailCompany } = useSelector((state) => state.detailCompany);
+  const { detailCompany, detailCompanyView } = useSelector(
+    (state) => state.detailCompany
+  );
   const { loading } = useSelector((state) => state.loading);
   const { listMilestone } = useSelector((state) => state.milestone);
   const { listMedia } = useSelector((state) => state.media);
   const { listIntroduce } = useSelector((state) => state.introduce);
-  const { listArticle } = useSelector((state) => state.article);
+  const { listArticle, listFollowed } = useSelector((state) => state.article);
   const { listTeamMember } = useSelector((state) => state.teamMember);
   const { listRoundByIdInvestor, listRoundByIdOrganization } = useSelector(
     (state) => state.round
@@ -55,6 +64,7 @@ function AccountManagement(props) {
       dispatch(getListArticleByGmail(checkEmailUser(), false));
       dispatch(getListIntroduceByGmail(checkEmailUser(), true));
       dispatch(getListTeamMember(checkEmailUser(), false));
+      dispatch(getListFollowed(checkEmailUser(), true, props.history));
       if (checkRoleUser() === "ORGANIZATION") {
         dispatch(getListMilestone(checkIdUser(), true));
       }
@@ -68,7 +78,7 @@ function AccountManagement(props) {
     } else if (path === "/to-chuc/chi-tiet") {
       const gmail = getLocalStorage("gmailOrganizationToDetail");
       const id = getLocalStorage("idOrganizationToDetail");
-      dispatch(getDeatilCompany(gmail), true);
+      dispatch(getDeatilCompanyView(gmail), true);
       dispatch(getListMediaById(gmail, true));
       dispatch(getListArticleByGmail(gmail, false));
       dispatch(getListIntroduceByGmail(gmail, true));
@@ -78,7 +88,7 @@ function AccountManagement(props) {
     } else if (path === "/nha-dau-tu/chi-tiet") {
       const gmail = getLocalStorage("gmailInvestorToDetail");
       const id = getLocalStorage("idInvestorToDetail");
-      dispatch(getDeatilCompany(gmail), true);
+      dispatch(getDeatilCompanyView(gmail), true);
       dispatch(getListMediaById(gmail, true));
       dispatch(getListIntroduceByGmail(gmail, true));
       dispatch(getListTeamMember(gmail, false));
@@ -99,6 +109,29 @@ function AccountManagement(props) {
       return "Thỏa thuận";
     }
   };
+  const checkTab = () => {
+    if (checkPathUrl() === pathQuanLyTaiKhoan()) {
+      if (detailCompany.investorType !== "Nhà đầu tư thiên thần") {
+        return (
+          <TabPane tab="Thành viên chủ chốt" key="3">
+            <TeamMember teamMember={listTeamMember} />
+          </TabPane>
+        );
+      } else {
+        return <></>;
+      }
+    } else {
+      if (detailCompanyView.investorType !== "Nhà đầu tư thiên thần") {
+        return (
+          <TabPane tab="Thành viên chủ chốt" key="3">
+            <TeamMember teamMember={listTeamMember} />
+          </TabPane>
+        );
+      } else {
+        return <></>;
+      }
+    }
+  };
   if (loading === true) {
     return (
       <div className="am__loading">
@@ -115,25 +148,70 @@ function AccountManagement(props) {
       <div className="am__wrapper">
         <div className="am__container">
           <div className="am__image">
-            <img
-              src={
-                detailCompany.logo === "" ? Images.NO_IMAGE : detailCompany.logo
-              }
-              alt="logo company"
-            />
+            {checkPathUrl() === pathQuanLyTaiKhoan() ? (
+              <img
+                src={
+                  detailCompany.logo === ""
+                    ? Images.NO_IMAGE
+                    : detailCompany.logo
+                }
+                alt="logo company"
+              />
+            ) : (
+              <img
+                src={
+                  detailCompanyView.logo === ""
+                    ? Images.NO_IMAGE
+                    : detailCompanyView.logo
+                }
+                alt="logo company"
+              />
+            )}
           </div>
-          <div className="am__info">
-            <span>{detailCompany.name}</span>
-            <br />
-            <span>
-              {detailCompany.numberOfEmp} thành viên - Thành lập năm{" "}
-              {detailCompany.foundedYear}
-            </span>
-          </div>
+          {checkPathUrl() === pathQuanLyTaiKhoan() ? (
+            <div className="am__info">
+              <span>{detailCompany.name}</span>
+              <br />
+              <span>
+                {detailCompany.numberOfEmp} thành viên - Thành lập năm{" "}
+                {detailCompany.foundedYear}
+              </span>
+            </div>
+          ) : (
+            <div className="am__info">
+              <span>{detailCompanyView.name}</span>
+              <br />
+              <span>
+                {detailCompanyView.numberOfEmp} thành viên - Thành lập năm{" "}
+                {detailCompanyView.foundedYear}
+              </span>
+            </div>
+          )}
+          {checkPathUrl() === pathQuanLyTaiKhoan() ? (
+            <div className="am__info">
+              <span>{detailCompany.name}</span>
+              <br />
+              <span>
+                {detailCompany.numberOfEmp} thành viên - Thành lập năm{" "}
+                {detailCompany.foundedYear}
+              </span>
+            </div>
+          ) : (
+            <div className="am__info">
+              <span>{detailCompanyView.name}</span>
+              <br />
+              <span>
+                {detailCompanyView.numberOfEmp} thành viên - Thành lập năm{" "}
+                {detailCompanyView.foundedYear}
+              </span>
+            </div>
+          )}
+
           <Tabs defaultActiveKey="1" type="card" size="large">
             <TabPane tab="Tổng quan" key="1">
               <OverviewTab
                 detailCompany={detailCompany}
+                detailCompanyView={detailCompanyView}
                 listMilestone={listMilestone}
                 loading={loading}
                 media={listMedia}
@@ -146,17 +224,17 @@ function AccountManagement(props) {
                 listRoundByIdOrganization={listRoundByIdOrganization}
               />
             </TabPane>
-            {detailCompany.investorType !== "Nhà đầu tư thiên thần" ? (
-              <TabPane tab="Thành viên chủ chốt" key="3">
-                <TeamMember teamMember={listTeamMember} />
+            {checkTab()}
+            <TabPane tab="Tin tức" key="4">
+              <NewsTab article={listArticle} industry={listIndustry} />
+            </TabPane>
+            {checkPathUrl() === pathQuanLyTaiKhoan() ? (
+              <TabPane tab="Theo dõi" key="5">
+                <AccountManagementFollow list={listFollowed} />
               </TabPane>
             ) : (
               <></>
             )}
-
-            <TabPane tab="Tin tức" key="4">
-              <NewsTab article={listArticle} industry={listIndustry} />
-            </TabPane>
           </Tabs>
         </div>
       </div>

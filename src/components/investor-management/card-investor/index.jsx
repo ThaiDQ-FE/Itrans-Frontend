@@ -41,8 +41,12 @@ function CardInvestorComponent(props) {
       followed: gmail,
     };
     const objectDispath = {
-      arrayProvince: props.selectedProvince,
-      arrayType: props.selectedType,
+      amount: props.amount,
+      listHead: props.selectedHead,
+      listIndus: props.selectedIndustry,
+      listPro: props.selectedProvince,
+      listStages: props.selectedStage,
+      listType: props.selectedType,
     };
     if (status === "Chưa theo dõi") {
       dispatch(postFollow(object, objectDispath));
@@ -127,8 +131,12 @@ function CardInvestorComponent(props) {
               ))
           ) : (
             <div className="il__noData">
-              <img src={Images.NO_DATA} alt="no data" />
-              <p>Không có dữ liệu</p>
+              <img
+                style={{ width: 75, height: 75 }}
+                src={Images.EMPTY_BOX}
+                alt="no data"
+              />
+              <p className="label__fontWeight">Không có dữ liệu</p>
             </div>
           )}
         </div>

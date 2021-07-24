@@ -7,7 +7,6 @@ import ContentNews from "../content-news";
 import message from "../../../../assets/message/text";
 import { storage } from "../../../../configs/firebase";
 function InfoNews(props) {
-  console.log(props.arrayIndus);
   const [loading, setLoading] = useState(false);
   const { Option } = Select;
   const { TextArea } = Input;

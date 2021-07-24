@@ -93,7 +93,6 @@ function NewsTab(props) {
     });
   };
   const handleChangeValue = (value, action) => {
-    console.log(value);
     let array = [];
     for (let i = 0; i < action.length; i++) {
       array.push(Number(action[i].key));
@@ -256,7 +255,6 @@ function NewsTab(props) {
         dispatch(deleleArticleById(id, props.history));
       }
     });
-    console.log(id, title);
   };
   const handleEditArticle = (value) => {
     setInfoNews({
@@ -305,8 +303,6 @@ function NewsTab(props) {
   const handleClickArticle = (id) => {
     props.history.push(`/tin-tuc/chi-tiet/${id}`);
   };
-  console.log(arrayIndustries);
-  console.log(arrayIndus);
   return (
     <div
       className={`nt__wrapper${
@@ -337,10 +333,9 @@ function NewsTab(props) {
         props.article
           .slice(length.minValue, length.maxValue)
           .map((value, index) => (
-            <div className="nt__articleWrappers">
+            <div className="nt__articleWrappers" key={index}>
               <div
                 className="nt__articleWrapper"
-                key={index}
                 onClick={() => handleClickArticle(value.idArticle)}
               >
                 <ArticlesItem

@@ -40,7 +40,6 @@ function AdminSidebar() {
     return selected;
   };
   const onCollapse = (collapsed) => {
-    console.log(collapsed);
     setOpenSide(!openSide);
   };
   return (
