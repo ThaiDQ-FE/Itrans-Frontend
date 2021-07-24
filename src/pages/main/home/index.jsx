@@ -13,6 +13,13 @@ import "./styles.scss";
 import NotAuth from "../../error/auth";
 import { withRouter } from "react-router-dom";
 import { getDeatilCompany } from "../../../store/action/company.action";
+import {
+  getListIndustry,
+  getListInvestorType,
+  getListProvince,
+  getListRegion,
+  getListStage,
+} from "../../../store/action/register.action";
 function UserHome(props) {
   const { listViewArticle, listSearch } = useSelector((state) => state.article);
   const { loading } = useSelector((state) => state.loading);
@@ -23,6 +30,11 @@ function UserHome(props) {
     dispatch(getDeatilCompany(checkEmailUser(), false));
     dispatch(getListViewArticle(checkEmailUser(), false, props.history));
     dispatch(getOrgOrInvNotFollow(checkEmailUser(), true));
+    dispatch(getListProvince());
+    dispatch(getListRegion());
+    dispatch(getListIndustry());
+    dispatch(getListStage());
+    dispatch(getListInvestorType());
   }, []);
   if (getLocalStorage("userInfo") === null) {
     return <NotAuth />;

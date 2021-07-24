@@ -23,8 +23,12 @@ import {
   GET_DETAIL_ARTICLE_BY_ID_SUCCESS,
   GET_LIST_ARTICLE_FAILED,
   GET_LIST_ARTICLE_SUCCESS,
+  GET_LIST_FOLLOWED_FAILED,
+  GET_LIST_FOLLOWED_SUCCESS,
   GET_LIST_VIEW_ARTICLE_FAILED,
   GET_LIST_VIEW_ARTICLE_SUCCESS,
+  SEARCH_ARTICLE_ADMIN_FAILED,
+  SEARCH_ARTICLE_ADMIN_SUCCESS,
   SEARCH_ARTICLE_FAILED,
   SEARCH_ARTICLE_SUCCESS,
 } from "../constants/article.const";
@@ -261,6 +265,89 @@ const searchArticleSuccess = (list) => {
 const searchArticleFailed = (err) => {
   return {
     type: SEARCH_ARTICLE_FAILED,
+    payload: err,
+  };
+};
+
+export const searchArticleAdmin = (title, history) => {
+  return (dispacth) => {
+    dispacth(startLoading());
+    axios({
+      method: "GET",
+      url:
+        defaultUrlAPIStringTemplate() +
+        `search-article-of-admin?title=${title}`,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        dispacth(stopLoading());
+        if (res.status === 200) {
+          dispacth(searchArticleAdminSuccess(res.data));
+        } else {
+          showMessage("error", message.CACTH_ERROR);
+        }
+      })
+      .catch((err) => {
+        dispacth(stopLoading());
+        dispacth(searchArticleAdminFailed(err));
+        sessionTimeOut(err, history);
+      });
+  };
+};
+
+const searchArticleAdminSuccess = (list) => {
+  return {
+    type: SEARCH_ARTICLE_ADMIN_SUCCESS,
+    payload: list,
+  };
+};
+const searchArticleAdminFailed = (err) => {
+  return {
+    type: SEARCH_ARTICLE_ADMIN_FAILED,
+    payload: err,
+  };
+};
+
+export const getListFollowed = (gmail, isLoading, history) => {
+  return (dispatch) => {
+    if (isLoading === true) {
+      dispatch(startLoading());
+    }
+    axios({
+      method: "GET",
+      url: defaultUrlAPIStringTemplate() + `my-follow?gmail=${gmail}`,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        dispatch(stopLoading());
+        if (res.status === 200) {
+          dispatch(getListFollowedSuccess(res.data));
+        } else {
+          showMessage("error", message.CACTH_ERROR);
+        }
+      })
+      .catch((err) => {
+        dispatch(stopLoading);
+        dispatch(getListFollowedFailed(err));
+        sessionTimeOut(err, history);
+      });
+  };
+};
+
+const getListFollowedSuccess = (list) => {
+  return {
+    type: GET_LIST_FOLLOWED_SUCCESS,
+    payload: list,
+  };
+};
+
+const getListFollowedFailed = (err) => {
+  return {
+    type: GET_LIST_FOLLOWED_FAILED,
     payload: err,
   };
 };

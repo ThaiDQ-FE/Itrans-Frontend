@@ -1,7 +1,9 @@
 import axios from "axios";
 import {
   authorizationAccount,
+  checkPathUrl,
   checkRoleUser,
+  pathQuanLyTaiKhoan,
   sessionTimeOut,
   showMessage,
   showMessageHTML,
@@ -11,8 +13,8 @@ import {
   GET_ORG_OR_INV_NOT_FOLLOW_FAILED,
   GET_ORG_OR_INV_NOT_FOLLOW_SUCCESS,
 } from "../constants/interest.const";
-import { getListViewArticle } from "./artical.action";
-import { getInvestorFilter } from "./investor.action";
+import { getListFollowed, getListViewArticle } from "./artical.action";
+import { getInvestorFilter, getInvestorFilterV2 } from "./investor.action";
 import { startLoading, stopLoading } from "./loading.action";
 import { getOrganizationFilter } from "./organization.action";
 
@@ -40,9 +42,13 @@ export const postFollow = (object, objectDispath, name, history) => {
           } else {
             if (checkRoleUser() === "ORGANIZATION") {
               dispatch(
-                getInvestorFilter(
-                  objectDispath.arrayProvince,
-                  objectDispath.arrayType,
+                getInvestorFilterV2(
+                  objectDispath.amount,
+                  objectDispath.listHead,
+                  objectDispath.listIndus,
+                  objectDispath.listPro,
+                  objectDispath.listStages,
+                  objectDispath.listType,
                   object.follow,
                   false
                 )
@@ -80,26 +86,34 @@ export const putUnfollow = (object, objectDispath, history) => {
     })
       .then((res) => {
         if (res.status === 200) {
-          if (checkRoleUser() === "ORGANIZATION") {
-            dispatch(
-              getInvestorFilter(
-                objectDispath.arrayProvince,
-                objectDispath.arrayType,
-                object.follow,
-                false
-              )
-            );
+          if (checkPathUrl() === pathQuanLyTaiKhoan()) {
+            dispatch(getListFollowed(object.follow, false));
           } else {
-            dispatch(
-              getOrganizationFilter(
-                objectDispath.arrayIndustry,
-                objectDispath.arrayProvince,
-                objectDispath.arrayRegion,
-                objectDispath.arrayStage,
-                object.follow,
-                false
-              )
-            );
+            if (checkRoleUser() === "ORGANIZATION") {
+              dispatch(
+                getInvestorFilterV2(
+                  objectDispath.amount,
+                  objectDispath.listHead,
+                  objectDispath.listIndus,
+                  objectDispath.listPro,
+                  objectDispath.listStages,
+                  objectDispath.listType,
+                  object.follow,
+                  false
+                )
+              );
+            } else {
+              dispatch(
+                getOrganizationFilter(
+                  objectDispath.arrayIndustry,
+                  objectDispath.arrayProvince,
+                  objectDispath.arrayRegion,
+                  objectDispath.arrayStage,
+                  object.follow,
+                  false
+                )
+              );
+            }
           }
         }
       })

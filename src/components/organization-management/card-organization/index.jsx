@@ -46,7 +46,6 @@ function OrganizationListComponent(props) {
       arrayRegion: props.selectedRegion,
       arrayStage: props.selectedStage,
     };
-    console.log(objectDispath);
     if (status === "Chưa theo dõi") {
       dispatch(postFollow(object, objectDispath, null, props.history));
     } else {
@@ -133,7 +132,7 @@ function OrganizationListComponent(props) {
               ))
           ) : (
             <div className="olc__noData">
-              <img src={Images.NO_DATA} alt="no data" />
+              <img src={Images.EMPTY_BOX} alt="no data" />
               <p>Không có dữ liệu</p>
             </div>
           )}

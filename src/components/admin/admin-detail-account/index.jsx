@@ -10,7 +10,6 @@ import { putAccountToConfirm } from "../../../store/action/user.action";
 import { useHistory } from "react-router-dom";
 import AdminDetailInfo from "./admin-detail-info";
 function AdminDetailAccount(props) {
-  console.log(props);
   const { loadingComponent, loading } = useSelector((state) => state.loading);
   const history = useHistory();
   const dispatch = useDispatch();

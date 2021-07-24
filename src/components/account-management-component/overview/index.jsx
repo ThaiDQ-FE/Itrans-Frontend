@@ -12,7 +12,6 @@ import {
   getLocalStorage,
   localStorages,
   pathQuanLyTaiKhoan,
-  pathToChuc,
   sessionTimeOut,
   showMessage,
 } from "../../../assets/helper/helper";
@@ -32,6 +31,7 @@ import {
   checkTitleMile,
 } from "../../../validate/create/mile";
 import OverViewInfoComponent from "./overview-info";
+import OverViewInfoViewComponent from "./overview-infoView";
 function OverviewTab(props) {
   const [milestoneModal, setMilestoneModal] = useState(false);
   const [editMilestone, setEditMilestone] = useState(false);
@@ -385,14 +385,28 @@ function OverviewTab(props) {
         editMilestone={editMilestone}
       />
       <div className="ot__left">
-        <OverViewInfoComponent
-          detail={props.detailCompany}
-          indus={props.detailCompany.industries}
-          pro={props.detailCompany.provinces}
-          stage={props.detailCompany.stages}
-          region={props.detailCompany.regions}
-          loading={props.loading}
-        />
+        {checkPathUrl() === pathQuanLyTaiKhoan() ? (
+          <OverViewInfoComponent
+            detail={props.detailCompany}
+            indus={props.detailCompany.industries}
+            pro={props.detailCompany.provinces}
+            stage={props.detailCompany.stages}
+            region={props.detailCompany.regions}
+            investorType={props.detailCompany.investorTypes}
+            loading={props.loading}
+          />
+        ) : (
+          <OverViewInfoViewComponent
+            detailView={props.detailCompanyView}
+            indusView={props.detailCompanyView.industries}
+            proView={props.detailCompanyView.provinces}
+            stageView={props.detailCompanyView.stages}
+            regionView={props.detailCompanyView.regions}
+            investorTypeView={props.detailCompanyView.investorTypes}
+            loading={props.loading}
+          />
+        )}
+
         {checkPath()}
       </div>
       <OverviewContent media={props.media} introduce={props.introduce} />

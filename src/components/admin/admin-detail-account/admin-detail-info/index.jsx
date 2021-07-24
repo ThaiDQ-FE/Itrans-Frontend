@@ -3,7 +3,6 @@ import { Button, Spin, Tooltip } from "antd";
 import "antd/dist/antd.css";
 import "./styles.scss";
 function AdminDetailInfo(props) {
-  console.log(props);
   const checkRole = props.detail.hasOwnProperty("idInvestor");
   const renderListIndus = () => {
     if (props.indus !== undefined) {

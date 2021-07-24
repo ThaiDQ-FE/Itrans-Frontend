@@ -6,9 +6,14 @@ import "./styles.scss";
 import "antd/dist/antd.css";
 import Images from "../../assets/images/images";
 import { useDispatch, useSelector } from "react-redux";
-import { getCurrentDeal, updateDeal, updateDealAccept, updateDealStatusCancel } from "../../store/action/deal.action";
-import { Switch } from 'antd';
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import {
+  getCurrentDeal,
+  updateDeal,
+  updateDealAccept,
+  updateDealStatusCancel,
+} from "../../store/action/deal.action";
+import { Switch } from "antd";
+import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
 import Swal from "sweetalert2";
 import ModalConfirmDeal from "../modal-confirm-deal";
 function CurrentDeal() {
@@ -21,7 +26,7 @@ function CurrentDeal() {
   const [dataDeal, setDataDeal] = useState({
     soTienDauTu: "",
     phanTramCoPhan: "",
-    moTa: ""
+    moTa: "",
   });
   const [openModal, setOpenModal] = useState(false);
   const [edit, setEdit] = useState(false);
@@ -30,13 +35,13 @@ function CurrentDeal() {
   };
   const handleCloseModal = () => {
     setOpenModal(false);
-  }
+  };
   const handleCreateDealForm = () => {
     const dealNew = {
       idDeal: idDeal.id,
       capitalInvestment: dataDeal.soTienDauTu,
       shareRequirement: dataDeal.phanTramCoPhan,
-    }
+    };
     Swal.fire({
       icon: "warning",
       title: "Deal hiện tại đã được thỏa thuận?",
@@ -50,31 +55,31 @@ function CurrentDeal() {
       confirmButtonColor: "#112D4E",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        dispatch(updateDealAccept(dealNew))
+        dispatch(updateDealAccept(dealNew));
         setOpenModal(false);
       }
     });
-
-  }
+  };
   const handleSaveDeal = (deal) => {
     let capitalInvestmentCheck = dataDeal.soTienDauTu;
     let shareRequirementCheck = dataDeal.phanTramCoPhan;
     let descriptionCheck = dataDeal.moTa;
 
-    if (dataDeal.soTienDauTu === '') {
-      capitalInvestmentCheck = deal.capitalInvestment
-    } if (dataDeal.phanTramCoPhan === '') {
-      shareRequirementCheck = deal.dealShareRequirement
+    if (dataDeal.soTienDauTu === "") {
+      capitalInvestmentCheck = deal.capitalInvestment;
     }
-    if (dataDeal.moTa === '') {
-      descriptionCheck = deal.dealDescription
+    if (dataDeal.phanTramCoPhan === "") {
+      shareRequirementCheck = deal.dealShareRequirement;
+    }
+    if (dataDeal.moTa === "") {
+      descriptionCheck = deal.dealDescription;
     }
     const dealNew = {
       idDeal: deal.idDeal,
       capitalInvestment: capitalInvestmentCheck,
       shareRequirement: shareRequirementCheck,
-      description: descriptionCheck
-    }
+      description: descriptionCheck,
+    };
     Swal.fire({
       icon: "warning",
       title: "Bạn có chắc chỉnh sửa đúng?",
@@ -92,8 +97,7 @@ function CurrentDeal() {
         setEdit(false);
       }
     });
-
-  }
+  };
 
   const handleEditDeal = (deal) => {
     setEdit(true);
@@ -111,7 +115,7 @@ function CurrentDeal() {
       ...idDeal,
       id: deal.idDeal,
     });
-  }
+  };
   const handleCancelDeal = (deal) => {
     Swal.fire({
       icon: "warning",
@@ -130,7 +134,7 @@ function CurrentDeal() {
         dispatch(updateDealStatusCancel(object));
       }
     });
-  }
+  };
   const handleDeleteDeal = (deal) => {
     Swal.fire({
       icon: "warning",
@@ -149,19 +153,24 @@ function CurrentDeal() {
         dispatch(updateDealStatusCancel(object));
       }
     });
-  }
+  };
   const expandedRowRender = (record, index) => {
     const columns = [
       {
-        title: "Tên nhà đầu tư", dataIndex: "nameInvestor", key: "nameInvestor", render: (value, round) => (
+        title: "Tên nhà đầu tư",
+        dataIndex: "nameInvestor",
+        key: "nameInvestor",
+        render: (value, round) => (
           <>
-            <img id='src' src={round.logoInvestor} alt="&nbsp;" />
+            <img id="src" src={round.logoInvestor} alt="&nbsp;" />
             <span>{value}</span>
           </>
         ),
       },
       {
-        title: "Số tiền muốn đầu tư", dataIndex: "capitalInvestment", key: "capitalInvestment",
+        title: "Số tiền muốn đầu tư",
+        dataIndex: "capitalInvestment",
+        key: "capitalInvestment",
         render: (value, round) => (
           <div className="cfr__inputStkg">
             {edit === true ? (
@@ -182,10 +191,12 @@ function CurrentDeal() {
               </>
             )}
           </div>
-        )
+        ),
       },
       {
-        title: "Phần trăm cổ phần", dataIndex: "dealShareRequirement", key: "dealShareRequirement",
+        title: "Phần trăm cổ phần",
+        dataIndex: "dealShareRequirement",
+        key: "dealShareRequirement",
         render: (value) => (
           <div className="cfr__inputPtcp">
             {edit === true ? (
@@ -202,11 +213,13 @@ function CurrentDeal() {
               </>
             )}
           </div>
-        )
+        ),
       },
       { title: "Ngày đăng", dataIndex: "createAt", key: "createAt" },
       {
-        dataIndex: "dealDescription", key: "dealDescription", title: "Mô tả",
+        dataIndex: "dealDescription",
+        key: "dealDescription",
+        title: "Mô tả",
         render: (value) => (
           <>
             {edit === true ? (
@@ -223,10 +236,12 @@ function CurrentDeal() {
               </Tooltip>
             )}
           </>
-        )
+        ),
       },
       {
-        title: "", key: "action", render: (deal) => (
+        title: "",
+        key: "action",
+        render: (deal) => (
           <div className="deal__qlvgvAction">
             <If condition={deal.status === "PENDING" && edit === false}>
               <Then>
@@ -253,7 +268,9 @@ function CurrentDeal() {
                 <>
                   <div className="deal__done">
                     <Tooltip placement="top" title="Đồng ý">
-                      <img src={Images.CHECKED_REGISTER} alt="done"
+                      <img
+                        src={Images.CHECKED_REGISTER}
+                        alt="done"
                         onClick={() => handleAcceptDeal(deal)}
                       />
                     </Tooltip>
@@ -273,7 +290,9 @@ function CurrentDeal() {
                 <>
                   <div className="deal__save">
                     <Tooltip placement="top" title="Lưu">
-                      <img src={Images.SAVE} alt="save"
+                      <img
+                        src={Images.SAVE}
+                        alt="save"
                         onClick={() => handleSaveDeal(record)}
                       />
                     </Tooltip>
@@ -291,8 +310,8 @@ function CurrentDeal() {
               </Else>
             </If>
           </div>
-        )
-      }
+        ),
+      },
     ];
     const data = listDealCurrent.filter(
       (deal) => deal.idRound === record.idRound && deal.status !== "REJECT"
@@ -309,17 +328,27 @@ function CurrentDeal() {
   };
   const columns = [
     {
-      title: "Tên doanh nghiệp", dataIndex: "nameOrganization", key: "nameOrganization", render: (value1, round,e) => (
+      title: "Tên doanh nghiệp",
+      dataIndex: "nameOrganization",
+      key: "nameOrganization",
+      render: (value1, round, e) => (
         <>
-          {console.log(e)}
-          <img id='src' src={round.logoOrganization} alt="&nbsp;" />
+          <img id="src" src={round.logoOrganization} alt="&nbsp;" />
           <span>{value1}</span>
         </>
       ),
     },
     { title: "Giai đoạn gọi vốn", dataIndex: "stage", key: "stage" },
-    { title: "Số tiền kiêu gọi", dataIndex: "fundingAmount", key: "fundingAmount" },
-    { title: "Phần trăm cổ phần", dataIndex: "roundShareRequirement", key: "roundShareRequirement" },
+    {
+      title: "Số tiền kiêu gọi",
+      dataIndex: "fundingAmount",
+      key: "fundingAmount",
+    },
+    {
+      title: "Phần trăm cổ phần",
+      dataIndex: "roundShareRequirement",
+      key: "roundShareRequirement",
+    },
     { title: "Mô tả", dataIndex: "roundDescription", key: "roundDescription" },
     { title: "Ngày gọi", dataIndex: "startDate", key: "startDate" },
     { title: "Ngày kết thúc", dataIndex: "endDate", key: "endDate" },

@@ -3,13 +3,7 @@ import { Timeline, Popover, Skeleton, Button } from "antd";
 import Swal from "sweetalert2";
 import "antd/dist/antd.css";
 import "./styles.scss";
-import {
-  checkPathUrl,
-  checkRoleUser,
-  pathQuanLyTaiKhoan,
-} from "../../../../assets/helper/helper";
 function OverViewInfoComponent(props) {
-  console.log(props);
   const checkRole = props.detail.hasOwnProperty("idInvestor");
   const renderListIndus = () => {
     if (props.indus !== undefined) {
@@ -74,6 +68,22 @@ function OverViewInfoComponent(props) {
       return <>{"Chưa cập nhật"}</>;
     }
   };
+  const renderListInvestorType = () => {
+    if (
+      props.detail.hasOwnProperty("investorTypes") === true &&
+      props.investorType.length > 0
+    ) {
+      return props.investorType.map((item, index) => {
+        return (
+          <li className="ovic__liItem" key={index}>
+            - {item.name}
+          </li>
+        );
+      });
+    } else {
+      return <>{"Chưa cập nhật"}</>;
+    }
+  };
   return (
     <div className="ovic__wrapper">
       <div className="ovic__container">
@@ -121,9 +131,9 @@ function OverViewInfoComponent(props) {
                     <span className="ovic__fontWeight">Loại nhà đầu tư: </span>
                   </div>
                   <div className="ovic__item">
-                    <span className="ovic__wordBreak">
-                      {props.detail.investorType}
-                    </span>
+                    <ul className="ovic__ulList ovic__wordBreak">
+                      {renderListInvestorType()}
+                    </ul>
                   </div>
                   <div className="ovic__item">
                     <span className="ovic__fontWeight">Trụ sở chính: </span>

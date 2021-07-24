@@ -5,8 +5,12 @@ import {
   GET_DETAIL_ARTICLE_BY_ID_SUCCESS,
   GET_LIST_ARTICLE_FAILED,
   GET_LIST_ARTICLE_SUCCESS,
+  GET_LIST_FOLLOWED_FAILED,
+  GET_LIST_FOLLOWED_SUCCESS,
   GET_LIST_VIEW_ARTICLE_FAILED,
   GET_LIST_VIEW_ARTICLE_SUCCESS,
+  SEARCH_ARTICLE_ADMIN_FAILED,
+  SEARCH_ARTICLE_ADMIN_SUCCESS,
   SEARCH_ARTICLE_FAILED,
   SEARCH_ARTICLE_SUCCESS,
 } from "../constants/article.const";
@@ -17,6 +21,8 @@ const initialState = {
   detailArticle: {},
   listAnotherArticle: [],
   listSearch: [],
+  listSearchAdmin: [],
+  listFollowed: [],
   errors: [],
 };
 
@@ -42,6 +48,14 @@ const articleReducer = (state = initialState, action) => {
     case SEARCH_ARTICLE_SUCCESS:
       return { ...state, listSearch: payload };
     case SEARCH_ARTICLE_FAILED:
+      return { ...state, errors: payload };
+    case SEARCH_ARTICLE_ADMIN_SUCCESS:
+      return { ...state, listSearchAdmin: payload };
+    case SEARCH_ARTICLE_ADMIN_FAILED:
+      return { ...state, errors: payload };
+    case GET_LIST_FOLLOWED_SUCCESS:
+      return { ...state, listFollowed: payload };
+    case GET_LIST_FOLLOWED_FAILED:
       return { ...state, errors: payload };
     default:
       return state;
