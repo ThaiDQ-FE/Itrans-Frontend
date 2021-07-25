@@ -6,9 +6,13 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Images from "../../assets/images/images";
 import {
+  authorizationAccount,
   checkEmailUser,
+  checkIdUser,
   checkRoleUser,
   getLocalStorage,
+  sessionTimeOut,
+  showMessage,
 } from "../../assets/helper/helper";
 import { useDispatch, useSelector } from "react-redux";
 import ModalAccountHome from "./modal-account";
@@ -20,6 +24,24 @@ import {
 } from "../../validate/changePass/rePass";
 import { changePassword } from "../../store/action/user.action";
 import Swal from "sweetalert2";
+import {
+  checkEmp,
+  checkIndus,
+  checkLink,
+  checkMax,
+  checkMin,
+  checkName,
+  checkPro,
+  checkRe,
+  checkStage,
+  checkType,
+  checkYear,
+} from "../../validate/update/investor";
+import { checkLinkWeb } from "../../configs/regex";
+import axios from "axios";
+import { defaultUrlAPI } from "../../configs/url";
+import message from "../../assets/message/text";
+import { getDeatilCompany } from "../../store/action/company.action";
 function Header({ history }) {
   const { detailCompany } = useSelector((state) => state.detailCompany);
   const user = JSON.parse(localStorage.getItem("userInfo"));
@@ -36,9 +58,33 @@ function Header({ history }) {
   const [oldError, setOldError] = useState("");
   const [newError, setNewError] = useState("");
   const [reNewError, setReNewError] = useState("");
-  const [avataError, setAvataError] = useState("");
   //
-  const [avata, setAvata] = useState(null);
+  const [headQuater, setHeadQuater] = useState("");
+  const [basicInfoIn, setBasicInfo] = useState({
+    logo: "",
+    name: "",
+    numberOfEmp: "",
+    foundedYear: "",
+    website: "",
+    idHeadQuarter: "",
+    headQuarter: "",
+    minInvestment: "",
+    maxInvestment: "",
+    currentStage: "",
+    currentStageId: "",
+  });
+  const [logoError, setLogoError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [numberOfEmpError, setNumberOfEmpError] = useState("");
+  const [foundedYearError, setFoundedYearError] = useState("");
+  const [websiteError, setWebsiteError] = useState("");
+  const [minInvestmentError, setMinInvestmentError] = useState("");
+  const [maxInvestmentError, setMaxInvestmentError] = useState("");
+  const [stageError, setStageError] = useState("");
+  const [regionError, setRegionError] = useState("");
+  const [provinceError, setProvinceError] = useState("");
+  const [industryError, setIndustryError] = useState("");
+  const [typeError, setTypeError] = useState("");
   //
   const [arrayProvince, setArrayProvince] = useState([]);
   const [arayPro, setArayPro] = useState([]);
@@ -57,7 +103,6 @@ function Header({ history }) {
   const handleCloseModal = () => {
     setOpenReset(false);
     setOpenEdit(false);
-    setAvataError("");
     setChangePass({
       oldPassword: "",
       newPassword: "",
@@ -78,7 +123,32 @@ function Header({ history }) {
     setArrayStage([]);
     setArrayS([]);
     //
-    setAvata("");
+    setBasicInfo({
+      logo: "",
+      name: "",
+      numberOfEmp: "",
+      foundedYear: "",
+      website: "",
+      idHeadQuarter: "",
+      headQuarter: "",
+      minInvestment: "",
+      maxInvestment: "",
+      currentStage: "",
+      currentStageId: "",
+    });
+    setLogoError("");
+    setNameError("");
+    setNumberOfEmpError("");
+    setFoundedYearError("");
+    setWebsiteError("");
+    setMinInvestmentError("");
+    setMaxInvestmentError("");
+    setStageError("");
+    setRegionError("");
+    setProvinceError("");
+    setIndustryError("");
+    setTypeError("");
+    setHeadQuater("");
   };
   const handleOpenModalResetPass = () => {
     setOpenMenu(null);
@@ -91,7 +161,6 @@ function Header({ history }) {
   const handleOpenModal = () => {
     setOpenMenu(null);
     setOpenEdit(true);
-    setAvata(detailCompany.logo);
     for (let i = 0; i < detailCompany.industries.length; i++) {
       arrayIndustry.push(detailCompany.industries[i].idIndustry);
       arrayIn.push(detailCompany.industries[i].name);
@@ -114,6 +183,27 @@ function Header({ history }) {
         arrayS.push(detailCompany.stages[i].name);
       }
     }
+    setBasicInfo({
+      logo: detailCompany.logo,
+      name: detailCompany.name,
+      numberOfEmp: detailCompany.numberOfEmp,
+      foundedYear: detailCompany.foundedYear,
+      website: detailCompany.website,
+      headQuarter: detailCompany.headQuarter,
+      idHeadQuarter: detailCompany.idHeadQuarter,
+      minInvestment: detailCompany.minInvestment,
+      maxInvestment: detailCompany.maxInvestment,
+      currentStage: detailCompany.currentStage,
+      currentStageId: detailCompany.idCurrentStage,
+    });
+    setHeadQuater(detailCompany.idHeadQuarter);
+  };
+  const handleChangeValue = (event) => {
+    const { name, value } = event.target;
+    setBasicInfo({
+      ...basicInfoIn,
+      [name]: value,
+    });
   };
   const handleChangeIType = (value, action) => {
     let array = [];
@@ -180,6 +270,20 @@ function Header({ history }) {
       setArrayS(value);
     }
   };
+  const handleChangeHead = (value) => {
+    setBasicInfo({
+      ...basicInfoIn,
+      idHeadQuarter: value,
+    });
+  };
+
+  const handleChangeCurrent = (value) => {
+    console.log(value);
+    setBasicInfo({
+      ...basicInfoIn,
+      currentStageId: value,
+    });
+  };
 
   const handleChangePass = (event) => {
     const { name, value } = event.target;
@@ -188,7 +292,7 @@ function Header({ history }) {
       [name]: value,
     });
   };
-
+  // blur
   const handleBlurOld = () => {
     checkOld(changePass.oldPassword, setOldError);
   };
@@ -198,7 +302,165 @@ function Header({ history }) {
   const handleBlurOReNew = () => {
     checkReNew(changePass.reNew, setReNewError, changePass.newPassword);
   };
-  console.log(changePass);
+  const handleBlurName = () => {
+    checkName(basicInfoIn.name, setNameError);
+  };
+  const handleBlurEmp = () => {
+    checkEmp(basicInfoIn.numberOfEmp, setNumberOfEmpError);
+  };
+  const handleBlurYear = () => {
+    checkYear(basicInfoIn.foundedYear, setFoundedYearError);
+  };
+  const handleBlurLink = () => {
+    checkLink(basicInfoIn.website, setWebsiteError);
+  };
+  const handleBlurType = () => {
+    checkType(arrayInvestorType, setTypeError);
+  };
+  const handleBlurIndus = () => {
+    checkIndus(arrayIndustry, setIndustryError);
+  };
+  const handleBlurPro = () => {
+    checkPro(arrayProvince, setProvinceError);
+  };
+  const handleBlurRe = () => {
+    checkRe(arrayRegion, setRegionError);
+  };
+  const handleBlurStage = () => {
+    checkStage(arrayStage, setStageError);
+  };
+  const handleBlurMin = () => {
+    checkMin(basicInfoIn.minInvestment, setMinInvestmentError);
+  };
+  const handleBlurMax = () => {
+    checkMax(
+      basicInfoIn.minInvestment,
+      basicInfoIn.maxInvestment,
+      setMaxInvestmentError
+    );
+  };
+  const handleClickUpdateIn = () => {
+    handleBlurName();
+    handleBlurEmp();
+    handleBlurYear();
+    handleBlurLink();
+    handleBlurType();
+    handleBlurIndus();
+    handleBlurPro();
+    handleBlurRe();
+    handleBlurStage();
+    handleBlurMin();
+    handleBlurMax();
+    if (
+      logoError === "" &&
+      nameError === "" &&
+      numberOfEmpError === "" &&
+      foundedYearError === "" &&
+      websiteError === "" &&
+      typeError === "" &&
+      industryError === "" &&
+      provinceError === "" &&
+      regionError === "" &&
+      stageError === "" &&
+      maxInvestmentError === "" &&
+      minInvestmentError === ""
+    ) {
+      const object = {
+        foundedYear: Number(basicInfoIn.foundedYear),
+        idHeadQuarter: basicInfoIn.idHeadQuarter,
+        idIndustries: arrayIndustry,
+        idInvestor: checkIdUser(),
+        idInvestorType: arrayInvestorType,
+        idProvinces: arrayProvince,
+        idRegions: arrayRegion,
+        idStages: arrayStage,
+        logo: basicInfoIn.logo,
+        maxInvestment: Number(basicInfoIn.maxInvestment),
+        minInvestment: Number(basicInfoIn.minInvestment),
+        name: basicInfoIn.name,
+        numberOfEmp: Number(basicInfoIn.numberOfEmp),
+        website: basicInfoIn.website,
+      };
+      handleUpdateInvestor(object);
+      console.log(object);
+    }
+  };
+  const handleUpdateOrg = () => {
+    handleBlurName();
+    handleBlurEmp();
+    handleBlurYear();
+    handleBlurLink();
+    handleBlurIndus();
+    handleBlurPro();
+    if (
+      logoError === "" &&
+      nameError === "" &&
+      numberOfEmpError === "" &&
+      foundedYearError === "" &&
+      websiteError === "" &&
+      industryError === "" &&
+      provinceError === ""
+    ) {
+      const object = {
+        foundedYear: Number(basicInfoIn.foundedYear),
+        idIndustries: arrayIndustry,
+        idOrganization: checkIdUser(),
+        idProvinces: arrayProvince,
+        idStage: basicInfoIn.currentStageId,
+        logo: basicInfoIn.logo,
+        name: basicInfoIn.name,
+        numberOfEmp: Number(basicInfoIn.numberOfEmp),
+        website: basicInfoIn.website,
+      };
+      handleUpdateOrganization(object);
+      console.log(object);
+    }
+  };
+  const handleUpdateOrganization = (object) => {
+    axios({
+      method: "PUT",
+      url: defaultUrlAPI() + "organization",
+      data: object,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          handleCloseModal();
+          showMessage("success", "Cập nhật thông tin tài khoản thành công");
+          dispatch(getDeatilCompany(checkEmailUser(), false));
+        } else {
+          showMessage("error", "Cập nhật thông tin tài khoản thất bại");
+        }
+      })
+      .catch((err) => {
+        sessionTimeOut(err, history);
+      });
+  };
+  const handleUpdateInvestor = (object) => {
+    axios({
+      method: "PUT",
+      url: defaultUrlAPI() + "investor",
+      data: object,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          handleCloseModal();
+          showMessage("success", "Cập nhật thông tin tài khoản thành công");
+          dispatch(getDeatilCompany(checkEmailUser(), false));
+        } else {
+          showMessage("error", "Cập nhật thông tin tài khoản thất bại");
+        }
+      })
+      .catch((err) => {
+        sessionTimeOut(err, history);
+      });
+  };
+  //
   const handleChangePassClick = () => {
     handleBlurOld();
     handleBlurNew();
@@ -302,7 +564,7 @@ function Header({ history }) {
       }
     }
   };
-
+  console.log(checkLinkWeb.test(basicInfoIn.website));
   return (
     <div
       className={`header__container${
@@ -333,9 +595,7 @@ function Header({ history }) {
           <div className="header__logined" onClick={handleOpenMenu}>
             <img
               src={
-                detailCompany.logo === ""
-                  ? Images.USER_AVATA
-                  : detailCompany.logo
+                detailCompany.logo === "" ? Images.NO_IMAGE : detailCompany.logo
               }
               alt=""
             />
@@ -429,15 +689,46 @@ function Header({ history }) {
         close={handleCloseModal}
         data={detailCompany}
         // errror
-        avataError={avataError}
-        setAvataError={setAvataError}
+        logoError={logoError}
+        nameError={nameError}
+        numberOfEmpError={numberOfEmpError}
+        foundedYearError={foundedYearError}
+        websiteError={websiteError}
+        minInvestmentError={minInvestmentError}
+        maxInvestmentError={maxInvestmentError}
+        stageError={stageError}
+        regionError={regionError}
+        provinceError={provinceError}
+        industryError={industryError}
+        typeError={typeError}
         //
+        setLogoError={setLogoError}
+        //
+        setBasicInfo={setBasicInfo}
+        basicInfoIn={basicInfoIn}
         //
         handleChangeIType={handleChangeIType}
         handleChangeStage={handleChangeStage}
         handleChangeRegion={handleChangeRegion}
         handleChangeProvince={handleChangeProvince}
         handleChangeIndustry={handleChangeIndustry}
+        handleChangeValue={handleChangeValue}
+        handleChangeHead={handleChangeHead}
+        handleChangeCurrent={handleChangeCurrent}
+        handleClickUpdateIn={handleClickUpdateIn}
+        handleUpdateOrg={handleUpdateOrg}
+        // blur
+        handleBlurName={handleBlurName}
+        handleBlurEmp={handleBlurEmp}
+        handleBlurYear={handleBlurYear}
+        handleBlurLink={handleBlurLink}
+        handleBlurType={handleBlurType}
+        handleBlurIndus={handleBlurIndus}
+        handleBlurPro={handleBlurPro}
+        handleBlurRe={handleBlurRe}
+        handleBlurStage={handleBlurStage}
+        handleBlurMin={handleBlurMin}
+        handleBlurMax={handleBlurMax}
       />
       <ModalResetAccountPass
         handleChangePass={handleChangePass}

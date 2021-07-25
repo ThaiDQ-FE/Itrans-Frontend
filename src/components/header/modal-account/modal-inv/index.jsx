@@ -15,6 +15,41 @@ function ModalAccountInvestor(props) {
     listInvestorType,
   } = useSelector((state) => state.register);
   const [loading, setLoading] = useState(false);
+  const disable = () => {
+    let boolen;
+    if (
+      props.logoError === "" &&
+      props.nameError === "" &&
+      props.numberOfEmpError === "" &&
+      props.foundedYearError === "" &&
+      props.websiteError === "" &&
+      props.typeError === "" &&
+      props.industryError === "" &&
+      props.provinceError === "" &&
+      props.regionError === "" &&
+      props.stageError === "" &&
+      props.maxInvestmentError === "" &&
+      props.minInvestmentError === ""
+    ) {
+      boolen = false;
+    } else if (
+      props.logoError === "" ||
+      props.nameError === "" ||
+      props.numberOfEmpError === "" ||
+      props.foundedYearError === "" ||
+      props.websiteError === "" ||
+      props.typeError === "" ||
+      props.industryError === "" ||
+      props.provinceError === "" ||
+      props.regionError === "" ||
+      props.stageError === "" ||
+      props.maxInvestmentError === "" ||
+      props.minInvestmentError === ""
+    ) {
+      boolen = true;
+    }
+    return boolen;
+  };
   return (
     <Modal
       className="modalah__accountInv"
@@ -32,8 +67,24 @@ function ModalAccountInvestor(props) {
             data={props.data}
             loading={loading}
             setLoading={setLoading}
-            avataError={props.avataError}
-            setAvataError={props.setAvataError}
+            listProvince={listProvince}
+            setBasicInfo={props.setBasicInfo}
+            basicInfoIn={props.basicInfoIn}
+            handleChangeValue={props.handleChangeValue}
+            handleChangeHead={props.handleChangeHead}
+            //error
+            logoError={props.logoError}
+            nameError={props.nameError}
+            numberOfEmpError={props.numberOfEmpError}
+            foundedYearError={props.foundedYearError}
+            websiteError={props.websiteError}
+            //
+            setLogoError={props.setLogoError}
+            // blur
+            handleBlurName={props.handleBlurName}
+            handleBlurEmp={props.handleBlurEmp}
+            handleBlurYear={props.handleBlurYear}
+            handleBlurLink={props.handleBlurLink}
           />
         </div>
         <hr className="modali__hr" />
@@ -57,15 +108,40 @@ function ModalAccountInvestor(props) {
             listIndustry={listIndustry}
             listInvestorType={listInvestorType}
             //
+            basicInfoIn={props.basicInfoIn}
+            //
             handleChangeIType={props.handleChangeIType}
             handleChangeStage={props.handleChangeStage}
             handleChangeRegion={props.handleChangeRegion}
             handleChangeProvince={props.handleChangeProvince}
             handleChangeIndustry={props.handleChangeIndustry}
+            handleChangeValue={props.handleChangeValue}
+            //
+            minInvestmentError={props.minInvestmentError}
+            maxInvestmentError={props.maxInvestmentError}
+            stageError={props.stageError}
+            regionError={props.regionError}
+            provinceError={props.provinceError}
+            industryError={props.industryError}
+            typeError={props.typeError}
+            // blur
+            handleBlurType={props.handleBlurType}
+            handleBlurIndus={props.handleBlurIndus}
+            handleBlurPro={props.handleBlurPro}
+            handleBlurRe={props.handleBlurRe}
+            handleBlurStage={props.handleBlurStage}
+            handleBlurMin={props.handleBlurMin}
+            handleBlurMax={props.handleBlurMax}
           />
         </div>
         <div className="modali__action">
-          <Button className="modali__update" type="primary" size="large">
+          <Button
+            className="modali__update"
+            type="primary"
+            size="large"
+            onClick={props.handleClickUpdateIn}
+            disabled={disable()}
+          >
             Cập nhật
           </Button>
         </div>

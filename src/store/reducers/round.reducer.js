@@ -19,6 +19,8 @@ import {
   GET_ROUND_AND_ORGANIZATION_FAIL,
   GET_LIST_DEAL_BY_ROUND_SUCCESS,
   GET_LIST_DEAL_BY_ROUND_FAIL,
+  GET_ROUND_SUGGEST_SUCCESS,
+  GET_ROUND_SUGGEST_FAILED,
 } from "../constants/round.const";
 
 const initialState = {
@@ -28,10 +30,11 @@ const initialState = {
   listAllRoundActive: [],
   listRoundByIdInvestor: [],
   listRoundByIdOrganization: [],
-  listQuestionAndAnswer:[],
+  listQuestionAndAnswer: [],
   listAllRound: [],
-  roundAndOrganization:{},
-  listDealByRound:[],
+  roundAndOrganization: {},
+  listDealByRound: [],
+  listRoundSuggest: [],
   errors: [],
 };
 
@@ -75,7 +78,7 @@ const roundReducer = (state = initialState, action) => {
       }
     case GET_LIST_ROUND_BY_ID_ORGANIZATION_FAILED:
       return { ...state, errors: payload };
-      case GET_LIST_QUESTION_AND_ANSWER_SUCCESS:
+    case GET_LIST_QUESTION_AND_ANSWER_SUCCESS:
       return { ...state, listQuestionAndAnswer: payload };
     case GET_LIST_QUESTION_AND_ANSWER_FAIL:
     case GET_LIST_ALL_ROUND_SUCCESS:
@@ -86,14 +89,18 @@ const roundReducer = (state = initialState, action) => {
       }
     case GET_LIST_ALL_ROUND_FAILED:
       return { ...state, errors: payload };
-      case GET_ROUND_AND_ORGANIZATION_SUCCESS:
+    case GET_ROUND_AND_ORGANIZATION_SUCCESS:
       return { ...state, roundAndOrganization: payload };
     case GET_ROUND_AND_ORGANIZATION_FAIL:
       return { ...state, errors: payload };
-      case GET_LIST_DEAL_BY_ROUND_SUCCESS:
-        return { ...state, listDealByRound: payload };
-      case GET_LIST_DEAL_BY_ROUND_FAIL:
-        return { ...state, errors: payload };
+    case GET_LIST_DEAL_BY_ROUND_SUCCESS:
+      return { ...state, listDealByRound: payload };
+    case GET_LIST_DEAL_BY_ROUND_FAIL:
+      return { ...state, errors: payload };
+    case GET_ROUND_SUGGEST_SUCCESS:
+      return { ...state, listRoundSuggest: payload };
+    case GET_ROUND_SUGGEST_FAILED:
+      return { ...state, errors: payload };
     default:
       return state;
   }

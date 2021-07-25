@@ -83,6 +83,18 @@ function CardFundingRound() {
             </div>
           )}
         </div>
+        <div className="olc__paging">
+          {listAllRoundActive.length > 8 ? (
+            <Pagination
+              defaultCurrent={1}
+              defaultPageSize={8}
+              onChange={handleChange}
+              total={listAllRoundActive.length}
+            />
+          ) : (
+            ""
+          )}
+        </div>
       </div>
     </div>
   );

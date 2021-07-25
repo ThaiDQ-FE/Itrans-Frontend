@@ -8,6 +8,7 @@ import ListSearch from "./list-search";
 import { useDispatch } from "react-redux";
 import { searchArticle } from "../../../store/action/artical.action";
 import { checkEmailUser } from "../../../assets/helper/helper";
+import RoundSuggest from "./list-suggest";
 
 function HomeBody(props) {
   const dispatch = useDispatch();
@@ -32,6 +33,10 @@ function HomeBody(props) {
 
   return (
     <div className="hb__wrapper">
+      <div className="hb__suggest">
+        <RoundSuggest list={props.listRound} />
+      </div>
+      <hr style={{ width: 200, margin: "auto" }} />
       <div className="hb__search">
         <Search
           id="hb__search"
