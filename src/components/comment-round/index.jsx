@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { getLocalStorage } from "../../assets/helper/helper";
 import { createAnswer, createQuestion } from "../../store/action/round.action";
 const { TextArea } = Input;
-
+const idRound = getLocalStorage("idRound");
 const CommentList = ({ comments, onClick, children, idQuestion }) => (
   <List
     dataSource={comments}
@@ -150,8 +150,8 @@ function CommentRound() {
       });
     }, 1000);
     const questionObj = {
-      idInvestor: 1,
-      idRound: 1,
+      idInvestor: userLogin.id,
+      idRound: idRound,
       question: state.value,
     };
     dispatch(createQuestion(questionObj));
