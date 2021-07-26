@@ -79,9 +79,22 @@
         }
         .maib__selectIType {
             width: 35%;
+            .maib__select {
+                display: block;
+                width: 100%;
+            }
         }
     }
 }
 .label__fontWeight {
     font-weight: 600;
+}
+.input__error {
+    border: 1px solid red !important;
+    &:hover {
+        border: 1px solid red !important;
+    }
+}
+.ant-popover {
+    z-index: 1055 !important;
 }
