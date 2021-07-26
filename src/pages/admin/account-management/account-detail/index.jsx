@@ -25,6 +25,7 @@ function AdminDetailAccountManagement() {
         pro={detailCompany.provinces}
         stage={detailCompany.stages}
         region={detailCompany.regions}
+        type={detailCompany.investorTypes}
       />
     </div>
   );

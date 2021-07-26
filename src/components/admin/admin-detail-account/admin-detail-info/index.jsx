@@ -66,6 +66,22 @@ function AdminDetailInfo(props) {
       return <>{"Chưa cập nhật"}</>;
     }
   };
+  const renderListInvestorType = () => {
+    if (
+      props.detail.hasOwnProperty("investorTypes") === true &&
+      props.type.length > 0
+    ) {
+      return props.type.map((item, index) => {
+        return (
+          <li className="ovic__liItem" key={index}>
+            - {item.name}
+          </li>
+        );
+      });
+    } else {
+      return <>{"Chưa cập nhật"}</>;
+    }
+  };
   return (
     <div className="admindi__wrapper">
       <div className="admindi__displayGrid">
@@ -94,9 +110,7 @@ function AdminDetailInfo(props) {
               <span className="admindi__fontWeight">Loại nhà đầu tư:</span>
             </div>
             <div className="admindi__item">
-              <span className="admindi__wordBreak">
-                {props.detail.investorType}
-              </span>
+              <ul className="admindi__ul">{renderListInvestorType()}</ul>
             </div>
           </>
         )}

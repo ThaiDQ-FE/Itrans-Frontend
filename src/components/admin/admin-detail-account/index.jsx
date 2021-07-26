@@ -161,6 +161,7 @@ function AdminDetailAccount(props) {
           pro={props.pro}
           stage={props.stage}
           region={props.region}
+          type={props.type}
         />
         <div
           className={`ada__ibRight${
