@@ -198,7 +198,7 @@ function ListDealSlider() {
                 (listDealByRound.length !== 0 && <div className="lds__mid">
                     <div style={{ fontWeight: 700 }}><p>Thông tin những yêu cầu muốn đầu tư: </p></div>
                     <Slider {...settings}>
-                        {listDealByRound.map((value) =>
+                        {listDealByRound.length > 0 && listDealByRound.map((value) =>
                             <div className="lds__container" onClick={() => { dispatch(getDetailDeal(value.idDeal))
                                 localStorages("statusDeal",value.statusDeal)
                             }}>

@@ -4,7 +4,8 @@ import { Card, Button, Tooltip, Pagination } from "antd";
 import "antd/dist/antd.css";
 import "./styles.scss";
 import Images from "../../../../assets/images/images";
-import { checkRoleUser } from "../../../../assets/helper/helper";
+import { useHistory } from "react-router-dom";
+import { checkRoleUser, localStorages } from "../../../../assets/helper/helper";
 function RoundSuggest(props) {
   console.log(props.list);
   const [length, setLength] = useState({
@@ -24,6 +25,10 @@ function RoundSuggest(props) {
       });
     }
   };
+  let history = useHistory();
+  const handleClickToDetail = () => {
+    history.push("/thong-tin-chi-tiet-vong-goi-von");
+  }
   return (
     <div className="rs__wrapper">
       {checkRoleUser() === "INVESTOR" ? (
@@ -46,7 +51,10 @@ function RoundSuggest(props) {
                   props.list
                     .slice(length.minValue, length.maxValue)
                     .map((value, index) => (
-                      <Card key={index} hoverable className="rs__itemRound">
+                      <Card onClick={() => {
+                        handleClickToDetail();
+                        localStorages("idRound", value.idRound);
+                      }} key={index} hoverable className="rs__itemRound">
                         <img
                           src={
                             value.thumbnail === ""
