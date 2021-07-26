@@ -317,7 +317,7 @@ function RoundDeail() {
                     </div>
                     }
                     <div style={{ marginTop: 20, marginLeft: 50, fontWeight: 700 }}><p>Thông tin gọi vốn:</p></div>
-                    <div style={{ marginTop: 10, marginLeft: 200 }}>
+                    <div style={{ marginTop: 10, marginLeft: 200 , width:320 }}>
                         <p><span style={{ fontWeight: 600 }}>Số tiền muốn kêu gọi: </span>
                             <span>{roundAndOrganization.fundingAmount} tỷ</span>
                         </p>

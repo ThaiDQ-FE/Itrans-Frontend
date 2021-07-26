@@ -77,7 +77,7 @@ function FormMember(props) {
       const upload = storage.ref(`images/${image.name}`).put(image);
       upload.on(
         "state_changed",
-        (snapshot) => {},
+        (snapshot) => { },
         (error) => {
           console.log(error);
         },
@@ -123,10 +123,12 @@ function FormMember(props) {
     } else {
       return teamMember.map((item, index) => {
         return (
-          <>
+          <div style={{display:'flex'}}>
             <img src={item.image} />
-            <div>{item.position}</div>
-          </>
+            <div>{item.name}
+            <p>{item.position}</p>
+            </div>
+          </div>
         );
       });
     }

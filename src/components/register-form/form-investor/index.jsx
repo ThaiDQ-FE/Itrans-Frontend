@@ -125,15 +125,11 @@ function FormInvestor(props) {
       errors.industry = "";
       check++;
     }
-    if (!values.province) {
+    if (!values.province && !values.region) {
       errors.province = "Khu vực đầu tư không được để trống";
-    } else {
-      errors.province = "";
-      check++;
-    }
-    if (!values.region) {
       errors.region = "Vùng miền đầu tư không được để trống";
     } else {
+      errors.province = "";
       errors.region = "";
       check++;
     }
@@ -277,7 +273,7 @@ function FormInvestor(props) {
     localStorage.setItem("Form2Investor", JSON.stringify(information));
     setErrors(validate(information));
     setColor(validateColor(information));
-    if (check == 11) {
+    if (check == 10) {
       props.handleNext();
     }
   };

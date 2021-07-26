@@ -8,6 +8,7 @@ import {
   checkEmailUser,
   checkIdUser,
   checkPathUrl,
+  localStorages,
   pathQuanLyTaiKhoan,
   sessionTimeOut,
   showMessage,
@@ -27,7 +28,7 @@ import axios from "axios";
 import { defaultUrlAPI } from "../../../../configs/url";
 import { useDispatch } from "react-redux";
 import { getListRoundByIdOrganization } from "../../../../store/action/round.action";
-import { withRouter } from "react-router-dom";
+import { withRouter, useHistory } from "react-router-dom";
 function RoundByIdOrganization(props) {
   const [openModal, setOpenModal] = useState(false);
   const [thumbnail, setThumbnail] = useState("");
@@ -77,6 +78,11 @@ function RoundByIdOrganization(props) {
   const handleOpen = () => {
     setOpenModal(true);
   };
+  let history = useHistory();
+
+  const handleClickToDetail = () => {
+    history.push("/thong-tin-chi-tiet-vong-goi-von");
+  }
   const handleClose = () => {
     setOpenModal(false);
     setInfoRound({
@@ -237,48 +243,49 @@ function RoundByIdOrganization(props) {
   };
   return (
     <div
-      className={`rbio__wrapper${
-        props.listRound.length > 0 ? "" : " rbio__warpperNormal"
-      }`}
+      className={`rbio__wrapper${props.listRound.length > 0 ? "" : " rbio__warpperNormal"
+        }`}
     >
       {props.listRound.length > 0 ? checkHaveRound() : <></>}
 
       <div className="rbio__container">
         <div
-          className={`rbio__listRound${
-            props.listRound.length > 0 ? "" : " rbio__listRoundNormal"
-          }`}
+          className={`rbio__listRound${props.listRound.length > 0 ? "" : " rbio__listRoundNormal"
+            }`}
         >
           {props.listRound && props.listRound.length > 0
             ? props.listRound
-                .slice(length.minValue, length.maxValue)
-                .map((value, index) => (
-                  <Card key={index} hoverable className="rbio__itemOrg">
-                    {renderTag(value.status)}
-                    <img
-                      src={
-                        value.thumbnail === ""
-                          ? Images.NO_IMAGE
-                          : value.thumbnail
-                      }
-                      alt="thumbnail"
-                    />
-                    <div className="ribo__stage">
-                      <span>{value.stage}</span>
+              .slice(length.minValue, length.maxValue)
+              .map((value, index) => (
+                <Card onClick={() => {
+                  handleClickToDetail();
+                  localStorages("idRound", value.idRound);
+                }} key={index} hoverable className="rbio__itemOrg">
+                  {renderTag(value.status)}
+                  <img
+                    src={
+                      value.thumbnail === ""
+                        ? Images.NO_IMAGE
+                        : value.thumbnail
+                    }
+                    alt="thumbnail"
+                  />
+                  <div className="ribo__stage">
+                    <span>{value.stage}</span>
+                  </div>
+                  <div className="rbio__startDate">
+                    <span>{value.startDate} / </span>
+                    <span>{value.endDate}</span>
+                  </div>
+                  {value.summary === "" ? (
+                    <></>
+                  ) : (
+                    <div className="rbio__summary">
+                      <span>{value.summary}</span>
                     </div>
-                    <div className="rbio__startDate">
-                      <span>{value.startDate} / </span>
-                      <span>{value.endDate}</span>
-                    </div>
-                    {value.summary === "" ? (
-                      <></>
-                    ) : (
-                      <div className="rbio__summary">
-                        <span>{value.summary}</span>
-                      </div>
-                    )}
-                  </Card>
-                ))
+                  )}
+                </Card>
+              ))
             : checkNoRound()}
         </div>
         <div className="ol__paging">

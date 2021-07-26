@@ -14,12 +14,13 @@ import DocumentRound from "../../../components/document-round";
 function RoundDetailManagement() {
   const dispatch = useDispatch();
   const userLogin = getLocalStorage("userInfo");
+  const idRound = getLocalStorage('idRound');
   useEffect(() => {
-    dispatch(getListQuestionAndAnswer(userLogin.gmail,1));
-    dispatch(getRoundAndOrganization(1));
-    dispatch(getDealByRound(userLogin.gmail,1));
-    dispatch(getListIntroduceByRoundId(1));
-    dispatch(getListDocumentByRoundId(1));
+    dispatch(getListQuestionAndAnswer(userLogin.gmail,idRound));
+    dispatch(getRoundAndOrganization(idRound));
+    dispatch(getDealByRound(userLogin.gmail,idRound));
+    dispatch(getListIntroduceByRoundId(idRound));
+    dispatch(getListDocumentByRoundId(idRound));
   })
   return (
     <div style={{ marginTop: 100, marginBottom: 100 }}>

@@ -1,13 +1,50 @@
 import { Input, Button, Tooltip } from "antd";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { postVerificationCode } from "../../../store/action/register.action";
 import "./styles.scss";
 import "antd/dist/antd.css";
 import Messages from "../../../assets/message/text";
 import Images from "../../../assets/images/images";
+import { doccumentAddDis, doccumentRemoveDis } from "../../../assets/helper/helper";
 function FormBasicInformation(props) {
   const dispatch = useDispatch();
+  const [time, setTime] = useState(0);
+  console.log(time);
+  localStorage.removeItem("TeamMember");
+  const Timer = ( seconds ) => {
+    // initialize timeLeft with the seconds prop
+    console.log(seconds)
+    const [timeLeft, setTimeLeft] = useState(seconds);
+    console.log(seconds)
+    useEffect(() => {
+      // exit early when we reach 0
+      if (!timeLeft){
+        return;
+      } 
+  
+      // save intervalId to clear the interval when the
+      // component re-renders
+      const intervalId = setInterval(() => {
+        setTimeLeft(timeLeft - 1);
+      }, 1000);
+  
+      // clear interval on re-render to avoid memory leaks
+      return () => clearInterval(intervalId);
+      // add timeLeft as a dependency to re-rerun the effect
+      // when we update it
+    }, [timeLeft]);
+    console.log(timeLeft)
+    if (timeLeft === 0){
+      // doccumentRemoveDis("fbi_MXT");
+      return ;
+    }else{
+      // doccumentAddDis("fbi_MXT")
+    return (
+      <p>{timeLeft} s</p>
+    );
+    }
+  }
   const [user, setUser] = useState({
     gmail: "",
     password: "",
@@ -34,7 +71,7 @@ function FormBasicInformation(props) {
     verificationCode: "",
   });
   const regex = new RegExp(
-    "^([a-zA-Z0-9]{6,30})+@[a-zA-Z0-9]+.([a-zA-Z0-9]{2,4})+$"
+    /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/
   );
   let check = 0;
   const validate = (values) => {
@@ -122,6 +159,9 @@ function FormBasicInformation(props) {
   };
   const handleClick = () => {
     localStorage.setItem("VerificationCode", 1);
+    console.log('e')
+    setTime(10);
+    console.log(time);
     dispatch(
       postVerificationCode({
         gmail: user.gmail,
@@ -172,10 +212,12 @@ function FormBasicInformation(props) {
           </div>
           <div className="fbi__groupGmail fbi__input">
             <div className="fbi__confirmGmail">
-              <Button onClick={handleClick} type="primary">
+              <Button id = "fbi_MXT" onClick={handleClick} type="primary">
                 Lấy mã xác thực
               </Button>
+              {()=>Timer(time)}
             </div>
+            
             <div className="fbi__inputConfirmGmail fbi__input">
               <small>Mã xác thực</small>
               <Tooltip

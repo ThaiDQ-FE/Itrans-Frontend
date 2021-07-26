@@ -20,7 +20,7 @@ function ListDealSlider() {
     const dispatch = useDispatch();
     var settings = {
         dots: true,
-        slidesToShow: 5,
+        slidesToShow: listDealByRound.length >= 5 ? 5 : listDealByRound.length,
         slidesToScroll: 1,
         customPaging: function (i) {
             return (
@@ -241,6 +241,7 @@ function ListDealSlider() {
 
                     <div className="lds_textDeal" style={{ border: 'groove 1px', paddingLeft: 10, padding: 10 }}>
                         <div className="lds__introduceWrapper" >
+                        {listDealByRound.statusDeal === "PENDING" &&
                             <div className="lds__action">
                                 <Tooltip title="Chỉnh sửa">
                                     <img
@@ -261,6 +262,7 @@ function ListDealSlider() {
                                     />
                                 </Tooltip>
                             </div>
+                        }
                         </div>
                         <p><span className="span_text">Số tiền đầu tư:  </span>
                             <span>{listDealByRound.capitalInvestment} Tỷ</span>

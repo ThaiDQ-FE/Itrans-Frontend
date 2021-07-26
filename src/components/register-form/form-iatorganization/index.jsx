@@ -53,7 +53,7 @@ function FormInformationAboutTheOrganization(props) {
     numberOfEmployee: "",
     province: "",
     link: "",
-    description: "",
+    // description: "",
   });
   const [errors, setErrors] = useState({
     name: "",
@@ -63,7 +63,7 @@ function FormInformationAboutTheOrganization(props) {
     numberOfEmployee: "",
     province: "",
     link: "",
-    description: "",
+    // description: "",
   });
   const [color, setColor] = useState({
     name: "",
@@ -73,7 +73,7 @@ function FormInformationAboutTheOrganization(props) {
     numberOfEmployee: "",
     province: "",
     link: "",
-    description: "",
+    // description: "",
   });
   let check = 0;
   const regex = new RegExp("^[0-9]*$");
@@ -131,12 +131,12 @@ function FormInformationAboutTheOrganization(props) {
       errors.province = "";
       check++;
     }
-    if (!values.description) {
-      errors.description = "Mô tả về doanh nghiệp không được để trống";
-    } else {
-      errors.description = "";
-      check++;
-    }
+    // if (!values.description) {
+    //   errors.description = "Mô tả về doanh nghiệp không được để trống";
+    // } else {
+    //   errors.description = "";
+    //   check++;
+    // }
     return errors;
   };
   const validateColor = (values) => {
@@ -186,11 +186,11 @@ function FormInformationAboutTheOrganization(props) {
     } else {
       errors.province = "";
     }
-    if (!values.description) {
-      errors.description = "1px solid red";
-    } else {
-      errors.description = "";
-    }
+    // if (!values.description) {
+    //   errors.description = "1px solid red";
+    // } else {
+    //   errors.description = "";
+    // }
 
     return errors;
   };
@@ -209,7 +209,7 @@ function FormInformationAboutTheOrganization(props) {
     localStorage.setItem("Form2", JSON.stringify(information));
     setErrors(validate(information));
     setColor(validateColor(information));
-    if (check == 8) {
+    if (check == 7) {
       props.handleNext();
     }
   };
@@ -376,7 +376,7 @@ function FormInformationAboutTheOrganization(props) {
             </div>
           </div>
           <div className="fiato__lineFour">
-            <div className="fiato__moTaVeDoanhNghiep">
+            {/* <div className="fiato__moTaVeDoanhNghiep">
               <small>Mô tả về doanh nghiệp</small>
               <Tooltip
                 title={errors.description}
@@ -391,7 +391,7 @@ function FormInformationAboutTheOrganization(props) {
                   size="large"
                 />
               </Tooltip>
-            </div>
+            </div> */}
             <div className="fiato__logo">
               <small>&nbsp;</small>
               <img
