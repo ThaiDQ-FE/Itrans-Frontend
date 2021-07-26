@@ -54,8 +54,8 @@ export const checkSummary = (sum, setSum) => {
   } else {
     setSum("");
   }
-  if (sum.length < 50) {
-    return setSum("Mô tả sơ lược tối thiểu 50 ký tự");
+  if (sum.length < 5) {
+    return setSum("Mô tả sơ lược tối thiểu 5 ký tự");
   } else {
     setSum("");
   }
