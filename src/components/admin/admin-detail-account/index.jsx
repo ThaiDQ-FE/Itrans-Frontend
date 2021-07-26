@@ -95,6 +95,7 @@ function AdminDetailAccount(props) {
       }
     });
   };
+  console.log(props);
   return (
     <div className="ada__wrapper">
       {loadingComponent === true || loading ? (
