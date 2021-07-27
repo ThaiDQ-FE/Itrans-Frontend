@@ -363,7 +363,11 @@ function Header({ history }) {
       regionError === "" &&
       stageError === "" &&
       maxInvestmentError === "" &&
-      minInvestmentError === ""
+      minInvestmentError === "" &&
+      arrayIndustry.length !== 0 &&
+      arrayProvince.length !== 0 &&
+      arrayInvestorType.length !== 0 &&
+      arrayStage.length !== 0
     ) {
       const object = {
         foundedYear: Number(basicInfoIn.foundedYear),
@@ -399,7 +403,9 @@ function Header({ history }) {
       foundedYearError === "" &&
       websiteError === "" &&
       industryError === "" &&
-      provinceError === ""
+      provinceError === "" &&
+      arrayIndustry.length !== 0 &&
+      arrayProvince.length !== 0
     ) {
       const object = {
         foundedYear: Number(basicInfoIn.foundedYear),
