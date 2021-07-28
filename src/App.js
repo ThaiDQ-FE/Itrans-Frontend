@@ -4,6 +4,8 @@ import RouterMainTemplate from "./templates/main";
 import RouterAdminTemplate from "./templates/admin";
 import { BrowserRouter, Switch } from "react-router-dom";
 import RouterGeneralTemplate from "./templates/login";
+import { getLocalStorage } from "./assets/helper/helper";
+import Gruad from "./core/graud";
 
 function App() {
   const renderMainRouter = () => {
@@ -49,7 +51,9 @@ function App() {
     <>
       <BrowserRouter>
         <Switch>{renderAdminRouter()}</Switch>
-        <Switch>{renderMainRouter()}</Switch>
+        <Gruad>
+          <Switch>{renderMainRouter()}</Switch>
+        </Gruad>
         <Switch>{renderGeneralRouter()}</Switch>
       </BrowserRouter>
     </>

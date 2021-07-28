@@ -28,7 +28,7 @@ function RoundSuggest(props) {
   let history = useHistory();
   const handleClickToDetail = () => {
     history.push("/thong-tin-chi-tiet-vong-goi-von");
-  }
+  };
   return (
     <div className="rs__wrapper">
       {checkRoleUser() === "INVESTOR" ? (
@@ -51,10 +51,15 @@ function RoundSuggest(props) {
                   props.list
                     .slice(length.minValue, length.maxValue)
                     .map((value, index) => (
-                      <Card onClick={() => {
-                        handleClickToDetail();
-                        localStorages("idRound", value.idRound);
-                      }} key={index} hoverable className="rs__itemRound">
+                      <Card
+                        onClick={() => {
+                          handleClickToDetail();
+                          localStorages("idRound", value.idRound);
+                        }}
+                        key={index}
+                        hoverable
+                        className="rs__itemRound"
+                      >
                         <img
                           src={
                             value.thumbnail === ""
@@ -96,6 +101,7 @@ function RoundSuggest(props) {
               <div className="olc__paging">
                 {props.list.length > 3 ? (
                   <Pagination
+                    style={{ textAlign: "center", marginTop: 20 }}
                     defaultCurrent={1}
                     defaultPageSize={3}
                     onChange={handleChange}
