@@ -50,7 +50,7 @@ function FormInvestor(props) {
       province: saveData.province,
       min: saveData.min,
       max: saveData.max,
-    })
+    });
 
     localStorage.removeItem("Form2Investor");
   }
@@ -60,48 +60,48 @@ function FormInvestor(props) {
       if (value.idProvince.toString() === information.idProvince) {
         array = value.name;
       }
-    })
+    });
     return array;
-  }
+  };
   const listRegionDefaul = () => {
     let array = [];
     if (information.region !== undefined) {
       listRegion.map((value) => {
-          information.region.map((valueS) => {
-            if (value.idRegion.toString() === valueS.toString()) {
-              array.push(value.name);
-            }
-          })
-      })
+        information.region.map((valueS) => {
+          if (value.idRegion.toString() === valueS.toString()) {
+            array.push(value.name);
+          }
+        });
+      });
       return array;
     }
-  }
+  };
   const listIndustryDefaul = () => {
     let array = [];
     if (information.industry !== undefined) {
       listIndustry.map((value) => {
-          information.industry.map((valueS) => {
-            if (value.idIndustry.toString() === valueS.toString()) {
-              array.push(value.name);
-            }
-          })
-      })
+        information.industry.map((valueS) => {
+          if (value.idIndustry.toString() === valueS.toString()) {
+            array.push(value.name);
+          }
+        });
+      });
       return array;
     }
-  }
+  };
   const listProvinceDefaul = () => {
     let array = [];
     if (information.province !== undefined) {
       listProvince.map((value) => {
-          information.province.map((valueS) => {
-            if (value.idProvince.toString() === valueS.toString()) {
-              array.push(value.name);
-            }
-          })
-      })
+        information.province.map((valueS) => {
+          if (value.idProvince.toString() === valueS.toString()) {
+            array.push(value.name);
+          }
+        });
+      });
     }
     return array;
-  }
+  };
   const listStageDefaul = () => {
     let array = [];
     console.log(information.stage);
@@ -111,11 +111,11 @@ function FormInvestor(props) {
           if (value.idStage.toString() === valueS.toString()) {
             array.push(value.name);
           }
-        })
-      })
+        });
+      });
     }
     return array;
-  }
+  };
 
   const [image, setImage] = useState(null);
   const [url, setUrl] = useState("");
@@ -126,7 +126,7 @@ function FormInvestor(props) {
       const upload = storage.ref(`images/${image.name}`).put(image);
       upload.on(
         "state_changed",
-        (snapshot) => { },
+        (snapshot) => {},
         (error) => {
           console.log(error);
         },
@@ -210,7 +210,10 @@ function FormInvestor(props) {
       errors.industry = "";
       check++;
     }
-    if (!values.province && !values.region || (values.province.length === 0 && values.region.length === 0)) {
+    if (
+      (!values.province && !values.region) ||
+      (values.province.length === 0 && values.region.length === 0)
+    ) {
       errors.province = "Khu vực đầu tư không được để trống";
       errors.region = "Vùng miền đầu tư không được để trống";
     } else {
@@ -291,7 +294,10 @@ function FormInvestor(props) {
     } else {
       errors.industry = "";
     }
-    if (!values.province && !values.region || (values.province.length === 0 && values.region.length === 0)) {
+    if (
+      (!values.province && !values.region) ||
+      (values.province.length === 0 && values.region.length === 0)
+    ) {
       errors.province = "1px solid red";
       errors.region = "1px solid red";
     } else {
@@ -369,55 +375,53 @@ function FormInvestor(props) {
     });
   };
 
-
   const handleChangeIdProvince = (value, action) => {
     setInformation({
       ...information,
       idProvince: action.key,
     });
-  }
+  };
   const handleChangeRegion = (value, action) => {
     let valueAction = [];
     for (let index = 0; index < action.length; index++) {
-      valueAction.push(parseInt(action[index].key))
+      valueAction.push(parseInt(action[index].key));
     }
     setInformation({
       ...information,
-      region: valueAction
+      region: valueAction,
     });
-  }
+  };
   const handleChangeProvince = (value, action) => {
     let valueAction = [];
     for (let index = 0; index < action.length; index++) {
-      valueAction.push(parseInt(action[index].key))
+      valueAction.push(parseInt(action[index].key));
     }
     setInformation({
       ...information,
-      province: valueAction
+      province: valueAction,
     });
-  }
+  };
   const handleChangeIndustry = (value, action) => {
     let valueAction = [];
     for (let index = 0; index < action.length; index++) {
-      valueAction.push(parseInt(action[index].key))
+      valueAction.push(parseInt(action[index].key));
     }
     setInformation({
       ...information,
-      industry: valueAction
+      industry: valueAction,
     });
-  }
+  };
 
   const handleChangeStage = (value, action) => {
     let valueAction = [];
     for (let index = 0; index < action.length; index++) {
-      valueAction.push(parseInt(action[index].key))
+      valueAction.push(parseInt(action[index].key));
     }
     setInformation({
       ...information,
-      stage: valueAction
+      stage: valueAction,
     });
-  }
-
+  };
 
   const renderListProvince = () => {
     return listProvince.map((item, index) => {
@@ -479,9 +483,257 @@ function FormInvestor(props) {
   return (
     <div className="fi__wrapper">
       <div className="fi__container">
-        <h3>{Messages.INVESTOR_INFORMATION}</h3>
+        <h2>{Messages.INVESTOR_INFORMATION}</h2>
         <form className="fi__form">
-          <div className="fi__lineOne">
+          <div className="fi__basicInfo">
+            <div className="fi__basicImageWrapper">
+              <label className="label__fontWeight">Hình đại diện</label>
+              <div className="fi__imageInfo">
+                <img
+                  src={url || Images.NO_IMAGE}
+                  alt=""
+                  className="fi__userLogo"
+                />
+                <input
+                  className="fi__file"
+                  type="file"
+                  id="file"
+                  onChange={handleChangeImage}
+                />
+                <label htmlFor="file" className="fi__span">
+                  <img
+                    src={Images.CAMERA}
+                    alt="camera"
+                    className="fi__camera"
+                  />
+                </label>
+              </div>
+            </div>
+            <div className="fi__infoBasic">
+              <div className="fi__lineOne">
+                <div className="fi__tenNhaQuyDauTu">
+                  <small className="label__fontWeight">
+                    Tên nhà/quỹ đầu tư
+                  </small>
+                  <Tooltip title={errors.name} placement="topRight" color="red">
+                    <Input
+                      placeholder="VD: Quỹ đầu tư A"
+                      value={information.name}
+                      style={{ border: color.name }}
+                      name="name"
+                      size="large"
+                      onChange={handleChangeInput}
+                    />
+                  </Tooltip>
+                </div>
+                <div className="fi__namThanhLap">
+                  <small className="label__fontWeight">Năm thành lập</small>
+                  <Tooltip
+                    title={errors.foundedYear}
+                    placement="topRight"
+                    color="red"
+                  >
+                    <Input
+                      placeholder="VD: 1998"
+                      type="text"
+                      maxLength="9"
+                      style={{ border: color.foundedYear }}
+                      value={information.foundedYear}
+                      name="foundedYear"
+                      size="large"
+                      onChange={handleChangeInput}
+                    />
+                  </Tooltip>
+                </div>
+                <div className="fi__soLuongThanhVien">
+                  <small className="label__fontWeight">Số thành viên</small>
+                  <Tooltip
+                    title={errors.numberOfEmployee}
+                    placement="topRight"
+                    color="red"
+                  >
+                    <Input
+                      placeholder="VD: 1658"
+                      type="text"
+                      maxLength="9"
+                      style={{ border: color.numberOfEmployee }}
+                      name="numberOfEmployee"
+                      value={information.numberOfEmployee}
+                      size="large"
+                      onChange={handleChangeInput}
+                    />
+                  </Tooltip>
+                </div>
+              </div>
+              <div className="fi__lineTwo">
+                <div className="fi__linkWebsite">
+                  <small className="label__fontWeight">Link website</small>
+                  <Tooltip title={errors.link} placement="topRight" color="red">
+                    <Input
+                      style={{ border: color.link }}
+                      name="link"
+                      size="large"
+                      onChange={handleChangeInput}
+                      value={information.link}
+                      placeholder="VD: https://www.facebook.com/"
+                    />
+                  </Tooltip>
+                </div>
+                <div className="fi__truSoChinh">
+                  <small className="label__fontWeight">Trụ sở chính</small>
+                  <Tooltip
+                    title={errors.idProvince}
+                    placement="topRight"
+                    color="red"
+                  >
+                    <Select
+                      className="fi__selectHead"
+                      style={{ border: color.idProvince }}
+                      name="idProvince"
+                      onChange={handleChangeIdProvince}
+                      defaultValue={listIdProvinceDefaul}
+                      size="large"
+                      placeholder="VD: Bến Tre"
+                    >
+                      {renderListProvince()}
+                    </Select>
+                  </Tooltip>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr style={{ width: 200, margin: "20px auto" }} />
+          <div className="fi__investmentInfo">
+            <div className="fi__iLineOne">
+              <div className="fi__giaiDoanMuonDauTu">
+                <small className="label__fontWeight">Giai đoạn đầu tư</small>
+                <Tooltip title={errors.stage} placement="topRight" color="red">
+                  <Select
+                    style={{ border: color.stage }}
+                    name="stage"
+                    mode="multiple"
+                    placeholder="Chọn một hoặc nhiều giai đoạn"
+                    onChange={handleChangeStage}
+                    defaultValue={listStageDefaul}
+                    size="large"
+                    className="fi__selectStage"
+                    bordered={false}
+                  >
+                    {renderListStage()}
+                  </Select>
+                </Tooltip>
+              </div>
+              <div className="fi__linhVucKinhDoanhMuonDauTu">
+                <small className="label__fontWeight">
+                  Lĩnh vực kinh doanh đầu tư
+                </small>
+                <Tooltip
+                  title={errors.industry}
+                  placement="topRight"
+                  color="red"
+                >
+                  <Select
+                    className="fi__selectIndus"
+                    style={{ border: color.industry }}
+                    name="industry"
+                    mode="multiple"
+                    placeholder="Chọn một hoặc nhiều lĩnh vực"
+                    onChange={handleChangeIndustry}
+                    defaultValue={listIndustryDefaul}
+                    size="large"
+                    bordered={false}
+                  >
+                    {renderListIndustry()}
+                  </Select>
+                </Tooltip>
+              </div>
+            </div>
+            <div className="fi__iLineTwo">
+              <div className="fi__khuVucDauTu">
+                <small className="label__fontWeight">Khu vực đầu tư</small>
+                <Tooltip
+                  title={errors.province}
+                  placement="topRight"
+                  color="red"
+                >
+                  <Select
+                    style={{ border: color.province }}
+                    name="province"
+                    mode="multiple"
+                    placeholder="Chọn một hoặc nhiều khu vực"
+                    onChange={handleChangeProvince}
+                    defaultValue={listProvinceDefaul}
+                    size="large"
+                    bordered={false}
+                    className="fi__selectKVDT"
+                  >
+                    {renderListProvinceOr()}
+                  </Select>
+                </Tooltip>
+              </div>
+              <div className="fi__ul">
+                <small className="label__fontWeight">Vùng miền đầu tư</small>
+                <Tooltip title={errors.region} placement="topRight" color="red">
+                  <Select
+                    style={{ border: color.region }}
+                    name="region"
+                    mode="multiple"
+                    placeholder="Chọn một hoặc nhiều vùng miền"
+                    onChange={handleChangeRegion}
+                    defaultValue={listRegionDefaul}
+                    size="large"
+                    bordered={false}
+                    className="fi__selectVMDT"
+                  >
+                    {renderListRegion()}
+                  </Select>
+                </Tooltip>
+              </div>
+              <div className="fi__moneyWrapper">
+                <label className="label__fontWeight">Số tiền đầu tư</label>
+                <div className="fi__moneyContainer">
+                  <div className="fi_min">
+                    <Tooltip
+                      title={errors.min}
+                      placement="topRight"
+                      color="red"
+                    >
+                      <Input
+                        type="text"
+                        maxLength="9"
+                        addonAfter="Tỷ VNĐ"
+                        style={{ border: color.min }}
+                        name="min"
+                        value={information.min}
+                        size="large"
+                        onChange={handleChangeInput}
+                      />
+                    </Tooltip>
+                  </div>
+                  <span style={{ lineHeight: 2.5, margin: "0 10px" }}> - </span>
+                  <div className="fi_max">
+                    <Tooltip
+                      title={errors.max}
+                      placement="topRight"
+                      color="red"
+                    >
+                      <Input
+                        type="text"
+                        maxLength="9"
+                        addonAfter="Tỷ VNĐ"
+                        style={{ border: color.max }}
+                        name="max"
+                        value={information.max}
+                        size="large"
+                        onChange={handleChangeInput}
+                      />
+                    </Tooltip>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* <div className="fi__lineOne">
             <div className="fi__tenNhaQuyDauTu">
               <small>Tên nhà/quỹ đầu tư</small>
               <Tooltip title={errors.name} placement="topRight" color="red">
@@ -583,18 +835,6 @@ function FormInvestor(props) {
               </label>
             </div>
           </div>
-          {/* <div className="fi__lineThree">
-            <small>Mô tả về nhà/quỹ đầu tư</small>
-            <Tooltip title={errors.description} placement='topRight' color='red' >
-              <TextArea
-                style={{ 'border': color.description }}
-                name='description'
-                rows={2}
-                size="large"
-                onChange={handleChangeInput}
-              />
-            </Tooltip>
-          </div> */}
           <p className="fi__word">Thông tin về đầu tư</p>
           <div className="fi__lineFour">
             <div className="fi__giaiDoanMuonDauTu">
@@ -604,7 +844,7 @@ function FormInvestor(props) {
                   style={{ border: color.stage }}
                   name="stage"
                   mode="multiple"
-                  placeholder='Chọn một hoặc nhiều giai đoạn'
+                  placeholder="Chọn một hoặc nhiều giai đoạn"
                   onChange={handleChangeStage}
                   defaultValue={listStageDefaul}
                   size="large"
@@ -620,7 +860,7 @@ function FormInvestor(props) {
                   style={{ border: color.industry }}
                   name="industry"
                   mode="multiple"
-                  placeholder='Chọn một hoặc nhiều lĩnh vực'
+                  placeholder="Chọn một hoặc nhiều lĩnh vực"
                   onChange={handleChangeIndustry}
                   defaultValue={listIndustryDefaul}
                   size="large"
@@ -638,7 +878,7 @@ function FormInvestor(props) {
                   style={{ border: color.province }}
                   name="province"
                   mode="multiple"
-                  placeholder='Chọn một hoặc nhiều khu vực'
+                  placeholder="Chọn một hoặc nhiều khu vực"
                   onChange={handleChangeProvince}
                   defaultValue={listProvinceDefaul}
                   size="large"
@@ -654,7 +894,7 @@ function FormInvestor(props) {
                   style={{ border: color.region }}
                   name="region"
                   mode="multiple"
-                  placeholder='Chọn một hoặc nhiều vùng miền'
+                  placeholder="Chọn một hoặc nhiều vùng miền"
                   onChange={handleChangeRegion}
                   defaultValue={listRegionDefaul}
                   size="large"
@@ -695,7 +935,7 @@ function FormInvestor(props) {
                 />
               </Tooltip>
             </div>
-          </div>
+          </div> */}
         </form>
         <div className="fi__button">
           <div className="fi__buttonBack" onClick={props.handleBack}>

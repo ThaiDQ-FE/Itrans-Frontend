@@ -17,138 +17,145 @@
         }
         .fiato__form {
             padding: 0 55px;
-            .fiato__lineOne {
+            .fiato__basicInfo {
                 display: flex;
                 justify-content: space-between;
-                .fiato__tenToChuc {
-                    width: 40%;
-                    input {
-                        border: 1px solid #ff8412;
-                        font-size: 16px;
-                        &:focus {
-                            box-shadow: unset;
+                .fiato__imgWrapper {
+                    width: 25%;
+                    .fiato__imageInfo {
+                        width: 125px;
+                        height: 125px;
+                        margin-bottom: 20px;
+                        display: flex;
+                        justify-content: center;
+                        margin: auto;
+                        position: relative;
+                        .fiato__userLogo {
+                            object-fit: cover;
+                        }
+                        .modal__userAvata {
+                            border: 1px dashed red;
+                        }
+                        .fiato__file {
+                            display: none;
+                        }
+
+                        &:hover {
+                            .fiato__camera {
+                                opacity: 1;
+                            }
+                        }
+                        .fiato__span {
+                            position: absolute;
+                            cursor: pointer;
+                            height: 25px;
+                            right: 0;
+                            bottom: 0;
+                            width: 100%;
+                            height: 100%;
+                            &:hover {
+                                .fiato__camera {
+                                    opacity: 1;
+                                }
+                            }
+                            .fiato__camera {
+                                width: 16px;
+                                height: 16px;
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                                opacity: 0.5;
+                            }
                         }
                     }
                 }
+
+                .fiato__infoBasic {
+                    width: 70%;
+                    .fiato__lineOne {
+                        display: flex;
+                        justify-content: space-between;
+                        .fiato__name {
+                            width: 50%;
+                        }
+                        .fiato__year,
+                        .fiato__emp {
+                            width: 18.5%;
+                        }
+                    }
+                    .fiato__lineTwo {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-top: 20px;
+                        .fiato__linkWebsite {
+                            width: 60%;
+                        }
+                        .fiato__giaiDoanPhatTrien {
+                            width: 35%;
+                            .fiato__selectStage {
+                                display: block;
+                            }
+                        }
+                    }
+                }
+            }
+            .fiato__selectInfo {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 20px;
                 .fiato__linhVucKinhDoanh {
-                    width: 58%;
-                    .ant-select {
-                        font-size: 17px;
-                        width: 100% !important;
+                    width: 65%;
+                    .fiato__selectIndus {
+                        display: block;
                         .ant-select-selector {
-                            height: 100%;
-                            border: 1px solid #ff8412;
-                            &:focus {
-                                box-shadow: unset;
+                            max-height: 112px;
+                            overflow-x: hidden;
+                            overflow-y: auto;
+                            &::-webkit-scrollbar-track {
+                                -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+                                border-radius: 10px;
+                                background-color: #f5f5f5;
                             }
-                        }
-                    }
-                }
-            }
-            .fiato__lineTwo {
-                display: flex;
-                justify-content: space-between;
-                margin: 20px 0;
-                .fiato__giaiDoanPhatTrien {
-                    width: 40%;
-                    .ant-select {
-                        font-size: 17px;
-                        height: 64%;
-                        width: 100% !important;
-                        .ant-select-selector {
-                            height: 100%;
-                            border: 1px solid #ff8412;
-                            &:focus {
-                                box-shadow: unset;
-                            }
-                        }
-                    }
-                }
-                .fiato__namThanhLap {
-                    width: 28%;
-                    input {
-                        font-size: 17px;
-                        border: 1px solid #ff8412;
-                        &:focus {
-                            box-shadow: unset;
-                        }
-                    }
-                }
-                .fiato__soLuongThanhVien {
-                    width: 28%;
-                    input {
-                        font-size: 17px;
-                        border: 1px solid #ff8412;
-                        &:focus {
-                            box-shadow: unset;
-                        }
-                    }
-                }
-            }
-            .fiato__lineThree {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 20px;
 
+                            &::-webkit-scrollbar {
+                                width: 5px;
+                                background-color: #f5f5f5;
+                            }
+
+                            &::-webkit-scrollbar-thumb {
+                                border-radius: 10px;
+                                -webkit-box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+                                background-color: #555;
+                            }
+                        }
+                    }
+                }
                 .fiato__khuVucHoatDong {
-                    width: 60%;
-                    .ant-select {
-                        font-size: 17px;
-                        width: 100% !important;
+                    width: 30%;
+                    .fiato__selectPro {
+                        display: block;
                         .ant-select-selector {
-                            height: 100%;
-                            border: 1px solid #ff8412;
-                            &:focus {
-                                box-shadow: unset;
+                            max-height: 112px;
+                            overflow-x: hidden;
+                            overflow-y: auto;
+                            &::-webkit-scrollbar-track {
+                                -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+                                border-radius: 10px;
+                                background-color: #f5f5f5;
+                            }
+
+                            &::-webkit-scrollbar {
+                                width: 5px;
+                                background-color: #f5f5f5;
+                            }
+
+                            &::-webkit-scrollbar-thumb {
+                                border-radius: 10px;
+                                -webkit-box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.3);
+                                background-color: #555;
                             }
                         }
-                    }
-                }
-                .fiato__linkWebsite {
-                    width: 38%;
-                    input {
-                        border: 1px solid #ff8412;
-                        &:focus {
-                            box-shadow: unset;
-                        }
-                    }
-                }
-            }
-            .fiato__lineFour {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 20px;
-
-                .fiato__moTaVeDoanhNghiep {
-                    width: 78%;
-
-                    textarea {
-                        border: 1px solid #ff8412;
-                        &:focus {
-                            box-shadow: unset;
-                        }
-                    }
-                }
-                .fiato__logo {
-                    width: 20%;
-                    position: relative;
-                    .fiato__file {
-                        display: none;
-                    }
-                    .fiato__userLogo {
-                        width: 170px;
-                        height: 140px;
-                    }
-                    .fiato__camera {
-                        width: 15px;
-                        height: 15px;
-                    }
-                    .fiato__span {
-                        position: absolute;
-                        cursor: pointer;
-                        height: 25px;
-                        right: 0;
-                        bottom: 0;
                     }
                 }
             }

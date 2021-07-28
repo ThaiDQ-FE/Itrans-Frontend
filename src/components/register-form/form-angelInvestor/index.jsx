@@ -17,7 +17,7 @@ function FormAngelInvestorInformation(props) {
   return (
     <div className="faii__wrapper">
       <div className="faii__container">
-        <h3>{Messages.INVESTOR_INFORMATION}</h3>
+        <h2>{Messages.INVESTOR_INFORMATION}</h2>
         <div className="faii__box">
           <form className="faii__form">
             <div className="faii__formLeft">
@@ -38,42 +38,52 @@ function FormAngelInvestorInformation(props) {
               </div>
               <div className="faii__hoVaTenNamSinh">
                 <div className="faii__hoVaTen">
-                  <Input placeholder="Họ và Tên" size="large" />
+                  <label className="label__fontWeight">Họ và Tên</label>
+                  <Input placeholder="VD: Nguyễn Văn A" size="large" />
                 </div>
                 <div className="faii__namSinh">
-                  <Input placeholder="Năm sinh" size="large" />
+                  <label className="label__fontWeight">Năm sinh</label>
+                  <Input placeholder="VD: 1998" size="large" />
                 </div>
               </div>
-              <div className="faii__moTaVeNhaDauTu">
-                <TextArea
-                  rows={3}
-                  placeholder="Mô tả về nhà đầu tư"
+              <div className="faii__link">
+                <label className="label__fontWeight">Link website</label>
+                <Input
+                  placeholder="VD: https://www.facebook.com/"
                   size="large"
                 />
+              </div>
+              <div className="faii__truSo">
+                <label className="label__fontWeight">Trụ sở chính</label>
+                <Select
+                  placeholder="VD: Bến Tre"
+                  size="large"
+                  className="faii__selectHead"
+                >
+                  {children}
+                </Select>
               </div>
             </div>
             <div className="faii__formMiddle"></div>
             <div className="faii__formRight">
-              <div className="faii__avata">
-                <img
-                  src={Images.LOGO_HERE}
-                  alt=""
-                  className="faii__userAvata"
-                />
-                <input className="faii__file" type="file" id="file" />
-                <label htmlFor="file" className="faii__span">
-                  <img
-                    src="https://i.ibb.co/jZmmMRz/camera.png"
-                    alt=""
-                    className="faii__camera"
-                  />
-                </label>
+              <div className="faii__money">
+                <label className="label__fontWeight">Số tiền đầu tư</label>
+                <div className="faii__moneyInput">
+                  <div className="faii__from">
+                    <Input size="large" type="number" addonAfter="Tỷ VNĐ" />
+                  </div>
+                  <span className="faii__spanMoney">-</span>
+                  <div className="faii__to">
+                    <Input size="large" type="number" addonAfter="Tỷ VNĐ" />
+                  </div>
+                </div>
               </div>
               <div className="faii__linhVucDauTu">
+                <label className="label__fontWeight">Lĩnh vực đầu tư</label>
                 <Select
                   mode="multiple"
                   allowClear
-                  placeholder="Lĩnh vực đầu tư"
+                  placeholder="VD: Thực phẩm,May mặc"
                   onChange={handleChange}
                   size="large"
                 >
@@ -81,21 +91,23 @@ function FormAngelInvestorInformation(props) {
                 </Select>
               </div>
               <div className="faii__khuVucMuonDauTu">
+                <label className="label__fontWeight">Khu vực đầu tư</label>
                 <Select
                   mode="multiple"
                   allowClear
-                  placeholder="Khu vực muốn đầu tư"
+                  placeholder="VD: Miền Bắc,Miền Trung"
                   onChange={handleChange}
                   size="large"
                 >
                   {children}
                 </Select>
               </div>
-              <div className="faii__ul">
+              <div className="faii__tinhThanhDauTu">
+                <label className="label__fontWeight">Tỉnh/thành đầu tư</label>
                 <Select
                   mode="multiple"
                   allowClear
-                  placeholder=""
+                  placeholder="Hồ Chí Minh, Hà Nội"
                   onChange={handleChange}
                   size="large"
                 >

@@ -95,10 +95,14 @@ export const checkIndus = (indus, setIndus) => {
   }
 };
 
-export const checkPro = (pro, setPro) => {
+export const checkPro = (pro, setPro, re) => {
   if (pro.length === 0) {
     if (checkRoleUser() === "INVESTOR") {
-      return setPro("Tỉnh thành đầu tư không được bỏ trống");
+      if (pro.length === 0 && re.length === 0) {
+        return setPro("Tỉnh thành đầu tư không được bỏ trống");
+      } else {
+        setPro("");
+      }
     } else {
       return setPro("Khu vực hoạt động không được bỏ trống");
     }
@@ -107,8 +111,8 @@ export const checkPro = (pro, setPro) => {
   }
 };
 
-export const checkRe = (re, setRe) => {
-  if (re.length === 0) {
+export const checkRe = (re, setRe, pro) => {
+  if (re.length === 0 && pro.length === 0) {
     return setRe("Khu vực đầu tư không được bỏ trống");
   } else {
     setRe("");

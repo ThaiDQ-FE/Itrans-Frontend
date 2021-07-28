@@ -25,11 +25,10 @@ function ModalAccountInvestor(props) {
       props.websiteError === "" &&
       props.typeError === "" &&
       props.industryError === "" &&
-      props.provinceError === "" &&
-      props.regionError === "" &&
       props.stageError === "" &&
       props.maxInvestmentError === "" &&
-      props.minInvestmentError === ""
+      props.minInvestmentError === "" &&
+      (props.provinceError === "" || props.regionError === "")
     ) {
       boolen = false;
     } else if (
@@ -44,7 +43,8 @@ function ModalAccountInvestor(props) {
       props.regionError === "" ||
       props.stageError === "" ||
       props.maxInvestmentError === "" ||
-      props.minInvestmentError === ""
+      props.minInvestmentError === "" ||
+      (props.arrayProvince.length === 0 && props.arrayRegion.length === 0)
     ) {
       boolen = true;
     }
