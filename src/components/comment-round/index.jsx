@@ -9,13 +9,12 @@ import { useDispatch } from "react-redux";
 import { getLocalStorage } from "../../assets/helper/helper";
 import { createAnswer, createQuestion } from "../../store/action/round.action";
 const { TextArea } = Input;
- const idRound = getLocalStorage("idRound");
+const idRound = getLocalStorage("idRound");
 const CommentList = ({ comments, onClick, children, idQuestion }) => (
   <List
     dataSource={comments}
-    header={`${comments.length} ${
-      comments.length > 1 ? "Bình luận" : "Bình luận"
-    }`}
+    header={`${comments.length} ${comments.length > 1 ? "Bình luận" : "Bình luận"
+      }`}
     itemLayout="horizontal"
     renderItem={(props) => (
       <Comment
@@ -86,8 +85,7 @@ function CommentRound() {
         let objCommentAll = {
           objComment: {
             author: listQuestionAndAnswer[index].name,
-            avatar:
-              "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+            avatar: listQuestionAndAnswer[index].logo,
             content: <p>{listQuestionAndAnswer[index].question}</p>,
             datetime: listQuestionAndAnswer[index].time,
           },
@@ -95,7 +93,7 @@ function CommentRound() {
             (answer) => ({
               author: answer.name,
               avatar:
-                "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+                answer.logo,
               content: <p>{answer.answer}</p>,
               datetime: answer.time,
             })
@@ -138,8 +136,7 @@ function CommentRound() {
           {
             objComment: {
               author: userLogin.name,
-              avatar:
-                "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+              avatar:userLogin.logo,
               content: <p>{state.value}</p>,
               datetime: moment().format("DD-MM-YYYY hh:mm"),
             },
@@ -172,7 +169,7 @@ function CommentRound() {
           let a = {
             author: userLogin.name,
             avatar:
-              "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+              userLogin.logo,
             content: <p>{idQuestion.valueAnswer}</p>,
             datetime: moment().format("DD-MM-YYYY hh:mm"),
           };
@@ -217,7 +214,7 @@ function CommentRound() {
       {userLogin.role != "ORGANIZATION" && (
         <Comment
           avatar={
-            <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+            <Avatar src={userLogin.logo} />
           }
           content={
             <Editor
@@ -238,7 +235,7 @@ function CommentRound() {
           {" "}
           <Comment
             avatar={
-              <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+              <Avatar src={userLogin.logo}/>
             }
             content={
               <Editor

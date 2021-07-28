@@ -65,7 +65,7 @@ function FormInvestor(props) {
   }
   const listRegionDefaul = () => {
     let array = [];
-    if (information.region !== undefined) {
+    if (information.region !== undefined && information.region !== "") {
       listRegion.map((value) => {
           information.region.map((valueS) => {
             if (value.idRegion.toString() === valueS.toString()) {
@@ -78,7 +78,7 @@ function FormInvestor(props) {
   }
   const listIndustryDefaul = () => {
     let array = [];
-    if (information.industry !== undefined) {
+    if (information.industry !== undefined && information.industry !== "") {
       listIndustry.map((value) => {
           information.industry.map((valueS) => {
             if (value.idIndustry.toString() === valueS.toString()) {
@@ -91,7 +91,7 @@ function FormInvestor(props) {
   }
   const listProvinceDefaul = () => {
     let array = [];
-    if (information.province !== undefined) {
+    if (information.province !== undefined && information.province !== "") {
       listProvince.map((value) => {
           information.province.map((valueS) => {
             if (value.idProvince.toString() === valueS.toString()) {
@@ -105,7 +105,7 @@ function FormInvestor(props) {
   const listStageDefaul = () => {
     let array = [];
     console.log(information.stage);
-    if (information.stage !== undefined) {
+    if (information.stage !== undefined && information.stage !=="") {
       listStage.map((value) => {
         information.stage.map((valueS) => {
           if (value.idStage.toString() === valueS.toString()) {
@@ -361,6 +361,11 @@ function FormInvestor(props) {
       props.handleNext();
     }
   };
+
+  const handleBack = ()=>{
+    localStorage.setItem("Form2Investor", JSON.stringify(information));
+    props.handleBack();
+  }
   const handleChangeInput = (event) => {
     const { value, name } = event.target;
     setInformation({
@@ -698,7 +703,7 @@ function FormInvestor(props) {
           </div>
         </form>
         <div className="fi__button">
-          <div className="fi__buttonBack" onClick={props.handleBack}>
+          <div className="fi__buttonBack" onClick={handleBack}>
             <img src={Images.RIGHT_ARROWS} alt="back" />
             <span>Quay lại</span>
           </div>
