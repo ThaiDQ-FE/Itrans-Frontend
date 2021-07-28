@@ -77,7 +77,7 @@ function CommentRound() {
   });
   const { listQuestionAndAnswer } = useSelector((state) => state.round);
   useEffect(() => {
-    const arrayComment = [...state.comments];
+    const arrayComment = [];
     if (listQuestionAndAnswer === undefined) {
       return;
     } else {
@@ -102,6 +102,7 @@ function CommentRound() {
         };
         arrayComment.push(objCommentAll);
       }
+      console.log(arrayComment);
       setState({
         submitting: false,
         value: "",
@@ -146,6 +147,7 @@ function CommentRound() {
         ],
       });
     }, 1000);
+    console.log(idRound)
     const questionObj = {
       idInvestor: userLogin.id,
       idRound: idRound,

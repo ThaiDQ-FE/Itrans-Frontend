@@ -166,6 +166,7 @@ function ListDealSlider() {
             }
         });
     }
+    console.log(listDealByRound);
     const renderTag = (value) => {
         if (value === "ACCEPT") {
             return <Tag id="lds_accept">Đồng ý</Tag>;
@@ -194,8 +195,8 @@ function ListDealSlider() {
                 handleChangeValueUpdate={handleChangeValueUpdate}
                 handleUpdateDealForm={handleUpdateDealForm}
             />
-            {userInfo.role == "ORGANIZATION" ?
-                (listDealByRound.length !== 0 && <div className="lds__mid">
+            {userInfo.role === "ORGANIZATION" ?
+                ((listDealByRound.length !== 0 && listDealByRound !== "No Data")&& <div className="lds__mid">
                     <div style={{ fontWeight: 700 }}><p>Thông tin những yêu cầu muốn đầu tư: </p></div>
                     <Slider {...settings}>
                         {listDealByRound.length > 0 && listDealByRound.map((value) =>
@@ -233,7 +234,7 @@ function ListDealSlider() {
 
                     </Slider>
                 </div>)
-                : (listDealByRound != "No Data") &&
+                : (listDealByRound !== "No Data") &&
                 <div style={{ width: 1250, marginLeft: 150, marginTop: 25 }}>
                     <p>
                         <span className="span_text" style={{ fontSize: 20 }}>Thông tin thỏa thuận </span>
@@ -271,7 +272,7 @@ function ListDealSlider() {
                             <span style={{ marginLeft: 150 }} className="span_text">Ngày tạo: </span>
                             <span>{listDealByRound.date}</span></p>
                         <p><span className="span_text">Mô tả:  </span>
-                            <span>Trong 5 năm tới, Ánh Dương Vina sẽ trở thành thương hiệu hàng đầu cung cấp dịch vụ trọn gói cho các khu công nghiệp tại Bắc Ninh.Trong 5 năm tới, Ánh Dương Vina sẽ trở thành thương hiệu hàng đầu cung cấp dịch vụ trọn gói cho các khu công nghiệp tại Bắc Ninh.</span>
+                            <span>{listDealByRound.description}</span>
                         </p>
                     </div>
                 </div>
