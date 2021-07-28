@@ -16,6 +16,10 @@ import {
 import { Button } from "antd";
 function FormRole(props) {
   const { listInvestorType } = useSelector((state) => state.register);
+  localStorage.removeItem("TeamMember");
+  localStorage.removeItem("Form1");
+  localStorage.removeItem("VerificationCode");
+  localStorage.removeItem("Form2Investor");
   const jsonFile = [
     {
       image: Images.ORGANIZATION_REGISTER,

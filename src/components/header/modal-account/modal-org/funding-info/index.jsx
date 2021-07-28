@@ -32,33 +32,43 @@ function ModalAccountOrganizationFunding(props) {
       <div className="maof__lineOne">
         <div className="maof__itype">
           <label className="label__fontWeight">Khu vực hoạt động</label>
-          <Select
-            className="maof__selectop"
-            mode="multiple"
-            dropdownClassName="modal__articleDrop"
-            defaultValue={props.arayPro}
-            size="large"
-            bordered={false}
-            onChange={props.handleChangeProvince}
-            dropdownAlign="top"
-          >
-            {listPI}
-          </Select>
+          <Tooltip title={props.provinceError} color="red" placement="topRight">
+            <Select
+              className={`maof__selectop${
+                props.provinceError !== "" ? " input__error" : ""
+              }`}
+              mode="multiple"
+              dropdownClassName="modal__articleDrop"
+              defaultValue={props.arayPro}
+              size="large"
+              bordered={false}
+              onBlur={props.handleBlurPro}
+              onChange={props.handleChangeProvince}
+              dropdownAlign="top"
+            >
+              {listPI}
+            </Select>
+          </Tooltip>
         </div>
         <div className="maof__iindustry">
           <label className="label__fontWeight">Lĩnh vực kinh doanh</label>
-          <Select
-            className="maof__selectoi"
-            mode="multiple"
-            dropdownClassName="modal__articleDrop"
-            defaultValue={props.arrayIn}
-            size="large"
-            bordered={false}
-            onChange={props.handleChangeIndustry}
-            dropdownAlign="top"
-          >
-            {listPI}
-          </Select>
+          <Tooltip title={props.industryError} color="red" placement="topRight">
+            <Select
+              className={`maof__selectoi${
+                props.industryError !== "" ? " input__error" : ""
+              }`}
+              mode="multiple"
+              dropdownClassName="modal__articleDrop"
+              defaultValue={props.arrayIn}
+              size="large"
+              bordered={false}
+              onBlur={props.handleBlurIndus}
+              onChange={props.handleChangeIndustry}
+              dropdownAlign="top"
+            >
+              {listII}
+            </Select>
+          </Tooltip>
         </div>
       </div>
     </>

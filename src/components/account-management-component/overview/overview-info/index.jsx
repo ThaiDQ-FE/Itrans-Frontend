@@ -145,7 +145,7 @@ function OverViewInfoComponent(props) {
                   </div>
                   <div className="ovic__item">
                     <span className="ovic__fontWeight">
-                      Khu vực hoạt động:{" "}
+                      Khu vực muốn đầu tư:{" "}
                     </span>
                   </div>
                   <div className="ovic__item">
@@ -190,7 +190,7 @@ function OverViewInfoComponent(props) {
                 <span className="ovic__fontWeight">
                   {checkRole === false
                     ? "Khu vực hoạt động: "
-                    : "Khu vực muốn đầu tư: "}
+                    : "Tỉnh/thành muốn đầu tư: "}
                 </span>
               </div>
               <div className="ovic__item">

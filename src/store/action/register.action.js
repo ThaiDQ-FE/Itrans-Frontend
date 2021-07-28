@@ -127,11 +127,15 @@ export const postIAOTOrganization = (organization) => {
       .then((res) => {
         dispatch(createIAOTOrganizationSuccess(res.data));
         const teamMember = JSON.parse(localStorage.getItem("TeamMember"));
+        console.log('e')
+        console.log(teamMember);
+        if (teamMember!== null){
         for (let index = 0; index < teamMember.length; index++) {
           teamMember[index].idOrganization = res.data;
         }
         dispatch(postTeamMember(teamMember));
         localStorage.removeItem("TeamMember");
+      }
         const organizationIndustry = [];
         const organizationProvince = [];
         const organizationOld = JSON.parse(localStorage.getItem("Form2"));
@@ -418,10 +422,16 @@ export const postInvestor = (investor) => {
       .then((res) => {
         dispatch(createInvestorSuccess(res.data));
         const teamMember = JSON.parse(localStorage.getItem("TeamMember"));
-        for (let index = 0; index < teamMember.length; index++) {
-          teamMember[index].idInvestor = res.data;
-        }
-        dispatch(postTeamMember(teamMember));
+        console.log('e')
+        console.log(teamMember);
+        if (teamMember!== null){
+          for (let index = 0; index < teamMember.length; index++) {
+            teamMember[index].idInvestor = res.data;
+          }
+          dispatch(postTeamMember(teamMember));
+        localStorage.removeItem("TeamMember");
+      }
+        
         const idInvestorType = JSON.parse(localStorage.getItem("investerType"));
         const typeOfInvestor = [];
         for (let index = 0; index < idInvestorType.length; index++) {
@@ -431,7 +441,6 @@ export const postInvestor = (investor) => {
           }
           typeOfInvestor.push(object);
         }
-        console.log(typeOfInvestor);
         dispatch(postTypeOfInvestor(typeOfInvestor));
         localStorage.removeItem("TeamMember");
         const investor = JSON.parse(localStorage.getItem("Form2Investor"));
@@ -486,11 +495,23 @@ export const postInvestorTaste = (investorTaste) => {
         }
         dispatch(postInvestmentStage(investmentStage))
         for (let index = 0; index < investorOld.province.length; index++) {
-          const provinceRegion = { idProvince: investorOld.province[index] };
-          provinceRegion.idRegion = investorOld.region[index];
-          provinceRegion.idInvestorTaste = res.data
-          provinceRegionList.push(provinceRegion);
+          let provinceRegion = {};
+          if (investorOld.province[index] !== undefined){
+            provinceRegion.idProvince =investorOld.province[index];
+            provinceRegion.idInvestorTaste = res.data
+            console.log('e')
+            console.log(provinceRegion)
+            provinceRegionList.push(provinceRegion);
+          }
+          if (investorOld.region[index] !== undefined){
+            provinceRegion = {};
+            provinceRegion.idRegion = investorOld.region[index];
+            provinceRegion.idInvestorTaste = res.data
+            provinceRegionList.push(provinceRegion);
+            console.log(provinceRegion)
+          }
         }
+        console.log(provinceRegionList);
         dispatch(postTasteProvinceRegion(provinceRegionList))
 
       })

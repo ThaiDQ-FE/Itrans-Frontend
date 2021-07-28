@@ -4,12 +4,18 @@ import "antd/dist/antd.css";
 import "./styles.scss";
 import { useSelector } from "react-redux";
 import Images from "../../../assets/images/images";
+import { useHistory } from "react-router-dom";
+import { localStorages } from "../../../assets/helper/helper";
 function CardFundingRound() {
   const { listAllRoundActive } = useSelector((state) => state.round);
   const [length, setLength] = useState({
     minValue: 0,
     maxValue: 9,
   });
+  let history = useHistory();
+  const handleClickToDetail = () => {
+    history.push("/thong-tin-chi-tiet-vong-goi-von");
+  }
   const handleChange = (value) => {
     if (value <= 1) {
       setLength({
@@ -41,7 +47,10 @@ function CardFundingRound() {
             listAllRoundActive
               .slice(length.minValue, length.maxValue)
               .map((value, index) => (
-                <Card
+                <Card onClick={() => {
+                  handleClickToDetail();
+                  localStorages("idRound", value.idRound);
+                }}
                   key={index}
                   hoverable
                   className="cardFundingRound__itemOrg"
@@ -81,6 +90,18 @@ function CardFundingRound() {
               <p>Không có dữ liệu</p>
               <img src={Images.NO_DATA} alt="no data" />
             </div>
+          )}
+        </div>
+        <div className="olc__paging">
+          {listAllRoundActive.length > 8 ? (
+            <Pagination
+              defaultCurrent={1}
+              defaultPageSize={8}
+              onChange={handleChange}
+              total={listAllRoundActive.length}
+            />
+          ) : (
+            ""
           )}
         </div>
       </div>

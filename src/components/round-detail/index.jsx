@@ -255,14 +255,14 @@ function RoundDeail() {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     return (
         <div style={{ display: 'flex' }}>
-            <img style={{ width: 650, height: 450, marginLeft: 150 }} src="https://i.imgur.com/KhYwqoU.png"></img>
+            <img style={{ width: 650, height: 450, marginLeft: 150 }} src={roundAndOrganization.thumbnail}></img>
             <div style={{ marginLeft: 20 }} >
                 <Card hoverable style={{ backgroundColor: "#F3F3F3" }}>
                     <div style={{ display: 'flex', width: 525 }}>
                         <img
                             style={{ width: 125, height: 125 }}
                             src={
-                                Images.USER_AVATA
+                                roundAndOrganization.logo
                             }
                             alt="thumbnail"
                         />
@@ -274,7 +274,7 @@ function RoundDeail() {
                                 </span>
                             </p>
                             <p>
-                                <span style={{ display: 'inline-block', width: 150 }}>
+                                <span style={{ display: 'inline-block', width:215 }}>
                                     <img
                                         style={{ width: 18, height: 18, marginRight: 5 }}
                                         src={Images.GMAILROUND}
@@ -289,7 +289,7 @@ function RoundDeail() {
                                     />{roundAndOrganization.foundedYear}
                                 </span>
                             </p>
-                            <p><span style={{ display: 'inline-block', width: 150 }}>
+                            <p><span style={{ display: 'inline-block', width: 215 }}>
                                 <img
                                     style={{ width: 18, height: 18, marginRight: 5 }}
                                     src={Images.NUMBER_EMPLOYESS}
@@ -317,7 +317,7 @@ function RoundDeail() {
                     </div>
                     }
                     <div style={{ marginTop: 20, marginLeft: 50, fontWeight: 700 }}><p>Thông tin gọi vốn:</p></div>
-                    <div style={{ marginTop: 10, marginLeft: 200 }}>
+                    <div style={{ marginTop: 10, marginLeft: 200 , width:320 }}>
                         <p><span style={{ fontWeight: 600 }}>Số tiền muốn kêu gọi: </span>
                             <span>{roundAndOrganization.fundingAmount} tỷ</span>
                         </p>

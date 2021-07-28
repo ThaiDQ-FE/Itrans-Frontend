@@ -247,6 +247,7 @@ const getDetailDealFail = (error) => {
 export const updateAcceptDeal = (idDeal) => {
   return  (dispatch) => {
     const userLogin = getLocalStorage("userInfo");
+    const idRound = getLocalStorage("idRound");
     const token = authorizationAccount();
     axios({
       method: 'PUT',
@@ -256,7 +257,7 @@ export const updateAcceptDeal = (idDeal) => {
       }
     }).then((res) => {
       dispatch(updateAcceptDealSuccess(res.data))
-      dispatch(getDealByRound(userLogin.gmail,1));
+      dispatch(getDealByRound(userLogin.gmail,idRound));
     }).catch((err) => {
       dispatch(updateAcceptDealFail(err))
     })
@@ -279,6 +280,7 @@ export const updateRejectDeal = (idDeal) => {
   return  (dispatch) => {
     const userLogin = getLocalStorage("userInfo");
     const token = authorizationAccount();
+    const idRound = getLocalStorage("idRound");
     axios({
       method: 'PUT',
       url: defaultUrlAPIStringTemplate()+`reject-deal?id-deal=${idDeal}`,
@@ -287,7 +289,7 @@ export const updateRejectDeal = (idDeal) => {
       }
     }).then((res) => {
       dispatch(updateRejectDealSuccess(res.data))
-      dispatch(getDealByRound(userLogin.gmail,1));
+      dispatch(getDealByRound(userLogin.gmail,idRound));
     }).catch((err) => {
       dispatch(updateRejectDealFail(err))
     })
@@ -310,6 +312,7 @@ export const createDeal = (object) => {
   return  (dispatch) => {
     const userLogin = getLocalStorage("userInfo");
     const token = authorizationAccount();
+    const idRound = getLocalStorage("idRound");
     axios({
       method: 'POST',
       url: defaultUrlAPIStringTemplate()+`deal`,
@@ -319,7 +322,7 @@ export const createDeal = (object) => {
       }
     }).then((res) => {
       dispatch(createDealSuccess(res.data))
-      dispatch(getDealByRound(userLogin.gmail,1));
+      dispatch(getDealByRound(userLogin.gmail,idRound));
     }).catch((err) => {
       dispatch(createDealFail(err))
     })
@@ -341,6 +344,7 @@ const createDealFail = (error) => {
 export const updateDealInRound = (object) => {
   return  (dispatch) => {
     const userLogin = getLocalStorage("userInfo");
+    const idRound = getLocalStorage("idRound");
     const token = authorizationAccount();
     axios({
       method: 'PUT',
@@ -351,7 +355,7 @@ export const updateDealInRound = (object) => {
       }
     }).then((res) => {
       dispatch(updateDealSuccess(res.data))
-      dispatch(getDealByRound(userLogin.gmail,1));
+      dispatch(getDealByRound(userLogin.gmail,idRound));
     }).catch((err) => {
       dispatch(updateDealFail(err))
     })
@@ -373,6 +377,7 @@ const updateDealFail = (error) => {
 export const deleteDealInRound = (idDeal) => {
   return  (dispatch) => {
     const userLogin = getLocalStorage("userInfo");
+    const idRound = getLocalStorage("idRound");
     const token = authorizationAccount();
     axios({
       method: 'PUT',
@@ -382,7 +387,7 @@ export const deleteDealInRound = (idDeal) => {
       }
     }).then((res) => {
       dispatch(deleteDealSuccess(res.data))
-      dispatch(getDealByRound(userLogin.gmail,1));
+      dispatch(getDealByRound(userLogin.gmail,idRound));
     }).catch((err) => {
       dispatch(deleteDealFail(err))
     })

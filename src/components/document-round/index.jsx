@@ -112,7 +112,7 @@ function DocumentRound() {
                 handleChangeValue={handleChangeValue}
             />
             <div className="dr__introduceWrapper" >
-                <div className="dr__title">Tài liệu</div>
+            {listDocumentByRound.length !== 0 && <div className="dr__title">Tài liệu</div>}
                 {
                     listDocumentByRound.map((value) =>
                         <div className="dr__documentWrapper">

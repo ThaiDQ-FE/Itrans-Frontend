@@ -27,7 +27,7 @@ function FormCreateRound(props) {
                           required: true,
                           message: "Tiêu đề không được bỏ trống",
                         },
-                        { min: 50, message: "Độ dài tối thiểu là 50 ký tự" },
+                        { min: 5, message: "Độ dài tối thiểu là 5 ký tự" },
                         { max: 200, message: "Độ dài tối đa là 200 ký tự" },
                       ]}
                     >
@@ -46,8 +46,8 @@ function FormCreateRound(props) {
                           message: "Nội dung không được bỏ trống",
                         },
                         {
-                          min: 200,
-                          message: "Độ dài tối thiểu là 200 ký tự",
+                          min: 50,
+                          message: "Độ dài tối thiểu là 50 ký tự",
                         },
                         { max: 5000, message: "Độ dài tối đa là 5000 ký tự" },
                       ]}

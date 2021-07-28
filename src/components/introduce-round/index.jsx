@@ -159,15 +159,17 @@ function IntroduceRound() {
       });
   }
   return (
-    <>
+    <>{userInfo.role === "ORGANIZATION" &&
       <div style={{ float: 'right', width: 300, marginTop: 25 }}>
         <Button onClick={() => { handleAddIntro() }} type="primary" size="middle">Thêm bài giới thiệu</Button>
       </div>
+      }
       <div style={{ marginTop: 75 }}>
         {
           listIntroduceByRound.map((value) =>
 
             <div className="ir__introduceWrapper" >
+              {userInfo.role === "ORGANIZATION"&&
               <div className="ir__action">
                 <Tooltip title="Chỉnh sửa">
                   <img
@@ -189,6 +191,7 @@ function IntroduceRound() {
                   />
                 </Tooltip>
               </div>
+              }
               <div className="ir__title">{value.title}</div>
               <p className="ir__content">{value.content}</p>
             </div>

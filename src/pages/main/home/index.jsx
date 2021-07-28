@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   checkEmailUser,
+  checkIdUser,
   checkRoleUser,
   getLocalStorage,
 } from "../../../assets/helper/helper";
@@ -20,8 +21,10 @@ import {
   getListRegion,
   getListStage,
 } from "../../../store/action/register.action";
+import { getRoundSuggest } from "../../../store/action/round.action";
 function UserHome(props) {
   const { listViewArticle, listSearch } = useSelector((state) => state.article);
+  const { listRoundSuggest } = useSelector((state) => state.round);
   const { loading } = useSelector((state) => state.loading);
   const [search, setSearch] = useState(false);
   const dispatch = useDispatch();
@@ -35,6 +38,9 @@ function UserHome(props) {
     dispatch(getListIndustry());
     dispatch(getListStage());
     dispatch(getListInvestorType());
+    if (checkRoleUser() === "INVESTOR") {
+      dispatch(getRoundSuggest(checkIdUser(), props.history));
+    }
   }, []);
   if (getLocalStorage("userInfo") === null) {
     return <NotAuth />;
@@ -45,6 +51,7 @@ function UserHome(props) {
       <>
         <Banner />
         <HomeBody
+          listRound={listRoundSuggest}
           list={listViewArticle}
           listS={listSearch}
           loading={loading}

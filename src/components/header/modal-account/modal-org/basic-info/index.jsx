@@ -1,18 +1,96 @@
 import React from "react";
-import { Input, Spin, Tooltip, Select } from "antd";
+import { Input, Spin, Tooltip, Select, Popover } from "antd";
 import "antd/dist/antd.css";
 import "./styles.scss";
 import Images from "../../../../../assets/images/images";
+import configConstFirebase from "../../../../../assets/helper/firebase/firebase";
+import { storage } from "../../../../../configs/firebase";
 function ModalAccountOrganizationBasic(props) {
+  const { Option } = Select;
+  let stage = [];
+  for (let i = 0; i < props.stage.length; i++) {
+    stage.push(
+      <Option key={props.stage[i].idStage} value={props.stage[i].idStage}>
+        {props.stage[i].name}
+      </Option>
+    );
+  }
+  console.log(props.basicInfoIn);
+  const content = (
+    <div>
+      <p>Định dạng:</p>
+      <p>- https://www.facebook.com/ChubbyDQT/</p>
+      <p>- www.facebook.com/ChubbyDQT/</p>
+      <p>- facebook.com/ChubbyDQT/</p>
+    </div>
+  );
+  const checkStage = () => {
+    let boolen;
+    const check = props.data.hasOwnProperty("check");
+    if (check === true) {
+      if (props.data.check === true) {
+        boolen = false;
+      } else {
+        boolen = true;
+      }
+    }
+    return boolen;
+  };
+  const handleChangeAvata = (e) => {
+    if (e.target.files[0]) {
+      let image = e.target.files[0];
+      if (image.type.includes("image/")) {
+        if (image.size > configConstFirebase.size) {
+          props.setLogoError(configConstFirebase.errorSize);
+        } else {
+          if (image.name.length > configConstFirebase.name) {
+            props.setLogoError(configConstFirebase.nameError);
+          }
+          {
+            const uploadImage = storage.ref(`images/${image.name}`).put(image);
+            uploadImage.on(
+              "state_changed",
+              (snapshot) => {
+                if (snapshot.state === "running") {
+                  props.setLoading(true);
+                }
+              },
+              (error) => {},
+              () => {
+                storage
+                  .ref("images")
+                  .child(image.name)
+                  .getDownloadURL()
+                  .then((url) => {
+                    props.setLoading(false);
+                    props.setLogoError("");
+                    props.setBasicInfo({
+                      ...props.basicInfoIn,
+                      logo: url,
+                    });
+                  });
+              }
+            );
+          }
+        }
+      } else {
+        props.setLogoError(configConstFirebase.errorTypeImage);
+      }
+    }
+  };
   return (
     <>
       <div className="maob__imgWrapper">
         <div className="maob__image">
           <img
-            src={props.data.logo === "" ? Images.USER_AVATA : props.data.logo}
+            src={
+              props.basicInfoIn.logo === ""
+                ? Images.NO_IMAGE
+                : props.basicInfoIn.logo
+            }
             alt="user"
             className={`maob__img${
-              props.avataError !== "" ? " maob__userAvata" : ""
+              props.logoError !== "" ? " maob__userAvata" : ""
             }`}
           />
           <input
@@ -20,10 +98,20 @@ function ModalAccountOrganizationBasic(props) {
             type={props.loading === true ? "text" : "file"}
             id="file"
             accept="image/*"
+            onChange={handleChangeAvata}
           />
-          <Tooltip title={props.avataError} color="red" placement="left">
-            <label htmlFor="file" className="maob__span">
-              <img src={Images.CAMERA} alt="camera" className="maob__camera" />
+          <Tooltip title={props.logoError} color="red" placement="left">
+            <label
+              htmlFor="file"
+              className="maob__span"
+              onChange={handleChangeAvata}
+            >
+              <img
+                src={Images.CAMERA}
+                alt="camera"
+                className="maob__camera"
+                onChange={handleChangeAvata}
+              />
               {props.loading === true ? (
                 <Spin className="maob__teamlSpin" />
               ) : (
@@ -38,44 +126,92 @@ function ModalAccountOrganizationBasic(props) {
         <div className="maob__lineOne">
           <div className="maob__name">
             <label className="label__fontWeight">Tên tổ chức</label>
-            <Input
-              type="text"
-              size="large"
-              name="name"
-              defaultValue={props.data.name}
-            />
+            <Tooltip title={props.nameError} color="red" placement="topRight">
+              <Input
+                className={props.nameError !== "" ? "input__error" : ""}
+                type="text"
+                size="large"
+                name="name"
+                onChange={props.handleChangeValue}
+                onBlur={props.handleBlurName}
+                defaultValue={props.basicInfoIn.name}
+              />
+            </Tooltip>
           </div>
           <div className="maob__emp">
             <label className="label__fontWeight">Số thành viên</label>
-            <Input
-              type="number"
-              size="large"
-              name="numberOfEmp"
-              defaultValue={props.data.numberOfEmp}
-            />
+            <Tooltip
+              title={props.numberOfEmpError}
+              color="red"
+              placement="topRight"
+            >
+              <Input
+                className={props.numberOfEmpError !== "" ? "input__error" : ""}
+                type="number"
+                size="large"
+                name="numberOfEmp"
+                onChange={props.handleChangeValue}
+                onBlur={props.handleBlurEmp}
+                defaultValue={props.basicInfoIn.numberOfEmp}
+              />
+            </Tooltip>
           </div>
           <div className="maob__year">
             <label className="label__fontWeight">Năm thành lập</label>
-            <Input
-              type="number"
-              size="large"
-              name="foundedYear"
-              defaultValue={props.data.foundedYear}
-            />
+            <Tooltip
+              title={props.foundedYearError}
+              color="red"
+              placement="topRight"
+            >
+              <Input
+                className={props.foundedYearError !== "" ? "input__error" : ""}
+                type="number"
+                size="large"
+                name="foundedYear"
+                onChange={props.handleChangeValue}
+                onBlur={props.handleBlurYear}
+                defaultValue={props.basicInfoIn.foundedYear}
+              />
+            </Tooltip>
           </div>
         </div>
         <div className="maob__lineTwo">
           <div className="maob__web">
-            <label className="label__fontWeight">Link website</label>
-            <Input
-              type="text"
-              size="large"
-              name="website"
-              defaultValue={props.data.website}
-            />
+            <label className="label__fontWeight">
+              Link website{" "}
+              <Popover content={content} title={null}>
+                <span>(i)</span>
+              </Popover>
+            </label>
+            <Tooltip
+              title={props.websiteError}
+              color="red"
+              placement="topRight"
+            >
+              <Input
+                className={props.websiteError !== "" ? "input__error" : ""}
+                type="text"
+                size="large"
+                name="website"
+                onChange={props.handleChangeValue}
+                onBlur={props.handleBlurLink}
+                defaultValue={props.basicInfoIn.website}
+              />
+            </Tooltip>
           </div>
           <div className="maob__selectIType">
             <label className="label__fontWeight">Giai đoạn hiện tại</label>
+            <Select
+              style={{ width: "100%" }}
+              className="maib__select"
+              dropdownClassName="modal__articleDrop"
+              defaultValue={props.basicInfoIn.currentStage}
+              onChange={props.handleChangeCurrent}
+              size="large"
+              disabled={checkStage()}
+            >
+              {stage}
+            </Select>
           </div>
         </div>
       </div>

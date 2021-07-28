@@ -6,6 +6,7 @@ import {
   sessionTimeOut,
   showMessage,
 } from "../../assets/helper/helper";
+import message from "../../assets/message/text";
 import { defaultUrlAPI, defaultUrlAPIStringTemplate } from "../../configs/url";
 import {
   CREATE_ANSWER_FAIL,
@@ -40,6 +41,8 @@ import {
   DELETE_DOCUMENT_FAILED,
   UPDATE_ROUND_STATUS_SUCCESS,
   UPDATE_ROUND_STATUS_FAILED,
+  GET_ROUND_SUGGEST_SUCCESS,
+  GET_ROUND_SUGGEST_FAILED,
 } from "../constants/round.const";
 import { getListDocumentByRoundId } from "./introduce.action";
 import { startLoading, stopLoading } from "./loading.action";
@@ -498,7 +501,7 @@ export const getListAllRoundFailed = (err) => {
 };
 
 export const getRoundAndOrganization = (idRound) => {
-  console.log(idRound)
+  console.log(idRound);
   return (dispatch) => {
     const token = authorizationAccount();
     axios({
@@ -531,7 +534,7 @@ export const getRoundAndOrganizationFailed = (err) => {
   };
 };
 
-export const getDealByRound = (gmail,roundId) => {
+export const getDealByRound = (gmail, roundId) => {
   return (dispatch) => {
     const token = authorizationAccount();
     axios({
@@ -570,13 +573,13 @@ export const updateRound = (object) => {
     axios({
       method: "PUT",
       url: `http://localhost:8080/api/v1/round/updateRound`,
-      data:object,
+      data: object,
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         dispatch(updateRoundSucess(res.data));
         dispatch(getRoundAndOrganization(object.id));
       })
@@ -600,13 +603,13 @@ export const updateRoundFailed = (err) => {
   };
 };
 
-export const updateDocument = (object,id) => {
+export const updateDocument = (object, id) => {
   return (dispatch) => {
     const token = authorizationAccount();
     axios({
       method: "PUT",
       url: `http://localhost:8080/api/v1/document`,
-      data:object,
+      data: object,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -635,7 +638,7 @@ export const updateDocumentFailed = (err) => {
   };
 };
 
-export const deleteDocument = (idDocument , idRound) => {
+export const deleteDocument = (idDocument, idRound) => {
   return (dispatch) => {
     const token = authorizationAccount();
     axios({
@@ -675,7 +678,7 @@ export const updateStatusRoundDetail = (object, idRound) => {
     axios({
       method: "PUT",
       url: `http://localhost:8080/api/v1/round/updateStatusRound`,
-      data:object,
+      data: object,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -704,3 +707,44 @@ export const updateRoundStatusFailed = (err) => {
   };
 };
 
+export const getRoundSuggest = (id, history, isLoading) => {
+  return (dispatch) => {
+    if (isLoading === true) {
+      dispatch(startLoading());
+    }
+    axios({
+      mehtod: "GET",
+      url: defaultUrlAPIStringTemplate() + `suggest-round?idInvestor=${id}`,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        dispatch(stopLoading());
+        if (res.status === 200) {
+          dispatch(getRoundSuggestSuccess(res.data));
+        } else {
+          showMessage("error", message.CACTH_ERROR);
+        }
+      })
+      .catch((err) => {
+        dispatch(stopLoading());
+        dispatch(getRoundSuggestFailed(err));
+        sessionTimeOut(err, history);
+      });
+  };
+};
+
+const getRoundSuggestSuccess = (list) => {
+  return {
+    type: GET_ROUND_SUGGEST_SUCCESS,
+    payload: list,
+  };
+};
+
+const getRoundSuggestFailed = (err) => {
+  return {
+    type: GET_ROUND_SUGGEST_FAILED,
+    payload: err,
+  };
+};
