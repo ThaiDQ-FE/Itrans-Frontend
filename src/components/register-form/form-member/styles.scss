@@ -32,7 +32,7 @@
                         margin: auto;
                         position: relative;
                         margin-bottom: 20px;
-                        .fm__userAvata{
+                        .fm__userAvata {
                             width: 70px;
                             height: 70px;
                             border-radius: 100%;
@@ -54,7 +54,6 @@
                     }
                     .fm__hoVaTen {
                         input {
-                            border: 1px solid #ff8412;
                             font-size: 16px;
                             &:focus {
                                 box-shadow: unset;
@@ -64,17 +63,6 @@
                     .fm__chucVu {
                         margin: 20px 0;
                         input {
-                            border: 1px solid #ff8412;
-                            font-size: 16px;
-                            &:focus {
-                                box-shadow: unset;
-                            }
-                        }
-                    }
-                    .fm__gmail {
-                        margin-bottom: 20px;
-                        input {
-                            border: 1px solid #ff8412;
                             font-size: 16px;
                             &:focus {
                                 box-shadow: unset;
@@ -84,7 +72,6 @@
                     .fm__linkCv {
                         position: relative;
                         input {
-                            border: 1px solid #ff8412;
                             font-size: 16px;
                             padding-right: 30px;
                             &:focus {
@@ -114,11 +101,14 @@
                         button {
                             height: 100%;
                             background-color: #ff7d04;
+                            border-color: #ff7d04;
                             border-radius: 7px;
                             color: #ffffff;
                             &:hover {
-                                border-color: unset;
+                                background-color: #ff7d04;
+                                border-color: #ff7d04;
                                 box-shadow: 0px 3px 14px -3px rgba(0, 0, 0, 0.2);
+                                font-weight: 600;
                             }
                         }
                     }
@@ -133,18 +123,18 @@
                 margin-left: 30px;
                 .fm__member {
                     width: 100%;
-                img {
-                    display: inline-block;
-                    border-radius: 100%;
-                    width: 60px;
-                    height: 60px;
-                    margin: 5px;
-                }
-                div{
-                    width: 100%;
-                    margin: 10px;
-                    display: inline-block;
-                }
+                    img {
+                        display: inline-block;
+                        border-radius: 100%;
+                        width: 60px;
+                        height: 60px;
+                        margin: 5px;
+                    }
+                    div {
+                        width: 100%;
+                        margin: 10px;
+                        display: inline-block;
+                    }
                 }
             }
         }
@@ -173,11 +163,14 @@
                 button {
                     height: 100%;
                     background-color: #ff7d04;
-                    border-radius: 7px;
+                    border-color: #ff7d04;
                     color: #ffffff;
                     &:hover {
                         border-color: unset;
                         box-shadow: 0px 3px 14px -3px rgba(0, 0, 0, 0.2);
+                        font-weight: 600;
+                        background-color: #ff7d04;
+                        border-color: #ff7d04;
                     }
                     &:focus {
                         border-color: unset;

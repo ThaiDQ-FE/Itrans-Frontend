@@ -7,7 +7,12 @@ import "antd/dist/antd.css";
 import Messages from "../../../assets/message/text";
 import Images from "../../../assets/images/images";
 import axios from "axios";
-import { doccumentAddDis, doccumentRemoveDis, getLocalStorage } from "../../../assets/helper/helper";
+import {
+  doccumentAddDis,
+  doccumentRemoveDis,
+  getLocalStorage,
+} from "../../../assets/helper/helper";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 function FormBasicInformation(props) {
   const dispatch = useDispatch();
   const [checkMail, setCheckMail] = useState("");
@@ -15,9 +20,8 @@ function FormBasicInformation(props) {
   const saveData = getLocalStorage("Form1");
 
   useEffect(() => {
-
     if (timeLeft === 0) {
-      setTimeLeft(null)
+      setTimeLeft(null);
     }
 
     // exit early when we reach 0
@@ -29,7 +33,6 @@ function FormBasicInformation(props) {
     // save intervalId to clear the interval when the
     // component re-renders
     const intervalId = setInterval(() => {
-
       setTimeLeft(timeLeft - 1);
     }, 1000);
 
@@ -49,8 +52,8 @@ function FormBasicInformation(props) {
       gmail: saveData.gmail,
       password: saveData.password,
       rePassword: saveData.rePassword,
-      verificationCode: localStorage.getItem("VerificationCode")
-    })
+      verificationCode: localStorage.getItem("VerificationCode"),
+    });
     setCheckMail(saveData.gmail);
     localStorage.removeItem("Form1");
   }
@@ -73,9 +76,7 @@ function FormBasicInformation(props) {
     rePassword: "",
     verificationCode: "",
   });
-  const regex = new RegExp(
-    /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
-  );
+  const regex = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
   let check = 0;
   const validate = (values) => {
     let errors = {};
@@ -159,25 +160,24 @@ function FormBasicInformation(props) {
     return errors;
   };
   const handleNext = () => {
-    
-    console.log('e')
-    console.log(checkMail)
-    console.log(user.gmail)
+    console.log("e");
+    console.log(checkMail);
+    console.log(user.gmail);
     if (checkMail !== user.gmail && !checkMail) {
       if (!user.verificationCode) {
         setErrors({
-          verificationCode: "Mã xác thực không được để trống"
+          verificationCode: "Mã xác thực không được để trống",
         });
         setColor({
-          verificationCode: "1px solid red"
+          verificationCode: "1px solid red",
         });
-      }else {
-        console.log("e")
+      } else {
+        console.log("e");
         setErrors({
-          verificationCode: "Mã xác thực không đúng"
+          verificationCode: "Mã xác thực không đúng",
         });
         setColor({
-          verificationCode: "1px solid red"
+          verificationCode: "1px solid red",
         });
       }
       setErrors(validate(user));
@@ -187,11 +187,10 @@ function FormBasicInformation(props) {
       console.log(user);
       setErrors(validate(user));
       setColor(validateColor(user));
-       if (check == 4) {
-              localStorage.setItem("Form1", JSON.stringify(user));
-              props.handleNext();
-            }
-      
+      if (check == 4) {
+        localStorage.setItem("Form1", JSON.stringify(user));
+        props.handleNext();
+      }
     }
   };
   const handleClick = () => {
@@ -201,7 +200,7 @@ function FormBasicInformation(props) {
     })
       .then((res) => {
         console.log(res.data);
-        if (res.data === true){
+        if (res.data === true) {
           dispatch(
             postVerificationCode({
               gmail: user.gmail,
@@ -210,22 +209,21 @@ function FormBasicInformation(props) {
             })
           );
           setErrors({
-            gmail: ""
+            gmail: "",
           });
           setColor({
-            gmail: ""
+            gmail: "",
           });
-        }else {
+        } else {
           setErrors({
-            gmail: "Tài khoản đã tồn tại."
+            gmail: "Tài khoản đã tồn tại.",
           });
           setColor({
-            gmail: "1px solid red"
+            gmail: "1px solid red",
           });
         }
       })
-      .catch((err) => {
-      });
+      .catch((err) => {});
     localStorage.setItem("VerificationCode", 1);
     setCheckMail(user.gmail);
     setTimeLeft(5);
@@ -237,7 +235,7 @@ function FormBasicInformation(props) {
         <h3>{Messages.GENERAL_STEP_1}</h3>
         <form className="fbi__form">
           <div className="fbi__gmail fbi__input">
-            <small>Gmail</small>
+            <small className="label__fontWeight">Gmail</small>
             <Tooltip title={errors.gmail} placement="topRight" color="red">
               <Input
                 style={{ border: color.gmail }}
@@ -249,39 +247,69 @@ function FormBasicInformation(props) {
             </Tooltip>
           </div>
           <div className="fbi__password fbi__input">
-            <small>Mật khẩu</small>
+            <small className="label__fontWeight">Mật khẩu</small>
             <Tooltip title={errors.password} placement="topRight" color="red">
-              <Input
+              <Input.Password
                 style={{ border: color.password }}
                 onChange={handleChange}
                 name="password"
                 defaultValue={user.password}
                 size="large"
                 type="password"
+                iconRender={(visible) =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                }
               />
+              {/* <Input
+                style={{ border: color.password }}
+                onChange={handleChange}
+                name="password"
+                defaultValue={user.password}
+                size="large"
+                type="password"
+              /> */}
             </Tooltip>
           </div>
           <div className="fbi__confirmPassword fbi__input">
-            <small>Nhập lại mật khẩu</small>
+            <small className="label__fontWeight">Nhập lại mật khẩu</small>
             <Tooltip title={errors.rePassword} placement="topRight" color="red">
-              <Input
+              <Input.Password
                 style={{ border: color.rePassword }}
                 onChange={handleChange}
                 name="rePassword"
                 defaultValue={user.rePassword}
                 size="large"
                 type="password"
+                iconRender={(visible) =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                }
               />
+              {/* <Input
+                style={{ border: color.rePassword }}
+                onChange={handleChange}
+                name="rePassword"
+                defaultValue={user.rePassword}
+                size="large"
+                type="password"
+              /> */}
             </Tooltip>
           </div>
           <div className="fbi__groupGmail fbi__input">
             <div className="fbi__confirmGmail">
-              <Button id="fbi_MXT" onClick={handleClick} type="primary">
-                {timeLeft === null ? "Lấy mã xác thực" : timeLeft +" s" }
+              <Button
+                id="fbi_MXT"
+                onClick={handleClick}
+                type="primary"
+                size="small"
+                className={`fbi__getCode${
+                  timeLeft === null ? "" : " fbi__getCodeDis"
+                }`}
+              >
+                {timeLeft === null ? "Lấy mã xác thực" : timeLeft + " s"}
               </Button>
             </div>
             <div className="fbi__inputConfirmGmail fbi__input">
-              <small>Mã xác thực</small>
+              <small className="label__fontWeight">Mã xác thực</small>
               <Tooltip
                 title={errors.verificationCode}
                 placement="topRight"

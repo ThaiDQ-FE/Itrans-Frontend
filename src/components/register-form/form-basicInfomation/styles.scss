@@ -21,7 +21,6 @@
 
             .fbi__gmail {
                 input {
-                    border: 1px solid #ff8412;
                     font-size: 16px;
                     &:focus {
                         box-shadow: unset;
@@ -31,7 +30,6 @@
             .fbi__password {
                 margin: 20px 0;
                 input {
-                    border: 1px solid #ff8412;
                     font-size: 16px;
                     &:focus {
                         box-shadow: unset;
@@ -40,7 +38,6 @@
             }
             .fbi__confirmPassword {
                 input {
-                    border: 1px solid #ff8412;
                     font-size: 16px;
                     &:focus {
                         box-shadow: unset;
@@ -55,10 +52,10 @@
                 margin-top: 20px;
                 .fbi__confirmGmail {
                     width: 45%;
-                    button {
+                    .fbi__getCode {
                         margin-top: 21px;
                         width: 100%;
-                        height: 75%;
+                        height: 45px;
                         &:focus-visible {
                             outline-color: #ff8412;
                             outline-width: unset;
@@ -70,18 +67,26 @@
                         }
                         border-radius: 7px;
                         border: 1px solid #ff8412;
-                        background-color: #ff8412;
+                        background: #ff8412;
                         color: #ffffff;
                         &:hover {
                             box-shadow: 0px 5px 14px -3px rgba(0, 0, 0, 0.2);
-                            background-color: #ff820e;
+                            background: #ff820e;
+                        }
+                    }
+                    .fbi__getCodeDis {
+                        background: gray;
+                        border-color: gray;
+                        &:hover {
+                            box-shadow: unset;
+                            background: gray;
                         }
                     }
                 }
+
                 .fbi__inputConfirmGmail {
                     width: 45%;
                     input {
-                        border: 1px solid #ff8412;
                         font-size: 16px;
                         &:focus {
                             box-shadow: unset;

@@ -321,10 +321,10 @@ function Header({ history }) {
     checkIndus(arrayIndustry, setIndustryError);
   };
   const handleBlurPro = () => {
-    checkPro(arrayProvince, setProvinceError);
+    checkPro(arrayProvince, setProvinceError, arrayRegion);
   };
   const handleBlurRe = () => {
-    checkRe(arrayRegion, setRegionError);
+    checkRe(arrayRegion, setRegionError, arrayProvince);
   };
   const handleBlurStage = () => {
     checkStage(arrayStage, setStageError);
@@ -365,9 +365,9 @@ function Header({ history }) {
       maxInvestmentError === "" &&
       minInvestmentError === "" &&
       arrayIndustry.length !== 0 &&
-      arrayProvince.length !== 0 &&
       arrayInvestorType.length !== 0 &&
-      arrayStage.length !== 0
+      arrayStage.length !== 0 &&
+      (arrayProvince.length !== 0 || arrayRegion.length !== 0)
     ) {
       const object = {
         foundedYear: Number(basicInfoIn.foundedYear),

@@ -267,9 +267,155 @@ function FormInformationAboutTheOrganization(props) {
   return (
     <div className="fiato__wrapper">
       <div className="fiato__container">
-        <h3>{Messages.ORGANIZATION_STEP_2}</h3>
+        <h2 style={{ textAlign: "center", marginTop: 20, marginBottom: 20 }}>
+          {Messages.ORGANIZATION_STEP_2}
+        </h2>
         <form className="fiato__form">
-          <div className="fiato__lineOne">
+          <div className="fiato__basicInfo">
+            <div className="fiato__imgWrapper">
+              <label className="label__fontWeight">Hình đại diện</label>
+              <div className="fiato__imageInfo">
+                <img
+                  src={url || Images.NO_IMAGE}
+                  alt=""
+                  className="fiato__userLogo"
+                />
+                <input
+                  className="fiato__file"
+                  type="file"
+                  id="file"
+                  onChange={handleChangeImage}
+                />
+                <label htmlFor="file" className="fiato__span">
+                  <img
+                    src={Images.CAMERA}
+                    alt="camera"
+                    className="fiato__camera"
+                  />
+                </label>
+              </div>
+            </div>
+
+            <div className="fiato__infoBasic">
+              <div className="fiato__lineOne">
+                <div className="fiato__name">
+                  <small className="label__fontWeight">Tên tổ chức</small>
+                  <Tooltip title={errors.name} placement="topRight" color="red">
+                    <Input
+                      style={{ border: color.name }}
+                      name="name"
+                      onChange={handleChangeInput}
+                      size="large"
+                    />
+                  </Tooltip>
+                </div>
+                <div className="fiato__year">
+                  <small className="label__fontWeight">Năm thành lập</small>
+                  <Tooltip
+                    title={errors.foundedYear}
+                    placement="topRight"
+                    color="red"
+                  >
+                    <Input
+                      style={{ border: color.foundedYear }}
+                      name="foundedYear"
+                      onChange={handleChangeInput}
+                      type="text"
+                      maxLength="9"
+                      size="large"
+                    />
+                  </Tooltip>
+                </div>
+                <div className="fiato__emp">
+                  <small className="label__fontWeight">Số thành viên</small>
+                  <Tooltip
+                    title={errors.numberOfEmployee}
+                    placement="topRight"
+                    color="red"
+                  >
+                    <Input
+                      style={{ border: color.numberOfEmployee }}
+                      name="numberOfEmployee"
+                      type="text"
+                      maxLength="9"
+                      onChange={handleChangeInput}
+                      size="large"
+                    />
+                  </Tooltip>
+                </div>
+              </div>
+              <div className="fiato__lineTwo">
+                <div className="fiato__linkWebsite">
+                  <small className="label__fontWeight">Link Website</small>
+                  <Tooltip title={errors.link} placement="topRight" color="red">
+                    <Input
+                      style={{ border: color.link }}
+                      name="link"
+                      onChange={handleChangeInput}
+                      size="large"
+                    />
+                  </Tooltip>
+                </div>
+                <div className="fiato__giaiDoanPhatTrien">
+                  <small className="label__fontWeight">
+                    Giai đoạn phát triển
+                  </small>
+                  <Tooltip
+                    title={errors.stage}
+                    placement="topRight"
+                    color="red"
+                  >
+                    <Select
+                      className="fiato__selectStage"
+                      style={{ border: color.stage }}
+                      onChange={handleChange}
+                      name="stage"
+                      size="large"
+                      allowClear
+                    >
+                      {renderListStage()}
+                    </Select>
+                  </Tooltip>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr style={{ width: 200, margin: "20px auto" }} />
+          <div className="fiato__selectInfo">
+            <div className="fiato__linhVucKinhDoanh">
+              <small className="label__fontWeight">Lĩnh vực kinh doanh</small>
+              <Tooltip title={errors.industry} placement="topRight" color="red">
+                <Select
+                  style={{ border: color.industry }}
+                  name="industry"
+                  mode="multiple"
+                  allowClear
+                  onChange={handleChange}
+                  size="large"
+                  className="fiato__selectIndus"
+                >
+                  {renderListIndustry()}
+                </Select>
+              </Tooltip>
+            </div>
+            <div className="fiato__khuVucHoatDong">
+              <small className="label__fontWeight">Khu vực hoạt động</small>
+              <Tooltip title={errors.province} placement="topRight" color="red">
+                <Select
+                  style={{ border: color.province }}
+                  mode="multiple"
+                  allowClear
+                  name="province"
+                  onChange={handleChange}
+                  size="large"
+                  className="fiato__selectPro"
+                >
+                  {renderListProvince()}
+                </Select>
+              </Tooltip>
+            </div>
+          </div>
+          {/* <div className="fiato__lineOne">
             <div className="fiato__tenToChuc">
               <small>Tên tổ chức</small>
               <Tooltip title={errors.name} placement="topRight" color="red">
@@ -376,22 +522,6 @@ function FormInformationAboutTheOrganization(props) {
             </div>
           </div>
           <div className="fiato__lineFour">
-            {/* <div className="fiato__moTaVeDoanhNghiep">
-              <small>Mô tả về doanh nghiệp</small>
-              <Tooltip
-                title={errors.description}
-                placement="topRight"
-                color="red"
-              >
-                <TextArea
-                  style={{ border: color.description }}
-                  name="description"
-                  rows={5}
-                  onChange={handleChangeInput}
-                  size="large"
-                />
-              </Tooltip>
-            </div> */}
             <div className="fiato__logo">
               <small>&nbsp;</small>
               <img
@@ -413,7 +543,7 @@ function FormInformationAboutTheOrganization(props) {
                 />
               </label>
             </div>
-          </div>
+          </div> */}
         </form>
         <div className="fiato__button">
           <div className="fiato__buttonLeft" onClick={props.handleBack}>
