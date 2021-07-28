@@ -1,5 +1,6 @@
 import { Input, Button, Tooltip } from "antd";
 import React, { useState } from "react";
+import "antd/dist/antd.css";
 import "./styles.scss";
 import Messages from "../../../assets/message/text";
 import Images from "../../../assets/images/images";
@@ -77,7 +78,7 @@ function FormMember(props) {
       const upload = storage.ref(`images/${image.name}`).put(image);
       upload.on(
         "state_changed",
-        (snapshot) => { },
+        (snapshot) => {},
         (error) => {
           console.log(error);
         },
@@ -123,10 +124,11 @@ function FormMember(props) {
     } else {
       return teamMember.map((item, index) => {
         return (
-          <div style={{display:'flex'}}>
+          <div style={{ display: "flex" }}>
             <img src={item.image} />
-            <div>{item.name}
-            <p>{item.position}</p>
+            <div>
+              {item.name}
+              <p>{item.position}</p>
             </div>
           </div>
         );
@@ -197,7 +199,7 @@ function FormMember(props) {
                 </label>
               </div>
               <div className="fm__hoVaTen">
-                <small>Họ và Tên</small>
+                <small className="label__fontWeight">Họ và Tên</small>
                 <Tooltip title={errors.name} placement="topRight" color="red">
                   <Input
                     value={teamMember.name}
@@ -210,7 +212,7 @@ function FormMember(props) {
                 </Tooltip>
               </div>
               <div className="fm__chucVu">
-                <small>Chức vụ</small>
+                <small className="label__fontWeight">Chức vụ</small>
                 <Tooltip
                   title={errors.position}
                   placement="topRight"
@@ -235,7 +237,7 @@ function FormMember(props) {
               />
             </div> */}
               <div className="fm__linkCv">
-                <small>Link CV</small>
+                <small className="label__fontWeight">Link CV</small>
                 <Tooltip title={errors.linkCv} placement="topRight" color="red">
                   <Input
                     id="linkCv"

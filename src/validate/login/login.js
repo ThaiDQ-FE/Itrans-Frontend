@@ -1,3 +1,5 @@
+import { validGmail } from "../../configs/regex";
+
 export const checkGamil = (gmail, setG) => {
   if (gmail === "") {
     return setG("Gmail không được bỏ trống");
@@ -5,9 +7,8 @@ export const checkGamil = (gmail, setG) => {
     setG("");
   }
   if (!gmail.includes("admin")) {
-    const validGmail = new RegExp("^[a-zA-Z0-9]+.[a-zA-Z0-9]+@gmail.com$");
     if (validGmail.test(gmail) === false) {
-      return setG("Định dạng gmail: @gmail.com");
+      return setG("Sai định dạng. VD: dangvana@gmail.com");
     } else {
       setG("");
     }
