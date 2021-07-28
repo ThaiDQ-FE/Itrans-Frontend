@@ -12,6 +12,7 @@ import {
   getListStage,
 } from "../../../store/action/register.action";
 import { storage } from "../../../configs/firebase";
+import { getLocalStorage } from "../../../assets/helper/helper";
 function FormInvestor(props) {
   const { Option } = Select;
   const { TextArea } = Input;
@@ -19,6 +20,7 @@ function FormInvestor(props) {
   const { listProvince, listStage, listIndustry, listRegion } = useSelector(
     (state) => state.register
   );
+
   const [information, setInformation] = useState({
     name: "",
     industry: "",
@@ -33,6 +35,88 @@ function FormInvestor(props) {
     min: "",
     max: "",
   });
+  const saveData = getLocalStorage("Form2Investor");
+  if (saveData !== null) {
+    setInformation({
+      name: saveData.name,
+      industry: saveData.industry,
+      stage: saveData.stage,
+      foundedYear: saveData.foundedYear,
+      numberOfEmployee: saveData.numberOfEmployee,
+      idProvince: saveData.idProvince,
+      link: saveData.link,
+      description: saveData.link,
+      region: saveData.region,
+      province: saveData.province,
+      min: saveData.min,
+      max: saveData.max,
+    })
+
+    localStorage.removeItem("Form2Investor");
+  }
+  const listIdProvinceDefaul = () => {
+    let array = "";
+    listProvince.map((value) => {
+      if (value.idProvince.toString() === information.idProvince) {
+        array = value.name;
+      }
+    })
+    return array;
+  }
+  const listRegionDefaul = () => {
+    let array = [];
+    if (information.region !== undefined) {
+      listRegion.map((value) => {
+          information.region.map((valueS) => {
+            if (value.idRegion.toString() === valueS.toString()) {
+              array.push(value.name);
+            }
+          })
+      })
+      return array;
+    }
+  }
+  const listIndustryDefaul = () => {
+    let array = [];
+    if (information.industry !== undefined) {
+      listIndustry.map((value) => {
+          information.industry.map((valueS) => {
+            if (value.idIndustry.toString() === valueS.toString()) {
+              array.push(value.name);
+            }
+          })
+      })
+      return array;
+    }
+  }
+  const listProvinceDefaul = () => {
+    let array = [];
+    if (information.province !== undefined) {
+      listProvince.map((value) => {
+          information.province.map((valueS) => {
+            if (value.idProvince.toString() === valueS.toString()) {
+              array.push(value.name);
+            }
+          })
+      })
+    }
+    return array;
+  }
+  const listStageDefaul = () => {
+    let array = [];
+    console.log(information.stage);
+    if (information.stage !== undefined) {
+      listStage.map((value) => {
+        information.stage.map((valueS) => {
+          if (value.idStage.toString() === valueS.toString()) {
+            array.push(value.name);
+          }
+        })
+      })
+    }
+    return array;
+  }
+
   const [image, setImage] = useState(null);
   const [url, setUrl] = useState("");
   const handleChangeImage = (e) => {
@@ -42,7 +126,7 @@ function FormInvestor(props) {
       const upload = storage.ref(`images/${image.name}`).put(image);
       upload.on(
         "state_changed",
-        (snapshot) => {},
+        (snapshot) => { },
         (error) => {
           console.log(error);
         },
@@ -71,6 +155,7 @@ function FormInvestor(props) {
   // }
   let check = 0;
   const regex = new RegExp("^[0-9]*$");
+  const regexFloat = /^\d+(\.\d+)?$/;
   const validate = (values) => {
     let errors = {};
     if (!values.name) {
@@ -113,19 +198,19 @@ function FormInvestor(props) {
       errors.idProvince = "";
       check++;
     }
-    if (!values.stage) {
+    if (!values.stage || values.stage.length === 0) {
       errors.stage = "Giai đoạn muốn đầu tư không được để trống";
     } else {
       errors.stage = "";
       check++;
     }
-    if (!values.industry) {
+    if (!values.industry || values.industry.length === 0) {
       errors.industry = "Linh vực kinh doanh muốn đầu tư không được để trống";
     } else {
       errors.industry = "";
       check++;
     }
-    if (!values.province && !values.region) {
+    if (!values.province && !values.region || (values.province.length === 0 && values.region.length === 0)) {
       errors.province = "Khu vực đầu tư không được để trống";
       errors.region = "Vùng miền đầu tư không được để trống";
     } else {
@@ -139,17 +224,19 @@ function FormInvestor(props) {
       errors.min = "Số tiền nhỏ nhất phải nhỏ hơn số tiền lớn nhất";
     } else if (values.min < 0) {
       errors.min = "Số tiền nhỏ nhất phải lớn hơn hoặc bằng 0";
-    } else if (!regex.test(values.min)) {
+    } else if (!regexFloat.test(values.min)) {
       errors.min = "Số tiền nhỏ nhất phải là số";
     } else {
       errors.min = "";
       check++;
     }
+
+    console.log(regexFloat.test(values.max));
     if (!values.max) {
       errors.max = "Số tiền lớn nhất có thể đầu tư không được để trống";
     } else if (values.max <= 0) {
       errors.max = "Số tiền lớn nhất phải lớn hơn 0";
-    } else if (!regex.test(values.max)) {
+    } else if (!regexFloat.test(values.max)) {
       errors.max = "Số tiền lớn nhất phải là số";
     } else {
       errors.max = "";
@@ -194,24 +281,21 @@ function FormInvestor(props) {
     } else {
       errors.idProvince = "";
     }
-    if (!values.stage) {
+    if (!values.stage || values.stage.length === 0) {
       errors.stage = "1px solid red";
     } else {
       errors.stage = "";
     }
-    if (!values.industry) {
+    if (!values.industry || values.industry.length === 0) {
       errors.industry = "1px solid red";
     } else {
       errors.industry = "";
     }
-    if (!values.province) {
+    if (!values.province && !values.region || (values.province.length === 0 && values.region.length === 0)) {
       errors.province = "1px solid red";
-    } else {
-      errors.province = "";
-    }
-    if (!values.region) {
       errors.region = "1px solid red";
     } else {
+      errors.province = "";
       errors.region = "";
     }
     if (!values.min) {
@@ -220,7 +304,7 @@ function FormInvestor(props) {
       errors.min = "1px solid red";
     } else if (values.min < 0) {
       errors.min = "1px solid red";
-    } else if (!regex.test(values.min)) {
+    } else if (!regexFloat.test(values.min)) {
       errors.min = "1px solid red";
     } else {
       errors.min = "";
@@ -229,7 +313,7 @@ function FormInvestor(props) {
       errors.max = "1px solid red";
     } else if (values.max <= 0) {
       errors.max = "1px solid red";
-    } else if (!regex.test(values.max)) {
+    } else if (!regexFloat.test(values.max)) {
       errors.max = "1px solid red";
     } else {
       errors.max = "";
@@ -284,23 +368,61 @@ function FormInvestor(props) {
       [name]: value,
     });
   };
-  const handleChange = (value, action) => {
-    if (!action.length) {
-      setInformation({
-        ...information,
-        [action.name]: value,
-      });
-    } else {
-      setInformation({
-        ...information,
-        [action[0].name]: value,
-      });
+
+
+  const handleChangeIdProvince = (value, action) => {
+    setInformation({
+      ...information,
+      idProvince: action.key,
+    });
+  }
+  const handleChangeRegion = (value, action) => {
+    let valueAction = [];
+    for (let index = 0; index < action.length; index++) {
+      valueAction.push(parseInt(action[index].key))
     }
-  };
+    setInformation({
+      ...information,
+      region: valueAction
+    });
+  }
+  const handleChangeProvince = (value, action) => {
+    let valueAction = [];
+    for (let index = 0; index < action.length; index++) {
+      valueAction.push(parseInt(action[index].key))
+    }
+    setInformation({
+      ...information,
+      province: valueAction
+    });
+  }
+  const handleChangeIndustry = (value, action) => {
+    let valueAction = [];
+    for (let index = 0; index < action.length; index++) {
+      valueAction.push(parseInt(action[index].key))
+    }
+    setInformation({
+      ...information,
+      industry: valueAction
+    });
+  }
+
+  const handleChangeStage = (value, action) => {
+    let valueAction = [];
+    for (let index = 0; index < action.length; index++) {
+      valueAction.push(parseInt(action[index].key))
+    }
+    setInformation({
+      ...information,
+      stage: valueAction
+    });
+  }
+
+
   const renderListProvince = () => {
     return listProvince.map((item, index) => {
       return (
-        <Option name="idProvince" value={item.idProvince} key={index}>
+        <Option name="idProvince" value={item.name} key={item.idProvince}>
           {item.name}
         </Option>
       );
@@ -309,7 +431,7 @@ function FormInvestor(props) {
   const renderListProvinceOr = () => {
     return listProvince.map((item, index) => {
       return (
-        <Option name="province" value={item.idProvince} key={index}>
+        <Option name="province" value={item.name} key={item.idProvince}>
           {item.name}
         </Option>
       );
@@ -318,7 +440,7 @@ function FormInvestor(props) {
   const renderListStage = () => {
     return listStage.map((item, index) => {
       return (
-        <Option name="stage" value={item.idStage} key={index}>
+        <Option name="stage" value={item.name} key={item.idStage}>
           {item.name}
         </Option>
       );
@@ -327,7 +449,7 @@ function FormInvestor(props) {
   const renderListRegion = () => {
     return listRegion.map((item, index) => {
       return (
-        <Option name="region" value={item.idRegion} key={index}>
+        <Option name="region" value={item.name} key={item.idRegion}>
           {item.name}
         </Option>
       );
@@ -338,8 +460,8 @@ function FormInvestor(props) {
       return (
         <Option
           name="industry"
-          value={item.idIndustry}
-          key={index}
+          value={item.name}
+          key={item.idIndustry}
           disabled={item.active === false}
         >
           {item.name}
@@ -383,6 +505,7 @@ function FormInvestor(props) {
                   type="text"
                   maxLength="9"
                   style={{ border: color.foundedYear }}
+                  value={information.foundedYear}
                   name="foundedYear"
                   size="large"
                   onChange={handleChangeInput}
@@ -401,6 +524,7 @@ function FormInvestor(props) {
                   maxLength="9"
                   style={{ border: color.numberOfEmployee }}
                   name="numberOfEmployee"
+                  value={information.numberOfEmployee}
                   size="large"
                   onChange={handleChangeInput}
                 />
@@ -417,6 +541,7 @@ function FormInvestor(props) {
                     name="link"
                     size="large"
                     onChange={handleChangeInput}
+                    value={information.link}
                   />
                 </Tooltip>
               </div>
@@ -431,7 +556,8 @@ function FormInvestor(props) {
                     <Select
                       style={{ border: color.idProvince }}
                       name="idProvince"
-                      onChange={handleChange}
+                      onChange={handleChangeIdProvince}
+                      defaultValue={listIdProvinceDefaul}
                       size="large"
                     >
                       {renderListProvince()}
@@ -472,14 +598,15 @@ function FormInvestor(props) {
           <p className="fi__word">Thông tin về đầu tư</p>
           <div className="fi__lineFour">
             <div className="fi__giaiDoanMuonDauTu">
-              <small>Giai đoạn muốn đầu tư</small>
+              <small>Giai đoạn đầu tư</small>
               <Tooltip title={errors.stage} placement="topRight" color="red">
                 <Select
                   style={{ border: color.stage }}
                   name="stage"
                   mode="multiple"
-                  allowClear
-                  onChange={handleChange}
+                  placeholder='Chọn một hoặc nhiều giai đoạn'
+                  onChange={handleChangeStage}
+                  defaultValue={listStageDefaul}
                   size="large"
                 >
                   {renderListStage()}
@@ -487,14 +614,15 @@ function FormInvestor(props) {
               </Tooltip>
             </div>
             <div className="fi__linhVucKinhDoanhMuonDauTu">
-              <small>Lĩnh vực kinh doanh muốn đầu tư</small>
+              <small>Lĩnh vực kinh doanh đầu tư</small>
               <Tooltip title={errors.industry} placement="topRight" color="red">
                 <Select
                   style={{ border: color.industry }}
                   name="industry"
                   mode="multiple"
-                  allowClear
-                  onChange={handleChange}
+                  placeholder='Chọn một hoặc nhiều lĩnh vực'
+                  onChange={handleChangeIndustry}
+                  defaultValue={listIndustryDefaul}
                   size="large"
                 >
                   {renderListIndustry()}
@@ -510,8 +638,9 @@ function FormInvestor(props) {
                   style={{ border: color.province }}
                   name="province"
                   mode="multiple"
-                  allowClear
-                  onChange={handleChange}
+                  placeholder='Chọn một hoặc nhiều khu vực'
+                  onChange={handleChangeProvince}
+                  defaultValue={listProvinceDefaul}
                   size="large"
                 >
                   {renderListProvinceOr()}
@@ -525,8 +654,9 @@ function FormInvestor(props) {
                   style={{ border: color.region }}
                   name="region"
                   mode="multiple"
-                  allowClear
-                  onChange={handleChange}
+                  placeholder='Chọn một hoặc nhiều vùng miền'
+                  onChange={handleChangeRegion}
+                  defaultValue={listRegionDefaul}
                   size="large"
                 >
                   {renderListRegion()}
@@ -544,6 +674,7 @@ function FormInvestor(props) {
                   addonAfter="Tỷ VNĐ"
                   style={{ border: color.min }}
                   name="min"
+                  value={information.min}
                   size="large"
                   onChange={handleChangeInput}
                 />
@@ -558,6 +689,7 @@ function FormInvestor(props) {
                   addonAfter="Tỷ VNĐ"
                   style={{ border: color.max }}
                   name="max"
+                  value={information.max}
                   size="large"
                   onChange={handleChangeInput}
                 />
