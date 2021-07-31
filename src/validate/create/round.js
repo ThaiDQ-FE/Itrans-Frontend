@@ -11,6 +11,11 @@ export const checkMoney = (money, setMoney) => {
   } else {
     setMoney("");
   }
+  if (finalMoney > 1000) {
+    return setMoney("Số tiền kêu gọi tối đa 1000 Tỷ VNĐ");
+  } else {
+    setMoney("");
+  }
 };
 export const checkPercent = (percent, setPercent) => {
   const parsePercent = parseFloat(percent);

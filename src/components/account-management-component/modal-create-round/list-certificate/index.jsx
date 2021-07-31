@@ -26,7 +26,7 @@ function CertificateRound(props) {
           showMessage("warning", configConstFirebase.errorName);
         } else {
           if (fileD.size > configConstFirebase.size) {
-            showMessage("wraning", configConstFirebase.errorSize);
+            showMessage("warning", configConstFirebase.errorSize);
           } else {
             const uploadFile = storage.ref(`images/${fileD.name}`).put(fileD);
             uploadFile.on(

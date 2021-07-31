@@ -3,12 +3,20 @@ import { checkLinkWeb } from "../../configs/regex";
 
 export const checkName = (name, setName) => {
   if (name.length === 0) {
-    return setName("Tên nhà/quỹ đầu tư không được bỏ trống");
+    if (checkRoleUser() === "INVESTOR") {
+      return setName("Tên nhà/quỹ đầu tư không được bỏ trống");
+    } else {
+      return setName("Tên tổ chức không được bỏ trống");
+    }
   } else {
     setName("");
   }
   if (name.length > 100) {
-    return setName("Tên nhà/quỹ đầu tư tối đa 100 ký tự");
+    if (checkRoleUser() === "INVESTOR") {
+      return setName("Tên nhà/quỹ đầu tư tối đa 100 ký tự");
+    } else {
+      return setName("Tên tổ chức tối đa 100 ký tự");
+    }
   } else {
     setName("");
   }
@@ -99,7 +107,7 @@ export const checkPro = (pro, setPro, re) => {
   if (pro.length === 0) {
     if (checkRoleUser() === "INVESTOR") {
       if (pro.length === 0 && re.length === 0) {
-        return setPro("Tỉnh thành đầu tư không được bỏ trống");
+        return setPro("Khu vực hoặc vùng miền đầu tư không được bỏ trống");
       } else {
         setPro("");
       }
@@ -113,7 +121,7 @@ export const checkPro = (pro, setPro, re) => {
 
 export const checkRe = (re, setRe, pro) => {
   if (re.length === 0 && pro.length === 0) {
-    return setRe("Khu vực đầu tư không được bỏ trống");
+    return setRe("Khu vực hoặc vùng miền đầu tư không được bỏ trống");
   } else {
     setRe("");
   }

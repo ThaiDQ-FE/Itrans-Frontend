@@ -2,7 +2,7 @@ import { validGmail } from "../../configs/regex";
 
 export const checkGamil = (gmail, setG) => {
   if (gmail === "") {
-    return setG("Gmail không được bỏ trống");
+    return setG("Email không được bỏ trống");
   } else {
     setG("");
   }

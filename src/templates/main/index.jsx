@@ -6,6 +6,7 @@ function MainTemplate(props) {
   const test = JSON.parse(localStorage.getItem("userInfo"));
   console.log(test);
   if (test === null) {
+    localStorage.removeItem("userInfo");
     return <Redirect to="/dang-nhap" />;
   } else {
     return (
