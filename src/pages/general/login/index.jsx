@@ -49,61 +49,58 @@ function Login(props) {
       dispatch(postCheckLogin(user.gmail, user.password, history));
     }
   };
-  if (getLocalStorage("userInfo") !== null) {
-    return <NotAuth />;
-  } else {
-    return (
-      <div className="login__wrapper">
-        <div className="login__container">
-          <HeaderGeneral />
-          <div className="login__form">
-            <div className="login__title">Đăng nhập</div>
-            <form>
-              <div className="wrapper__gmail">
-                <label className="login__inputLabel">Gmail</label>
-                <Tooltip title={gmailErr} color="red" placement="topRight">
-                  <Input
-                    className={gmailErr !== "" ? "login_iInput" : ""}
-                    type="text"
-                    name="gmail"
-                    size="large"
-                    placeholder="taikhoangmail@gmail.com"
-                    onChange={handleChange}
-                    onBlur={handleGmailBlur}
-                  />
-                </Tooltip>
-              </div>
-              <div className="wrapper__password">
-                <label className="login__inputLabel">Mật khẩu</label>
-                <Tooltip title={passwordErr} color="red" placement="topRight">
-                  <Input.Password
-                    className={passwordErr !== "" ? "login_iInput" : ""}
-                    placeholder="**********"
-                    name="password"
-                    size="large"
-                    onChange={handleChange}
-                    onBlur={handlePasswordBlur}
-                    iconRender={(visible) =>
-                      visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                    }
-                  />
-                </Tooltip>
-              </div>
-              <div className="login__button">
-                <Button
-                  onClick={handleSubmit}
-                  className="login__loginButton"
-                  type="primary"
+
+  return (
+    <div className="login__wrapper">
+      <div className="login__container">
+        <HeaderGeneral />
+        <div className="login__form">
+          <div className="login__title">Đăng nhập</div>
+          <form>
+            <div className="wrapper__gmail">
+              <label className="login__inputLabel">Email</label>
+              <Tooltip title={gmailErr} color="red" placement="topRight">
+                <Input
+                  className={gmailErr !== "" ? "login_iInput" : ""}
+                  type="text"
+                  name="gmail"
                   size="large"
-                >
-                  Đăng nhập
-                </Button>
-              </div>
-            </form>
-          </div>
+                  placeholder="VD: taikhoan@gmail.com"
+                  onChange={handleChange}
+                  onBlur={handleGmailBlur}
+                />
+              </Tooltip>
+            </div>
+            <div className="wrapper__password">
+              <label className="login__inputLabel">Mật khẩu</label>
+              <Tooltip title={passwordErr} color="red" placement="topRight">
+                <Input.Password
+                  className={passwordErr !== "" ? "login_iInput" : ""}
+                  placeholder="**********"
+                  name="password"
+                  size="large"
+                  onChange={handleChange}
+                  onBlur={handlePasswordBlur}
+                  iconRender={(visible) =>
+                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                  }
+                />
+              </Tooltip>
+            </div>
+            <div className="login__button">
+              <Button
+                onClick={handleSubmit}
+                className="login__loginButton"
+                type="primary"
+                size="large"
+              >
+                Đăng nhập
+              </Button>
+            </div>
+          </form>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 export default withRouter(Login);

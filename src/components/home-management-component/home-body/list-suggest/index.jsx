@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Button, Tooltip, Pagination } from "antd";
+import { Card, Button, Tooltip, Pagination, Tag } from "antd";
 import "antd/dist/antd.css";
 import "./styles.scss";
 import Images from "../../../../assets/images/images";
 import { useHistory } from "react-router-dom";
 import { checkRoleUser, localStorages } from "../../../../assets/helper/helper";
 function RoundSuggest(props) {
-  console.log(props.list);
+  console.log(props);
   const [length, setLength] = useState({
     minValue: 0,
     maxValue: 3,
@@ -28,6 +28,29 @@ function RoundSuggest(props) {
   let history = useHistory();
   const handleClickToDetail = () => {
     history.push("/thong-tin-chi-tiet-vong-goi-von");
+  };
+
+  const renderListPro = (item) => {
+    if (item && item.length > 0) {
+      return item.map((value, index) => {
+        return (
+          <Tag color="geekblue" key={index}>
+            {value}
+          </Tag>
+        );
+      });
+    }
+  };
+  const renderListIndus = (item) => {
+    if (item && item.length > 0) {
+      return item.map((value, index) => {
+        return (
+          <Tag color="blue" key={index}>
+            {value}
+          </Tag>
+        );
+      });
+    }
   };
   return (
     <div className="rs__wrapper">
@@ -60,6 +83,9 @@ function RoundSuggest(props) {
                         hoverable
                         className="rs__itemRound"
                       >
+                        <Tag className="rs__count" color="purple">
+                          Phù hợp: {value.count}/4 tiêu chí
+                        </Tag>
                         <img
                           src={
                             value.thumbnail === ""
@@ -78,12 +104,28 @@ function RoundSuggest(props) {
                           />
                           <span>{value.organization}</span>
                         </div>
-                        <div className="rs__stage">
-                          <span>{value.stage}</span>
+                        {value.checkStage === true ? (
+                          <div className="rs__stage">
+                            <Tag color="magenta">{value.stage}</Tag>
+                          </div>
+                        ) : (
+                          <></>
+                        )}
+                        {value.checkAmount === true ? (
+                          <div className="rs__fundingAmount">
+                            <Tag color="green">
+                              {value.fundingAmount} {" Tỷ VNĐ"}
+                            </Tag>
+                          </div>
+                        ) : (
+                          <></>
+                        )}
+
+                        <div className="rs__indus">
+                          <span>{renderListIndus(value.industries)}</span>
                         </div>
-                        <div className="rs__date">
-                          <span>{value.startDate} / </span>
-                          <span>{value.endDate}</span>
+                        <div className="rs__pro">
+                          <span>{renderListPro(value.provinces)}</span>
                         </div>
                         {value.summary === "" ? (
                           <></>

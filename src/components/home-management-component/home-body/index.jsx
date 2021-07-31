@@ -34,7 +34,11 @@ function HomeBody(props) {
   return (
     <div className="hb__wrapper">
       <div className="hb__suggest">
-        <RoundSuggest list={props.listRound} />
+        <RoundSuggest
+          list={props.listRound}
+          listPro={props.listPro}
+          listIndus={props.listIndus}
+        />
       </div>
       <hr style={{ width: 200, margin: "auto" }} />
       <div className="hb__search">

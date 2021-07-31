@@ -1,7 +1,16 @@
 import axios from "axios";
 import {
+  authorizationAccount,
+  sessionTimeOut,
+  showMessage,
+} from "../../assets/helper/helper";
+import message from "../../assets/message/text";
+import { defaultUrlAPIStringTemplate } from "../../configs/url";
+import {
   GET_LIST_INVESTOR_FILTER_FAILED,
   GET_LIST_INVESTOR_FILTER_SUCCESS,
+  GET_LIST_INVESTOR_SUGGEST_FAILED,
+  GET_LIST_INVESTOR_SUGGEST_SUCCESS,
 } from "../constants/investor.const";
 import { startLoading, stopLoading } from "./loading.action";
 
@@ -150,6 +159,49 @@ export const getInvestorFilterSuccess = (listInvestor) => {
 export const getInvestorFilterFailed = (err) => {
   return {
     type: GET_LIST_INVESTOR_FILTER_FAILED,
+    payload: err,
+  };
+};
+
+export const getInvestorSuggest = (idRound, isLoading, history) => {
+  return (dispatch) => {
+    if (isLoading === true) {
+      dispatch(startLoading());
+    }
+    axios({
+      method: "GET",
+      url:
+        defaultUrlAPIStringTemplate() + `suggest-investor?idRound=${idRound}`,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        dispatch(stopLoading());
+        if (res.status === 200) {
+          dispatch(getInvestorSuggestSuccess(res.data));
+        } else {
+          showMessage("error", message.CACTH_ERROR);
+        }
+      })
+      .catch((err) => {
+        dispatch(stopLoading());
+        dispatch(getInvestorSuggessFailed(err));
+        sessionTimeOut(err, history);
+      });
+  };
+};
+
+const getInvestorSuggestSuccess = (list) => {
+  return {
+    type: GET_LIST_INVESTOR_SUGGEST_SUCCESS,
+    payload: list,
+  };
+};
+
+const getInvestorSuggessFailed = (err) => {
+  return {
+    type: GET_LIST_INVESTOR_SUGGEST_FAILED,
     payload: err,
   };
 };

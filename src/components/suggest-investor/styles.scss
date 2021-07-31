@@ -1,19 +1,19 @@
-.rs__wrapper {
-    .rs__title {
+.si__wrapper {
+    .si__title {
         text-align: center;
         margin-top: 35px;
     }
-    .rs__wrappers {
+    .si__wrappers {
         padding: 25px 35px;
         position: relative;
-        .rs__container {
-            .rs__listRound {
+        .si__container {
+            .si__listInves {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
                 grid-gap: 40px;
                 max-width: 900px;
                 margin: auto;
-                .rs__itemRound {
+                .si__itemInves {
                     position: relative;
                     border-radius: 9px;
                     box-shadow: 0 1px 2px 2px rgba(0, 0, 0, 0.06), 0 3px 6px 2px rgba(0, 0, 0, 0.02),
@@ -42,55 +42,52 @@
                             }
                         }
                     }
-                    .rs__count {
+                    .si__count {
                         position: absolute;
                         top: 10px;
                         left: 15px;
                     }
-                    .rs__stage,
-                    .rs__startDate,
-                    .rs__endDate,
-                    .rs__summary,
-                    .rs__indus,
-                    .rs__pro {
+                    .si__stage,
+                    .si__startDate,
+                    .si__endDate,
+                    .si__summary,
+                    .si__indus,
+                    .si__pro {
                         -webkit-line-clamp: 2;
                         -webkit-box-orient: vertical;
                         overflow: hidden;
                         display: -webkit-box;
                     }
-                    .rs__summary,
-                    .rs__name,
-                    .rs__indus,
-                    .rs__pro {
+                    .si__summary,
+                    .si__name,
+                    .si__indus,
+                    .si__pro {
                         word-break: break-all;
                     }
-                    .rs__name {
+                    .si__name {
                         margin-top: 10px;
-                        position: relative;
-                        .rs__nImg {
-                            width: 20px;
-                            height: 20px;
-                            border: none;
-                            padding: 0;
-                            position: absolute;
-                            top: 50%;
-                            transform: translateY(-50%);
-                        }
+                        font-weight: 600;
+                        font-size: 18px;
                         span {
-                            margin-left: 25px;
-                            font-weight: 600;
-                            font-size: 18px;
+                            &:hover {
+                                border-bottom: 1px solid black;
+                                cursor: pointer;
+                            }
                         }
                     }
-                    .rs__stage,
-                    .rs__fundingAmount,
-                    .rs__indus,
-                    .rs__pro {
+                    .si__money {
+                        margin: 5px 0;
+                        .si__minMoney {
+                            margin: 0;
+                        }
+                    }
+                    .si__indus,
+                    .si__pro {
                         margin: 5px 0;
                     }
                 }
             }
-            .rs__listRoundNormal {
+            .si__listInvesNormal {
                 display: block;
                 text-align: center;
                 position: absolute;
@@ -107,13 +104,13 @@
             }
         }
     }
-    .rs__wrapperNormal {
+    .si__wrapperNormal {
         display: none;
         height: 385px;
         position: relative;
-        .rs__container {
-            .rs__listRoundNormal {
-                .rs__noRound {
+        .si__container {
+            .si__listRoundNormal {
+                .si__noRound {
                     p {
                         font-size: 20px;
                         font-weight: 600;

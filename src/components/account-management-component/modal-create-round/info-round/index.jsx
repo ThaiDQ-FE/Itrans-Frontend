@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Tooltip, DatePicker, Spin } from "antd";
+import { Input, Tooltip, DatePicker, Spin, Popover } from "antd";
 import "antd/dist/antd.css";
 import "./styles.scss";
 import Images from "../../../../assets/images/images";
@@ -47,11 +47,30 @@ function InfoInputCreateRound(props) {
       }
     }
   };
+  const content = (
+    <div>
+      <span>Hệ thống sẽ tự làm tròn số.</span>
+      <br />
+      <span>Ví dụ:</span>
+      <br />
+      <span>15.156 {"-->"} 15.16</span>
+      <br />
+      <span>0.001 {"-->"} 0.00</span>
+      <br />
+      <span>15. {"-->"} 15</span>
+    </div>
+  );
   return (
     <>
       <div className="modal__addRoundLineOne">
         <div className="modal__inputMoney">
-          <label className="modal__labelAddRound">Số tiền kêu gọi</label>
+          <label className="modal__labelAddRound">
+            Số tiền kêu gọi
+            <Popover content={content} title={null}>
+              {" "}
+              (i)
+            </Popover>
+          </label>
           <Tooltip
             title={props.fundingAmountError}
             placement="topRight"
@@ -68,7 +87,13 @@ function InfoInputCreateRound(props) {
           </Tooltip>
         </div>
         <div className="modal__inputPercent">
-          <label className="modal__labelAddRound">Phần trăm cổ phần</label>
+          <label className="modal__labelAddRound">
+            Phần trăm cổ phần
+            <Popover content={content} title={null}>
+              {" "}
+              (i)
+            </Popover>
+          </label>
           <Tooltip
             title={props.shareRequirementError}
             placement="topRight"

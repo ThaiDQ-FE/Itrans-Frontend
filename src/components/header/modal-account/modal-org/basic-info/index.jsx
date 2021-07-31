@@ -81,6 +81,7 @@ function ModalAccountOrganizationBasic(props) {
   return (
     <>
       <div className="maob__imgWrapper">
+        <label className="label__fontWeight">Hình đại diện</label>
         <div className="maob__image">
           <img
             src={
