@@ -25,9 +25,19 @@ import { getRoundSuggest } from "../../../store/action/round.action";
 function UserHome(props) {
   const { listViewArticle, listSearch } = useSelector((state) => state.article);
   const { listRoundSuggest } = useSelector((state) => state.round);
+  console.log(listRoundSuggest);
   const { loading } = useSelector((state) => state.loading);
   const [search, setSearch] = useState(false);
   const dispatch = useDispatch();
+  let listIndus = [];
+  let listPro = [];
+  if (listRoundSuggest && listRoundSuggest.length > 0) {
+    listRoundSuggest.map((item) => {
+      listIndus.push(item.industries);
+      listPro.push(item.provinces);
+    });
+  }
+
   useEffect(() => {
     setSearch(false);
     dispatch(getDeatilCompany(checkEmailUser(), false));
@@ -51,6 +61,8 @@ function UserHome(props) {
       <>
         <Banner />
         <HomeBody
+          listPro={listPro}
+          listIndus={listIndus}
           listRound={listRoundSuggest}
           list={listViewArticle}
           listS={listSearch}

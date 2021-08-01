@@ -115,25 +115,6 @@ function ModalAccountInvestorInvesment(props) {
         </div>
       </div>
       <div className="maii__lineTwo">
-        <div className="maii__iProvince">
-          <label className="label__fontWeight">Tỉnh thành đầu tư</label>
-          <Tooltip title={props.provinceError} color="red" placement="topRight">
-            <Select
-              className={`maill__selectip${
-                props.provinceError !== "" ? " input__error" : ""
-              }`}
-              mode="multiple"
-              dropdownClassName="modal__articleDrop"
-              defaultValue={props.arayPro}
-              size="large"
-              bordered={false}
-              onChange={props.handleChangeProvince}
-              onBlur={props.handleBlurPro}
-            >
-              {listPI}
-            </Select>
-          </Tooltip>
-        </div>
         <div className="maii__iRegion">
           <label className="label__fontWeight">Khu vực đầu tư</label>
           <Tooltip title={props.regionError} color="red" placement="topRight">
@@ -150,6 +131,25 @@ function ModalAccountInvestorInvesment(props) {
               onBlur={props.handleBlurRe}
             >
               {listRI}
+            </Select>
+          </Tooltip>
+        </div>
+        <div className="maii__iProvince">
+          <label className="label__fontWeight">Vùng miền đầu tư</label>
+          <Tooltip title={props.provinceError} color="red" placement="topRight">
+            <Select
+              className={`maill__selectip${
+                props.provinceError !== "" ? " input__error" : ""
+              }`}
+              mode="multiple"
+              dropdownClassName="modal__articleDrop"
+              defaultValue={props.arayPro}
+              size="large"
+              bordered={false}
+              onChange={props.handleChangeProvince}
+              onBlur={props.handleBlurPro}
+            >
+              {listPI}
             </Select>
           </Tooltip>
         </div>

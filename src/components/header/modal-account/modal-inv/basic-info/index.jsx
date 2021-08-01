@@ -34,9 +34,8 @@ function ModalAccountInvestorBasic(props) {
           props.setLogoError(configConstFirebase.errorSize);
         } else {
           if (image.name.length > configConstFirebase.name) {
-            props.setLogoError(configConstFirebase.nameError);
-          }
-          {
+            props.setLogoError(configConstFirebase.errorName);
+          } else {
             const uploadImage = storage.ref(`images/${image.name}`).put(image);
             uploadImage.on(
               "state_changed",
@@ -72,6 +71,7 @@ function ModalAccountInvestorBasic(props) {
   return (
     <>
       <div className="maib__imgWrapper">
+        <label className="label__fontWeight">Hình đại diện</label>
         <div className="maib__image">
           <img
             src={

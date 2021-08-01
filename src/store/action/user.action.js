@@ -151,6 +151,7 @@ const getListAccountNotConfirmFailed = (err) => {
 };
 
 export const putAccountToConfirm = (gmail, history, checkType) => {
+  console.log(gmail, checkType);
   return (dispatch) => {
     const token = authorizationAccount();
     axios({
@@ -163,7 +164,7 @@ export const putAccountToConfirm = (gmail, history, checkType) => {
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
-          if (checkType.investorType === null) {
+          if (checkType.investorType === undefined) {
             dispatch(
               sendMailHTML(
                 contentAcceptAccount(

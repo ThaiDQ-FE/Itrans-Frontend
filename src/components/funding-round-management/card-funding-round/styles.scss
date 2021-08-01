@@ -29,6 +29,7 @@
                 .ant-card-body {
                     text-align: center;
                     img {
+                        object-fit: cover;
                         width: 170px;
                         height: 170px;
                         border: 1px solid rgb(224, 224, 224);
@@ -49,6 +50,7 @@
                     -webkit-box-orient: vertical;
                     overflow: hidden;
                     display: -webkit-box;
+                    word-break: break-all;
                 }
                 .cardFundingRound__name {
                     margin-top: 10px;

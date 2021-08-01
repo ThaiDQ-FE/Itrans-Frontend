@@ -117,39 +117,43 @@ function AdminDetailAccount(props) {
         <div className="ada__itRight">
           <div className="ada__name">{props.detail.name}</div>
           <div className="ada__yearMemGmail">
-            <div className="ada__year">
-              <img
-                src={Images.CALENDAR}
-                alt="calendar"
-                className="ada__yearImg"
-              />
-              <div className="ada__yearSpan">
-                Năm thành lập: {props.detail.foundedYear}
+            <div className="ada__first">
+              <div className="ada__year">
+                <img
+                  src={Images.CALENDAR}
+                  alt="calendar"
+                  className="ada__yearImg"
+                />
+                <div className="ada__yearSpan">
+                  Năm thành lập: {props.detail.foundedYear}
+                </div>
+              </div>
+              <div className="ada__member">
+                <img
+                  src={Images.EMPLOYEES}
+                  alt="employees"
+                  className="ada__memberImg"
+                />
+                <div className="ada__memberSpan">
+                  {props.detail.numberOfEmp} thành viên
+                </div>
               </div>
             </div>
-            <div className="ada__member">
-              <img
-                src={Images.EMPLOYEES}
-                alt="employees"
-                className="ada__memberImg"
-              />
-              <div className="ada__memberSpan">
-                {props.detail.numberOfEmp} thành viên
+            <div className="ada__second">
+              <div className="ada__gmail">
+                <img src={Images.GMAIL} alt="gmail" className="ada__gmailImg" />
+                <div className="ada__gmailSpan">{props.detail.email}</div>
               </div>
-            </div>
-            <div className="ada__gmail">
-              <img src={Images.GMAIL} alt="gmail" className="ada__gmailImg" />
-              <div className="ada__gmailSpan">{props.detail.email}</div>
-            </div>
-            <div className="ada__website">
-              <img
-                src={Images.WEBSITE}
-                alt="website"
-                className="ada__websiteImg"
-              />
-              <a href={props.detail.website} target="_blank" rel="noreferrer">
-                <div className="ada__websiteSpan">{props.detail.website}</div>
-              </a>
+              <div className="ada__website">
+                <img
+                  src={Images.WEBSITE}
+                  alt="website"
+                  className="ada__websiteImg"
+                />
+                <a href={props.detail.website} target="_blank" rel="noreferrer">
+                  <div className="ada__websiteSpan">{props.detail.website}</div>
+                </a>
+              </div>
             </div>
           </div>
         </div>
