@@ -15,7 +15,6 @@ import {
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 function FormBasicInformation(props) {
   const dispatch = useDispatch();
-  const [checkMail, setCheckMail] = useState("");
   const [timeLeft, setTimeLeft] = useState(null);
   const saveData = getLocalStorage("Form1");
 
@@ -54,11 +53,11 @@ function FormBasicInformation(props) {
       rePassword: saveData.rePassword,
       verificationCode: localStorage.getItem("VerificationCode"),
     });
-    setCheckMail(saveData.gmail);
     localStorage.removeItem("Form1");
   }
   const handleChange = (event) => {
     const { value, name } = event.target;
+    console.log(value);
     setUser({
       ...user,
       [name]: value,
@@ -81,17 +80,16 @@ function FormBasicInformation(props) {
   const validate = (values) => {
     let errors = {};
     const mailLength = values.gmail.split("@");
-    const verificationCode = JSON.parse(
-      localStorage.getItem("VerificationCode")
-    );
     if (!values.gmail) {
       errors.gmail = "Gmail không được để trống";
     } else if (!regex.test(user.gmail)) {
+      console.log('e')
       errors.gmail = "Gmail không đúng định dạng";
     } else if (mailLength[0].length < 6 || mailLength[0].length > 30) {
       errors.gmail = "Gmail phải có độ dài từ 6 - 30 kí tự";
     } else {
-      errors.name = "";
+      console.log('day ban')
+      errors.gmail = "";
       check++;
     }
     if (!values.password) {
@@ -113,19 +111,15 @@ function FormBasicInformation(props) {
 
     if (!values.verificationCode) {
       errors.verificationCode = "Mã xác thực không được để trống";
-    } else if (values.verificationCode !== verificationCode.toString()) {
+    }else if (values.verification === "false"){
       errors.verificationCode = "Mã xác thực không đúng";
     } else {
       errors.verificationCode = "";
-      check++;
     }
     return errors;
   };
   const validateColor = (values) => {
     let errors = {};
-    const verificationCode = JSON.parse(
-      localStorage.getItem("VerificationCode")
-    );
     const mailLength = values.gmail.split("@");
     if (!values.gmail) {
       errors.gmail = "1px solid red";
@@ -134,7 +128,7 @@ function FormBasicInformation(props) {
     } else if (mailLength[0].length < 6 || mailLength[0].length > 30) {
       errors.gmail = "1px solid red";
     } else {
-      errors.name = "";
+      errors.gmail = "";
     }
     if (!values.password) {
       errors.password = "1px solid red";
@@ -152,7 +146,7 @@ function FormBasicInformation(props) {
     }
     if (!values.verificationCode) {
       errors.verificationCode = "1px solid red";
-    } else if (values.verificationCode !== verificationCode.toString()) {
+    }else if (values.verification === "false"){
       errors.verificationCode = "1px solid red";
     } else {
       errors.verificationCode = "";
@@ -160,38 +154,37 @@ function FormBasicInformation(props) {
     return errors;
   };
   const handleNext = () => {
-    console.log("e");
-    console.log(checkMail);
-    console.log(user.gmail);
-    if (checkMail !== user.gmail && !checkMail) {
-      if (!user.verificationCode) {
-        setErrors({
-          verificationCode: "Mã xác thực không được để trống",
-        });
-        setColor({
-          verificationCode: "1px solid red",
-        });
-      } else {
-        console.log("e");
-        setErrors({
-          verificationCode: "Mã xác thực không đúng",
-        });
-        setColor({
-          verificationCode: "1px solid red",
-        });
-      }
-      setErrors(validate(user));
-      setColor(validateColor(user));
-    } else {
-      console.log("a");
-      console.log(user);
-      setErrors(validate(user));
-      setColor(validateColor(user));
-      if (check == 4) {
-        localStorage.setItem("Form1", JSON.stringify(user));
-        props.handleNext();
-      }
-    }
+
+      console.log('ne')
+      console.log(user.gmail)
+      console.log(user.verificationCode)
+      
+      axios({
+        method: "Get",
+        url: `http://localhost:8080/api/v1/auth/check-otp?email=${user.gmail}&otp=${user.verificationCode}`,
+      })
+        .then((res) => {
+          if (res.data === false) {
+            user.verification = "false";
+            setErrors(validate(user));
+            setColor(validateColor(user));
+            console.log(user);
+            
+          } else {
+            console.log(user);
+            setErrors(validate(user));
+            setColor(validateColor(user));
+            check++;
+          }
+          console.log(check);
+          console.log(res.data);
+          if (check === 4) {
+            localStorage.setItem("Form1", JSON.stringify(user));
+            localStorage.setItem("VerificationCode", user.verificationCode);
+            props.handleNext();
+          }
+        })
+        .catch((err) => { });
   };
   const handleClick = () => {
     axios({
@@ -202,11 +195,7 @@ function FormBasicInformation(props) {
         console.log(res.data);
         if (res.data === true) {
           dispatch(
-            postVerificationCode({
-              gmail: user.gmail,
-              title: "Code",
-              content: Math.floor(100000 + Math.random() * 900000),
-            })
+            postVerificationCode(user.gmail)
           );
           setErrors({
             gmail: "",
@@ -223,9 +212,8 @@ function FormBasicInformation(props) {
           });
         }
       })
-      .catch((err) => {});
+      .catch((err) => { });
     localStorage.setItem("VerificationCode", 1);
-    setCheckMail(user.gmail);
     setTimeLeft(5);
     doccumentAddDis("fbi_MXT");
   };
@@ -301,9 +289,8 @@ function FormBasicInformation(props) {
                 onClick={handleClick}
                 type="primary"
                 size="small"
-                className={`fbi__getCode${
-                  timeLeft === null ? "" : " fbi__getCodeDis"
-                }`}
+                className={`fbi__getCode${timeLeft === null ? "" : " fbi__getCodeDis"
+                  }`}
               >
                 {timeLeft === null ? "Lấy mã xác thực" : timeLeft + " s"}
               </Button>

@@ -42,11 +42,9 @@ export const postVerificationCode = (gmail) => {
   return (dispatch) => {
     axios({
       method: "Post",
-      url: "http://localhost:8080/api/v1/auth/sendmail",
-      data: gmail,
+      url: `http://localhost:8080/api/v1/auth/generate-otp?email=${gmail}`,
     })
       .then((res) => {
-        localStorage.setItem("VerificationCode", JSON.stringify(res.data));
       })
       .catch((err) => { });
   };
