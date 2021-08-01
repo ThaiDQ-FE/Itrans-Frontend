@@ -7,6 +7,7 @@ import Images from "../../../assets/images/images";
 import { useDispatch } from "react-redux";
 import { postBasicInformation } from "../../../store/action/register.action";
 import { storage } from "../../../configs/firebase";
+import { doccumentAddDis } from "../../../assets/helper/helper";
 function FormMember(props) {
   const [teamMember, setTeamMember] = useState({
     name: "",
@@ -168,6 +169,7 @@ function FormMember(props) {
     }
   };
   const handleConfirm = () => {
+    doccumentAddDis("fm_confirm");
     const user = JSON.parse(localStorage.getItem("Form1"));
     dispatch(postBasicInformation(user.gmail, user.password));
   };
@@ -279,7 +281,7 @@ function FormMember(props) {
             <span>Quay lại</span>
           </div>
           <div className="fm__buttonDone">
-            <Button onClick={handleConfirm} type="primary">
+            <Button id="fm_confirm" onClick={handleConfirm} type="primary">
               Hoàn tất
             </Button>
           </div>
