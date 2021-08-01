@@ -43,6 +43,8 @@ import {
   UPDATE_ROUND_STATUS_FAILED,
   GET_ROUND_SUGGEST_SUCCESS,
   GET_ROUND_SUGGEST_FAILED,
+  GET_ROUND_ACTIVE_SUCCESS_V2,
+  GET_ROUND_ACTIVE_FAILED_V2,
 } from "../constants/round.const";
 import { getListDocumentByRoundId } from "./introduce.action";
 import { startLoading, stopLoading } from "./loading.action";
@@ -745,6 +747,43 @@ const getRoundSuggestSuccess = (list) => {
 const getRoundSuggestFailed = (err) => {
   return {
     type: GET_ROUND_SUGGEST_FAILED,
+    payload: err,
+  };
+};
+
+export const getRoundActiveV2 = (idOrg, history) => {
+  return (dispatch) => {
+    axios({
+      method: "GET",
+      url: defaultUrlAPIStringTemplate() + `round/round-active/${idOrg}`,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch(getRoundActiveSuccessV2(res.data));
+        } else {
+          showMessage("error", message.CACTH_ERROR);
+        }
+      })
+      .catch((err) => {
+        dispatch(getRoundActiveFailedV2(err));
+        sessionTimeOut(err, history);
+      });
+  };
+};
+
+const getRoundActiveSuccessV2 = (object) => {
+  return {
+    type: GET_ROUND_ACTIVE_SUCCESS_V2,
+    payload: object,
+  };
+};
+
+const getRoundActiveFailedV2 = (err) => {
+  return {
+    type: GET_ROUND_ACTIVE_FAILED_V2,
     payload: err,
   };
 };

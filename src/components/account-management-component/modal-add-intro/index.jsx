@@ -40,7 +40,7 @@ function ModalAddIntro(props) {
                             required: true,
                             message: "Tiêu đề không được bỏ trống",
                           },
-                          { min: 50, message: "Độ dài tối thiểu là 50 ký tự" },
+                          { min: 5, message: "Độ dài tối thiểu là 5 ký tự" },
                           { max: 200, message: "Độ dài tối đa là 200 ký tự" },
                         ]}
                       >

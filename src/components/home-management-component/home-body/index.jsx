@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { searchArticle } from "../../../store/action/artical.action";
 import { checkEmailUser } from "../../../assets/helper/helper";
 import RoundSuggest from "./list-suggest";
+import ListInvite from "./list-invite";
 
 function HomeBody(props) {
   const dispatch = useDispatch();
@@ -33,6 +34,9 @@ function HomeBody(props) {
 
   return (
     <div className="hb__wrapper">
+      <div className="hb__listInvite">
+        <ListInvite list={props.listInvite} />
+      </div>
       <div className="hb__suggest">
         <RoundSuggest
           list={props.listRound}
