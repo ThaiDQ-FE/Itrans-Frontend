@@ -541,8 +541,8 @@ function OverviewContent(props) {
     } else {
       setContentError("");
     }
-    if (values.title.length < 50) {
-      setTitleError("Tiêu đề tối thiểu 50 ký tự");
+    if (values.title.length < 5) {
+      setTitleError("Tiêu đề tối thiểu 5 ký tự");
       return;
     } else {
       setTitleError("");

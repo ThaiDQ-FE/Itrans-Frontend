@@ -103,10 +103,10 @@ export const postBasicInformation = (gmail, password) => {
       });
   };
 };
-const createBasicInformationSuccess = (listProvince) => {
+const createBasicInformationSuccess = (data) => {
   return {
     type: CREATE_BASIC_INFORMATION_SUCCESS,
-    payload: listProvince,
+    payload: data,
   };
 };
 const createBasicInformationFail = (err) => {
@@ -220,6 +220,7 @@ export const postOrganizationStage = (organizationStage) => {
           showConfirmButton: true,
           confirmButtonText: "Đồng ý",
           confirmButtonColor: "#112D4E",
+          allowOutsideClick: false
         }).then(async (result) => {
           if (result.isConfirmed) {
             window.location.assign("http://localhost:3000/dang-nhap");

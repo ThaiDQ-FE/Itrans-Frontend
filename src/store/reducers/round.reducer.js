@@ -21,6 +21,8 @@ import {
   GET_LIST_DEAL_BY_ROUND_FAIL,
   GET_ROUND_SUGGEST_SUCCESS,
   GET_ROUND_SUGGEST_FAILED,
+  GET_ROUND_ACTIVE_SUCCESS_V2,
+  GET_ROUND_ACTIVE_FAILED_V2,
 } from "../constants/round.const";
 
 const initialState = {
@@ -35,6 +37,7 @@ const initialState = {
   roundAndOrganization: {},
   listDealByRound: [],
   listRoundSuggest: [],
+  roundActiveV2: {},
   errors: [],
 };
 
@@ -100,6 +103,10 @@ const roundReducer = (state = initialState, action) => {
     case GET_ROUND_SUGGEST_SUCCESS:
       return { ...state, listRoundSuggest: payload };
     case GET_ROUND_SUGGEST_FAILED:
+      return { ...state, errors: payload };
+    case GET_ROUND_ACTIVE_SUCCESS_V2:
+      return { ...state, roundActiveV2: payload };
+    case GET_ROUND_ACTIVE_FAILED_V2:
       return { ...state, errors: payload };
     default:
       return state;

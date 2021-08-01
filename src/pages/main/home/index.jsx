@@ -22,10 +22,11 @@ import {
   getListStage,
 } from "../../../store/action/register.action";
 import { getRoundSuggest } from "../../../store/action/round.action";
+import { getRoundInvite } from "../../../store/action/deal.action";
 function UserHome(props) {
   const { listViewArticle, listSearch } = useSelector((state) => state.article);
   const { listRoundSuggest } = useSelector((state) => state.round);
-  console.log(listRoundSuggest);
+  const { listInvite } = useSelector((state) => state.deal);
   const { loading } = useSelector((state) => state.loading);
   const [search, setSearch] = useState(false);
   const dispatch = useDispatch();
@@ -50,6 +51,7 @@ function UserHome(props) {
     dispatch(getListInvestorType());
     if (checkRoleUser() === "INVESTOR") {
       dispatch(getRoundSuggest(checkIdUser(), props.history));
+      dispatch(getRoundInvite(checkIdUser(), props.history));
     }
   }, []);
   if (getLocalStorage("userInfo") === null) {
@@ -61,6 +63,7 @@ function UserHome(props) {
       <>
         <Banner />
         <HomeBody
+          listInvite={listInvite}
           listPro={listPro}
           listIndus={listIndus}
           listRound={listRoundSuggest}

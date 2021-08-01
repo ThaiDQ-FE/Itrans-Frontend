@@ -1,5 +1,5 @@
 import React from "react";
-import { Tabs } from "antd";
+import { Button, Tabs } from "antd";
 import "antd/dist/antd.css";
 import "./styles.scss";
 import Images from "../../../assets/images/images";
@@ -13,6 +13,7 @@ import {
   getDeatilCompanyView,
 } from "../../../store/action/company.action";
 import {
+  authorizationAccount,
   checkEmailUser,
   checkIdUser,
   checkPathUrl,
@@ -21,6 +22,8 @@ import {
   pathNhaDauTu,
   pathQuanLyTaiKhoan,
   pathToChuc,
+  sessionTimeOut,
+  showMessage,
 } from "../../../assets/helper/helper";
 import { getListMilestone } from "../../../store/action/milestone.action";
 import { getListMediaById } from "../../../store/action/media.action";
@@ -34,11 +37,20 @@ import { getListTeamMember } from "../../../store/action/team.action";
 import {
   getListRoundByIdInvestor,
   getListRoundByIdOrganization,
+  getRoundActiveV2,
 } from "../../../store/action/round.action";
 import { getListIndustry } from "../../../store/action/register.action";
 import NotAuth from "../../error/auth";
 import { withRouter } from "react-router-dom";
 import AccountManagementFollow from "../../../components/account-management-component/follow";
+import { checkRequestDeal } from "../../../store/action/deal.action";
+import { useState } from "react";
+import ModalInvite from "../../../components/account-management-component/modal-invite";
+import { checkDes } from "../../../validate/create/inviteDeal";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { defaultUrlAPI } from "../../../configs/url";
+import message from "../../../assets/message/text";
 function AccountManagement(props) {
   const { TabPane } = Tabs;
   const dispatch = useDispatch();
@@ -55,6 +67,11 @@ function AccountManagement(props) {
     (state) => state.round
   );
   const { listIndustry } = useSelector((state) => state.register);
+  const { checkDeal } = useSelector((state) => state.deal);
+  const { roundActiveV2 } = useSelector((state) => state.round);
+  const [openModalInvite, setOpenModalInvite] = useState(false);
+  const [description, setDescription] = useState("");
+  const [desError, setDesError] = useState("");
   useEffect(() => {
     const path = window.location.pathname;
     if (path === "/quan-ly-tai-khoan") {
@@ -94,8 +111,74 @@ function AccountManagement(props) {
       dispatch(getListTeamMember(gmail, false));
       dispatch(getListRoundByIdInvestor(id, props.history));
       dispatch(getListArticleByGmail(gmail, false));
+      dispatch(checkRequestDeal(checkIdUser(), id, props.history));
+      dispatch(getRoundActiveV2(checkIdUser(), props.history));
     }
   }, []);
+  const handleOpenModal = () => {
+    setOpenModalInvite(true);
+  };
+  const handleCloseModal = () => {
+    setOpenModalInvite(false);
+  };
+  const handleChangeDes = (event) => {
+    const { value } = event.target;
+    setDescription(value);
+  };
+  const handleBlurDes = () => {
+    checkDes(description, setDesError);
+  };
+  const handleClickInvite = () => {
+    Swal.fire({
+      title: `Bạn chắc chắn muốn mời nhà đầu tư ${detailCompanyView.name}`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Đồng ý",
+      cancelButtonText: "Hủy",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const object = {
+          description: description,
+          idInvestor: getLocalStorage("idInvestorToDetail"),
+          idRound: roundActiveV2.idRound,
+        };
+        inviteInvestor(object, props.history);
+      }
+    });
+  };
+
+  const inviteInvestor = (object, history) => {
+    axios({
+      method: "POST",
+      url: defaultUrlAPI() + "send-request-deal",
+      data: object,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          showMessage("success", "Mời nhà đầu tư thành công");
+          handleCloseModal();
+          setTimeout(() => {
+            dispatch(
+              checkRequestDeal(
+                checkIdUser(),
+                getLocalStorage("idInvestorToDetail"),
+                history
+              )
+            );
+          }, 2000);
+        } else {
+          showMessage("error", message.CACTH_ERROR);
+        }
+      })
+      .catch((err) => {
+        sessionTimeOut(err, history);
+      });
+  };
   const checkRole = () => {
     if (checkPathUrl() === pathQuanLyTaiKhoan()) {
       if (checkRoleUser() === "INVESTOR") {
@@ -146,6 +229,22 @@ function AccountManagement(props) {
   } else {
     return (
       <div className="am__wrapper">
+        {checkPathUrl() === "/nha-dau-tu/chi-tiet" ? (
+          checkDeal === true ? (
+            <Button
+              onClick={handleOpenModal}
+              className="am__buttonInvite"
+              size="large"
+              type="primary"
+            >
+              Mời nhà đầu tư
+            </Button>
+          ) : (
+            <span className="am__spanInvited">Đã mời</span>
+          )
+        ) : (
+          <></>
+        )}
         <div className="am__container">
           <div className="am__image">
             {checkPathUrl() === pathQuanLyTaiKhoan() ? (
@@ -237,6 +336,15 @@ function AccountManagement(props) {
             )}
           </Tabs>
         </div>
+        <ModalInvite
+          openModal={openModalInvite}
+          closeModal={handleCloseModal}
+          value={roundActiveV2}
+          handleChangeDes={handleChangeDes}
+          handleBlurDes={handleBlurDes}
+          desError={desError}
+          handleClickInvite={handleClickInvite}
+        />
       </div>
     );
   }

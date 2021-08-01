@@ -13,6 +13,23 @@
     }
 }
 .am__wrapper {
+    .am__buttonInvite {
+        position: absolute;
+        top: 215px;
+        right: 30px;
+        z-index: 5;
+        font-weight: 600;
+    }
+    .am__spanInvited {
+        position: absolute;
+        top: 210px;
+        right: 40px;
+        z-index: 5;
+        font-weight: 600;
+        color: rgb(53, 53, 53);
+        background: rgb(174, 174, 174);
+        padding: 10px 25px;
+    }
     .am__container {
         padding-top: 212px;
         background-color: #f0f2f5;
