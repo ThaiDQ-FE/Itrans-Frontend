@@ -63,7 +63,7 @@ function RoundDeail() {
                 shareRequirement: form.shareRequirement,
                 startDate: getLocalStorage("dateStart"),
                 summary: form.contentSumary,
-                thumbnail: "abc"
+                thumbnail: roundAndOrganization.logo
             };
             Swal.fire({
                 icon: "warning",
@@ -91,9 +91,8 @@ function RoundDeail() {
                 shareRequirement: form.shareRequirement,
                 startDate: getLocalStorage("dateStart"),
                 summary: form.contentSumary,
-                thumbnail: "abc"
+                thumbnail: roundAndOrganization.logo
             };
-            console.log('e')
             Swal.fire({
                 icon: "warning",
                 title: "Bạn chắc chắn muốn cập nhật vòng gọi vốn?",
@@ -120,7 +119,7 @@ function RoundDeail() {
                 shareRequirement: form.shareRequirement,
                 startDate: formatDateStart,
                 summary: form.contentSumary,
-                thumbnail: "abc"
+                thumbnail: roundAndOrganization.logo
             };
             Swal.fire({
                 icon: "warning",
@@ -149,7 +148,7 @@ function RoundDeail() {
                 shareRequirement: form.shareRequirement,
                 startDate: formatDateStart,
                 summary: form.contentSumary,
-                thumbnail: "abc"
+                thumbnail: roundAndOrganization.logo
             };
             Swal.fire({
                 icon: "warning",
@@ -274,28 +273,28 @@ function RoundDeail() {
                                 </span>
                             </p>
                             <p>
-                                <span style={{ display: 'inline-block', width:215 }}>
+                                <span style={{ display: 'inline-block', width:240 }}>
                                     <img
                                         style={{ width: 18, height: 18, marginRight: 5 }}
-                                        src={Images.GMAILROUND}
+                                        src={Images.GMAIL}
                                         alt="thumbnail"
                                     /> {roundAndOrganization.gmail}
                                 </span>
-                                <span style={{ marginLeft: 50 }} >
+                                <span style={{ marginLeft: 25 }} >
                                     <img
                                         style={{ width: 18, height: 18, marginRight: 5 }}
-                                        src={Images.TIMETABLE}
+                                        src={Images.CALENDAR}
                                         alt="thumbnail"
                                     />{roundAndOrganization.foundedYear}
                                 </span>
                             </p>
-                            <p><span style={{ display: 'inline-block', width: 215 }}>
+                            <p><span style={{ display: 'inline-block', width: 240 }}>
                                 <img
                                     style={{ width: 18, height: 18, marginRight: 5 }}
-                                    src={Images.NUMBER_EMPLOYESS}
+                                    src={Images.EMPLOYEES}
                                     alt="thumbnail"
                                 />{roundAndOrganization.numberOfEmp} thành viên</span>
-                                <span style={{ marginLeft: 50 }} >
+                                <span style={{ marginLeft: 25 }} >
                                     <img
                                         style={{ width: 18, height: 18, marginRight: 5 }}
                                         src={Images.STAGE}
@@ -341,7 +340,7 @@ function RoundDeail() {
                         </div>
                     }
                 </div>
-                {((userInfo.role == "ORGANIZATION") && (listDealByRound.length === 0) && (roundAndOrganization.status !== 'EXPIRATION')) &&
+                {((userInfo.role == "ORGANIZATION") && (listDealByRound.length === 0) && (roundAndOrganization.status !== 'EXPIRATION') && (roundAndOrganization.status !== 'PENDING')) &&
                     <div style={{ float: 'right' }}>
                         <Button size="middle" onClick={handleClickEnd} style={{ backgroundColor: "#778899", color: "#FFFFFF" }}>Kết thúc vòng gọi vốn</Button>
                     </div>}

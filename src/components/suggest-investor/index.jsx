@@ -9,6 +9,9 @@ import { withRouter } from "react-router-dom";
 
 function SuggestInvestor(props) {
   const { listInvestorSuggest } = useSelector((state) => state.investor);
+  const { roundAndOrganization } = useSelector(
+    (state) => state.round
+);
   console.log(listInvestorSuggest);
   const [length, setLength] = useState({
     minValue: 0,
@@ -58,7 +61,8 @@ function SuggestInvestor(props) {
   };
   return (
     <div className="si__wrapper">
-      {checkRoleUser() === "ORGANIZATION" ? (
+      {roundAndOrganization.status !== 'PENDING' && 
+      checkRoleUser() === "ORGANIZATION" ? (
         <>
           <h2 className="si__title">
             {listInvestorSuggest && listInvestorSuggest.length > 0

@@ -209,7 +209,7 @@ function ListDealSlider() {
                                     <Card hoverable className="lds__itemInves" onClick={handleChange}>
                                         {renderTag(value.statusDeal)}
                                         <img
-                                            src="https://i.imgur.com/KhYwqoU.png"
+                                            src= {value.logo}
                                             alt="thumbnail"
                                         />
                                         <div className="lds__name">
@@ -217,7 +217,7 @@ function ListDealSlider() {
                                         </div>
                                         <div className="lds__capital">
                                             <span className="span_text">Số tiền đầu tư:</span>
-                                            <span> {value.capitalInvestment} Tỷ</span>
+                                            <span> {value.capitalInvestment} Tỷ (VND)</span>
                                         </div>
                                         <div className="lds__share">
                                             <span className="span_text">Phần trăm cổ phần: </span>

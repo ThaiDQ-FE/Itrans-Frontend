@@ -48,6 +48,7 @@ import empty_box from "./box.png";
 import website from "./world-wide-web.svg";
 import setting_color from "./settings.svg";
 import key from "./key.svg";
+import thanks from "./thanks.png"
 const Images = {
   LOGO_NAVY: logo_navy,
   LOGO_GREY: logo_grey,
@@ -99,6 +100,7 @@ const Images = {
   WEBSITE: website,
   SETTING_COLOR: setting_color,
   KEY: key,
+  THANKS:thanks
 };
 
 export default Images;

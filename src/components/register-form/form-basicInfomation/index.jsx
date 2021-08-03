@@ -214,7 +214,7 @@ function FormBasicInformation(props) {
       })
       .catch((err) => { });
     localStorage.setItem("VerificationCode", 1);
-    setTimeLeft(5);
+    setTimeLeft(30);
     doccumentAddDis("fbi_MXT");
   };
   return (

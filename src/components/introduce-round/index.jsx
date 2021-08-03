@@ -160,7 +160,7 @@ function IntroduceRound() {
   }
   return (
     <>{userInfo.role === "ORGANIZATION" &&
-      <div style={{ float: 'right', width: 300, marginTop: 25 }}>
+      <div style={{ float: 'right', width: 300 }}>
         <Button onClick={() => { handleAddIntro() }} type="primary" size="middle">Thêm bài giới thiệu</Button>
       </div>
       }
