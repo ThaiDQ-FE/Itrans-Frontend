@@ -34,11 +34,11 @@ function RoundDetailManagement(props) {
     dispatch(getInvestorSuggest(idRound, true, props.history));
   });
   return (
-    <div style={{ marginTop: 100, marginBottom: 100 }}>
+    <div className="rdm__wrapper">
       <RoundDeail />
       <SuggestInvestor />
       <ListDealSlider />
-      <hr id="style-four" />
+      <hr className="rdm__hr" />
       <IntroduceRound />
       <DocumentRound />
       <CommentRound />

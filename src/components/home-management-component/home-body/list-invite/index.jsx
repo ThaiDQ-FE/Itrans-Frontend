@@ -31,9 +31,9 @@ function ListInvite(props) {
     <div className="lin__wrapper">
       {checkRoleUser() === "INVESTOR" ? (
         <>
-          <h2 className="lin__title">
+          <div className="lin__title">
             {props.list.length === 0 ? "" : "Lời mời từ tổ chức"}
-          </h2>
+          </div>
           <div
             className={`lin__wrappers${
               props.list.length > 0 ? "" : " lin__wrapperNormal"

@@ -78,7 +78,7 @@ function FormCreateRound(props) {
           size="large"
           type="primary"
           htmlType="submit"
-          disabled={props.loading === true}
+          disabled={props.loading === true || props.loadingCer === true}
         >
           Tạo vòng gọi vốn
         </Button>

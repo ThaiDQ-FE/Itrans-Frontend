@@ -1,7 +1,10 @@
 .lin__wrapper {
     .lin__title {
-        text-align: center;
-        margin-top: 35px;
+        width: 900px;
+        margin: auto;
+        margin-top: 50px;
+        font-size: 30px;
+        font-weight: 500;
     }
     .lin__wrappers {
         padding: 25px 35px;
@@ -56,7 +59,8 @@
                     .lin__summary,
                     .lin__name,
                     .lin__indus,
-                    .lin__pro {
+                    .lin__pro,
+                    .lin__description {
                         word-break: break-all;
                     }
                     .lin__name {

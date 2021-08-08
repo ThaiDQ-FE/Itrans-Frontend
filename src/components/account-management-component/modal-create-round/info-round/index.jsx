@@ -83,6 +83,7 @@ function InfoInputCreateRound(props) {
               name="fundingAmount"
               onChange={props.handleChangeInfoRound}
               onBlur={props.handleBlurMoney}
+              style={{ textAlign: "right" }}
             />
           </Tooltip>
         </div>
@@ -108,6 +109,7 @@ function InfoInputCreateRound(props) {
               name="shareRequirement"
               onChange={props.handleChangeInfoRound}
               onBlur={props.handleBlurPercent}
+              style={{ textAlign: "right" }}
             />
           </Tooltip>
         </div>

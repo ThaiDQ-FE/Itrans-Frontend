@@ -7,7 +7,7 @@ import Images from "../../../assets/images/images";
 import { useHistory } from "react-router-dom";
 import { localStorages } from "../../../assets/helper/helper";
 function CardFundingRound() {
-  const { listAllRoundActive } = useSelector((state) => state.round);
+  const { listAllRoundV2 } = useSelector((state) => state.round);
   const [length, setLength] = useState({
     minValue: 0,
     maxValue: 9,
@@ -15,7 +15,7 @@ function CardFundingRound() {
   let history = useHistory();
   const handleClickToDetail = () => {
     history.push("/thong-tin-chi-tiet-vong-goi-von");
-  }
+  };
   const handleChange = (value) => {
     if (value <= 1) {
       setLength({
@@ -32,29 +32,36 @@ function CardFundingRound() {
   return (
     <div
       className={`cardFundingRound__wrapper${
-        listAllRoundActive.length > 0 ? "" : " cardFundingRound__wrapperNormal"
+        listAllRoundV2.length > 0 ? "" : " cardFundingRound__wrapperNormal"
       }`}
     >
       <div className="cardFundingRound__container">
         <div
           className={`cardFundingRound__listRound${
-            listAllRoundActive.length > 0
+            listAllRoundV2.length > 0
               ? ""
               : " cardFundingRound__listRoundNormal"
           }`}
         >
-          {listAllRoundActive && listAllRoundActive.length > 0 ? (
-            listAllRoundActive
+          {listAllRoundV2 && listAllRoundV2.length > 0 ? (
+            listAllRoundV2
               .slice(length.minValue, length.maxValue)
               .map((value, index) => (
-                <Card onClick={() => {
-                  handleClickToDetail();
-                  localStorages("idRound", value.idRound);
-                }}
+                <Card
+                  onClick={() => {
+                    handleClickToDetail();
+                    localStorages("idRound", value.idRound);
+                  }}
                   key={index}
                   hoverable
                   className="cardFundingRound__itemOrg"
                 >
+                  {value.existDeal === false ? (
+                    <></>
+                  ) : (
+                    <span className="cardFundingRound__had">Đã tham gia</span>
+                  )}
+
                   <img
                     src={
                       value.thumbnail === "" ? Images.NO_IMAGE : value.thumbnail
@@ -93,12 +100,12 @@ function CardFundingRound() {
           )}
         </div>
         <div className="olc__paging">
-          {listAllRoundActive.length > 8 ? (
+          {listAllRoundV2.length > 8 ? (
             <Pagination
               defaultCurrent={1}
               defaultPageSize={8}
               onChange={handleChange}
-              total={listAllRoundActive.length}
+              total={listAllRoundV2.length}
             />
           ) : (
             ""
