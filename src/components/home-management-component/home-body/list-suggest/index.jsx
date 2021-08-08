@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Button, Tooltip, Pagination, Tag } from "antd";
+import { Card, Button, Tooltip, Pagination, Tag, Popover } from "antd";
 import "antd/dist/antd.css";
 import "./styles.scss";
 import Images from "../../../../assets/images/images";
@@ -29,7 +29,51 @@ function RoundSuggest(props) {
   const handleClickToDetail = () => {
     history.push("/thong-tin-chi-tiet-vong-goi-von");
   };
+  const content = (value) => {
+    return (
+      <>
+        {value.checkStage === true ? (
+          <div className="rs__stage">
+            <span className="label__fontWeight">Giai đoạn: </span>{" "}
+            <Tag color="magenta">{value.stage}</Tag>
+          </div>
+        ) : (
+          <></>
+        )}
+        {value.checkAmount === true ? (
+          <div className="rs__fundingAmount">
+            <span className="label__fontWeight">Số tiền kêu gọi: </span>
+            <Tag color="green">
+              {value.fundingAmount} {" Tỷ VNĐ"}
+            </Tag>
+          </div>
+        ) : (
+          <></>
+        )}
 
+        <div className="rs__indus">
+          {value.industries && value.industries.length > 0 ? (
+            <>
+              <span className="label__fontWeight">Lĩnh vực kinh doanh: </span>{" "}
+              <span>{renderListIndus(value.industries)}</span>
+            </>
+          ) : (
+            <></>
+          )}
+        </div>
+        <div className="rs__pro">
+          {value.provinces && value.provinces.length > 0 ? (
+            <>
+              <span className="label__fontWeight">Khu vực hoạt động: </span>{" "}
+              <span>{renderListPro(value.provinces)}</span>
+            </>
+          ) : (
+            <></>
+          )}
+        </div>
+      </>
+    );
+  };
   const renderListPro = (item) => {
     if (item && item.length > 0) {
       return item.map((value, index) => {
@@ -56,9 +100,9 @@ function RoundSuggest(props) {
     <div className="rs__wrapper">
       {checkRoleUser() === "INVESTOR" ? (
         <>
-          <h2 className="rs__title">
+          <div className="rs__title">
             {props.list.length === 0 ? "" : "Đề xuất cho bạn"}
-          </h2>
+          </div>
           <div
             className={`rs__wrappers${
               props.list.length > 0 ? "" : " rs__wrapperNormal"
@@ -83,9 +127,15 @@ function RoundSuggest(props) {
                         hoverable
                         className="rs__itemRound"
                       >
-                        <Tag className="rs__count" color="purple">
-                          Phù hợp: {value.count}/4 tiêu chí
-                        </Tag>
+                        <Popover
+                          content={() => content(value)}
+                          title={null}
+                          placement="rightTop"
+                        >
+                          <Tag className="rs__count" color="purple">
+                            Phù hợp: {value.count}/4 tiêu chí
+                          </Tag>
+                        </Popover>
                         <img
                           src={
                             value.thumbnail === ""
@@ -104,7 +154,7 @@ function RoundSuggest(props) {
                           />
                           <span>{value.organization}</span>
                         </div>
-                        {value.checkStage === true ? (
+                        {/* {value.checkStage === true ? (
                           <div className="rs__stage">
                             <Tag color="magenta">{value.stage}</Tag>
                           </div>
@@ -126,7 +176,7 @@ function RoundSuggest(props) {
                         </div>
                         <div className="rs__pro">
                           <span>{renderListPro(value.provinces)}</span>
-                        </div>
+                        </div> */}
                         {value.summary === "" ? (
                           <></>
                         ) : (

@@ -45,6 +45,8 @@ import {
   GET_ROUND_SUGGEST_FAILED,
   GET_ROUND_ACTIVE_SUCCESS_V2,
   GET_ROUND_ACTIVE_FAILED_V2,
+  GET_ALL_ROUND_ACTIVE_SUCCESS_V2,
+  GET_ALL_ROUND_ACTIVE_FAILED_V2,
 } from "../constants/round.const";
 import { getListDocumentByRoundId } from "./introduce.action";
 import { startLoading, stopLoading } from "./loading.action";
@@ -784,6 +786,113 @@ const getRoundActiveSuccessV2 = (object) => {
 const getRoundActiveFailedV2 = (err) => {
   return {
     type: GET_ROUND_ACTIVE_FAILED_V2,
+    payload: err,
+  };
+};
+
+export const getAllRoundActiveV2 = (
+  listIndus,
+  gmail,
+  max,
+  min,
+  listPro,
+  listRe,
+  listStages
+) => {
+  let baseUrl = "http://localhost:8080/api/v1/auth/round/all-round?";
+  let indusTail = "";
+  let proTail = "";
+  let reTail = "";
+  let stageTail = "";
+  let minUrl = "";
+  let maxUrl = "";
+  let gmailTail = `mail=${gmail}&`;
+  if (listIndus.length === 0) {
+    let params = `industries=0`;
+    indusTail = indusTail + params + `&`;
+  } else {
+    listIndus.map((item) => {
+      let params = `industries=${item}`;
+      indusTail = indusTail + params + `&`;
+    });
+  }
+  if (isNaN(min) === false) {
+    let param = `min=${min}`;
+    minUrl = param + `&`;
+  }
+  if (isNaN(max) === false) {
+    let param = `max=${max}`;
+    maxUrl = param + `&`;
+  }
+  if (listPro.length === 0) {
+    let params = `provinces=0`;
+    proTail = proTail + params + `&`;
+  } else {
+    listPro.map((item) => {
+      let params = `provinces=${item}`;
+      proTail = proTail + params + `&`;
+    });
+  }
+  if (listRe.length === 0) {
+    let params = `regions=0`;
+    reTail = reTail + params + `&`;
+  } else {
+    listRe.map((item) => {
+      let params = `regions=${item}`;
+      reTail = reTail + params + `&`;
+    });
+  }
+  if (listStages.length === 0) {
+    let params = `stages=0`;
+    stageTail = stageTail + params;
+  } else {
+    listStages.map((item, index) => {
+      let params = `stages=${item}`;
+      if (index === listStages.length - 1) {
+        stageTail = stageTail + params;
+      } else {
+        stageTail = stageTail + params + `&`;
+      }
+    });
+  }
+  return (dispatch) => {
+    axios({
+      method: "GET",
+      url:
+        baseUrl +
+        indusTail +
+        gmailTail +
+        maxUrl +
+        minUrl +
+        proTail +
+        reTail +
+        stageTail,
+    })
+      .then((res) => {
+        console.log(res.config.url);
+        if (res.status === 200) {
+          dispatch(getListAllRoundV2Success(res.data));
+        } else {
+          showMessage("error", message.CACTH_ERROR);
+        }
+      })
+      .catch((err) => {
+        showMessage("error", message.CACTH_ERROR);
+        dispatch(getListAllRoundV2Failed(err));
+      });
+  };
+};
+
+const getListAllRoundV2Success = (list) => {
+  return {
+    type: GET_ALL_ROUND_ACTIVE_SUCCESS_V2,
+    payload: list,
+  };
+};
+
+const getListAllRoundV2Failed = (err) => {
+  return {
+    type: GET_ALL_ROUND_ACTIVE_FAILED_V2,
     payload: err,
   };
 };

@@ -104,6 +104,10 @@ const message = {
   EX_HASHTAG_ARTICLE: "VD: KHAI KHOÁNG XÂY DỰNG ... ",
   EX_SUMMARY_ARTICLE:
     "VD: Ban Chỉ đạo phòng, chống dịch Covid-19 quốc gia sẽ báo cáo Thủ tướng, Chính phủ để có chỉ đạo với tinh thần nâng cao cảnh giác, chuẩn bị cho tình huống xấu hơn.",
+  BANNER_WORD_INVESTOR:
+    "Chúng tôi giúp cho bạn có thể tìm kiếm những tổ chức khởi nghiệp tùy theo những lựa chọn của bạn như số tiền kêu gọi, giai đoạn của tổ chức khởi nhiệp,...",
+  BANNER_WORD_ORG:
+    "Chúng tôi giúp cho bạn có thể tìm kiếm những nhà đầu tư như nhà đầu tư thiên thần, nhà đầu tư mạo hiểm,...",
 };
 
 export default message;

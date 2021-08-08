@@ -37,7 +37,7 @@ import {
   GET_LIST_STAGE_FAIL,
   GET_LIST_STAGE_SUCCESS,
 } from "../constants/register.const";
-
+import Images from "../../assets/images/images";
 export const postVerificationCode = (gmail) => {
   return (dispatch) => {
     axios({
@@ -214,7 +214,7 @@ export const postOrganizationStage = (organizationStage) => {
       .then((res) => {
         dispatch(createOrganizationStageSuccess(res.data));
         Swal.fire({
-          imageUrl: "https://i.imgur.com/RfiuoTr.png",
+          imageUrl: Images.THANKS,
           heightAuto: true,
           timerProgressBar: false,
           showConfirmButton: true,

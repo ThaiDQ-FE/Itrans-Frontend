@@ -83,12 +83,12 @@ function FormBasicInformation(props) {
     if (!values.gmail) {
       errors.gmail = "Gmail không được để trống";
     } else if (!regex.test(user.gmail)) {
-      console.log('e')
+      console.log("e");
       errors.gmail = "Gmail không đúng định dạng";
     } else if (mailLength[0].length < 6 || mailLength[0].length > 30) {
       errors.gmail = "Gmail phải có độ dài từ 6 - 30 kí tự";
     } else {
-      console.log('day ban')
+      console.log("day ban");
       errors.gmail = "";
       check++;
     }
@@ -111,7 +111,7 @@ function FormBasicInformation(props) {
 
     if (!values.verificationCode) {
       errors.verificationCode = "Mã xác thực không được để trống";
-    }else if (values.verification === "false"){
+    } else if (values.verification === "false") {
       errors.verificationCode = "Mã xác thực không đúng";
     } else {
       errors.verificationCode = "";
@@ -146,7 +146,7 @@ function FormBasicInformation(props) {
     }
     if (!values.verificationCode) {
       errors.verificationCode = "1px solid red";
-    }else if (values.verification === "false"){
+    } else if (values.verification === "false") {
       errors.verificationCode = "1px solid red";
     } else {
       errors.verificationCode = "";
@@ -154,37 +154,35 @@ function FormBasicInformation(props) {
     return errors;
   };
   const handleNext = () => {
+    console.log("ne");
+    console.log(user.gmail);
+    console.log(user.verificationCode);
 
-      console.log('ne')
-      console.log(user.gmail)
-      console.log(user.verificationCode)
-      
-      axios({
-        method: "Get",
-        url: `http://localhost:8080/api/v1/auth/check-otp?email=${user.gmail}&otp=${user.verificationCode}`,
+    axios({
+      method: "Get",
+      url: `http://localhost:8080/api/v1/auth/check-otp?email=${user.gmail}&otp=${user.verificationCode}`,
+    })
+      .then((res) => {
+        if (res.data === false) {
+          user.verification = "false";
+          setErrors(validate(user));
+          setColor(validateColor(user));
+          console.log(user);
+        } else {
+          console.log(user);
+          setErrors(validate(user));
+          setColor(validateColor(user));
+          check++;
+        }
+        console.log(check);
+        console.log(res.data);
+        if (check === 4) {
+          localStorage.setItem("Form1", JSON.stringify(user));
+          localStorage.setItem("VerificationCode", user.verificationCode);
+          props.handleNext();
+        }
       })
-        .then((res) => {
-          if (res.data === false) {
-            user.verification = "false";
-            setErrors(validate(user));
-            setColor(validateColor(user));
-            console.log(user);
-            
-          } else {
-            console.log(user);
-            setErrors(validate(user));
-            setColor(validateColor(user));
-            check++;
-          }
-          console.log(check);
-          console.log(res.data);
-          if (check === 4) {
-            localStorage.setItem("Form1", JSON.stringify(user));
-            localStorage.setItem("VerificationCode", user.verificationCode);
-            props.handleNext();
-          }
-        })
-        .catch((err) => { });
+      .catch((err) => {});
   };
   const handleClick = () => {
     axios({
@@ -194,9 +192,7 @@ function FormBasicInformation(props) {
       .then((res) => {
         console.log(res.data);
         if (res.data === true) {
-          dispatch(
-            postVerificationCode(user.gmail)
-          );
+          dispatch(postVerificationCode(user.gmail));
           setErrors({
             gmail: "",
           });
@@ -212,9 +208,9 @@ function FormBasicInformation(props) {
           });
         }
       })
-      .catch((err) => { });
+      .catch((err) => {});
     localStorage.setItem("VerificationCode", 1);
-    setTimeLeft(5);
+    setTimeLeft(30);
     doccumentAddDis("fbi_MXT");
   };
   return (
@@ -223,7 +219,7 @@ function FormBasicInformation(props) {
         <h3>{Messages.GENERAL_STEP_1}</h3>
         <form className="fbi__form">
           <div className="fbi__gmail fbi__input">
-            <small className="label__fontWeight">Gmail</small>
+            <small className="label__fontWeight">Mail</small>
             <Tooltip title={errors.gmail} placement="topRight" color="red">
               <Input
                 style={{ border: color.gmail }}
@@ -289,8 +285,9 @@ function FormBasicInformation(props) {
                 onClick={handleClick}
                 type="primary"
                 size="small"
-                className={`fbi__getCode${timeLeft === null ? "" : " fbi__getCodeDis"
-                  }`}
+                className={`fbi__getCode${
+                  timeLeft === null ? "" : " fbi__getCodeDis"
+                }`}
               >
                 {timeLeft === null ? "Lấy mã xác thực" : timeLeft + " s"}
               </Button>

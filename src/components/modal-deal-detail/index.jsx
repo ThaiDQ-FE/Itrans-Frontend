@@ -26,9 +26,30 @@ function ModalDealDetail(props) {
     if (detailDeal.investmentIndustry) {
         detailDeal.investmentIndustry.map((value, index) => {
             if (detailDeal.investmentIndustry.length != (index + 1)) {
-                investmentIndustryString += value + "/";
+                investmentIndustryString += value + "/ ";
             }else {
                 investmentIndustryString += value;
+            }
+        })
+    }
+
+    let investmentStagesString = "";
+    if (detailDeal.investmentStages) {
+        detailDeal.investmentStages.map((value, index) => {
+            if (detailDeal.investmentStages.length != (index + 1)) {
+                investmentStagesString += value + ", ";
+            }else {
+                investmentStagesString += value;
+            }
+        })
+    }
+    let investorTypeString = "";
+    if (detailDeal.investorType) {
+        detailDeal.investorType.map((value, index) => {
+            if (detailDeal.investorType.length != (index + 1)) {
+                investorTypeString += value + ", ";
+            }else {
+                investorTypeString += value;
             }
         })
     }
@@ -45,27 +66,33 @@ function ModalDealDetail(props) {
         >
             <div>
                 <div id="test">
-                    <img style={{ width: 40, height: 40, marginLeft: 100 }}
-                        src={Images.ACCEPTED}
+                    <img style={{ width: 30, height: 30, marginLeft: 100 }}
+                        src={detailDeal.logo}
                         alt="thumbnail"
                     />
-                    <span style={{ marginLeft: 5 }} className="span_text">{detailDeal.nameInvestor}</span>
+                    <span style={{ marginLeft: 10, paddingTop:5 }} className="span_text">{detailDeal.nameInvestor}</span>
 
-                    <div style={{ display: 'flex' }}>
-                        <div style={{ width: 225 }}>
+                    <div style={{ display: 'flex',marginBottom: 5 }}>
+                        <div>
                             <span className="span_text">Giai đoạn đầu tư: </span>
-                            <span>{detailDeal.investmentStages}</span>
+                            <span>{investmentStagesString}</span>
                         </div>
-                        <span className="span_text">Số tiền đầu tư: </span>
-                        <span> {detailDeal.minInvestment} - {detailDeal.maxInvestment} Tỷ </span>
                     </div>
-                    <div className="lds__capital" >
+                    <div className="lds__capital" style={{ marginBottom: 5 }} >
+                    <span className="span_text">Số tiền đầu tư: </span>
+                        <span> {detailDeal.minInvestment} - {detailDeal.maxInvestment} Tỷ (VND) </span>
+                    </div>
+                    <div className="lds__capital" style={{ marginBottom: 5 }} >
                         <span className="span_text">Lĩnh vực đầu tư: </span>
                         <span>{investmentIndustryString}</span>
                     </div>
-                    <div className="lds__capital" >
+                    <div className="lds__capital" style={{ marginBottom: 5 }}>
                         <span className="span_text">Khu vực đầu tư: </span>
                         <span>{tasteProvinceRegionString}</span>
+                    </div>
+                    <div className="lds__capital" style={{ marginBottom: 5 }}>
+                        <span className="span_text">Hình thức đầu tư: </span>
+                        <span>{investorTypeString}</span>
                     </div>
                 </div>
                 <div style={{ marginTop: 10, textAlign: 'center' }} >
@@ -73,18 +100,16 @@ function ModalDealDetail(props) {
 
                 </div>
                 <div style={{ marginTop: 10 }} >
-                    <span className="span_text">Số tiền đầu tư: </span>
-                    <span>{detailDeal.capitalInvestment} Tỷ</span>
-                </div>
-                <div style={{ marginTop: 10 }}>
-                    <span className="span_text">Ngày bắt đầu: </span>
-                    <span>{detailDeal.date}</span>
-                </div>
-                <div style={{ marginTop: 10 }} >
+                    <span style={{ display:'inline-block',width: 250}} ><b>Số tiền đầu tư:</b> {detailDeal.capitalInvestment} Tỷ (VND)</span>
+                   
                     <span className="span_text">Phần trăm cổ phần: </span>
                     <span>{detailDeal.shareRequirement} % </span>
                 </div>
-                <div style={{ marginTop: 10 }}>
+                <div style={{ marginTop: 5 }}>
+                    <span className="span_text">Ngày bắt đầu: </span>
+                    <span>{detailDeal.date}</span>
+                </div>
+                <div style={{ marginTop: 5 }}>
                     <span className="span_text">Mô tả: </span>
                     <span>{detailDeal.description}</span>
                 </div>

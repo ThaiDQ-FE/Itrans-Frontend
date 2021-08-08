@@ -105,7 +105,7 @@ function FormInvestor(props) {
   const listStageDefaul = () => {
     let array = [];
     console.log(information.stage);
-    if (information.stage !== undefined && information.stage !=="") {
+    if (information.stage !== undefined && information.stage !== "") {
       listStage.map((value) => {
         information.stage.map((valueS) => {
           if (value.idStage.toString() === valueS.toString()) {
@@ -126,7 +126,7 @@ function FormInvestor(props) {
       const upload = storage.ref(`images/${image.name}`).put(image);
       upload.on(
         "state_changed",
-        (snapshot) => {},
+        (snapshot) => { },
         (error) => {
           console.log(error);
         },
@@ -158,6 +158,7 @@ function FormInvestor(props) {
   const regexFloat = /^\d+(\.\d+)?$/;
   const validate = (values) => {
     let errors = {};
+    console.log()
     if (!values.name) {
       errors.name = "Tên nhà/quỹ đầu tư không được để trống";
     } else {
@@ -223,8 +224,6 @@ function FormInvestor(props) {
     }
     if (!values.min) {
       errors.min = "Số tiền nhỏ nhất có thể đầu tư không được để trống";
-    } else if (values.min >= values.max) {
-      errors.min = "Số tiền nhỏ nhất phải nhỏ hơn số tiền lớn nhất";
     } else if (values.min < 0) {
       errors.min = "Số tiền nhỏ nhất phải lớn hơn hoặc bằng 0";
     } else if (!regexFloat.test(values.min)) {
@@ -241,6 +240,9 @@ function FormInvestor(props) {
       errors.max = "Số tiền lớn nhất phải lớn hơn 0";
     } else if (!regexFloat.test(values.max)) {
       errors.max = "Số tiền lớn nhất phải là số";
+    }
+    else if (parseFloat(values.min) >= parseFloat(values.max)) {
+      errors.max = "Số tiền lớn nhất phải lớn hơn số tiền nhỏ nhất";
     } else {
       errors.max = "";
       check++;
@@ -306,8 +308,6 @@ function FormInvestor(props) {
     }
     if (!values.min) {
       errors.min = "1px solid red";
-    } else if (values.min >= values.max) {
-      errors.min = "1px solid red";
     } else if (values.min < 0) {
       errors.min = "1px solid red";
     } else if (!regexFloat.test(values.min)) {
@@ -320,6 +320,8 @@ function FormInvestor(props) {
     } else if (values.max <= 0) {
       errors.max = "1px solid red";
     } else if (!regexFloat.test(values.max)) {
+      errors.max = "1px solid red";
+    } else if (parseFloat(values.min) >= parseFloat(values.max)) {
       errors.max = "1px solid red";
     } else {
       errors.max = "";
@@ -368,7 +370,7 @@ function FormInvestor(props) {
     }
   };
 
-  const handleBack = ()=>{
+  const handleBack = () => {
     localStorage.setItem("Form2Investor", JSON.stringify(information));
     props.handleBack();
   }
@@ -542,7 +544,7 @@ function FormInvestor(props) {
                       placeholder="VD: 1998"
                       type="text"
                       maxLength="9"
-                      style={{ border: color.foundedYear }}
+                      style={{ border: color.foundedYear, textAlign: 'end' }}
                       value={information.foundedYear}
                       name="foundedYear"
                       size="large"
@@ -561,7 +563,7 @@ function FormInvestor(props) {
                       placeholder="VD: 1658"
                       type="text"
                       maxLength="9"
-                      style={{ border: color.numberOfEmployee }}
+                      style={{ border: color.numberOfEmployee, textAlign: 'end' }}
                       name="numberOfEmployee"
                       value={information.numberOfEmployee}
                       size="large"
@@ -654,6 +656,24 @@ function FormInvestor(props) {
               </div>
             </div>
             <div className="fi__iLineTwo">
+              <div className="fi__ul">
+                <small className="label__fontWeight">Vùng miền đầu tư</small>
+                <Tooltip title={errors.region} placement="topRight" color="red">
+                  <Select
+                    style={{ border: color.region }}
+                    name="region"
+                    mode="multiple"
+                    placeholder="Chọn một hoặc nhiều vùng miền"
+                    onChange={handleChangeRegion}
+                    defaultValue={listRegionDefaul}
+                    size="large"
+                    bordered={false}
+                    className="fi__selectVMDT"
+                  >
+                    {renderListRegion()}
+                  </Select>
+                </Tooltip>
+              </div>
               <div className="fi__khuVucDauTu">
                 <small className="label__fontWeight">Khu vực đầu tư</small>
                 <Tooltip
@@ -676,24 +696,6 @@ function FormInvestor(props) {
                   </Select>
                 </Tooltip>
               </div>
-              <div className="fi__ul">
-                <small className="label__fontWeight">Vùng miền đầu tư</small>
-                <Tooltip title={errors.region} placement="topRight" color="red">
-                  <Select
-                    style={{ border: color.region }}
-                    name="region"
-                    mode="multiple"
-                    placeholder="Chọn một hoặc nhiều vùng miền"
-                    onChange={handleChangeRegion}
-                    defaultValue={listRegionDefaul}
-                    size="large"
-                    bordered={false}
-                    className="fi__selectVMDT"
-                  >
-                    {renderListRegion()}
-                  </Select>
-                </Tooltip>
-              </div>
               <div className="fi__moneyWrapper">
                 <label className="label__fontWeight">Số tiền đầu tư</label>
                 <div className="fi__moneyContainer">
@@ -707,7 +709,7 @@ function FormInvestor(props) {
                         type="text"
                         maxLength="9"
                         addonAfter="Tỷ VNĐ"
-                        style={{ border: color.min }}
+                        style={{ border: color.min, textAlign: 'end' }}
                         name="min"
                         value={information.min}
                         size="large"
@@ -726,7 +728,7 @@ function FormInvestor(props) {
                         type="text"
                         maxLength="9"
                         addonAfter="Tỷ VNĐ"
-                        style={{ border: color.max }}
+                        style={{ border: color.max, textAlign: 'end' }}
                         name="max"
                         value={information.max}
                         size="large"

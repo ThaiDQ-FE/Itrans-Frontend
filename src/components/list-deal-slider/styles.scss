@@ -45,6 +45,25 @@
     padding-top: 20px;
     padding-left: 10px;
     padding-right: 10px;
+    .cd__oneItem {
+        width: 250px;
+    }
+    .cd__twoItem {
+        width: 500px;
+    }
+    .cd__threItem {
+        width: 750px;
+    }
+    .cd__fourItem {
+        width: 1000px;
+    }
+    .cd__morethan {
+        width: unset;
+    }
+    .lds__title {
+        font-size: 26px;
+        font-weight: 500;
+    }
 }
 .slick-slider {
     .slick-arrow {
@@ -93,7 +112,7 @@
         width: 95%;
         height: 50%;
         position: relative;
-        word-break: break-word;
+        word-break: break-all;
         .lds__title {
             font-weight: 600;
             font-size: 26px;
@@ -118,6 +137,44 @@
     &:hover {
         .lds__action {
             opacity: 1;
+        }
+    }
+}
+
+.lds__dealInvs {
+    width: 680px;
+    margin: auto;
+    margin-top: 50px;
+    .lbs__title {
+        font-size: 28px;
+        font-weight: 500;
+    }
+    .lds_textDeal {
+        padding: 20px;
+        .lds__introduceWrapper {
+            .lds__action {
+                top: -25px;
+                right: -40px;
+                opacity: 0;
+            }
+        }
+        &:hover {
+            .lds__introduceWrapper {
+                .lds__action {
+                    opacity: 1;
+                }
+            }
+        }
+        .lbs__percent {
+            margin: 0 30px;
+        }
+        .lbs__labelNormal {
+            font-weight: normal;
+        }
+        .lbs__des {
+            margin-top: 15px;
+            display: block;
+            word-break: break-all;
         }
     }
 }

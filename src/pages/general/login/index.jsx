@@ -58,7 +58,7 @@ function Login(props) {
           <div className="login__title">Đăng nhập</div>
           <form>
             <div className="wrapper__gmail">
-              <label className="login__inputLabel">Email</label>
+              <label className="login__inputLabel">Mail</label>
               <Tooltip title={gmailErr} color="red" placement="topRight">
                 <Input
                   className={gmailErr !== "" ? "login_iInput" : ""}

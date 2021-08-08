@@ -44,7 +44,6 @@ function HomeBody(props) {
           listIndus={props.listIndus}
         />
       </div>
-      <hr style={{ width: 200, margin: "auto" }} />
       <div className="hb__search">
         <Search
           id="hb__search"

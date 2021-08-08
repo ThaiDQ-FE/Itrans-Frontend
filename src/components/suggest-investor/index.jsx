@@ -1,4 +1,4 @@
-import { Card, Pagination, Tag } from "antd";
+import { Card, Pagination, Popover, Tag } from "antd";
 import React, { useState } from "react";
 import "antd/dist/antd.css";
 import "./styles.scss";
@@ -9,6 +9,7 @@ import { withRouter } from "react-router-dom";
 
 function SuggestInvestor(props) {
   const { listInvestorSuggest } = useSelector((state) => state.investor);
+  const { roundAndOrganization } = useSelector((state) => state.round);
   console.log(listInvestorSuggest);
   const [length, setLength] = useState({
     minValue: 0,
@@ -56,9 +57,42 @@ function SuggestInvestor(props) {
       props.history.push("/nha-dau-tu/chi-tiet");
     }, 500);
   };
+  const content = (value) => {
+    return (
+      <>
+        {value.stage === null ? (
+          <></>
+        ) : (
+          <div className="si__stage">
+            <span className="label__fontWeight">Giai đoạn muốn đầu tư: </span><Tag color="magenta">{value.stage}</Tag>
+          </div>
+        )}
+        {value.min === 0 ? (
+          <></>
+        ) : (
+          <div className="si__money">
+           <span className="label__fontWeight">Số tiền đầu tư: </span> <Tag color="green" className="si__minMoney">
+              {value.min + " Tỷ VNĐ"}
+            </Tag>
+            {"- "}
+            <Tag color="green">{value.max + " Tỷ VNĐ"}</Tag>
+          </div>
+        )}
+  {value.industries && value.industries.length > 0 ? <div className="si__indus">
+          <span className="label__fontWeight">Lĩnh vực muốn đầu tư: </span> <span>{renderListIndus(value.industries)}</span>
+        </div>: <></>}
+        {value.provinces && value.provinces.length > 0 ? <div className="si__pro">
+          <span className="label__fontWeight">Tỉnh thành muốn đầu tư: </span><span>{renderListPro(value.provinces)}</span>
+        </div> : <></>}
+        
+      </>
+    );
+  };
+  
   return (
     <div className="si__wrapper">
-      {checkRoleUser() === "ORGANIZATION" ? (
+      {roundAndOrganization.status !== "PENDING" &&
+      checkRoleUser() === "ORGANIZATION" ? (
         <>
           <h2 className="si__title">
             {listInvestorSuggest && listInvestorSuggest.length > 0
@@ -85,14 +119,20 @@ function SuggestInvestor(props) {
                     .slice(length.minValue, length.maxValue)
                     .map((value, index) => (
                       <Card key={index} className="si__itemInves">
-                        <Tag className="si__count" color="purple">
-                          Phù hợp: {value.count}/4 tiêu chí
-                        </Tag>
                         <img
                           src={value.logo === "" ? Images.NO_IMAGE : value.logo}
                           alt="thumbnail"
                           className="si__logo"
                         />
+                        <Popover
+                          content={() => content(value)}
+                          title={null}
+                          placement="rightTop"
+                        >
+                          <Tag className="si__count" color="purple">
+                            Tiêu chí phù hợp
+                          </Tag>
+                        </Popover>
                         <div className="si__name">
                           <span
                             onClick={() => {
@@ -101,26 +141,6 @@ function SuggestInvestor(props) {
                           >
                             {value.nameInvestor}
                           </span>
-                        </div>
-                        {value.stage === null ? (
-                          <></>
-                        ) : (
-                          <div className="si__stage">
-                            <Tag color="magenta">{value.stage}</Tag>
-                          </div>
-                        )}
-                        <div className="si__money">
-                          <Tag color="green" className="si__minMoney">
-                            {value.min + " Tỷ VNĐ"}
-                          </Tag>
-                          {" - "}
-                          <Tag color="green">{value.max + " Tỷ VNĐ"}</Tag>
-                        </div>
-                        <div className="si__indus">
-                          <span>{renderListIndus(value.industries)}</span>
-                        </div>
-                        <div className="si__pro">
-                          <span>{renderListPro(value.provinces)}</span>
                         </div>
                       </Card>
                     ))

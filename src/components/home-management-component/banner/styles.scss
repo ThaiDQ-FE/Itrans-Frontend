@@ -1,62 +1,68 @@
 .banner__wrapper {
-    height: 450px;
+    height: 500px;
     background-color: #112d4e;
     margin-top: 75px;
     width: 100%;
-    display: flex;
-    justify-content: center;
     font-family: "Montserrat", sans-serif;
+    border-bottom-left-radius: 20%;
+    border-bottom-right-radius: 20%;
     .banner__container {
-        margin: auto;
-        width: 45%;
-        text-align: center;
-        .banner__h1 {
-            color: #6bdcff;
-            text-transform: uppercase;
-            font-size: 56px;
-            font-weight: 600;
-            &:nth-child(2) {
-                margin-bottom: 30px;
+        display: flex;
+        justify-content: space-evenly;
+        height: 500px;
+        .banner__image {
+            width: 45%;
+            height: 100%;
+            position: relative;
+            img {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 350px;
+            }
+            .banner__hide {
+                width: 100%;
+                height: 30px;
+                background-color: #112d4e;
+                position: absolute;
+                bottom: 13.2%;
+                left: 0%;
+                margin: 0;
             }
         }
-        .banner__sologan {
-            color: #ffffff;
-            font-size: 20px;
-            margin-bottom: 40px;
-        }
-        .banner__button {
-            display: flex;
-            .banner__ul {
-                list-style-type: none;
-                margin: auto;
-                display: flex;
-                .banner__li {
-                    .banner__fund,
-                    .banner__startup {
-                        text-decoration: none;
-                        margin: 0 20px;
-                        font-size: 22px;
-                        font-weight: 600;
-                        padding: 10px 25px;
-                        background-color: #6bdcff;
-                        color: #ffffff;
-                        border-radius: 12px;
-                        &:hover {
-                            background-color: #ffffff;
-                            color: #6bdcff;
-                        }
-                    }
-                    .banner__startup {
-                        color: #6bdcff;
-                        background-color: #ffffff;
-                        &:hover {
-                            color: #ffffff;
-                            background-color: #6bdcff;
-                        }
-                    }
-                    .banner__fund {
-                        padding: 10px 35px;
-                    }
+
+        .banner__info {
+            width: 45%;
+            height: 100%;
+            position: relative;
+            .banner__infoWrapper {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                .banner__role {
+                    display: block;
+                    font-size: 16px;
+                    font-weight: 700;
+                    color: #bfc4c9;
+                }
+                .banner__question {
+                    display: block;
+                    color: white;
+                    font-size: 30px;
+                    font-weight: 600;
+                }
+                .banner__answer {
+                    color: white;
+                    width: 75%;
+                }
+                .banner__button {
+                    color: #112d4e;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    background: white;
+                    border-color: white;
+                    border-radius: 12px;
                 }
             }
         }

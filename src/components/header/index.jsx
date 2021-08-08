@@ -599,12 +599,7 @@ function Header({ history }) {
       <div className="header__login">
         {user !== null ? (
           <div className="header__logined" onClick={handleOpenMenu}>
-            <img
-              src={
-                detailCompany.logo === "" ? Images.NO_IMAGE : detailCompany.logo
-              }
-              alt=""
-            />
+            <img src={user !== null ? user.logo : ""} alt="" />
             <span>{user !== null ? user.gmail : ""}</span>
           </div>
         ) : (

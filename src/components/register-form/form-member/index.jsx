@@ -41,12 +41,6 @@ function FormMember(props) {
       errors.position = "";
       check++;
     }
-    if (!values.linkCv) {
-      errors.linkCv = "Link CV không được để trống";
-    } else {
-      errors.linkCv = "";
-      check++;
-    }
     return errors;
   };
   const validateColor = (values) => {
@@ -61,11 +55,7 @@ function FormMember(props) {
     } else {
       errors.position = "";
     }
-    if (!values.linkCv) {
-      errors.linkCv = "1px solid red";
-    } else {
-      errors.linkCv = "";
-    }
+
     return errors;
   };
   const [url, setUrl] = useState("");
@@ -141,7 +131,7 @@ function FormMember(props) {
     setErrors(validate(teamMember));
     setColor(validateColor(teamMember));
     console.log(check);
-    if (check == 3) {
+    if (check == 2) {
       if (!localStorage.getItem("TeamMember")) {
         localStorage.setItem("TeamMember", JSON.stringify([teamMember]));
         setTeamMember({
