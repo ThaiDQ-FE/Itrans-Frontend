@@ -167,7 +167,7 @@ function InfoInputCreateRound(props) {
           </Tooltip>
         </div>
         <div className="modal__inputThumbnail">
-          <label className="modal__labelAddRound">Ảnh mô tả</label>
+          <label className="modal__labelAddRound">Ảnh</label>
           <div className="modal__inputThumbnailContainer">
             <img
               src={props.thumbnail === "" ? Images.NO_IMAGE : props.thumbnail}

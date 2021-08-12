@@ -45,7 +45,7 @@ export const deleteMilestoneById = (id, history) => {
     })
       .then((res) => {
         if (res.status === 200) {
-          showMessage("success", "Xóa thành tựu thành công");
+          showMessage("success", "Xóa cột mốc thành công");
           dispatch(getListMilestone(checkIdUser(), false));
         }
       })

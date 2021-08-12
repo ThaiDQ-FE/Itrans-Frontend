@@ -93,13 +93,13 @@ function AdminArticleDetail(props) {
             Trở lại
           </Button>
           <Popconfirm
-            title="Bạn muốn xóa tin tức này?"
+            title="Bạn muốn xóa bài viết này?"
             onConfirm={handleDeleteArticle}
             okText="Đồng ý"
             cancelText="Hủy"
           >
             <Button type="primary" className="aad__action">
-              Xóa tin tức
+              Xóa bài viết
             </Button>
           </Popconfirm>
         </div>

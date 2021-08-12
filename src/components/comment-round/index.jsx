@@ -6,7 +6,7 @@ import moment from "moment";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getLocalStorage } from "../../assets/helper/helper";
+import { checkRoleUser, getLocalStorage } from "../../assets/helper/helper";
 import { createAnswer, createQuestion } from "../../store/action/round.action";
 const { TextArea } = Input;
 const idRound = getLocalStorage("idRound");
@@ -212,7 +212,13 @@ function CommentRound() {
 
   return (
     <div className="comment">
-      <div className="comment_HVD">Hỏi và đáp</div>
+      {checkRoleUser() === "INVESTOR" ? (
+        <div className="comment_HVD">Hỏi và đáp</div>
+      ) : state.comments.length > 0 ? (
+        <div className="comment_HVD">Hỏi và đáp</div>
+      ) : (
+        <></>
+      )}
       {userLogin.role != "ORGANIZATION" && (
         <Comment
           avatar={<Avatar src={userLogin.logo} />}

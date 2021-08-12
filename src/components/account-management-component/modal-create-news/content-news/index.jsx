@@ -92,8 +92,8 @@ function ContentNews(props) {
           disabled={props.loading === true}
         >
           {props.open === true && props.openUpdate === true
-            ? "Cập nhật tin tức"
-            : "Tạo tin tức"}
+            ? "Cập nhật bài viết"
+            : "Tạo bài viết"}
         </Button>
       </div>
     </>

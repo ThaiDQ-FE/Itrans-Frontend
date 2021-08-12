@@ -135,7 +135,7 @@ function NewsTab(props) {
         } else if (openModal === true && openModalUpdate === true) {
           Swal.fire({
             icon: "question",
-            title: "Bạn muốn cập nhật tin tức này?",
+            title: "Bạn muốn cập nhật bài viết này?",
             heightAuto: true,
             timerProgressBar: false,
             showConfirmButton: true,
@@ -161,7 +161,7 @@ function NewsTab(props) {
         } else {
           Swal.fire({
             icon: "question",
-            title: "Bạn muốn tạo tin tức này?",
+            title: "Bạn muốn tạo bài viết này?",
             heightAuto: true,
             timerProgressBar: false,
             showConfirmButton: true,
@@ -200,13 +200,13 @@ function NewsTab(props) {
     })
       .then((res) => {
         if (res.status === 200) {
-          showMessage("success", "Tạo tin tức thành công");
+          showMessage("success", "Tạo bài viết thành công");
           setTimeout(() => {
             handleClose();
             dispatch(getListArticleByGmail(checkEmailUser(), true));
           }, 2000);
         } else {
-          showMessage("error", "Tạo tin tức thất bại");
+          showMessage("error", "Tạo bài viết thất bại");
         }
       })
       .catch((err) => {
@@ -224,13 +224,13 @@ function NewsTab(props) {
     })
       .then((res) => {
         if (res.status === 200) {
-          showMessage("success", "Cập nhật tin tức thành công");
+          showMessage("success", "Cập nhật bài viết thành công");
           setTimeout(() => {
             handleClose();
             dispatch(getListArticleByGmail(checkEmailUser(), true));
           }, 2000);
         } else {
-          showMessage("error", "Cập nhật tin tức thất bại");
+          showMessage("error", "Cập nhật bài viết thất bại");
         }
       })
       .catch((err) => {
@@ -240,7 +240,7 @@ function NewsTab(props) {
   const handleDeleteArticle = (id, title) => {
     Swal.fire({
       icon: "question",
-      title: "Bạn muốn xóa tin tức này?",
+      title: "Bạn muốn xóa bài viết này?",
       html: `<b>${title}</b>`,
       heightAuto: true,
       timerProgressBar: false,
@@ -272,7 +272,7 @@ function NewsTab(props) {
     setIdArticle(value.idArticle);
     Swal.fire({
       icon: "question",
-      title: "Bạn muốn sửa tin tức này?",
+      title: "Bạn muốn sửa bài viết này?",
       html: `<b>${value.title}</b>`,
       heightAuto: true,
       timerProgressBar: false,
@@ -321,7 +321,7 @@ function NewsTab(props) {
             type="primary"
             onClick={handleOpen}
           >
-            Tạo bài đăng
+            Tạo bài viết
           </Button>
         ) : (
           <></>
@@ -377,9 +377,9 @@ function NewsTab(props) {
           ))
       ) : checkPathUrl() === pathQuanLyTaiKhoan() ? (
         <div className="nt__noArticle">
-          <p>Hiện tại bạn không có tin tức nào được đăng tải</p>
+          <p>Hiện tại bạn không có bài viết nào được đăng tải</p>
           <Button type="primary" size="large" onClick={handleOpen}>
-            Tạo bài đăng
+            Tạo bài viết
           </Button>
         </div>
       ) : (
@@ -388,7 +388,7 @@ function NewsTab(props) {
             {checkPathUrl() === pathNhaDauTu()
               ? "Nhà đầu tư này "
               : "Tổ chức này "}{" "}
-            không có tin tức nào được đăng tải
+            không có bài viết nào được đăng tải
           </p>
         </div>
       )}

@@ -51,6 +51,11 @@ import key from "./key.svg";
 import thanks from "./thanks.png";
 import inves from "./img_hero_investor.svg";
 import org from "./org.png";
+import banner_inv from "./banner-inv.jpg";
+import banner_org from "./banner-org.jpg";
+import banner_corporate from "./corporate.jpg";
+import funds from "./funds.png";
+import house from "./house.svg";
 const Images = {
   LOGO_NAVY: logo_navy,
   LOGO_GREY: logo_grey,
@@ -105,6 +110,11 @@ const Images = {
   THANKS: thanks,
   INVESTOR: inves,
   ORG: org,
+  BANNER_INV: banner_inv,
+  BANNER_ORG: banner_org,
+  BANNER_CORPORATE: banner_corporate,
+  FUNDS: funds,
+  HOUSE: house,
 };
 
 export default Images;

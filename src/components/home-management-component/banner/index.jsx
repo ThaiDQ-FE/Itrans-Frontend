@@ -51,7 +51,7 @@ function Banner(props) {
               onClick={handleClick}
             >
               {checkRoleUser() === "INVESTOR"
-                ? "Tìm tổ chức"
+                ? "Tìm tổ chức khởi nghiệp"
                 : "Tìm nhà đầu tư"}
             </Button>
           </div>

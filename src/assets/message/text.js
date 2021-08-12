@@ -2,7 +2,7 @@ const message = {
   BANNER_SOLOGAN:
     "My favorite recent startup articles about growth, marketing and business life that have made a big impact on our team.",
   // form-role
-  REGISTER_ORGANIZATION: "Tổ Chức",
+  REGISTER_ORGANIZATION: "Tổ Chức Khởi Nghiệp",
   REGISTER_ORGANIZATION_TEXT:
     "Lorem ipsum dolor sit amet consectetur adipisicing elit.Consectetur ut deleniti molestias porro aliquid, sapientelaudantium aperiam odit tenetur.",
   REGISTER_INVESTOR: "Nhà Đầu Tư",
@@ -23,7 +23,7 @@ const message = {
   REGISTER_BUTTON: "Đăng ký",
   // form-register
   GENERAL_STEP_1: "Thông tin tài khoản",
-  ORGANIZATION_STEP_2: "Thông tin về tổ chức",
+  ORGANIZATION_STEP_2: "Thông tin về tổ chức khởi nghiệp",
   ORGANIZATION_STEP_3: "Thành viên",
   INVESTOR_STEP_2: "Thông tin chi tiết",
   GENERAL_STEP_FINAL: "Hoàn thành",
@@ -67,7 +67,7 @@ const message = {
   GMAIL_REG: "Gmail không đúng định dạng (@gmail.com)",
   PASSWORD_NULL: "Vui lòng nhập mật khẩu",
   // to chuc
-  OM_TITLE: "Tổ chức",
+  OM_TITLE: "Tổ chức khởi nghiệp",
   OM_SLOGAN: "Mãi mãi tinh thần khởi nghiệp",
   OM_SLOGAN_TAIL: "- Vin Group",
   // nha dau tu

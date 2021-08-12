@@ -42,8 +42,12 @@ a {
 }
 html,
 body {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif !important;
 }
 .ant-modal-wrap {
   z-index: 1052 !important;
+}
+
+.swal2-image {
+  margin: 0 !important;
 }

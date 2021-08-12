@@ -473,8 +473,8 @@ function Header({ history }) {
     handleBlurOReNew();
     if (
       changePass.oldPassword !== "" &&
-      changePassword.newPassword !== "" &&
-      changePassword.reNew !== ""
+      changePass.newPassword !== "" &&
+      changePass.reNew !== ""
     ) {
       Swal.fire({
         icon: "question",
@@ -512,7 +512,7 @@ function Header({ history }) {
           <>
             <li className="header__features__li">
               <NavLink
-                activeClassName="active-nav-link-header-features"
+                activeClassName="active-mid"
                 className="header__trangchu"
                 to="/"
                 exact={true}
@@ -522,17 +522,17 @@ function Header({ history }) {
             </li>
             <li className="header__features__li">
               <NavLink
-                activeClassName="active-nav-link-header-features"
+                activeClassName="active-mid"
                 className="header__vgv"
                 to="/to-chuc"
                 exact={true}
               >
-                Tổ chức
+                Tổ chức khởi nghiệp
               </NavLink>
             </li>
             <li className="header__features__li">
               <NavLink
-                activeClassName="active-nav-link-header-features"
+                activeClassName="active-mid"
                 className="header__vgv"
                 to="/vong-goi-von"
                 exact={true}
@@ -547,7 +547,7 @@ function Header({ history }) {
           <>
             <li className="header__features__li">
               <NavLink
-                activeClassName="active-nav-link-header-features"
+                activeClassName="active-mid"
                 className="header__trangchu"
                 to="/"
                 exact={true}
@@ -557,7 +557,7 @@ function Header({ history }) {
             </li>
             <li className="header__features__li">
               <NavLink
-                activeClassName="active-nav-link-header-features"
+                activeClassName="active-mid"
                 className="header__vgv"
                 to="/nha-dau-tu"
                 exact={true}
@@ -600,7 +600,7 @@ function Header({ history }) {
         {user !== null ? (
           <div className="header__logined" onClick={handleOpenMenu}>
             <img src={user !== null ? user.logo : ""} alt="" />
-            <span>{user !== null ? user.gmail : ""}</span>
+            <span>{user !== null ? user.name : ""}</span>
           </div>
         ) : (
           <ul className="header__login__ul">
@@ -644,7 +644,7 @@ function Header({ history }) {
           >
             <div className="header__menuAccount">
               <img src={Images.BUILDINGS} alt="" />
-              <span>Tổ chức của tôi</span>
+              <span>Trang cá nhân</span>
             </div>
           </NavLink>
         </MenuItem>
@@ -652,7 +652,7 @@ function Header({ history }) {
         <MenuItem>
           <div className="header__menuAccount" onClick={handleOpenModal}>
             <img src={Images.SETTING_COLOR} alt="" />
-            <span>Cài đặt tài khoản</span>
+            <span>Chỉnh sửa thông tin</span>
           </div>
         </MenuItem>
         <hr className="header__hr" />

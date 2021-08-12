@@ -13,6 +13,7 @@ import {
   getListStage,
 } from "../../../store/action/register.action";
 import NotAuth from "../../error/auth";
+import Images from "../../../assets/images/images";
 function OrganizationManagement(props) {
   const dispatch = useDispatch();
   const getData = (isLoading) => {
@@ -62,9 +63,18 @@ function OrganizationManagement(props) {
     return (
       <div className="om__wrapper">
         <div className="om__banner">
-          <div className="om__title">{message.OM_TITLE}</div>
-          <div className="om__slogan">
-            "{message.OM_SLOGAN}" {message.OM_SLOGAN_TAIL}
+          <img className="om__img" src={Images.BANNER_ORG} alt="banner" />
+          <div className="om__titleWrapper">
+            <div className="om__titleSolo">
+              <div className="om__title">{message.OM_TITLE}</div>
+              <div className="om__slo">
+                Tìm kiếm tổ chức khởi nghiệp bạn yêu thích, trở thành Nhà đầu tư
+                và cùng nhau đi đến thành công.
+              </div>
+              <div className="om__slogan">
+                "{message.OM_SLOGAN}" {message.OM_SLOGAN_TAIL}
+              </div>
+            </div>
           </div>
         </div>
         <OrganizationManagementComponent getData={getData} />

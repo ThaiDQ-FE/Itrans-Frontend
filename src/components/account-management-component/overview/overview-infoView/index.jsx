@@ -93,14 +93,14 @@ function OverViewInfoViewComponent(props) {
         ) : (
           <>
             <div className="ovic__displayGrid">
-              <div className="ovic__item">
+              {/* <div className="ovic__item">
                 <span className="ovic__fontWeight">Email: </span>
               </div>
               <div className="ovic__item">
                 <span className="ovic__wordBreak">
                   {props.detailView.email}
                 </span>
-              </div>
+              </div> */}
               <div className="ovic__item">
                 <span className="ovic__fontWeight">Website: </span>
               </div>
@@ -127,14 +127,16 @@ function OverViewInfoViewComponent(props) {
                   </div>
                   <div className="ovic__item">
                     <span className="ovic__wordBreak">
-                      {props.detailView.currentStage}
+                      {"- " + props.detailView.currentStage}
                     </span>
                   </div>
                 </>
               ) : (
                 <>
                   <div className="ovic__item">
-                    <span className="ovic__fontWeight">Loại nhà đầu tư: </span>
+                    <span className="ovic__fontWeight">
+                      Loại hình nhà đầu tư:{" "}
+                    </span>
                   </div>
                   <div className="ovic__item">
                     <ul className="ovic__ulList ovic__wordBreak">
@@ -146,7 +148,7 @@ function OverViewInfoViewComponent(props) {
                   </div>
                   <div className="ovic__item">
                     <span className="ovic__wordBreak">
-                      {props.detailView.headQuarter}
+                      {"- " + props.detailView.headQuarter}
                     </span>
                   </div>
                   <div className="ovic__item">
@@ -160,9 +162,7 @@ function OverViewInfoViewComponent(props) {
                     </ul>
                   </div>
                   <div className="ovic__item">
-                    <span className="ovic__fontWeight">
-                      Giai đoạn muốn đầu tư:{" "}
-                    </span>
+                    <span className="ovic__fontWeight">Giai đoạn đầu tư: </span>
                   </div>
                   <div className="ovic__item">
                     <ul className="ovic__ulList ovic__wordBreak">
@@ -184,7 +184,7 @@ function OverViewInfoViewComponent(props) {
                 <span className="ovic__fontWeight">
                   {checkRole === false
                     ? "Lĩnh vực hoạt động: "
-                    : "Lĩnh vực muốn đầu tư: "}
+                    : "Lĩnh vực đầu tư: "}
                 </span>
               </div>
               <div className="ovic__item">
@@ -196,7 +196,7 @@ function OverViewInfoViewComponent(props) {
                 <span className="ovic__fontWeight">
                   {checkRole === false
                     ? "Khu vực hoạt động: "
-                    : "Khu vực muốn đầu tư: "}
+                    : "Khu vực đầu tư: "}
                 </span>
               </div>
               <div className="ovic__item">
