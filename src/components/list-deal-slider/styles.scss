@@ -20,6 +20,7 @@
             //     // padding: 30px;
             // }
             .ant-card-body {
+                padding: 19px;
                 img {
                     text-align: center;
                     width: 200px;
@@ -50,15 +51,39 @@
     }
     .cd__twoItem {
         width: 500px;
+        .slick-list {
+            border-radius: 8px;
+            .slick-slide {
+                padding: 5px;
+            }
+        }
     }
     .cd__threItem {
         width: 750px;
+        .slick-list {
+            border-radius: 8px;
+            .slick-slide {
+                padding: 5px;
+            }
+        }
     }
     .cd__fourItem {
         width: 1000px;
+        .slick-list {
+            border-radius: 8px;
+            .slick-slide {
+                padding: 5px;
+            }
+        }
     }
     .cd__morethan {
         width: unset;
+        .slick-list {
+            border-radius: 8px;
+            .slick-slide {
+                padding: 5px;
+            }
+        }
     }
     .lds__title {
         font-size: 26px;
@@ -112,7 +137,7 @@
         width: 95%;
         height: 50%;
         position: relative;
-        word-break: break-all;
+        word-break: break-word;
         .lds__title {
             font-weight: 600;
             font-size: 26px;
@@ -142,7 +167,7 @@
 }
 
 .lds__dealInvs {
-    width: 680px;
+    width: 700px;
     margin: auto;
     margin-top: 50px;
     .lbs__title {
@@ -174,7 +199,7 @@
         .lbs__des {
             margin-top: 15px;
             display: block;
-            word-break: break-all;
+            word-break: break-word;
         }
     }
 }

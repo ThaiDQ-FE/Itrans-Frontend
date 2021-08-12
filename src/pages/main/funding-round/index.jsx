@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { checkEmailUser } from "../../../assets/helper/helper";
+import Images from "../../../assets/images/images";
+import message from "../../../assets/message/text";
 import FundingRoundManagement from "../../../components/funding-round-management";
 import {
   getListIndustry,
@@ -38,7 +40,18 @@ function FundingRound() {
   }, []);
   return (
     <div className="fr__wrapper">
-      <h1 className="fr__title">Vòng gọi vốn</h1>
+      <div className="im__banner">
+        <img className="im__img" src={Images.BANNER_CORPORATE} alt="banner" />
+        <div className="im__titleWrapper">
+          <div className="im__titleSolo">
+            <div className="im__title">Vòng gọi vốn</div>
+            <div className="im__slo">
+              Tìm kiếm vòng gọi vốn bạn theo mong muốn của bạn và trở thành Nhà
+              đầu tư và cùng nhau đi đến thành công.
+            </div>
+          </div>
+        </div>
+      </div>
       <FundingRoundManagement />
     </div>
   );

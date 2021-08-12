@@ -236,12 +236,12 @@ function RoundDeail() {
       showConfirmButton: true,
       showCancelButton: true,
       cancelButtonText: "Hủy",
-      cancelButtonColor: "gray",
       confirmButtonText: "Đồng ý",
-      confirmButtonColor: "#112D4E",
+      confirmButtonColor: "#1890ff",
+      cancelButtonColor: "red",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        dispatch(createDeal(dealNew));
+        dispatch(createDeal(dealNew, roundAndOrganization.gmail));
         setOpenModal(false);
       }
     });
@@ -273,8 +273,12 @@ function RoundDeail() {
             </span>
             <div className="roundDetail__gmailYear">
               <div className="roundDetail__gmail">
-                <img className="icon__Image" src={Images.GMAIL} alt="gmail" />
-                <span>{roundAndOrganization.gmail}</span>
+                <img
+                  className="icon__Image"
+                  src={Images.WEBSITE}
+                  alt="website"
+                />
+                <span>{roundAndOrganization.linkWeb}</span>
               </div>
               <div className="roundDetail__year">
                 <img

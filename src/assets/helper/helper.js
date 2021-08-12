@@ -17,7 +17,10 @@ export const checkEmailUser = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   if (userInfo !== null) return userInfo.gmail;
 };
-
+export const checkNameUser = () => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  if (userInfo !== null) return userInfo.name;
+};
 export const showMessage = (icon, mess) => {
   return Swal.fire({
     icon: icon,
@@ -110,8 +113,6 @@ export const sessionTimeOut = (err, history) => {
         history.push("/dang-nhap");
       }
     });
-  } else {
-    showMessage("error", message.CACTH_ERROR);
   }
 };
 

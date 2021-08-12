@@ -118,14 +118,13 @@ function RoundSuggest(props) {
                   props.list
                     .slice(length.minValue, length.maxValue)
                     .map((value, index) => (
-                      <Card
+                      <div
+                        className="rs__roundV2Wrapper"
+                        key={index}
                         onClick={() => {
                           handleClickToDetail();
                           localStorages("idRound", value.idRound);
                         }}
-                        key={index}
-                        hoverable
-                        className="rs__itemRound"
                       >
                         <Popover
                           content={() => content(value)}
@@ -136,55 +135,31 @@ function RoundSuggest(props) {
                             Phù hợp: {value.count}/4 tiêu chí
                           </Tag>
                         </Popover>
-                        <img
-                          src={
-                            value.thumbnail === ""
-                              ? Images.NO_IMAGE
-                              : value.thumbnail
-                          }
-                          alt="thumbnail"
-                        />
-                        <div className="rs__name">
+                        <div className="rs__roundSug">
                           <img
-                            className="rs__nImg"
-                            src={
-                              value.logo === "" ? Images.NO_IMAGE : value.logo
-                            }
-                            alt="logos"
+                            className="rs__thumbnail"
+                            src={value.thumbnail}
+                            alt="thubmnail"
                           />
-                          <span>{value.organization}</span>
                         </div>
-                        {/* {value.checkStage === true ? (
-                          <div className="rs__stage">
-                            <Tag color="magenta">{value.stage}</Tag>
+                        <div className="rs__content">
+                          <div className="rs__nameLogo">
+                            <img
+                              className="rs__logo"
+                              src={value.logo}
+                              alt="logo"
+                            />
+                            <div className="rs__name">{value.organization}</div>
                           </div>
-                        ) : (
-                          <></>
-                        )}
-                        {value.checkAmount === true ? (
-                          <div className="rs__fundingAmount">
-                            <Tag color="green">
-                              {value.fundingAmount} {" Tỷ VNĐ"}
-                            </Tag>
-                          </div>
-                        ) : (
-                          <></>
-                        )}
-
-                        <div className="rs__indus">
-                          <span>{renderListIndus(value.industries)}</span>
+                          {value.summary === "" ? (
+                            <></>
+                          ) : (
+                            <div className="rs__summary">
+                              <span>{value.summary}</span>
+                            </div>
+                          )}
                         </div>
-                        <div className="rs__pro">
-                          <span>{renderListPro(value.provinces)}</span>
-                        </div> */}
-                        {value.summary === "" ? (
-                          <></>
-                        ) : (
-                          <div className="rs__summary">
-                            <span>{value.summary}</span>
-                          </div>
-                        )}
-                      </Card>
+                      </div>
                     ))
                 ) : (
                   <></>

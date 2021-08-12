@@ -167,7 +167,7 @@ function FilterOrganizationComponent(props) {
       <div className="foc__container">
         <div className="foc__dislayGrid">
           <div className="box">
-            <small>Giai đoạn</small>
+            <small className="label__fontWeight">Giai đoạn</small>
             {loading === true ? (
               <Skeleton.Input style={{ width: 120 }} active />
             ) : (
@@ -180,7 +180,7 @@ function FilterOrganizationComponent(props) {
             )}
           </div>
           <div className="box">
-            <small>Tỉnh/thành</small>
+            <small className="label__fontWeight">Tỉnh/thành</small>
             {loading === true ? (
               <Skeleton.Input style={{ width: 260 }} active />
             ) : (
@@ -193,7 +193,7 @@ function FilterOrganizationComponent(props) {
             )}
           </div>
           <div className="box">
-            <small>Khu vực</small>
+            <small className="label__fontWeight">Khu vực</small>
             {loading === true ? (
               <Skeleton.Input style={{ width: 260 }} active />
             ) : (
@@ -206,7 +206,7 @@ function FilterOrganizationComponent(props) {
             )}
           </div>
           <div className="box">
-            <small>Lĩnh vực </small>
+            <small className="label__fontWeight">Lĩnh vực </small>
             {loading === true ? (
               <Skeleton.Input style={{ width: 440 }} active />
             ) : (

@@ -200,25 +200,25 @@ export const deleleArticleById = (id, history) => {
         if (res.status === 200) {
           if (checkPathUrl() === pathAdminTinTuc()) {
             notification["success"]({
-              message: "Xóa tin tức thành công",
+              message: "Xóa bài viết thành công",
             });
             dispatch(getValueArticle(false, history));
           } else if (checkPathUrl().includes(pathAdminTinTucChiTiet())) {
-            showMessage("success", "Xóa tin tức thành công");
+            showMessage("success", "Xóa bài viết thành công");
             setTimeout(() => {
               history.push("/admin/quan-ly-tin-tuc");
             }, 2000);
           } else {
-            showMessage("success", "Xóa tin tức thành công");
+            showMessage("success", "Xóa bài viết thành công");
             dispatch(getListArticleByGmail(checkEmailUser(), true));
           }
         } else {
           if (checkPathUrl() === pathAdminTinTuc()) {
             notification["error"]({
-              message: "Xóa tin tức thất bại",
+              message: "Xóa bài viết thất bại",
             });
           } else {
-            showMessage("error", "Xóa tin tức thất bại");
+            showMessage("error", "Xóa bài viết thất bại");
           }
         }
       })

@@ -44,13 +44,12 @@ export const postVerificationCode = (gmail) => {
       method: "Post",
       url: `http://localhost:8080/api/v1/auth/generate-otp?email=${gmail}`,
     })
-      .then((res) => {
-      })
-      .catch((err) => { });
+      .then((res) => {})
+      .catch((err) => {});
   };
 };
 export const postBasicInformation = (gmail, password) => {
-  const role = JSON.parse(localStorage.getItem('roleName'));
+  const role = JSON.parse(localStorage.getItem("roleName"));
   const rePass = password;
   return (dispatch) => {
     axios({
@@ -66,7 +65,7 @@ export const postBasicInformation = (gmail, password) => {
       .then((res) => {
         dispatch(createBasicInformationSuccess(res.data));
         const roleName = JSON.parse(localStorage.getItem("roleName"));
-        if (roleName === 'ORGANIZATION') {
+        if (roleName === "ORGANIZATION") {
           const user = JSON.parse(localStorage.getItem("Form1"));
           const gmailObj = { gmail: user.gmail };
           const organization = JSON.parse(localStorage.getItem("Form2"));
@@ -96,7 +95,6 @@ export const postBasicInformation = (gmail, password) => {
           delete newObjInvestor.max;
           dispatch(postInvestor(newObjInvestor));
         }
-
       })
       .catch((err) => {
         dispatch(createBasicInformationFail(err));
@@ -125,15 +123,15 @@ export const postIAOTOrganization = (organization) => {
       .then((res) => {
         dispatch(createIAOTOrganizationSuccess(res.data));
         const teamMember = JSON.parse(localStorage.getItem("TeamMember"));
-        console.log('e')
+        console.log("e");
         console.log(teamMember);
-        if (teamMember!== null){
-        for (let index = 0; index < teamMember.length; index++) {
-          teamMember[index].idOrganization = res.data;
+        if (teamMember !== null) {
+          for (let index = 0; index < teamMember.length; index++) {
+            teamMember[index].idOrganization = res.data;
+          }
+          dispatch(postTeamMember(teamMember));
+          localStorage.removeItem("TeamMember");
         }
-        dispatch(postTeamMember(teamMember));
-        localStorage.removeItem("TeamMember");
-      }
         const organizationIndustry = [];
         const organizationProvince = [];
         const organizationOld = JSON.parse(localStorage.getItem("Form2"));
@@ -216,16 +214,18 @@ export const postOrganizationStage = (organizationStage) => {
         Swal.fire({
           imageUrl: Images.THANKS,
           heightAuto: true,
-          timerProgressBar: false,
           showConfirmButton: true,
-          confirmButtonText: "Đồng ý",
-          confirmButtonColor: "#112D4E",
-          allowOutsideClick: false
+          allowOutsideClick: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
         }).then(async (result) => {
-          if (result.isConfirmed) {
+          if (result.dismiss === Swal.DismissReason.timer) {
             window.location.assign("http://localhost:3000/dang-nhap");
           }
-        })
+        });
       })
       .catch((err) => {
         dispatch(createOrganizationStageFail(err));
@@ -421,23 +421,23 @@ export const postInvestor = (investor) => {
       .then((res) => {
         dispatch(createInvestorSuccess(res.data));
         const teamMember = JSON.parse(localStorage.getItem("TeamMember"));
-        console.log('e')
+        console.log("e");
         console.log(teamMember);
-        if (teamMember!== null){
+        if (teamMember !== null) {
           for (let index = 0; index < teamMember.length; index++) {
             teamMember[index].idInvestor = res.data;
           }
           dispatch(postTeamMember(teamMember));
-        localStorage.removeItem("TeamMember");
-      }
-        
+          localStorage.removeItem("TeamMember");
+        }
+
         const idInvestorType = JSON.parse(localStorage.getItem("investerType"));
         const typeOfInvestor = [];
         for (let index = 0; index < idInvestorType.length; index++) {
           const object = {
             idInvestor: res.data,
-            idInvestorType:idInvestorType[index]
-          }
+            idInvestorType: idInvestorType[index],
+          };
           typeOfInvestor.push(object);
         }
         dispatch(postTypeOfInvestor(typeOfInvestor));
@@ -446,8 +446,8 @@ export const postInvestor = (investor) => {
         const objInvestorTaste = {
           idInvestor: res.data,
           minInvestment: investor.min,
-          maxInvestment: investor.max
-        }
+          maxInvestment: investor.max,
+        };
         dispatch(postInvestorTaste(objInvestorTaste));
       })
       .catch((err) => {
@@ -483,36 +483,35 @@ export const postInvestorTaste = (investorTaste) => {
         const investorOld = JSON.parse(localStorage.getItem("Form2Investor"));
         for (let index = 0; index < investorOld.industry.length; index++) {
           const industry = { idIndustry: investorOld.industry[index] };
-          industry.idInvestorTaste = res.data
+          industry.idInvestorTaste = res.data;
           investmentIndustry.push(industry);
         }
-        dispatch(postInvestmentIndustry(investmentIndustry))
+        dispatch(postInvestmentIndustry(investmentIndustry));
         for (let index = 0; index < investorOld.stage.length; index++) {
           const stage = { idStage: investorOld.stage[index] };
-          stage.idInvestorTaste = res.data
+          stage.idInvestorTaste = res.data;
           investmentStage.push(stage);
         }
-        dispatch(postInvestmentStage(investmentStage))
+        dispatch(postInvestmentStage(investmentStage));
         for (let index = 0; index < investorOld.province.length; index++) {
           let provinceRegion = {};
-          if (investorOld.province[index] !== undefined){
-            provinceRegion.idProvince =investorOld.province[index];
-            provinceRegion.idInvestorTaste = res.data
-            console.log('e')
-            console.log(provinceRegion)
+          if (investorOld.province[index] !== undefined) {
+            provinceRegion.idProvince = investorOld.province[index];
+            provinceRegion.idInvestorTaste = res.data;
+            console.log("e");
+            console.log(provinceRegion);
             provinceRegionList.push(provinceRegion);
           }
-          if (investorOld.region[index] !== undefined){
+          if (investorOld.region[index] !== undefined) {
             provinceRegion = {};
             provinceRegion.idRegion = investorOld.region[index];
-            provinceRegion.idInvestorTaste = res.data
+            provinceRegion.idInvestorTaste = res.data;
             provinceRegionList.push(provinceRegion);
-            console.log(provinceRegion)
+            console.log(provinceRegion);
           }
         }
         console.log(provinceRegionList);
-        dispatch(postTasteProvinceRegion(provinceRegionList))
-
+        dispatch(postTasteProvinceRegion(provinceRegionList));
       })
       .catch((err) => {
         dispatch(createInvestorTasteFail(err));
@@ -598,17 +597,20 @@ export const postTasteProvinceRegion = (tasteProvinceRegion) => {
       .then((res) => {
         dispatch(createTasteProvinceRegionSuccess(res.data));
         Swal.fire({
-          imageUrl: "https://i.imgur.com/RfiuoTr.png",
+          imageUrl: Images.THANKS,
           heightAuto: true,
-          timerProgressBar: false,
           showConfirmButton: true,
-          confirmButtonText: "Đồng ý",
-          confirmButtonColor: "#112D4E",
+          allowOutsideClick: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
         }).then(async (result) => {
-          if (result.isConfirmed) {
+          if (result.dismiss === Swal.DismissReason.timer) {
             window.location.assign("http://localhost:3000/dang-nhap");
           }
-        })
+        });
       })
       .catch((err) => {
         dispatch(createTasteProvinceRegionFail(err));

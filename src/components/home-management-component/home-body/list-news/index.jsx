@@ -67,7 +67,7 @@ function ListNews(props) {
           <img src={Images.EMPTY_BOX} alt="empty" />
           <p className="ln__noArticleP">
             Bạn chưa theo dõi hoặc nhà đầu tư / tổ chức bạn theo dõi chưa đăng
-            tải tin tức
+            tải bài viết
           </p>
         </div>
       )}

@@ -60,7 +60,7 @@ function OverviewTab(props) {
         if (res.status === 202) {
           return showMessage("error", res.data);
         } else if (res.status === 200) {
-          showMessage("success", "Thêm thành tựu thành công");
+          showMessage("success", "Thêm cột mốc thành công");
           handleCloseModalMilestone();
           dispatch(getListMilestone(checkIdUser(), false));
         }
@@ -81,7 +81,7 @@ function OverviewTab(props) {
     })
       .then((res) => {
         if (res.status === 200) {
-          showMessage("success", "Cập nhật thành tựu thành công");
+          showMessage("success", "Cập nhật cột mốc thành công");
           handleCloseModalMilestone();
           dispatch(getListMilestone(checkIdUser(), false));
         } else {
@@ -102,7 +102,7 @@ function OverviewTab(props) {
     localStorages("idMilestone", id);
     Swal.fire({
       icon: "question",
-      title: "Bạn muốn sửa thành tựu này?",
+      title: "Bạn muốn sửa cột mốc này?",
       html: `Ngày đạt: ${dateTime} <br/> ${title}`,
       heightAuto: true,
       timerProgressBar: false,
@@ -174,7 +174,7 @@ function OverviewTab(props) {
       };
       Swal.fire({
         icon: "warning",
-        title: "Bạn muốn thêm thành tựu này?",
+        title: "Bạn muốn thêm cột mốc này?",
         heightAuto: true,
         timerProgressBar: false,
         showConfirmButton: true,
@@ -204,7 +204,7 @@ function OverviewTab(props) {
         };
         Swal.fire({
           icon: "warning",
-          title: "Bạn chắc chắn muốn cập nhật thành tựu này?",
+          title: "Bạn chắc chắn muốn cập nhật cột mốc này?",
           heightAuto: true,
           timerProgressBar: false,
           showConfirmButton: true,
@@ -227,7 +227,7 @@ function OverviewTab(props) {
         };
         Swal.fire({
           icon: "warning",
-          title: "Bạn chắc chắn muốn cập nhật thành tựu này?",
+          title: "Bạn chắc chắn muốn cập nhật cột mốc này?",
           heightAuto: true,
           timerProgressBar: false,
           showConfirmButton: true,
@@ -247,7 +247,7 @@ function OverviewTab(props) {
   const handleClickDeleteTimeline = (title, dateTime, id) => {
     Swal.fire({
       icon: "warning",
-      title: "Bạn muốn xóa thành tựu này?",
+      title: "Bạn muốn xóa cột mốc này?",
       html: `Ngày đạt: ${dateTime} <br/> ${title}`,
       heightAuto: true,
       timerProgressBar: false,
@@ -311,20 +311,20 @@ function OverviewTab(props) {
       if (checkPathUrl() === "/quan-ly-tai-khoan") {
         return (
           <div className="ot__noMilestone">
-            <p>Bạn chưa có thành tựu. Hãy thêm thành tựu</p>
+            <p>Bạn chưa có cột mốc. Hãy thêm cột mốc</p>
             <Button
               onClick={handleOpenModalMilestone}
               className="ot__noMiletoneButton"
               type="primary"
             >
-              Thêm thành tựu
+              Thêm cột mốc
             </Button>
           </div>
         );
       } else {
         return (
           <div className="ot__noMilestone">
-            <p>Tổ chức này có thành tựu nào được đăng tải</p>
+            <p>Tổ chức này có cột mốc nào được đăng tải</p>
           </div>
         );
       }
@@ -337,7 +337,7 @@ function OverviewTab(props) {
     if (path === "/to-chuc/chi-tiet") {
       return (
         <div className="ot__mileStone">
-          <p className="ot__mileStoneTitle">Thành tựu</p>
+          <p className="ot__mileStoneTitle">Cột mốc</p>
           {props.loading === true ? <Skeleton active /> : checkAchievement()}
         </div>
       );
@@ -358,7 +358,7 @@ function OverviewTab(props) {
             ) : (
               <></>
             )}
-            <p className="ot__mileStoneTitle">Thành tựu</p>
+            <p className="ot__mileStoneTitle">Cột mốc</p>
             {props.loading === true ? <Skeleton active /> : checkAchievement()}
           </div>
         );

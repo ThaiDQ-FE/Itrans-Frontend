@@ -1,127 +1,146 @@
 import React from "react";
-import { Modal, Button, Input, Card } from "antd";
-import Slider from "react-slick";
+import { Modal, Button } from "antd";
 import "antd/dist/antd.css";
 import "./styles.scss";
 import { useSelector } from "react-redux";
-import Images from "../../assets/images/images";
-import { useDispatch } from "react-redux";
-import { updateAcceptDeal, updateDealAccept } from "../../store/action/deal.action";
 import { getLocalStorage } from "../../assets/helper/helper";
 function ModalDealDetail(props) {
-    const { TextArea } = Input;
-    const { detailDeal } = useSelector((deal) => deal.deal);
-    let tasteProvinceRegionString = "";
-    if (detailDeal.tasteProvinceRegion) {
-        detailDeal.tasteProvinceRegion.map((value, index) => {
-            if (detailDeal.tasteProvinceRegion.length != (index + 1)) {
-                tasteProvinceRegionString += value + ", ";
-            }else {
-                tasteProvinceRegionString += value;
-            }
-        })
-    }
-    const statusDeal = getLocalStorage("statusDeal");
-    let investmentIndustryString = "";
-    if (detailDeal.investmentIndustry) {
-        detailDeal.investmentIndustry.map((value, index) => {
-            if (detailDeal.investmentIndustry.length != (index + 1)) {
-                investmentIndustryString += value + "/ ";
-            }else {
-                investmentIndustryString += value;
-            }
-        })
-    }
+  const { detailDeal } = useSelector((deal) => deal.deal);
+  let tasteProvinceRegionString = "";
+  if (detailDeal.tasteProvinceRegion) {
+    detailDeal.tasteProvinceRegion.map((value, index) => {
+      if (detailDeal.tasteProvinceRegion.length != index + 1) {
+        tasteProvinceRegionString += value + ", ";
+      } else {
+        tasteProvinceRegionString += value;
+      }
+    });
+  }
+  const statusDeal = getLocalStorage("statusDeal");
+  let investmentIndustryString = "";
+  if (detailDeal.investmentIndustry) {
+    detailDeal.investmentIndustry.map((value, index) => {
+      if (detailDeal.investmentIndustry.length != index + 1) {
+        investmentIndustryString += value + ", ";
+      } else {
+        investmentIndustryString += value;
+      }
+    });
+  }
 
-    let investmentStagesString = "";
-    if (detailDeal.investmentStages) {
-        detailDeal.investmentStages.map((value, index) => {
-            if (detailDeal.investmentStages.length != (index + 1)) {
-                investmentStagesString += value + ", ";
-            }else {
-                investmentStagesString += value;
-            }
-        })
-    }
-    let investorTypeString = "";
-    if (detailDeal.investorType) {
-        detailDeal.investorType.map((value, index) => {
-            if (detailDeal.investorType.length != (index + 1)) {
-                investorTypeString += value + ", ";
-            }else {
-                investorTypeString += value;
-            }
-        })
-    }
- 
-    return (
-        <Modal
-            className="modal-deal-detail"
-            maskClosable={true}
-            footer={null}
-            closable={true}
-            destroyOnClose={true}
-            visible={props.openModal}
-            onCancel={props.closeModal}
-        >
-            <div>
-                <div id="test">
-                    <img style={{ width: 30, height: 30, marginLeft: 100 }}
-                        src={detailDeal.logo}
-                        alt="thumbnail"
-                    />
-                    <span style={{ marginLeft: 10, paddingTop:5 }} className="span_text">{detailDeal.nameInvestor}</span>
+  let investmentStagesString = "";
+  if (detailDeal.investmentStages) {
+    detailDeal.investmentStages.map((value, index) => {
+      if (detailDeal.investmentStages.length != index + 1) {
+        investmentStagesString += value + ", ";
+      } else {
+        investmentStagesString += value;
+      }
+    });
+  }
+  let investorTypeString = "";
+  if (detailDeal.investorType) {
+    detailDeal.investorType.map((value, index) => {
+      if (detailDeal.investorType.length != index + 1) {
+        investorTypeString += value + ", ";
+      } else {
+        investorTypeString += value;
+      }
+    });
+  }
 
-                    <div style={{ display: 'flex',marginBottom: 5 }}>
-                        <div>
-                            <span className="span_text">Giai đoạn đầu tư: </span>
-                            <span>{investmentStagesString}</span>
-                        </div>
-                    </div>
-                    <div className="lds__capital" style={{ marginBottom: 5 }} >
-                    <span className="span_text">Số tiền đầu tư: </span>
-                        <span> {detailDeal.minInvestment} - {detailDeal.maxInvestment} Tỷ (VND) </span>
-                    </div>
-                    <div className="lds__capital" style={{ marginBottom: 5 }} >
-                        <span className="span_text">Lĩnh vực đầu tư: </span>
-                        <span>{investmentIndustryString}</span>
-                    </div>
-                    <div className="lds__capital" style={{ marginBottom: 5 }}>
-                        <span className="span_text">Khu vực đầu tư: </span>
-                        <span>{tasteProvinceRegionString}</span>
-                    </div>
-                    <div className="lds__capital" style={{ marginBottom: 5 }}>
-                        <span className="span_text">Hình thức đầu tư: </span>
-                        <span>{investorTypeString}</span>
-                    </div>
-                </div>
-                <div style={{ marginTop: 10, textAlign: 'center' }} >
-                    <span className="span_text">Thông tin về đầu tư</span>
+  return (
+    <Modal
+      className="modal-deal-detail"
+      maskClosable={true}
+      footer={null}
+      closable={true}
+      destroyOnClose={true}
+      visible={props.openModal}
+      onCancel={props.closeModal}
+    >
+      <div className="mdd__info">
+        <div className="mdd__nameLogo">
+          <img className="mdd__logo" src={detailDeal.logo} alt="logo" />
+          <div className="mdd__name">{detailDeal.nameInvestor}</div>
+        </div>
+        <div className="mdd__infoBasic">
+          <div className="mdd__item label__fontWeightV2">
+            Loại hình nhà đầu tư:
+          </div>
+          <div className="mdd__item">{investorTypeString}</div>
+          <div className="mdd__item label__fontWeightV2">Giai đoạn đầu tư:</div>
+          <div className="mdd__item">{investmentStagesString}</div>
+          <div className="mdd__item label__fontWeightV2">Số tiền đầu tư:</div>
+          <div className="mdd__item">
+            {detailDeal.minInvestment} -{" "}
+            {detailDeal.maxInvestment + " (Tỷ VNĐ)"}
+          </div>
+          <div className="mdd__item label__fontWeightV2">Lĩnh vực đầu tư:</div>
+          <div className="mdd__item">{investmentIndustryString}</div>
+          <div className="mdd__item label__fontWeightV2">Khu vực đầu tư:</div>
+          <div className="mdd__item">{tasteProvinceRegionString}</div>
+        </div>
+      </div>
+      <div className="mdd__infoDeal">
+        <span className="mdd__titleDeal">Thông tin về thỏa thuận</span>
+        <div className="mdd__contentDeal">
+          <div className="mdd__money">
+            <span className="label__fontWeightV2">Số tiền đầu tư: </span>
+            <span>{detailDeal.capitalInvestment + "   Tỷ VNĐ"}</span>
+          </div>
+          <div className="mdd__percent">
+            <span className="label__fontWeightV2">Phần trăm cổ phần: </span>
+            <span>{detailDeal.shareRequirement + "%"}</span>
+          </div>
+        </div>
+        <div className="mdd__contentTime">
+          <div className="mdd__date">
+            <span className="label__fontWeightV2">Ngày bắt đầu: </span>
+            <span>
+              {detailDeal.hasOwnProperty("date")
+                ? detailDeal.date.slice(0, 10)
+                : ""}
+            </span>
+          </div>
+          <div className="mdd__time">
+            <span className="label__fontWeightV2">Thời gian: </span>
+            <span>
+              {detailDeal.hasOwnProperty("date")
+                ? detailDeal.date.slice(11, 16)
+                : ""}
+            </span>
+          </div>
+        </div>
 
-                </div>
-                <div style={{ marginTop: 10 }} >
-                    <span style={{ display:'inline-block',width: 250}} ><b>Số tiền đầu tư:</b> {detailDeal.capitalInvestment} Tỷ (VND)</span>
-                   
-                    <span className="span_text">Phần trăm cổ phần: </span>
-                    <span>{detailDeal.shareRequirement} % </span>
-                </div>
-                <div style={{ marginTop: 5 }}>
-                    <span className="span_text">Ngày bắt đầu: </span>
-                    <span>{detailDeal.date}</span>
-                </div>
-                <div style={{ marginTop: 5 }}>
-                    <span className="span_text">Mô tả: </span>
-                    <span>{detailDeal.description}</span>
-                </div>
-                {statusDeal === "PENDING" &&
-                <div style={{ display: "flex", marginTop: 10 }}>
-                    <div style={{ marginLeft: 'auto' }} ><Button onClick={props.handleAccept} style={{ backgroundColor: "#56db56", color: "#FFFFFF" }}>Chấp nhận </Button> </div>
-                    <div style={{ paddingLeft: 5 }}><Button onClick={props.handleReject} style={{ backgroundColor: "red", color: "#FFFFFF" }}>Từ chối </Button> </div>
-                </div>
-                }
-            </div>
-        </Modal>
-    );
+        <div className="mdd__des">
+          <span className="label__fontWeightV2">Mô tả: </span>
+          <span>{detailDeal.description}</span>
+        </div>
+      </div>
+
+      {statusDeal === "PENDING" && (
+        <div className="mdd__active">
+          <Button
+            onClick={props.handleAccept}
+            className="mdd__accept"
+            size="large"
+            type="primary"
+          >
+            Chấp nhận
+          </Button>
+          <Button
+            onClick={props.handleReject}
+            className="mdd__deny"
+            size="large"
+            type="primary"
+          >
+            Từ chối
+          </Button>
+        </div>
+      )}
+    </Modal>
+  );
 }
 
 export default ModalDealDetail;

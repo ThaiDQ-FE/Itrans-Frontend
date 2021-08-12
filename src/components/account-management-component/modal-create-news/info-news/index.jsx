@@ -72,7 +72,7 @@ function InfoNews(props) {
           </Tooltip>
         </div>
         <div className="modal__inputNewsOption">
-          <label className="modal__spanWeight">Ngành nghề</label>
+          <label className="modal__spanWeight">Lĩnh vực</label>
           <Tooltip title={props.hashTagError} color="red" placement="topRight">
             <Select
               mode="multiple"
@@ -92,7 +92,7 @@ function InfoNews(props) {
       </div>
       <div className="modal__infoNewsLineTwo">
         <div className="modal__inputNewsSummary">
-          <label className="modal__spanWeight">Tóm tắt</label>
+          <label className="modal__spanWeight">Tóm tắt nội dung</label>
           <Tooltip title={props.sumError} color="red" placement="topRight">
             <TextArea
               className={props.sumError === "" ? "" : "modal__inputNewsError"}
@@ -107,7 +107,7 @@ function InfoNews(props) {
           </Tooltip>
         </div>
         <div className="modal__inputNewsThumbnail">
-          <label className="modal__spanWeight">Hình mô tả</label>
+          <label className="modal__spanWeight">Ảnh</label>
           <div className="modal__inputNewsThumbnailContainer">
             <img
               src={props.thumbnail === "" ? Images.NO_IMAGE : props.thumbnail}

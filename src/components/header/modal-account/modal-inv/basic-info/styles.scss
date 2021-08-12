@@ -65,6 +65,9 @@
         .maib__year,
         .maib__emp {
             width: 18.5%;
+            input {
+                text-align: right;
+            }
         }
     }
     .maib__lineTwo {

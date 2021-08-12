@@ -17,14 +17,12 @@ function ModalMileStone(props) {
       onCancel={props.closeModal}
     >
       <h3 style={{ textAlign: "center" }}>
-        {props.editMilestone === false
-          ? "Thêm thành tựu"
-          : "Cập nhật thành tựu"}
+        {props.editMilestone === false ? "Thêm cột mốc" : "Cập nhật cột mốc"}
       </h3>
       <form className="milestone__form">
         <div className="milestone__line1">
           <div className="milestone__title">
-            <small>Tiêu đề</small>
+            <small className="label__fontWeight">Tiêu đề</small>
             <Tooltip title={props.titleError} color="red" placement="topRight">
               {props.editMilestone === false ? (
                 <Input
@@ -51,7 +49,7 @@ function ModalMileStone(props) {
             </Tooltip>
           </div>
           <div className="milestone__date">
-            <small>Ngày đạt</small>
+            <small className="label__fontWeight">Ngày đạt</small>
             <Tooltip title={props.dateError} color="red" placement="topRight">
               {props.editMilestone === false ? (
                 <DatePicker
@@ -86,7 +84,7 @@ function ModalMileStone(props) {
           </div>
         </div>
         <div className="milestone__content">
-          <small>Nội dung</small>
+          <small className="label__fontWeight">Nội dung</small>
           <Tooltip title={props.contentError} color="red" placement="topRight">
             {props.editMilestone === false ? (
               <TextArea

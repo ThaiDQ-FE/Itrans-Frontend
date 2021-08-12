@@ -135,12 +135,18 @@ function ListDealSlider() {
       showConfirmButton: true,
       showCancelButton: true,
       cancelButtonText: "Hủy",
-      cancelButtonColor: "gray",
       confirmButtonText: "Đồng ý",
-      confirmButtonColor: "#112D4E",
+      confirmButtonColor: "#1890ff",
+      cancelButtonColor: "red",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        dispatch(updateAcceptDeal(detailDeal.idDeal));
+        dispatch(
+          updateAcceptDeal(
+            detailDeal.idDeal,
+            detailDeal.gmail,
+            detailDeal.nameInvestor
+          )
+        );
         setOpenModal(false);
       }
     });
@@ -154,12 +160,18 @@ function ListDealSlider() {
       showConfirmButton: true,
       showCancelButton: true,
       cancelButtonText: "Hủy",
-      cancelButtonColor: "gray",
       confirmButtonText: "Đồng ý",
-      confirmButtonColor: "#112D4E",
+      confirmButtonColor: "#1890ff",
+      cancelButtonColor: "red",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        dispatch(updateRejectDeal(detailDeal.idDeal));
+        dispatch(
+          updateRejectDeal(
+            detailDeal.idDeal,
+            detailDeal.nameInvestor,
+            detailDeal.gmail
+          )
+        );
         setOpenModal(false);
       }
     });
@@ -229,7 +241,11 @@ function ListDealSlider() {
                           onClick={handleChange}
                         >
                           {renderTag(value.statusDeal)}
-                          <img src={value.logo} alt="thumbnail" />
+                          <img
+                            style={{ objectFit: "cover" }}
+                            src={value.logo}
+                            alt="thumbnail"
+                          />
                           <div className="lds__name">
                             <span className="span_text">
                               {" "}

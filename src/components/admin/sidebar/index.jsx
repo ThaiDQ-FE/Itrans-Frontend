@@ -100,7 +100,7 @@ function AdminSidebar() {
               to="/admin/quan-ly-tin-tuc"
               exact={true}
             >
-              QUẢN LÝ TIN TỨC
+              QUẢN LÝ BÀI VIẾT
             </NavLink>
           </Menu.Item>
           <Menu.Item key="5" icon={<AppstoreOutlined />}>
