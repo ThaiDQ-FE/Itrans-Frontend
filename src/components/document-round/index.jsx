@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./styles.scss";
 import Images from "../../assets/images/images";
 import { Tooltip } from "antd";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ModalUpdateDocument from "../modal-update-document";
 import Swal from "sweetalert2";
 import { getLocalStorage, localStorages } from "../../assets/helper/helper";
@@ -16,7 +16,7 @@ function DocumentRound() {
     });
     const { roundAndOrganization } = useSelector(
         (state) => state.round
-      );
+    );
     const [editDoc, setEditDoc] = useState(false);
     const handleCloseModal = () => {
         setEditDoc(false);
@@ -33,32 +33,32 @@ function DocumentRound() {
             [name]: value,
         });
     }
-    const handleSubmitDoc =()=>{
+    const handleSubmitDoc = () => {
         if (getLocalStorage("infoEditDoc") !== null) {
-          const object = {
-            name: values.title,
-            linkResource: values.content,
-          };
-          object.idDocument = id;
-          Swal.fire({
-            icon: "warning",
-            title: "Bạn chắc chắn chỉnh sửa tài liệu này?",
-            heightAuto: true,
-            timerProgressBar: false,
-            showConfirmButton: true,
-            showCancelButton: true,
-            confirmButtonText: "Đồng ý",
-            cancelButtonText: "Hủy",
-            confirmButtonColor: "#1890ff",
-            cancelButtonColor: "red",
-          }).then((result) => {
-            if (result.isConfirmed) {
-                dispatch(updateDocument(object,roundAndOrganization.idRound));
-              setEditDoc(false);
-            }
-          });
+            const object = {
+                name: values.title,
+                linkResource: values.content,
+            };
+            object.idDocument = id;
+            Swal.fire({
+                icon: "warning",
+                title: "Bạn chắc chắn chỉnh sửa tài liệu này?",
+                heightAuto: true,
+                timerProgressBar: false,
+                showConfirmButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Đồng ý",
+                cancelButtonText: "Hủy",
+                confirmButtonColor: "#1890ff",
+                cancelButtonColor: "red",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    dispatch(updateDocument(object, roundAndOrganization.idRound));
+                    setEditDoc(false);
+                }
+            });
         }
-      }
+    }
     const handleEditDoc = (item) => {
         localStorages("infoEditDoc", item);
         Swal.fire({
@@ -87,22 +87,23 @@ function DocumentRound() {
     };
     const handleDeleteDoc = (value) => {
         Swal.fire({
-          icon: "warning",
-          title: "Bạn muốn xóa tài liệu vừa chọn?",
-          heightAuto: true,
-          timerProgressBar: false,
-          showConfirmButton: true,
-          showCancelButton: true,
-          confirmButtonText: "Đồng ý",
-          cancelButtonText: "Hủy",
-          confirmButtonColor: "#1890ff",
-          cancelButtonColor: "red",
+            icon: "warning",
+            title: "Bạn muốn xóa tài liệu vừa chọn?",
+            heightAuto: true,
+            timerProgressBar: false,
+            showConfirmButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Đồng ý",
+            cancelButtonText: "Hủy",
+            confirmButtonColor: "#1890ff",
+            cancelButtonColor: "red",
         }).then((result) => {
-          if (result.isConfirmed) {
-            dispatch(deleteDocument(value.idDocument,roundAndOrganization.idRound));
-          }
+            if (result.isConfirmed) {
+                dispatch(deleteDocument(value.idDocument, roundAndOrganization.idRound));
+            }
         });
-      };
+    };
+    const userInfo = getLocalStorage("userInfo");
     return (
         <>
             <ModalUpdateDocument
@@ -112,11 +113,11 @@ function DocumentRound() {
                 handleChangeValue={handleChangeValue}
             />
             <div className="dr__introduceWrapper" >
-            {listDocumentByRound.length !== 0 && <div className="dr__title">Tài liệu</div>}
+                {listDocumentByRound.length !== 0 && <div className="dr__title">Tài liệu</div>}
                 {
                     listDocumentByRound.map((value) =>
                         <div className="dr__documentWrapper">
-                            <div className="dr__action">
+                            {userInfo.role === "ORGANIZATION" && <div className="dr__action">
                                 <Tooltip title="Chỉnh sửa">
                                     <img
                                         src={Images.PENCIL}
@@ -138,6 +139,7 @@ function DocumentRound() {
                                     />
                                 </Tooltip>
                             </div>
+                            }
                             <div>
                                 <a href={value.linkResource} target="_blank" className="dr__content"><img style={{ width: 20, height: 20, marginRight: 10 }} src={Images.DOCUMENT} />{value.name}</a>
                             </div>
