@@ -13,18 +13,18 @@ function OrganizationListComponent(props) {
   const dispatch = useDispatch();
   const [length, setLength] = useState({
     minValue: 0,
-    maxValue: 8,
+    maxValue: 9,
   });
   const handleChange = (value) => {
     if (value <= 1) {
       setLength({
         minValue: 0,
-        maxValue: 8,
+        maxValue: 9,
       });
     } else {
       setLength({
         minValue: length.maxValue,
-        maxValue: value * 8,
+        maxValue: value * 9,
       });
     }
   };
@@ -138,10 +138,10 @@ function OrganizationListComponent(props) {
           )}
         </div>
         <div className="olc__paging">
-          {listOrganizationFilter.length > 8 ? (
+          {listOrganizationFilter.length > 9 ? (
             <Pagination
               defaultCurrent={1}
-              defaultPageSize={8}
+              defaultPageSize={9}
               onChange={handleChange}
               total={listOrganizationFilter.length}
             />

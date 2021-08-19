@@ -55,7 +55,7 @@ export const postCheckLogin = (gmail, password, history) => {
               });
               if (res.data.role === "ADMIN") {
                 setTimeout(() => {
-                  history.push("/admin");
+                  history.push("/admin/quan-ly-tai-khoan");
                 }, 2000);
               } else {
                 setTimeout(() => {
@@ -164,7 +164,7 @@ export const putAccountToConfirm = (gmail, history, checkType) => {
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
-          if (checkType.investorType === undefined) {
+          if (checkType.investorTypes === undefined) {
             dispatch(
               sendMailHTML(
                 contentAcceptAccount(
@@ -181,8 +181,9 @@ export const putAccountToConfirm = (gmail, history, checkType) => {
             dispatch(
               sendMailHTML(
                 contentAcceptAccount(
+                  gmail,
                   "Tham gia vào các vòng gọi vốn",
-                  " tổ chức"
+                  " tổ chức khởi nghiệp"
                 ),
                 titleAcceptAccount(),
                 gmail,

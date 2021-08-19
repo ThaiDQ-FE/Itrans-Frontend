@@ -42,6 +42,7 @@ import axios from "axios";
 import { defaultUrlAPI } from "../../configs/url";
 import message from "../../assets/message/text";
 import { getDeatilCompany } from "../../store/action/company.action";
+import { Tooltip } from "antd";
 function Header({ history }) {
   const { detailCompany } = useSelector((state) => state.detailCompany);
   const user = JSON.parse(localStorage.getItem("userInfo"));
@@ -600,7 +601,9 @@ function Header({ history }) {
         {user !== null ? (
           <div className="header__logined" onClick={handleOpenMenu}>
             <img src={user !== null ? user.logo : ""} alt="" />
-            <span>{user !== null ? user.name : ""}</span>
+            <Tooltip title={user.name} placement="bottomRight">
+              <span>{user !== null ? user.name : ""}</span>
+            </Tooltip>
           </div>
         ) : (
           <ul className="header__login__ul">

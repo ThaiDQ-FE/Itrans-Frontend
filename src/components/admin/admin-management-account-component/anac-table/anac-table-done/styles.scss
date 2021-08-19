@@ -1,0 +1,19 @@
+.anrc__delete {
+    background: red;
+    border-color: red;
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+}
+.anrc__active {
+    background: #56db56;
+    color: white;
+    border-color: #56db56;
+    font-weight: 600;
+}
+.anac__mail,
+.anac__name {
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    display: -webkit-box;
+}

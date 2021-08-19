@@ -766,7 +766,7 @@ export const getRoundActiveV2 = (idOrg, history) => {
         if (res.status === 200) {
           dispatch(getRoundActiveSuccessV2(res.data));
         } else {
-          showMessage("error", message.CACTH_ERROR);
+          dispatch(getRoundActiveSuccessV2({}));
         }
       })
       .catch((err) => {

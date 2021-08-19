@@ -1,4 +1,6 @@
 import {
+  GET_VALUE_ACCOUNT_FAILED,
+  GET_VALUE_ACCOUNT_SUCCESS,
   GET_VALUE_ARTICLE_FAILED,
   GET_VALUE_ARTICLE_SUCCESS,
   GET_VALUE_LIST_INDUSTRY_FAILED,
@@ -17,6 +19,7 @@ const initialState = {
   listValueIndustry: [],
   listValueRegion: [],
   listValueArticle: [],
+  listAccount: [],
   errors: [],
 };
 
@@ -42,6 +45,10 @@ const valueReducer = (state = initialState, action) => {
     case GET_VALUE_ARTICLE_SUCCESS:
       return { ...state, listValueArticle: payload };
     case GET_VALUE_ARTICLE_FAILED:
+      return { ...state, errors: payload };
+    case GET_VALUE_ACCOUNT_SUCCESS:
+      return { ...state, listAccount: payload };
+    case GET_VALUE_ACCOUNT_FAILED:
       return { ...state, errors: payload };
     default:
       return state;

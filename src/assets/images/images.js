@@ -56,6 +56,8 @@ import banner_org from "./banner-org.jpg";
 import banner_corporate from "./corporate.jpg";
 import funds from "./funds.png";
 import house from "./house.svg";
+import link from "./link.svg";
+import owner from "./owner.svg";
 const Images = {
   LOGO_NAVY: logo_navy,
   LOGO_GREY: logo_grey,
@@ -115,6 +117,8 @@ const Images = {
   BANNER_CORPORATE: banner_corporate,
   FUNDS: funds,
   HOUSE: house,
+  LINK: link,
+  OWNER: owner,
 };
 
 export default Images;
