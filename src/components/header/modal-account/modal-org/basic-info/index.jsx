@@ -214,6 +214,12 @@ function ModalAccountOrganizationBasic(props) {
               {stage}
             </Select>
           </div>
+          {/* tax code */}
+          <div className="maob__taxCode">
+            <label className="label__fontWeight">Mã số thuế</label>
+            <Input size="large" />
+          </div>
+          {/* end tax */}
         </div>
       </div>
     </>

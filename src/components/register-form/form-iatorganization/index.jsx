@@ -377,6 +377,18 @@ function FormInformationAboutTheOrganization(props) {
                     </Select>
                   </Tooltip>
                 </div>
+                {/* tax code */}
+                <div className="fiato__taxCode">
+                  <small className="label__fontWeight">Mã số thuế</small>
+                  <Tooltip
+                    // title={errors.stage}
+                    placement="topRight"
+                    color="red"
+                  >
+                    <Input type="text" size="large" />
+                  </Tooltip>
+                </div>
+                {/* end tax code */}
               </div>
             </div>
           </div>

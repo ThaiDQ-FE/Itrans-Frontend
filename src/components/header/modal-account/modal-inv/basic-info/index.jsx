@@ -202,6 +202,18 @@ function ModalAccountInvestorBasic(props) {
               {listHead}
             </Select>
           </div>
+          {/* tax code */}
+          <div className="maib__taxCode">
+            <label className="label__fontWeight">Mã số thuế </label>
+            <Tooltip
+              // title={props.websiteError}
+              color="red"
+              placement="topRight"
+            >
+              <Input size="large" />
+            </Tooltip>
+          </div>
+          {/* tax code */}
         </div>
       </div>
     </>

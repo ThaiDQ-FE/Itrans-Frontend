@@ -72,10 +72,13 @@
         justify-content: space-between;
         margin-top: 20px;
         .maob__web {
-            width: 60%;
+            width: 40%;
         }
         .maob__selectIType {
-            width: 35%;
+            width: 25%;
+        }
+        .maob__taxCode {
+            width: 28%;
         }
     }
 }

@@ -1,5 +1,5 @@
 .fi__wrapper {
-    width: 60vw;
+    width: 65vw;
     height: auto;
     background-color: #fff;
     box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.1);
@@ -84,13 +84,16 @@
                         justify-content: space-between;
                         margin-top: 20px;
                         .fi__linkWebsite {
-                            width: 60%;
+                            width: 40%;
                         }
                         .fi__truSoChinh {
-                            width: 35%;
+                            width: 30%;
                             .fi__selectHead {
                                 display: block;
                             }
+                        }
+                        .fi__taxCode {
+                            width: 25%;
                         }
                     }
                 }
