@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./styles.scss";
+import axios from "axios";
 import "antd/dist/antd.css";
 import { Input, Select, Tooltip } from "antd";
 import Messages from "../../../assets/message/text";
@@ -393,6 +394,19 @@ function FormInvestor(props) {
     for (let index = 0; index < action.length; index++) {
       valueAction.push(parseInt(action[index].key));
     }
+    
+    let url = "http://localhost:8080/api/v1/auth/get-province-investor?";
+    let urlNone = ""
+    valueAction.map((value,index)=>{
+      let params = `idRegion=${value}`;
+      if(index === (valueAction.length-1)){
+        urlNone = urlNone + params;
+      }else {
+        urlNone = urlNone + params + `&`;
+      }
+      
+    })
+    listRegionInvestor(url,urlNone);
     setInformation({
       ...information,
       region: valueAction,
@@ -430,7 +444,7 @@ function FormInvestor(props) {
     });
   };
 
-  const renderListProvince = () => {
+  let renderListProvince = () => {
     return listProvince.map((item, index) => {
       return (
         <Option name="idProvince" value={item.name} key={item.idProvince}>
@@ -439,7 +453,8 @@ function FormInvestor(props) {
       );
     });
   };
-  const renderListProvinceOr = () => {
+  let renderListProvinceOr = () => {
+    console.log("zo day k")
     return listProvince.map((item, index) => {
       return (
         <Option name="province" value={item.name} key={item.idProvince}>
@@ -448,7 +463,7 @@ function FormInvestor(props) {
       );
     });
   };
-  const renderListStage = () => {
+  let renderListStage = () => {
     return listStage.map((item, index) => {
       return (
         <Option name="stage" value={item.name} key={item.idStage}>
@@ -457,7 +472,7 @@ function FormInvestor(props) {
       );
     });
   };
-  const renderListRegion = () => {
+  let renderListRegion = () => {
     return listRegion.map((item, index) => {
       return (
         <Option name="region" value={item.name} key={item.idRegion}>
@@ -465,8 +480,32 @@ function FormInvestor(props) {
         </Option>
       );
     });
+
   };
-  const renderListIndustry = () => {
+  console.log('day ne')
+  const listRegionInvestor  = (url,listRegionInvestor) => {
+    console.log('nao truoc')
+    axios({
+      method: "Get",
+      url: url+listRegionInvestor,
+    })
+      .then((res) => {
+        console.log(res.data)
+        const listProvinceInvestor = res.data;
+        renderListProvinceOr = () => {
+          return listProvinceInvestor.map((item, index) => {
+            return (
+              <Option name="province" value={item.name} key={item.idProvince}>
+                {item.name}
+              </Option>
+            );
+          });
+        };
+      })
+      .catch((err) => {
+      });
+};
+  let renderListIndustry = () => {
     return listIndustry.map((item, index) => {
       return (
         <Option

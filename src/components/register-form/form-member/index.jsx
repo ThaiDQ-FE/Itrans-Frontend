@@ -69,7 +69,7 @@ function FormMember(props) {
       const upload = storage.ref(`images/${image.name}`).put(image);
       upload.on(
         "state_changed",
-        (snapshot) => {},
+        (snapshot) => { },
         (error) => {
           console.log(error);
         },
@@ -103,6 +103,34 @@ function FormMember(props) {
       ...teamMember,
       [name]: value,
     });
+  };
+  const handleChangeInputLinkCV = (event) => {
+    const { value, name } = event.target;
+    setNameLinkCV("");
+    setTeamMember({
+      ...teamMember,
+      [name]: value,
+    });
+  };
+  const [nameLinkCV, setNameLinkCV] = useState("");
+  const handleChangeLinkCv = (e) => {
+    let linkCV = e.target.files[0];
+    const uploadImage = storage.ref(`images/${linkCV.name}`).put(linkCV);
+    uploadImage.on(
+      "state_changed",
+      (snapshot) => {},
+      (error) => {},
+      () => {
+        storage
+          .ref("images")
+          .child(linkCV.name)
+          .getDownloadURL()
+          .then((url) => {
+           teamMember.linkCv = url;
+           setNameLinkCV(linkCV.name);
+          });
+      }
+    );
   };
   let member = () => {
     const teamMember = JSON.parse(localStorage.getItem("TeamMember"));
@@ -233,12 +261,34 @@ function FormMember(props) {
                 <Tooltip title={errors.linkCv} placement="topRight" color="red">
                   <Input
                     id="linkCv"
-                    value={teamMember.linkCv}
+                    value={nameLinkCV === "" ? teamMember.linkCv : nameLinkCV}
                     style={{ border: color.linkCv }}
-                    onChange={handleChangeInput}
+                    onChange={handleChangeInputLinkCV}
+                    defaultValue= {nameLinkCV}
                     name="linkCv"
                     size="large"
                   />
+                  <div className="fm__upload">
+                    <input
+                      className="fm__uploadPDF"
+                      type="file"
+                      id="filePDF"
+                      accept="application/pdf"
+                      onChange={handleChangeLinkCv}
+                    />
+                    <label
+                      htmlFor="filePDF"
+                      className="fm__spanPDF"
+                      onChange={handleChangeLinkCv}
+                    >
+                      <img
+                        src={Images.UPLOAD}
+                        alt="icon upload"
+                        className="fm__uploadPNG"
+                        onChange={handleChangeLinkCv}
+                      />
+                    </label>
+                  </div>
                 </Tooltip>
                 <div className="fm__upload">
                   <input className="fm__uploadPDF" type="file" id="filePDF" />
