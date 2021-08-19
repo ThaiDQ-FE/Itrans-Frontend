@@ -6,15 +6,16 @@ import moment from "moment";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getLocalStorage } from "../../assets/helper/helper";
+import { checkRoleUser, getLocalStorage } from "../../assets/helper/helper";
 import { createAnswer, createQuestion } from "../../store/action/round.action";
 const { TextArea } = Input;
 const idRound = getLocalStorage("idRound");
 const CommentList = ({ comments, onClick, children, idQuestion }) => (
   <List
     dataSource={comments}
-    header={`${comments.length} ${comments.length > 1 ? "Bình luận" : "Bình luận"
-      }`}
+    header={`${comments.length} ${
+      comments.length > 1 ? "Bình luận" : "Bình luận"
+    }`}
     itemLayout="horizontal"
     renderItem={(props) => (
       <Comment
@@ -47,10 +48,10 @@ const CommentListChild = ({ comments }) => (
 
 const Editor = ({ onChange, onSubmit, submitting, value }) => (
   <>
-    <Form.Item>
+    <Form.Item className="comment__textarea">
       <TextArea rows={4} onChange={onChange} value={value} />
     </Form.Item>
-    <Form.Item>
+    <Form.Item className="comment__button">
       <Button
         htmlType="submit"
         loading={submitting}
@@ -92,8 +93,7 @@ function CommentRound() {
           objList: listQuestionAndAnswer[index].listAnswerResponses.map(
             (answer) => ({
               author: answer.name,
-              avatar:
-                answer.logo,
+              avatar: answer.logo,
               content: <p>{answer.answer}</p>,
               datetime: answer.time,
             })
@@ -137,7 +137,7 @@ function CommentRound() {
           {
             objComment: {
               author: userLogin.name,
-              avatar:userLogin.logo,
+              avatar: userLogin.logo,
               content: <p>{state.value}</p>,
               datetime: moment().format("DD-MM-YYYY hh:mm"),
             },
@@ -147,7 +147,7 @@ function CommentRound() {
         ],
       });
     }, 1000);
-    console.log(idRound)
+    console.log(idRound);
     const questionObj = {
       idInvestor: userLogin.id,
       idRound: idRound,
@@ -170,8 +170,7 @@ function CommentRound() {
           let haha = state.comments[index].objList;
           let a = {
             author: userLogin.name,
-            avatar:
-              userLogin.logo,
+            avatar: userLogin.logo,
             content: <p>{idQuestion.valueAnswer}</p>,
             datetime: moment().format("DD-MM-YYYY hh:mm"),
           };
@@ -213,11 +212,16 @@ function CommentRound() {
 
   return (
     <div className="comment">
+      {checkRoleUser() === "INVESTOR" ? (
+        <div className="comment_HVD">Hỏi và đáp</div>
+      ) : state.comments.length > 0 ? (
+        <div className="comment_HVD">Hỏi và đáp</div>
+      ) : (
+        <></>
+      )}
       {userLogin.role != "ORGANIZATION" && (
         <Comment
-          avatar={
-            <Avatar src={userLogin.logo} />
-          }
+          avatar={<Avatar src={userLogin.logo} />}
           content={
             <Editor
               onChange={handleChange}
@@ -236,9 +240,7 @@ function CommentRound() {
         >
           {" "}
           <Comment
-            avatar={
-              <Avatar src={userLogin.logo}/>
-            }
+            avatar={<Avatar src={userLogin.logo} />}
             content={
               <Editor
                 onChange={handleChangeAnswer}

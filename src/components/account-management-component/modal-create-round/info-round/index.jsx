@@ -83,6 +83,7 @@ function InfoInputCreateRound(props) {
               name="fundingAmount"
               onChange={props.handleChangeInfoRound}
               onBlur={props.handleBlurMoney}
+              style={{ textAlign: "right" }}
             />
           </Tooltip>
         </div>
@@ -108,6 +109,7 @@ function InfoInputCreateRound(props) {
               name="shareRequirement"
               onChange={props.handleChangeInfoRound}
               onBlur={props.handleBlurPercent}
+              style={{ textAlign: "right" }}
             />
           </Tooltip>
         </div>
@@ -165,7 +167,7 @@ function InfoInputCreateRound(props) {
           </Tooltip>
         </div>
         <div className="modal__inputThumbnail">
-          <label className="modal__labelAddRound">Ảnh mô tả</label>
+          <label className="modal__labelAddRound">Ảnh</label>
           <div className="modal__inputThumbnailContainer">
             <img
               src={props.thumbnail === "" ? Images.NO_IMAGE : props.thumbnail}

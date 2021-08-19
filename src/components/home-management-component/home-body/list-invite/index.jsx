@@ -31,14 +31,18 @@ function ListInvite(props) {
     <div className="lin__wrapper">
       {checkRoleUser() === "INVESTOR" ? (
         <>
-          <h2 className="lin__title">
-            {props.list.length === 0 ? "" : "Lời mời từ tổ chức"}
-          </h2>
           <div
             className={`lin__wrappers${
               props.list.length > 0 ? "" : " lin__wrapperNormal"
             }`}
           >
+            <div className="lin__background">
+              <div className="lin__linkBackground"></div>
+              <div className="lin__backgroundWhite"></div>
+            </div>
+            <div className="lin__title">
+              {props.list.length === 0 ? "" : "Lời mời từ tổ chức"}
+            </div>
             <div className="lin__container">
               <div
                 className={`lin__listRound${
@@ -49,41 +53,41 @@ function ListInvite(props) {
                   props.list
                     .slice(length.minValue, length.maxValue)
                     .map((value, index) => (
-                      <Card
+                      <div
+                        className="lin__roundV2Wrapper"
+                        key={index}
                         onClick={() => {
                           handleClickToDetail();
                           localStorages("idRound", value.idRound);
                         }}
-                        key={index}
-                        hoverable
-                        className="lin__itemRound"
                       >
-                        <img
-                          src={
-                            value.thumbnail === ""
-                              ? Images.NO_IMAGE
-                              : value.thumbnail
-                          }
-                          alt="thumbnail"
-                        />
-                        <div className="lin__name">
+                        <div className="lin__roundSug">
                           <img
-                            className="lin__nImg"
-                            src={
-                              value.logo === "" ? Images.NO_IMAGE : value.logo
-                            }
-                            alt="logos"
+                            className="lin__thumbnail"
+                            src={value.thumbnail}
+                            alt="thubmnail"
                           />
-                          <span>{value.organizationName}</span>
                         </div>
-                        {value.description === "" ? (
-                          <></>
-                        ) : (
-                          <div className="lin__description">
-                            <span>{value.description}</span>
+                        <div className="lin__content">
+                          <div className="lin__nameLogo">
+                            <img
+                              className="lin__logo"
+                              src={value.logo}
+                              alt="logo"
+                            />
+                            <div className="lin__name">
+                              {value.organizationName}
+                            </div>
                           </div>
-                        )}
-                      </Card>
+                          {value.description === "" ? (
+                            <></>
+                          ) : (
+                            <div className="lin__summary">
+                              <span>{value.description}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     ))
                 ) : (
                   <></>

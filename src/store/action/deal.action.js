@@ -1,6 +1,8 @@
 import axios from "axios";
 import {
   authorizationAccount,
+  checkEmailUser,
+  checkNameUser,
   getLocalStorage,
   sessionTimeOut,
   showMessage,
@@ -35,6 +37,20 @@ import { startLoading, stopLoading } from "./loading.action";
 import { defaultUrlAPIStringTemplate } from "../../configs/url";
 import { getDealByRound } from "./round.action";
 import message from "../../assets/message/text";
+import {
+  sendMailDefaultHTML,
+  sendMailDefaultHTMLV2,
+  sendMailSpecial,
+} from "./mail.action";
+import {
+  contentAcceptDealInv,
+  contentAcceptDealOrg,
+  contentDenyDeal,
+  contentJoin,
+  titleAcceptDeal,
+  titleDenyDeal,
+  titleMessDeal,
+} from "../../configs/sendMail";
 export const getListDealByIdOrganization = (idOrganization) => {
   return (dispatch) => {
     dispatch(startLoading());
@@ -260,7 +276,7 @@ const getDetailDealFail = (error) => {
   };
 };
 
-export const updateAcceptDeal = (idDeal) => {
+export const updateAcceptDeal = (idDeal, gmail, nameInves) => {
   return (dispatch) => {
     const userLogin = getLocalStorage("userInfo");
     const idRound = getLocalStorage("idRound");
@@ -273,8 +289,23 @@ export const updateAcceptDeal = (idDeal) => {
       },
     })
       .then((res) => {
-        dispatch(updateAcceptDealSuccess(res.data));
-        dispatch(getDealByRound(userLogin.gmail, idRound));
+        if (res.status === 200) {
+          showMessage("success", "Chấp nhận thỏa thuận thành công");
+          dispatch(updateAcceptDealSuccess(res.data));
+          dispatch(getDealByRound(userLogin.gmail, idRound));
+          dispatch(
+            sendMailSpecial(
+              contentAcceptDealInv(checkNameUser(), checkEmailUser()),
+              titleAcceptDeal(),
+              gmail,
+              contentAcceptDealOrg(nameInves, gmail),
+              titleAcceptDeal(),
+              checkEmailUser()
+            )
+          );
+        } else {
+          showMessage("error", "Chấp nhận thỏa thuận thất bại");
+        }
       })
       .catch((err) => {
         dispatch(updateAcceptDealFail(err));
@@ -294,7 +325,7 @@ const updateAcceptDealFail = (error) => {
   };
 };
 
-export const updateRejectDeal = (idDeal) => {
+export const updateRejectDeal = (idDeal, nameInves, gmail) => {
   return (dispatch) => {
     const userLogin = getLocalStorage("userInfo");
     const token = authorizationAccount();
@@ -307,8 +338,20 @@ export const updateRejectDeal = (idDeal) => {
       },
     })
       .then((res) => {
-        dispatch(updateRejectDealSuccess(res.data));
-        dispatch(getDealByRound(userLogin.gmail, idRound));
+        if (res.status === 200) {
+          showMessage("success", "Từ chối thỏa thuận thành công");
+          dispatch(updateRejectDealSuccess(res.data));
+          dispatch(getDealByRound(userLogin.gmail, idRound));
+          dispatch(
+            sendMailDefaultHTML(
+              contentDenyDeal(nameInves),
+              titleDenyDeal(),
+              gmail
+            )
+          );
+        } else {
+          showMessage("error", "Từ chối thỏa thuận thất bại");
+        }
       })
       .catch((err) => {
         dispatch(updateRejectDealFail(err));
@@ -328,7 +371,7 @@ const updateRejectDealFail = (error) => {
   };
 };
 
-export const createDeal = (object) => {
+export const createDeal = (object, gmail) => {
   return (dispatch) => {
     const userLogin = getLocalStorage("userInfo");
     const token = authorizationAccount();
@@ -344,6 +387,18 @@ export const createDeal = (object) => {
       .then((res) => {
         dispatch(createDealSuccess(res.data));
         dispatch(getDealByRound(userLogin.gmail, idRound));
+        dispatch(
+          sendMailDefaultHTML(
+            contentJoin(
+              checkNameUser(),
+              object.capitalInvestment,
+              object.shareRequirement,
+              object.description
+            ),
+            titleMessDeal(),
+            gmail
+          )
+        );
       })
       .catch((err) => {
         dispatch(createDealFail(err));

@@ -7,6 +7,7 @@ import CertificateRound from "./list-certificate";
 import InfoInputCreateRound from "./info-round";
 function ModalAddRound(props) {
   const [loading, setLoading] = useState(false);
+  const [loadingCer, setLoadingCer] = useState(false);
   return (
     <Modal
       className="modal__addRound"
@@ -50,13 +51,17 @@ function ModalAddRound(props) {
             listCertificate={props.listCertificate}
             setListCertificate={props.setListCertificate}
             handleDelete={props.handleDelete}
-            loading={loading}
-            setLoading={setLoading}
+            loading={loadingCer}
+            setLoading={setLoadingCer}
           />
         </div>
         <div className="modal__addRoundLineFour">
-          <label className="modal__labelAddRound">Tiêu đề - Nội dung</label>
-          <FormCreateRound onSubmit={props.onSubmit} loading={loading} />
+          <label className="modal__labelAddRound">Mô tả chi tiết</label>
+          <FormCreateRound
+            onSubmit={props.onSubmit}
+            loading={loading}
+            loadingCer={loadingCer}
+          />
         </div>
       </div>
     </Modal>

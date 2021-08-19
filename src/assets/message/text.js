@@ -2,12 +2,12 @@ const message = {
   BANNER_SOLOGAN:
     "My favorite recent startup articles about growth, marketing and business life that have made a big impact on our team.",
   // form-role
-  REGISTER_ORGANIZATION: "Tổ Chức",
+  REGISTER_ORGANIZATION: "Tổ Chức Khởi Nghiệp",
   REGISTER_ORGANIZATION_TEXT:
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit.Consectetur ut deleniti molestias porro aliquid, sapientelaudantium aperiam odit tenetur.",
+    "Là một định chế/tổ chức con người được thiết kế nhằm mục đích tạo ra những sản phẩm và dịch vụ mới trong các điều kiện cực kỳ không chắc chắn.",
   REGISTER_INVESTOR: "Nhà Đầu Tư",
   REGISTER_INVESTOR_TEXT:
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit.Consectetur ut deleniti molestias porro aliquid, sapientelaudantium aperiam odit tenetur.",
+    "Là người tham gia vào một hay nhiều vụ đầu tư dưới các hình thức khác nhau. Nhà đầu tư có thể là một cá nhân, một doanh nghiệp, một tổ chức.",
   CHOOSE_ROLE_TEXT:
     "Chọn loại người dùng để bắt đầu quy trình đăng ký tài khoản!",
   INSTITUTIONAL_INVESTOR: "Nhà đầu tư tổ chức",
@@ -23,7 +23,7 @@ const message = {
   REGISTER_BUTTON: "Đăng ký",
   // form-register
   GENERAL_STEP_1: "Thông tin tài khoản",
-  ORGANIZATION_STEP_2: "Thông tin về tổ chức",
+  ORGANIZATION_STEP_2: "Thông tin về tổ chức khởi nghiệp",
   ORGANIZATION_STEP_3: "Thành viên",
   INVESTOR_STEP_2: "Thông tin chi tiết",
   GENERAL_STEP_FINAL: "Hoàn thành",
@@ -67,7 +67,7 @@ const message = {
   GMAIL_REG: "Gmail không đúng định dạng (@gmail.com)",
   PASSWORD_NULL: "Vui lòng nhập mật khẩu",
   // to chuc
-  OM_TITLE: "Tổ chức",
+  OM_TITLE: "Tổ chức khởi nghiệp",
   OM_SLOGAN: "Mãi mãi tinh thần khởi nghiệp",
   OM_SLOGAN_TAIL: "- Vin Group",
   // nha dau tu
@@ -104,6 +104,10 @@ const message = {
   EX_HASHTAG_ARTICLE: "VD: KHAI KHOÁNG XÂY DỰNG ... ",
   EX_SUMMARY_ARTICLE:
     "VD: Ban Chỉ đạo phòng, chống dịch Covid-19 quốc gia sẽ báo cáo Thủ tướng, Chính phủ để có chỉ đạo với tinh thần nâng cao cảnh giác, chuẩn bị cho tình huống xấu hơn.",
+  BANNER_WORD_INVESTOR:
+    "Chúng tôi giúp cho bạn có thể tìm kiếm những tổ chức khởi nghiệp tùy theo những lựa chọn của bạn như số tiền kêu gọi, giai đoạn của tổ chức khởi nhiệp,...",
+  BANNER_WORD_ORG:
+    "Chúng tôi giúp cho bạn có thể tìm kiếm những nhà đầu tư như nhà đầu tư thiên thần, nhà đầu tư mạo hiểm,...",
 };
 
 export default message;

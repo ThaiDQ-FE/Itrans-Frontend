@@ -7,15 +7,15 @@ import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import ModalUpdateIntroduce from "../modal-update-introduce";
 import { localStorages, getLocalStorage } from "../../assets/helper/helper";
-import { createIntroduce, deleteIntroduce, updateIntroduce } from "../../store/action/introduce.action";
+import {
+  createIntroduce,
+  deleteIntroduce,
+  updateIntroduce,
+} from "../../store/action/introduce.action";
 import ModalAddIntroduce from "../modal-add-introduce";
 function IntroduceRound() {
-  const { listIntroduceByRound } = useSelector(
-    (state) => state.introduce
-  );
-  const { roundAndOrganization } = useSelector(
-    (state) => state.round
-  );
+  const { listIntroduceByRound } = useSelector((state) => state.introduce);
+  const { roundAndOrganization } = useSelector((state) => state.round);
   const userInfo = getLocalStorage("userInfo");
   const dispatch = useDispatch();
   const [editIntro, setEditIntro] = useState(false);
@@ -28,8 +28,7 @@ function IntroduceRound() {
     title: "",
     content: "",
   });
-  const [id, setId] = useState({
-  });
+  const [id, setId] = useState({});
   const handleCloseModal = () => {
     setEditIntro(false);
     localStorage.removeItem("infoEditIntro");
@@ -43,14 +42,14 @@ function IntroduceRound() {
       ...valueAdd,
       [name]: value,
     });
-  }
+  };
   const handleChangeValue = (event) => {
     const { name, value } = event.target;
     setValues({
       ...values,
       [name]: value,
     });
-  }
+  };
   const handleAddIntro = (item) => {
     Swal.fire({
       icon: "question",
@@ -133,43 +132,51 @@ function IntroduceRound() {
         cancelButtonColor: "red",
       }).then((result) => {
         if (result.isConfirmed) {
-          dispatch(updateIntroduce(id, object, roundAndOrganization.idRound))
+          dispatch(updateIntroduce(id, object, roundAndOrganization.idRound));
           setEditIntro(false);
         }
       });
     }
-  }
+  };
   const handleSubmitIntroAdd = () => {
-      Swal.fire({
-        icon: "warning",
-        title: "Bạn chắc chắn tiêu đề - nội dung này?",
-        heightAuto: true,
-        timerProgressBar: false,
-        showConfirmButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Đồng ý",
-        cancelButtonText: "Hủy",
-        confirmButtonColor: "#1890ff",
-        cancelButtonColor: "red",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          dispatch(createIntroduce(valueAdd,roundAndOrganization.idRound));
-          setAddIntro(false);
-        }
-      });
-  }
-  return (
-    <>{userInfo.role === "ORGANIZATION" &&
-      <div style={{ float: 'right', width: 300 }}>
-        <Button onClick={() => { handleAddIntro() }} type="primary" size="middle">Thêm bài giới thiệu</Button>
-      </div>
+    Swal.fire({
+      icon: "warning",
+      title: "Bạn chắc chắn tiêu đề - nội dung này?",
+      heightAuto: true,
+      timerProgressBar: false,
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Đồng ý",
+      cancelButtonText: "Hủy",
+      confirmButtonColor: "#1890ff",
+      cancelButtonColor: "red",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(createIntroduce(valueAdd, roundAndOrganization.idRound));
+        setAddIntro(false);
       }
-      <div style={{ marginTop: 75 }}>
-        {
-          listIntroduceByRound.map((value) =>
-
-            <div className="ir__introduceWrapper" >
-              {userInfo.role === "ORGANIZATION"&&
+    });
+  };
+  return (
+    <>
+      {userInfo.role === "ORGANIZATION" && (
+        <div style={{ float: "right", width: 300 }}>
+          <Button
+            onClick={() => {
+              handleAddIntro();
+            }}
+            type="primary"
+            size="middle"
+          >
+            Thêm bài giới thiệu
+          </Button>
+        </div>
+      )}
+      <div className="ir__wrapper">
+        <div className="ir__gioiThoi">Giới thiệu sơ lược</div>
+        {listIntroduceByRound.map((value) => (
+          <div className="ir__introduceWrapper">
+            {userInfo.role === "ORGANIZATION" && (
               <div className="ir__action">
                 <Tooltip title="Chỉnh sửa">
                   <img
@@ -191,12 +198,13 @@ function IntroduceRound() {
                   />
                 </Tooltip>
               </div>
-              }
+            )}
+            <div className="ir__tilteContent">
               <div className="ir__title">{value.title}</div>
-              <p className="ir__content">{value.content}</p>
+              <div className="ir__content">{value.content}</div>
             </div>
-          )
-        }
+          </div>
+        ))}
       </div>
       <ModalUpdateIntroduce
         editIntro={editIntro}
@@ -212,6 +220,5 @@ function IntroduceRound() {
       />
     </>
   );
-
 }
 export default IntroduceRound;

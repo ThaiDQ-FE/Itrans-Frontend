@@ -36,7 +36,7 @@ function AdminManagementArticleComponent(props) {
   const handleDeleteArticle = (id, name, title) => {
     Swal.fire({
       icon: "question",
-      title: "Bạn muốn xóa tin tức này?",
+      title: "Bạn muốn xóa bài viết này?",
       html: `${title} <br/>Của người dùng <b>${name}</b>`,
       heightAuto: true,
       timerProgressBar: false,
@@ -76,7 +76,7 @@ function AdminManagementArticleComponent(props) {
   return (
     <div className="amac__wrapper">
       <div className="amac__container">
-        <h2 className="amac__title">Quản lý tin tức</h2>
+        <h2 className="amac__title">Quản lý bài viết</h2>
         <Search
           id="hb__search"
           className="amac__search"
@@ -139,7 +139,7 @@ function AdminManagementArticleComponent(props) {
                   alt="empty"
                 />
                 <span className="adminArticle__noArticle">
-                  Hiện tại không có tin tức nào được đăng tải
+                  Hiện tại không có bài viết nào được đăng tải
                 </span>
               </>
             )}
@@ -210,7 +210,7 @@ function AdminManagementArticleComponent(props) {
                   alt="empty"
                 />
                 <span className="adminArticle__noArticle">
-                  Hiện tại không có tin tức nào được đăng tải
+                  Hiện tại không có bài viết nào được đăng tải
                 </span>
               </>
             )}

@@ -11,7 +11,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-gap: 40px;
-            max-width: 900px;
+            max-width: 1024px;
             margin: auto;
             .cardFundingRound__itemOrg {
                 position: relative;
@@ -50,7 +50,7 @@
                     -webkit-box-orient: vertical;
                     overflow: hidden;
                     display: -webkit-box;
-                    word-break: break-all;
+                    word-break: break-word;
                 }
                 .cardFundingRound__name {
                     margin-top: 10px;
@@ -69,6 +69,16 @@
                         font-weight: 600;
                         font-size: 18px;
                     }
+                }
+                .cardFundingRound__had {
+                    position: absolute;
+                    background: #ffd100;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    padding: 2px 10px;
+                    border-radius: 5px;
+                    top: 15px;
+                    left: 10px;
                 }
             }
         }

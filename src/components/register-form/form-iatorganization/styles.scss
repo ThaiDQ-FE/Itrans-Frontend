@@ -82,6 +82,9 @@
                         .fiato__year,
                         .fiato__emp {
                             width: 18.5%;
+                            input {
+                                text-align: right;
+                            }
                         }
                     }
                     .fiato__lineTwo {

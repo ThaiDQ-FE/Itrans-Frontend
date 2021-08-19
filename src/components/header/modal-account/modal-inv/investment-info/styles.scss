@@ -172,6 +172,9 @@
             .maii__minValue,
             .maii__maxValue {
                 width: 45%;
+                input {
+                    text-align: right;
+                }
             }
         }
     }

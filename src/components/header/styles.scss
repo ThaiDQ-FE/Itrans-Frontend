@@ -14,10 +14,16 @@
         width: 20%;
         display: flex;
         img {
+            margin-top: 5px;
             height: 80%;
-            margin: auto;
             margin-left: 60px;
         }
+    }
+    .active-mid {
+        background: linear-gradient(to right, #f7f8f8, #acbb78);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 600;
     }
 
     .header__features {
@@ -36,13 +42,16 @@
             padding-left: 0;
             .header__features__li {
                 margin: auto;
-                font-size: 16px;
+                font-size: 18px;
                 .header__vgv,
                 .header__trangchu {
                     text-decoration: none;
                     color: #ffffff;
                     &:hover {
-                        opacity: 0.8;
+                        background: linear-gradient(to right, #f7f8f8, #acbb78);
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        font-weight: 600;
                     }
                 }
                 .active-nav-link-header-features {
@@ -170,5 +179,5 @@
 }
 
 .text__workBreak {
-    word-break: break-all;
+    word-break: break-word;
 }

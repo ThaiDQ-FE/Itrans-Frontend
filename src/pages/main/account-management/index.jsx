@@ -16,6 +16,7 @@ import {
   authorizationAccount,
   checkEmailUser,
   checkIdUser,
+  checkNameUser,
   checkPathUrl,
   checkRoleUser,
   getLocalStorage,
@@ -51,6 +52,11 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { defaultUrlAPI } from "../../../configs/url";
 import message from "../../../assets/message/text";
+import {
+  sendMailDefaultHTML,
+  sendMailHTML,
+} from "../../../store/action/mail.action";
+import { contentInviteRound, titleInvite } from "../../../configs/sendMail";
 function AccountManagement(props) {
   const { TabPane } = Tabs;
   const dispatch = useDispatch();
@@ -162,20 +168,32 @@ function AccountManagement(props) {
         if (res.status === 200) {
           showMessage("success", "Mời nhà đầu tư thành công");
           handleCloseModal();
-          setTimeout(() => {
-            dispatch(
-              checkRequestDeal(
-                checkIdUser(),
-                getLocalStorage("idInvestorToDetail"),
-                history
-              )
-            );
-          }, 2000);
+
+          dispatch(
+            checkRequestDeal(
+              checkIdUser(),
+              getLocalStorage("idInvestorToDetail"),
+              history
+            )
+          );
+          dispatch(
+            sendMailDefaultHTML(
+              contentInviteRound(
+                checkNameUser(),
+                roundActiveV2.fundingAmount,
+                roundActiveV2.shareRequirement,
+                object.description
+              ),
+              titleInvite(),
+              detailCompanyView.email
+            )
+          );
         } else {
-          showMessage("error", message.CACTH_ERROR);
+          showMessage("error", "Mời nhà đầu tư thất bại");
         }
       })
       .catch((err) => {
+        console.log(err);
         sessionTimeOut(err, history);
       });
   };
