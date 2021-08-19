@@ -9,19 +9,21 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getListIndustry,
   getListProvince,
+  getListProvinceInvestor,
   getListRegion,
+  getListRegionInvestor,
   getListStage,
 } from "../../../store/action/register.action";
 import { storage } from "../../../configs/firebase";
 import { getLocalStorage } from "../../../assets/helper/helper";
+console.log('e ban')
 function FormInvestor(props) {
   const { Option } = Select;
   const { TextArea } = Input;
   const dispatch = useDispatch();
-  const { listProvince, listStage, listIndustry, listRegion } = useSelector(
+  const { listProvince, listStage, listIndustry, listRegion ,listProvinceInvestor,listRegionInvestor } = useSelector(
     (state) => state.register
   );
-
   const [information, setInformation] = useState({
     name: "",
     industry: "",
@@ -159,7 +161,6 @@ function FormInvestor(props) {
   const regexFloat = /^\d+(\.\d+)?$/;
   const validate = (values) => {
     let errors = {};
-    console.log()
     if (!values.name) {
       errors.name = "Tên nhà/quỹ đầu tư không được để trống";
     } else {
@@ -406,7 +407,7 @@ function FormInvestor(props) {
       }
       
     })
-    listRegionInvestor(url,urlNone);
+    dispatch(getListProvinceInvestor(url,urlNone));
     setInformation({
       ...information,
       region: valueAction,
@@ -417,6 +418,18 @@ function FormInvestor(props) {
     for (let index = 0; index < action.length; index++) {
       valueAction.push(parseInt(action[index].key));
     }
+    let url = "http://localhost:8080/api/v1/auth/get-region-investor?";
+    let urlNone = ""
+    valueAction.map((value,index)=>{
+      let params = `idProvince=${value}`;
+      if(index === (valueAction.length-1)){
+        urlNone = urlNone + params;
+      }else {
+        urlNone = urlNone + params + `&`;
+      }
+      
+    })
+    dispatch(getListRegionInvestor(url,urlNone));
     setInformation({
       ...information,
       province: valueAction,
@@ -454,8 +467,7 @@ function FormInvestor(props) {
     });
   };
   let renderListProvinceOr = () => {
-    console.log("zo day k")
-    return listProvince.map((item, index) => {
+    return listProvinceInvestor.map((item, index) => {
       return (
         <Option name="province" value={item.name} key={item.idProvince}>
           {item.name}
@@ -473,7 +485,7 @@ function FormInvestor(props) {
     });
   };
   let renderListRegion = () => {
-    return listRegion.map((item, index) => {
+    return listRegionInvestor.map((item, index) => {
       return (
         <Option name="region" value={item.name} key={item.idRegion}>
           {item.name}
@@ -482,29 +494,6 @@ function FormInvestor(props) {
     });
 
   };
-  console.log('day ne')
-  const listRegionInvestor  = (url,listRegionInvestor) => {
-    console.log('nao truoc')
-    axios({
-      method: "Get",
-      url: url+listRegionInvestor,
-    })
-      .then((res) => {
-        console.log(res.data)
-        const listProvinceInvestor = res.data;
-        renderListProvinceOr = () => {
-          return listProvinceInvestor.map((item, index) => {
-            return (
-              <Option name="province" value={item.name} key={item.idProvince}>
-                {item.name}
-              </Option>
-            );
-          });
-        };
-      })
-      .catch((err) => {
-      });
-};
   let renderListIndustry = () => {
     return listIndustry.map((item, index) => {
       return (
@@ -524,6 +513,8 @@ function FormInvestor(props) {
     dispatch(getListIndustry());
     dispatch(getListStage());
     dispatch(getListRegion());
+    dispatch(getListProvinceInvestor('http://localhost:8080/api/v1/auth/get-province-investor',''));
+    dispatch(getListRegionInvestor('http://localhost:8080/api/v1/auth/get-region-investor',''));
     // localStorage.setItem("Form2Investor", JSON.stringify(information));
   }, []);
   return (
