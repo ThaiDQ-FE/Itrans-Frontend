@@ -35,6 +35,7 @@ function RoundByIdOrganization(props) {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [listCertificate, setListCertificate] = useState([]);
+  const [content, setContent] = useState("");
   const dispatch = useDispatch();
   // Error
   const [startDateError, setStartDateError] = useState("");
@@ -82,7 +83,7 @@ function RoundByIdOrganization(props) {
 
   const handleClickToDetail = () => {
     history.push("/thong-tin-chi-tiet-vong-goi-von");
-  }
+  };
   const handleClose = () => {
     setOpenModal(false);
     setInfoRound({
@@ -100,6 +101,7 @@ function RoundByIdOrganization(props) {
     setThumbnail("");
     setListCertificate([]);
     setThumbnailError("");
+    setContent("");
   };
   const handleChangeInfoRound = (event) => {
     const { name, value } = event.target;
@@ -144,8 +146,11 @@ function RoundByIdOrganization(props) {
         summaryError === "" &&
         thumbnailError === ""
       ) {
-        if (values.form === undefined || values.form.length === 0) {
-          return showMessage("error", "Cần tối thiểu 1 tiêu đề và nội dung");
+        if (content === "") {
+          return showMessage(
+            "error",
+            "Mô tả chi tiết không được để trống hoặc được để mặc định"
+          );
         } else {
           Swal.fire({
             icon: "question",
@@ -167,15 +172,15 @@ function RoundByIdOrganization(props) {
               const percent = parseFloat(infoRound.shareRequirement);
               const finalPercent = percent.toFixed(2);
               const object = {
+                description: content,
+                documents: listCertificate,
+                endDate: finalEndDate,
                 fundingAmount: parseFloat(finalMoney),
+                mail: checkEmailUser(),
                 shareRequirement: parseFloat(finalPercent),
                 startDate: finalStartDate,
-                endDate: finalEndDate,
                 summary: infoRound.summary,
                 thumbnail: thumbnail,
-                documents: listCertificate,
-                introduces: values.form,
-                mail: checkEmailUser(),
               };
               postRound(object, props.history);
             }
@@ -243,49 +248,56 @@ function RoundByIdOrganization(props) {
   };
   return (
     <div
-      className={`rbio__wrapper${props.listRound.length > 0 ? "" : " rbio__warpperNormal"
-        }`}
+      className={`rbio__wrapper${
+        props.listRound.length > 0 ? "" : " rbio__warpperNormal"
+      }`}
     >
       {props.listRound.length > 0 ? checkHaveRound() : <></>}
 
       <div className="rbio__container">
         <div
-          className={`rbio__listRound${props.listRound.length > 0 ? "" : " rbio__listRoundNormal"
-            }`}
+          className={`rbio__listRound${
+            props.listRound.length > 0 ? "" : " rbio__listRoundNormal"
+          }`}
         >
           {props.listRound && props.listRound.length > 0
             ? props.listRound
-              .slice(length.minValue, length.maxValue)
-              .map((value, index) => (
-                <Card onClick={() => {
-                  handleClickToDetail();
-                  localStorages("idRound", value.idRound);
-                }} key={index} hoverable className="rbio__itemOrg">
-                  {renderTag(value.status)}
-                  <img
-                    src={
-                      value.thumbnail === ""
-                        ? Images.NO_IMAGE
-                        : value.thumbnail
-                    }
-                    alt="thumbnail"
-                  />
-                  <div className="ribo__stage">
-                    <span>{value.stage}</span>
-                  </div>
-                  <div className="rbio__startDate">
-                    <span>{value.startDate} / </span>
-                    <span>{value.endDate}</span>
-                  </div>
-                  {value.summary === "" ? (
-                    <></>
-                  ) : (
-                    <div className="rbio__summary">
-                      <span>{value.summary}</span>
+                .slice(length.minValue, length.maxValue)
+                .map((value, index) => (
+                  <Card
+                    onClick={() => {
+                      handleClickToDetail();
+                      localStorages("idRound", value.idRound);
+                    }}
+                    key={index}
+                    hoverable
+                    className="rbio__itemOrg"
+                  >
+                    {renderTag(value.status)}
+                    <img
+                      src={
+                        value.thumbnail === ""
+                          ? Images.NO_IMAGE
+                          : value.thumbnail
+                      }
+                      alt="thumbnail"
+                    />
+                    <div className="ribo__stage">
+                      <span>{value.stage}</span>
                     </div>
-                  )}
-                </Card>
-              ))
+                    <div className="rbio__startDate">
+                      <span>{value.startDate} / </span>
+                      <span>{value.endDate}</span>
+                    </div>
+                    {value.summary === "" ? (
+                      <></>
+                    ) : (
+                      <div className="rbio__summary">
+                        <span>{value.summary}</span>
+                      </div>
+                    )}
+                  </Card>
+                ))
             : checkNoRound()}
         </div>
         <div className="ol__paging">
@@ -328,6 +340,7 @@ function RoundByIdOrganization(props) {
         handleDelete={handleDelete}
         thumbnailError={thumbnailError}
         setThumbnailError={setThumbnailError}
+        setContent={setContent}
       />
     </div>
   );

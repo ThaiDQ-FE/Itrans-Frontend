@@ -21,9 +21,9 @@ function ModalAccountInvestorBasic(props) {
   const content = (
     <div>
       <p>Định dạng:</p>
-      <p>- https://www.facebook.com/ChubbyDQT/</p>
-      <p>- www.facebook.com/ChubbyDQT/</p>
-      <p>- facebook.com/ChubbyDQT/</p>
+      <p>- https://www.itrans.vn</p>
+      <p>- www.itrans.vn</p>
+      <p>- itrans.vn</p>
     </div>
   );
   const handleChangeAvata = (e) => {

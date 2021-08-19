@@ -25,6 +25,8 @@ import {
   GET_LIST_ARTICLE_SUCCESS,
   GET_LIST_FOLLOWED_FAILED,
   GET_LIST_FOLLOWED_SUCCESS,
+  GET_LIST_LINK_ARTICLE_FAILED,
+  GET_LIST_LINK_ARTICLE_SUCCESS,
   GET_LIST_VIEW_ARTICLE_FAILED,
   GET_LIST_VIEW_ARTICLE_SUCCESS,
   SEARCH_ARTICLE_ADMIN_FAILED,
@@ -348,6 +350,43 @@ const getListFollowedSuccess = (list) => {
 const getListFollowedFailed = (err) => {
   return {
     type: GET_LIST_FOLLOWED_FAILED,
+    payload: err,
+  };
+};
+
+export const getListLinkArticle = (gmail, isSelected) => {
+  return (dispatch) => {
+    if (isSelected === false) {
+      dispatch(startLoading());
+    }
+    axios({
+      method: "GET",
+      url: defaultUrlAPIStringTemplate() + `news?gmail=${gmail}`,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        dispatch(stopLoading());
+        dispatch(getListLinkArticleSuccess(res.data));
+      })
+      .catch((err) => {
+        dispatch(stopLoading());
+        dispatch(getListLinkArticleFailed(err));
+      });
+  };
+};
+
+const getListLinkArticleSuccess = (listArticle) => {
+  return {
+    type: GET_LIST_LINK_ARTICLE_SUCCESS,
+    payload: listArticle,
+  };
+};
+
+const getListLinkArticleFailed = (err) => {
+  return {
+    type: GET_LIST_LINK_ARTICLE_FAILED,
     payload: err,
   };
 };

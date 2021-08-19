@@ -1,27 +1,30 @@
-.formCreateRound__wrapper {
-    .formCreateRound__container {
-        border: 1px solid #d9d9d9;
-        padding: 10px;
-        .formCreateRound__form {
-            max-height: 160px;
-            overflow-y: auto;
-            overflow-x: hidden;
-            .ant-space {
-                .ant-space-item {
-                    width: 48%;
-                    &:nth-child(3) {
-                        width: 2%;
-                        position: relative;
-                        .formCreateRound__close {
-                            position: absolute;
-                            top: -25px;
-                        }
+.formcr__wrapper {
+    .formcr__bottom {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+        .formcr__noti {
+            ul {
+                list-style-type: "*";
+                margin-bottom: 0;
+                li {
+                    font-style: italic;
+                    .formcr__stage {
+                        color: green;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                    }
+                    .formcr__active {
+                        color: green;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                    }
+                    .formcr__pending {
+                        color: orange;
+                        font-weight: 700;
+                        text-transform: uppercase;
                     }
                 }
-            }
-            .formCreateRound__themTD {
-                width: 200px;
-                margin: auto;
             }
         }
     }

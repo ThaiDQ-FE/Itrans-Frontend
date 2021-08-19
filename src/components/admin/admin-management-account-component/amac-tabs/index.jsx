@@ -7,7 +7,6 @@ import ANACTablePending from "../anac-table/anac-table-pending";
 import ANACTableDone from "../anac-table/anac-table-done";
 function AdminManagementAccountTabs(props) {
   const { TabPane } = Tabs;
-
   return (
     <div className="adat__wrapper">
       <Tabs type="card">
@@ -18,7 +17,7 @@ function AdminManagementAccountTabs(props) {
           />
         </TabPane>
         <TabPane tab="Đã phê duyệt" key="2">
-          <ANACTableDone />
+          <ANACTableDone loading={props.loading} list={props.list} />
         </TabPane>
       </Tabs>
       <div className="adat__search">

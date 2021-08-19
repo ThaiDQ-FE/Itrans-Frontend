@@ -36,6 +36,7 @@
                             width: 70px;
                             height: 70px;
                             border-radius: 100%;
+                            object-fit: cover;
                         }
                         .fm__file {
                             display: none;
@@ -129,6 +130,7 @@
                         width: 60px;
                         height: 60px;
                         margin: 5px;
+                        object-fit: cover;
                     }
                     div {
                         width: 100%;

@@ -32,7 +32,7 @@ function RoundSuggest(props) {
   const content = (value) => {
     return (
       <>
-        {value.checkStage === true ? (
+        {value.stage !== null ? (
           <div className="rs__stage">
             <span className="label__fontWeight">Giai đoạn: </span>{" "}
             <Tag color="magenta">{value.stage}</Tag>
@@ -40,7 +40,7 @@ function RoundSuggest(props) {
         ) : (
           <></>
         )}
-        {value.checkAmount === true ? (
+        {value.fundingAmount !== 0 ? (
           <div className="rs__fundingAmount">
             <span className="label__fontWeight">Số tiền kêu gọi: </span>
             <Tag color="green">
@@ -149,13 +149,15 @@ function RoundSuggest(props) {
                               src={value.logo}
                               alt="logo"
                             />
-                            <div className="rs__name">{value.organization}</div>
+                            <div className="rs__name">
+                              {value.nameOrganization}
+                            </div>
                           </div>
-                          {value.summary === "" ? (
+                          {value.summaryDescription === "" ? (
                             <></>
                           ) : (
                             <div className="rs__summary">
-                              <span>{value.summary}</span>
+                              <span>{value.summaryDescription}</span>
                             </div>
                           )}
                         </div>

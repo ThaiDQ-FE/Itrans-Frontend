@@ -9,6 +9,8 @@ import { notification } from "antd";
 import { getValueListIndustry, getValueListStage } from "./value.action";
 import message from "../../assets/message/text";
 import {
+  GET_VALUE_ACCOUNT_FAILED,
+  GET_VALUE_ACCOUNT_SUCCESS,
   GET_VALUE_ARTICLE_FAILED,
   GET_VALUE_ARTICLE_SUCCESS,
 } from "../constants/value.const";
@@ -243,6 +245,48 @@ const getValueArticleSuccess = (list) => {
 const getValueArticleFailed = (err) => {
   return {
     type: GET_VALUE_ARTICLE_FAILED,
+    payload: err,
+  };
+};
+
+export const getValueAccount = (history, isLoading) => {
+  return (dispatch) => {
+    if (isLoading === true) {
+      dispatch(startLoading());
+    }
+    axios({
+      method: "GET",
+      url: defaultUrlAPI() + "account-confirmed",
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch(getValueAccountSuccess(res.data));
+        } else {
+          notification["error"]({
+            message: message.CACTH_ERROR,
+          });
+        }
+      })
+      .catch((err) => {
+        dispatch(getValueAccountFailed(err));
+        sessionTimeOut(err);
+      });
+  };
+};
+
+export const getValueAccountSuccess = (list) => {
+  return {
+    type: GET_VALUE_ACCOUNT_SUCCESS,
+    payload: list,
+  };
+};
+
+export const getValueAccountFailed = (err) => {
+  return {
+    type: GET_VALUE_ACCOUNT_FAILED,
     payload: err,
   };
 };

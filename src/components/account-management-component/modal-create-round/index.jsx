@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal } from "antd";
+import { Modal, Popover } from "antd";
 import "antd/dist/antd.css";
 import "./styles.scss";
 import FormCreateRound from "./form-round";
@@ -8,6 +8,11 @@ import InfoInputCreateRound from "./info-round";
 function ModalAddRound(props) {
   const [loading, setLoading] = useState(false);
   const [loadingCer, setLoadingCer] = useState(false);
+  const contentSum = (
+    <div>
+      <span>Mô tả kế hoạch kinh doanh(Bussiness plan)</span>
+    </div>
+  );
   return (
     <Modal
       className="modal__addRound"
@@ -56,11 +61,18 @@ function ModalAddRound(props) {
           />
         </div>
         <div className="modal__addRoundLineFour">
-          <label className="modal__labelAddRound">Mô tả chi tiết</label>
+          <label className="modal__labelAddRound">
+            Mô tả chi tiết
+            <Popover content={contentSum} title={null} placement="topLeft">
+              {" "}
+              (i)
+            </Popover>
+          </label>
           <FormCreateRound
             onSubmit={props.onSubmit}
             loading={loading}
             loadingCer={loadingCer}
+            setContent={props.setContent}
           />
         </div>
       </div>

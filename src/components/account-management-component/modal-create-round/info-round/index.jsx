@@ -60,6 +60,18 @@ function InfoInputCreateRound(props) {
       <span>15. {"-->"} 15</span>
     </div>
   );
+  const contentStart = (
+    <div>
+      <span>Ngày bắt đầu phải là ngày hiện tại</span>
+    </div>
+  );
+  const contentEnd = (
+    <div>
+      <span>Ngày kết thúc không được trùng với ngày bắt đầu</span>
+      <br />
+      <span>Ngày kết thúc cách ngày bắt đầu tối đa 30 ngày</span>
+    </div>
+  );
   return (
     <>
       <div className="modal__addRoundLineOne">
@@ -114,7 +126,13 @@ function InfoInputCreateRound(props) {
           </Tooltip>
         </div>
         <div className="modal__inputStart">
-          <label className="modal__labelAddRound">Ngày bắt đầu</label>
+          <label className="modal__labelAddRound">
+            Ngày bắt đầu
+            <Popover content={contentStart} title={null}>
+              {" "}
+              (i)
+            </Popover>
+          </label>
           <Tooltip
             title={props.startDateError}
             placement="topRight"
@@ -135,7 +153,13 @@ function InfoInputCreateRound(props) {
           </Tooltip>
         </div>
         <div className="modal__inputEnd">
-          <label className="modal__labelAddRound">Ngày kết thúc</label>
+          <label className="modal__labelAddRound">
+            Ngày kết thúc
+            <Popover content={contentEnd} title={null}>
+              {" "}
+              (i)
+            </Popover>
+          </label>
           <Tooltip title={props.endDateError} placement="topRight" color="red">
             <DatePicker
               dropdownClassName="round__dropdown"
