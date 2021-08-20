@@ -58,6 +58,7 @@ import funds from "./funds.png";
 import house from "./house.svg";
 import link from "./link.svg";
 import owner from "./owner.svg";
+import tax from "./taxes.svg";
 const Images = {
   LOGO_NAVY: logo_navy,
   LOGO_GREY: logo_grey,
@@ -119,6 +120,7 @@ const Images = {
   HOUSE: house,
   LINK: link,
   OWNER: owner,
+  TAX_CODE: tax,
 };
 
 export default Images;

@@ -93,12 +93,6 @@ function OverViewInfoComponent(props) {
         ) : (
           <>
             <div className="ovic__displayGrid">
-              {/* <div className="ovic__item">
-                <span className="ovic__fontWeight">Email: </span>
-              </div>
-              <div className="ovic__item">
-                <span className="ovic__wordBreak">{props.detail.email}</span>
-              </div> */}
               <div className="ovic__item">
                 <span className="ovic__fontWeight">Website: </span>
               </div>
@@ -109,6 +103,21 @@ function OverViewInfoComponent(props) {
                   </span>
                 </a>
               </div>
+              {props.detail.taxCode === null ? (
+                <></>
+              ) : (
+                <>
+                  {" "}
+                  <div className="ovic__item">
+                    <span className="ovic__fontWeight">Mã số thuế: </span>
+                  </div>
+                  <div className="ovic__item">
+                    <span className="ovic__wordBreak">
+                      {props.detail.taxCode}
+                    </span>
+                  </div>
+                </>
+              )}
             </div>
             <hr className="ovic__hr" />
             <div className="ovic__displayGrid">

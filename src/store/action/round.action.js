@@ -896,3 +896,29 @@ const getListAllRoundV2Failed = (err) => {
     payload: err,
   };
 };
+
+export const userDeleteRound = (object, history) => {
+  return (dispatch) => {
+    axios({
+      method: "PUT",
+      url: defaultUrlAPI() + "round/updateStatusRound",
+      data: object,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          showMessage("success", "Xóa vòng gọi vốn thành công");
+          setTimeout(() => {
+            history.push("/quan-ly-tai-khoan");
+          }, 2000);
+        } else {
+          showMessage("error", "Xóa vòng gọi vốn thất bại");
+        }
+      })
+      .catch((err) => {
+        sessionTimeOut(err, history);
+      });
+  };
+};

@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   authorizationAccount,
   sessionTimeOut,
+  showMessage,
 } from "../../assets/helper/helper";
 import { defaultUrlAPI, defaultUrlAPIStringTemplate } from "../../configs/url";
 import "antd/dist/antd.css";
@@ -272,7 +273,7 @@ export const getValueAccount = (history, isLoading) => {
       })
       .catch((err) => {
         dispatch(getValueAccountFailed(err));
-        sessionTimeOut(err);
+        sessionTimeOut(err, history);
       });
   };
 };
@@ -288,5 +289,59 @@ export const getValueAccountFailed = (err) => {
   return {
     type: GET_VALUE_ACCOUNT_FAILED,
     payload: err,
+  };
+};
+
+export const adminBlockAccoutn = (gmail, name, history) => {
+  return (dispatch) => {
+    axios({
+      method: "PUT",
+      url: defaultUrlAPIStringTemplate() + `block-account?gmail=${gmail}`,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          notification["success"]({
+            message: "Khóa tài khoản " + name + " thành công",
+          });
+          dispatch(getValueAccount(history, false));
+        } else {
+          notification["error"]({
+            message: "Khóa tài khoản " + name + " thất bại",
+          });
+        }
+      })
+      .catch((err) => {
+        sessionTimeOut(err, history);
+      });
+  };
+};
+
+export const adminOpenAccount = (gmail, name, history) => {
+  return (dispatch) => {
+    axios({
+      method: "PUT",
+      url: defaultUrlAPIStringTemplate() + `open-account?gmail=${gmail}`,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          notification["success"]({
+            message: "Mở khóa tài khoản " + name + " thành công",
+          });
+          dispatch(getValueAccount(history, false));
+        } else {
+          notification["error"]({
+            message: "Mở khóa tài khoản " + name + " thất bại",
+          });
+        }
+      })
+      .catch((err) => {
+        sessionTimeOut(err, history);
+      });
   };
 };

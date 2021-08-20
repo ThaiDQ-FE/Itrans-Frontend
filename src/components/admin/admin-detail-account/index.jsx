@@ -155,6 +155,7 @@ function AdminDetailAccount(props) {
                 </a>
               </div>
             </div>
+            <div className="ada__third"></div>
           </div>
         </div>
       </div>
