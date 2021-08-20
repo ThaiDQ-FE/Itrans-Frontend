@@ -136,7 +136,7 @@ export const checkStage = (stage, setStage) => {
 };
 
 export const checkMin = (min, setMin) => {
-  const parseNumber = Number(min);
+  const parseNumber = Number(min).toFixed(2);
   if (min.length === 0) {
     return setMin("Số tiền đầu tư thấp nhất không được bỏ trống");
   } else {
@@ -155,8 +155,8 @@ export const checkMin = (min, setMin) => {
 };
 
 export const checkMax = (min, max, setMax) => {
-  const parseNumber = Number(max);
-  const parseNumberMin = Number(min);
+  const parseNumber = Number(max).toFixed(2);
+  const parseNumberMin = Number(min).toFixed(2);
   if (max.length === 0) {
     return setMax("Số tiền đầu tư cao nhất không được bỏ trống ");
   } else {

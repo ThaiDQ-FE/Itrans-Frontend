@@ -392,17 +392,21 @@ function Header({ history }) {
     );
   };
   const handleClickUpdateIn = () => {
-    handleBlurName();
-    handleBlurEmp();
-    handleBlurYear();
-    handleBlurLink();
-    handleBlurType();
-    handleBlurIndus();
-    handleBlurPro();
-    handleBlurRe();
-    handleBlurStage();
-    handleBlurMin();
-    handleBlurMax();
+    checkName(basicInfoIn.name, setNameError);
+    checkEmp(basicInfoIn.numberOfEmp, setNumberOfEmpError);
+    checkYear(basicInfoIn.foundedYear, setFoundedYearError);
+    checkLink(basicInfoIn.website, setWebsiteError);
+    checkType(arrayInvestorType, setTypeError);
+    checkIndus(arrayIndustry, setIndustryError);
+    checkPro(arrayProvince, setProvinceError, arrayRegion);
+    checkRe(arrayRegion, setRegionError, arrayProvince);
+    checkStage(arrayStage, setStageError);
+    checkMin(basicInfoIn.minInvestment, setMinInvestmentError);
+    checkMax(
+      basicInfoIn.minInvestment,
+      basicInfoIn.maxInvestment,
+      setMaxInvestmentError
+    );
     if (
       logoError === "" &&
       nameError === "" &&
