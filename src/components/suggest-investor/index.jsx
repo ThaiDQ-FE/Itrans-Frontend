@@ -64,7 +64,7 @@ function SuggestInvestor(props) {
           <></>
         ) : (
           <div className="si__stage">
-            <span className="label__fontWeight">Giai đoạn muốn đầu tư: </span>
+            <span className="label__fontWeight">Giai đoạn đầu tư: </span>
             <Tag color="magenta">{value.stage}</Tag>
           </div>
         )}
@@ -82,7 +82,7 @@ function SuggestInvestor(props) {
         )}
         {value.industries && value.industries.length > 0 ? (
           <div className="si__indus">
-            <span className="label__fontWeight">Lĩnh vực muốn đầu tư: </span>{" "}
+            <span className="label__fontWeight">Lĩnh vực đầu tư: </span>{" "}
             <span>{renderListIndus(value.industries)}</span>
           </div>
         ) : (
@@ -90,7 +90,7 @@ function SuggestInvestor(props) {
         )}
         {value.provinces && value.provinces.length > 0 ? (
           <div className="si__pro">
-            <span className="label__fontWeight">Tỉnh thành muốn đầu tư: </span>
+            <span className="label__fontWeight">Tỉnh thành đầu tư: </span>
             <span>{renderListPro(value.provinces)}</span>
           </div>
         ) : (
