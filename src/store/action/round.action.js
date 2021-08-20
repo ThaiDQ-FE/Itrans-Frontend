@@ -423,6 +423,8 @@ export const getListQuestionAndAnswerFailed = (err) => {
   };
 };
 export const createQuestion = (question) => {
+  const userLogin = getLocalStorage("userInfo");
+  const idRound = getLocalStorage("idRound");
   return (dispatch) => {
     const token = authorizationAccount();
     axios({
@@ -435,6 +437,7 @@ export const createQuestion = (question) => {
     })
       .then((res) => {
         dispatch(createQuesttionSuccess(res.data));
+        dispatch(getListQuestionAndAnswer(userLogin.gmail, idRound));
       })
       .catch((err) => {
         dispatch(createQuesttionFailed(err));

@@ -102,7 +102,6 @@ function CommentRound() {
         };
         arrayComment.push(objCommentAll);
       }
-      console.log(arrayComment);
       setState({
         submitting: false,
         value: "",
@@ -129,25 +128,24 @@ function CommentRound() {
     });
 
     setTimeout(() => {
-      setState({
-        submitting: false,
-        value: "",
-        comments: [
-          ...state.comments,
-          {
-            objComment: {
-              author: userLogin.name,
-              avatar: userLogin.logo,
-              content: <p>{state.value}</p>,
-              datetime: moment().format("DD-MM-YYYY hh:mm"),
-            },
-            objList: [],
-            idQuestion: Math.floor(100000 + Math.random() * 900000),
-          },
-        ],
-      });
+      // setState({
+      //   submitting: false,
+      //   value: "",
+      //   comments: [
+      //     ...state.comments,
+      //     {
+      //       objComment: {
+      //         author: userLogin.name,
+      //         avatar: userLogin.logo,
+      //         content: <p>{state.value}</p>,
+      //         datetime: moment().format("DD-MM-YYYY hh:mm"),
+      //       },
+      //       objList: [],
+      //       idQuestion: Math.floor(100000 + Math.random() * 900000),
+      //     },
+      //   ],
+      // });
     }, 1000);
-    console.log(idRound);
     const questionObj = {
       idInvestor: userLogin.id,
       idRound: idRound,
