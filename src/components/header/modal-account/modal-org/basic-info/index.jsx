@@ -217,7 +217,10 @@ function ModalAccountOrganizationBasic(props) {
           {/* tax code */}
           <div className="maob__taxCode">
             <label className="label__fontWeight">Mã số thuế</label>
-            <Input size="large" />
+            <Input size="large"
+            name="taxCode"
+            defaultValue={props.basicInfoIn.taxCode}
+            onChange={props.handleChangeValue} />
           </div>
           {/* end tax */}
         </div>

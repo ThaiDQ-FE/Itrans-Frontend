@@ -210,7 +210,11 @@ function ModalAccountInvestorBasic(props) {
               color="red"
               placement="topRight"
             >
-              <Input size="large" />
+              <Input size="large"
+              name="taxCode"
+              defaultValue={props.basicInfoIn.taxCode}
+              onChange={props.handleChangeValue}
+              />
             </Tooltip>
           </div>
           {/* tax code */}

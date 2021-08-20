@@ -699,6 +699,7 @@ export const getListProvinceInvestor = (url,listProvinceInvestor) => {
     })
       .then((res) => {
      dispatch(getListProvinceInvestorSuccess(res.data))
+     console.log(res.data)
       })
       .catch((err) => {
         dispatch(getListProvinceInvestorFail(err))

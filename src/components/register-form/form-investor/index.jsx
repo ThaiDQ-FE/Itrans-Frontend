@@ -42,6 +42,7 @@ function FormInvestor(props) {
     province: "",
     min: "",
     max: "",
+    taxCode:""
   });
   const saveData = getLocalStorage("Form2Investor");
   if (saveData !== null) {
@@ -347,6 +348,7 @@ function FormInvestor(props) {
     province: "",
     min: "",
     max: "",
+    taxCode:""
   });
   const [color, setColor] = useState({
     name: "",
@@ -361,6 +363,7 @@ function FormInvestor(props) {
     province: "",
     min: "",
     max: "",
+    taxCode:""
   });
   function validateEmail(email) {
     var re = /\S+\.\S+/;
@@ -387,7 +390,6 @@ function FormInvestor(props) {
       [name]: value,
     });
   };
-
   const handleChangeIdProvince = (value, action) => {
     setInformation({
       ...information,
@@ -653,13 +655,13 @@ function FormInvestor(props) {
                 {/* Tax code */}
                 <div className="fi__taxCode">
                   <small className="label__fontWeight">Mã số thuế</small>
-                  <Tooltip title={errors.link} placement="topRight" color="red">
+                  <Tooltip title={errors.taxCode} placement="topRight" color="red">
                     <Input
-                      style={{ border: color.link }}
-                      // name="link"
+                      style={{ border: color.tax }}
+                      name="taxCode"
                       size="large"
-                      // onChange={handleChangeInput}
-                      // value={information.link}
+                      onChange={handleChangeInput}
+                      value={information.taxCode}
                       // placeholder="VD: https://www.facebook.com/"
                     />
                   </Tooltip>
