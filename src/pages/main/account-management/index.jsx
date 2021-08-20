@@ -32,10 +32,12 @@ import { getListIntroduceByGmail } from "../../../store/action/introduce.action"
 import {
   getListArticleByGmail,
   getListFollowed,
+  getListLinkArticle,
 } from "../../../store/action/artical.action";
 import TeamMember from "../../../components/account-management-component/team-member";
 import { getListTeamMember } from "../../../store/action/team.action";
 import {
+  getListRoundActiveByIdOrganization,
   getListRoundByIdInvestor,
   getListRoundByIdOrganization,
   getRoundActiveV2,
@@ -72,6 +74,7 @@ function AccountManagement(props) {
   const { listRoundByIdInvestor, listRoundByIdOrganization } = useSelector(
     (state) => state.round
   );
+  const { listLinkArticle } = useSelector((state) => state.article);
   const { listIndustry } = useSelector((state) => state.register);
   const { checkDeal } = useSelector((state) => state.deal);
   const { roundActiveV2 } = useSelector((state) => state.round);
@@ -88,6 +91,7 @@ function AccountManagement(props) {
       dispatch(getListIntroduceByGmail(checkEmailUser(), true));
       dispatch(getListTeamMember(checkEmailUser(), false));
       dispatch(getListFollowed(checkEmailUser(), true, props.history));
+      dispatch(getListLinkArticle(checkEmailUser(), true));
       if (checkRoleUser() === "ORGANIZATION") {
         dispatch(getListMilestone(checkIdUser(), true));
       }
@@ -108,6 +112,7 @@ function AccountManagement(props) {
       dispatch(getListTeamMember(gmail, false));
       dispatch(getListMilestone(id, true));
       dispatch(getListRoundByIdOrganization(id, false, props.history));
+      dispatch(getListLinkArticle(gmail, true));
     } else if (path === "/nha-dau-tu/chi-tiet") {
       const gmail = getLocalStorage("gmailInvestorToDetail");
       const id = getLocalStorage("idInvestorToDetail");
@@ -119,6 +124,7 @@ function AccountManagement(props) {
       dispatch(getListArticleByGmail(gmail, false));
       dispatch(checkRequestDeal(checkIdUser(), id, props.history));
       dispatch(getRoundActiveV2(checkIdUser(), props.history));
+      dispatch(getListLinkArticle(gmail, true));
     }
   }, []);
   const handleOpenModal = () => {
@@ -210,6 +216,7 @@ function AccountManagement(props) {
       return "Thỏa thuận";
     }
   };
+
   const checkTab = () => {
     if (checkPathUrl() === pathQuanLyTaiKhoan()) {
       if (detailCompany.investorType !== "Nhà đầu tư thiên thần") {
@@ -248,17 +255,21 @@ function AccountManagement(props) {
     return (
       <div className="am__wrapper">
         {checkPathUrl() === "/nha-dau-tu/chi-tiet" ? (
-          checkDeal === true ? (
-            <Button
-              onClick={handleOpenModal}
-              className="am__buttonInvite"
-              size="large"
-              type="primary"
-            >
-              Mời nhà đầu tư
-            </Button>
+          (Object.keys(roundActiveV2).length === 0) === false ? (
+            checkDeal === true ? (
+              <Button
+                onClick={handleOpenModal}
+                className="am__buttonInvite"
+                size="large"
+                type="primary"
+              >
+                Mời nhà đầu tư
+              </Button>
+            ) : (
+              <span className="am__spanInvited">Đã mời</span>
+            )
           ) : (
-            <span className="am__spanInvited">Đã mời</span>
+            <span className="am__spanInvited">Vui lòng tạo vòng gọi vốn</span>
           )
         ) : (
           <></>
@@ -343,7 +354,11 @@ function AccountManagement(props) {
             </TabPane>
             {checkTab()}
             <TabPane tab="Tin tức" key="4">
-              <NewsTab article={listArticle} industry={listIndustry} />
+              <NewsTab
+                article={listArticle}
+                industry={listIndustry}
+                link={listLinkArticle}
+              />
             </TabPane>
             {checkPathUrl() === pathQuanLyTaiKhoan() ? (
               <TabPane tab="Theo dõi" key="5">

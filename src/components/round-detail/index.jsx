@@ -1,189 +1,253 @@
 import React, { useState } from "react";
 import "./styles.scss";
 import Images from "../../assets/images/images";
-import { Card, Button } from "antd";
+import { Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import ModalConfirmDeal from "../modal-confirm-deal";
 import Swal from "sweetalert2";
 import moment from "moment";
 import { createDeal } from "../../store/action/deal.action";
-import ModalUpdateRound from "../modal-update-round";
-import { getLocalStorage, localStorages } from "../../assets/helper/helper";
 import {
-  updateRound,
-  updateStatusRound,
+  authorizationAccount,
+  sessionTimeOut,
+  showMessage,
+} from "../../assets/helper/helper";
+import {
+  getRoundAndOrganization,
   updateStatusRoundDetail,
+  userDeleteRound,
 } from "../../store/action/round.action";
-function RoundDeail() {
+import ModalUpdateRoundV2 from "./modal-update";
+import {
+  checkMoney,
+  checkPercent,
+  checkSummary,
+} from "../../validate/create/round";
+import { withRouter } from "react-router-dom";
+import axios from "axios";
+import { defaultUrlAPI } from "../../configs/url";
+function RoundDeail(props) {
   const dispatch = useDispatch();
+  const { roundAndOrganization } = useSelector((state) => state.round);
+  const { listDealByRound } = useSelector((state) => state.round);
+  const [openModalUpdate, setOpenModalUpdate] = useState(false);
+  const [infoToUpdate, setInfoToUpdate] = useState({
+    fundingAmount: "",
+    shareRequirement: "",
+    summary: "",
+  });
+  const [thumbnailUpdate, setThumbnailUpdate] = useState("");
+  const [descriptionUpdate, setDescriptionUpdate] = useState("");
+  const [startDateUpdate, setsStartDateUpdate] = useState();
+  const [endDateUpdate, setEndDateUpdate] = useState();
+  // error
+  const [desUpdateError, setDesUpdateError] = useState("");
+  const [fundingAmountError, setFundingAmountError] = useState("");
+  const [shareRequirementError, setShareRequirementError] = useState("");
+  const [thumbnailError, setThumbnailError] = useState("");
+  //
+
+  const format = "DD-MM-YYYY";
+  const handleClickPencil = () => {
+    setOpenModalUpdate(true);
+    setInfoToUpdate({
+      fundingAmount: roundAndOrganization.fundingAmount,
+      shareRequirement: roundAndOrganization.shareRequirement,
+      summary: roundAndOrganization.summary,
+    });
+    setDescriptionUpdate(roundAndOrganization.description);
+    setThumbnailUpdate(roundAndOrganization.thumbnail);
+    setsStartDateUpdate(roundAndOrganization.startDate);
+    setEndDateUpdate(roundAndOrganization.endDate);
+  };
+
+  const handleClose = () => {
+    setOpenModalUpdate(false);
+    setInfoToUpdate({
+      fundingAmount: "",
+      shareRequirement: "",
+      summary: "",
+    });
+    setDescriptionUpdate("");
+    setThumbnailUpdate("");
+    setsStartDateUpdate();
+    setEndDateUpdate();
+    setDesUpdateError("");
+    setFundingAmountError("");
+    setShareRequirementError("");
+    setThumbnailError("");
+  };
+
+  const handleBlurFunding = () => {
+    checkMoney(infoToUpdate.fundingAmount, setFundingAmountError);
+  };
+  const handleBlurPer = () => {
+    checkPercent(infoToUpdate.shareRequirement, setShareRequirementError);
+  };
+  const handleBlurDes = () => {
+    checkSummary(infoToUpdate.summary, setDesUpdateError);
+  };
+
+  const handleChangeValueUpdate = (event) => {
+    const { name, value } = event.target;
+    setInfoToUpdate({
+      ...infoToUpdate,
+      [name]: value,
+    });
+  };
+
+  const handleClickUpdate = () => {
+    checkMoney(infoToUpdate.fundingAmount, setFundingAmountError);
+    checkPercent(infoToUpdate.shareRequirement, setShareRequirementError);
+    checkSummary(infoToUpdate.summary, setDesUpdateError);
+    if (descriptionUpdate === "") {
+      showMessage("warning", "Mô tả chi tiết không được bỏ trống");
+    }
+    if (
+      fundingAmountError === "" &&
+      shareRequirementError === "" &&
+      desUpdateError === "" &&
+      descriptionUpdate !== ""
+    ) {
+      Swal.fire({
+        icon: "question",
+        title: "Bạn chắc chắn muốn cập nhật vòng gọi vốn này?",
+        heightAuto: true,
+        timerProgressBar: false,
+        showConfirmButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Đồng ý",
+        cancelButtonText: "Hủy",
+        confirmButtonColor: "#1890ff",
+        cancelButtonColor: "red",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const finalStart = moment(startDateUpdate).format("DD-MM-YYYY");
+          const finalEnd = moment(endDateUpdate).format("DD-MM-YYYY");
+          const money = parseFloat(infoToUpdate.fundingAmount);
+          const finalFund = money.toFixed(2);
+          const percent = parseFloat(infoToUpdate.shareRequirement);
+          const finalPer = percent.toFixed(2);
+          var object;
+          if (roundAndOrganization.status === "ACTIVE") {
+            if (finalEnd === "Invalid date") {
+              object = {
+                description: descriptionUpdate,
+                endDate: endDateUpdate,
+                fundingAmount: finalFund,
+                id: roundAndOrganization.idRound,
+                shareRequirement: finalPer,
+                startDate: startDateUpdate,
+                summary: infoToUpdate.summary,
+                thumbnail: thumbnailUpdate,
+              };
+            } else {
+              object = {
+                description: descriptionUpdate,
+                endDate: finalEnd,
+                fundingAmount: finalFund,
+                id: roundAndOrganization.idRound,
+                shareRequirement: finalPer,
+                startDate: startDateUpdate,
+                summary: infoToUpdate.summary,
+                thumbnail: thumbnailUpdate,
+              };
+            }
+          } else {
+            if (finalStart === "Invalid date" && finalEnd === "Invalid date") {
+              object = {
+                description: descriptionUpdate,
+                endDate: endDateUpdate,
+                fundingAmount: finalFund,
+                id: roundAndOrganization.idRound,
+                shareRequirement: finalPer,
+                startDate: startDateUpdate,
+                summary: infoToUpdate.summary,
+                thumbnail: thumbnailUpdate,
+              };
+            } else if (
+              finalStart === "Invalid date" &&
+              finalEnd !== "Invalid date"
+            ) {
+              object = {
+                description: descriptionUpdate,
+                endDate: finalEnd,
+                fundingAmount: finalFund,
+                id: roundAndOrganization.idRound,
+                shareRequirement: finalPer,
+                startDate: startDateUpdate,
+                summary: infoToUpdate.summary,
+                thumbnail: thumbnailUpdate,
+              };
+            } else if (
+              finalStart !== "Invalid date" &&
+              finalEnd === "Invalid date"
+            ) {
+              object = {
+                description: descriptionUpdate,
+                endDate: endDateUpdate,
+                fundingAmount: finalFund,
+                id: roundAndOrganization.idRound,
+                shareRequirement: finalPer,
+                startDate: finalStart,
+                summary: infoToUpdate.summary,
+                thumbnail: thumbnailUpdate,
+              };
+            } else if (
+              finalStart !== "Invalid date" &&
+              finalEnd !== "Invalid date"
+            ) {
+              object = {
+                description: descriptionUpdate,
+                endDate: finalEnd,
+                fundingAmount: finalFund,
+                id: roundAndOrganization.idRound,
+                shareRequirement: finalPer,
+                startDate: finalStart,
+                summary: infoToUpdate.summary,
+                thumbnail: thumbnailUpdate,
+              };
+            }
+          }
+          updateRoud(object, props.history);
+        }
+      });
+    }
+  };
+
+  const updateRoud = (object, history) => {
+    axios({
+      method: "PUT",
+      url: defaultUrlAPI() + "round/updateRound",
+      data: object,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          showMessage("success", res.data);
+          setTimeout(() => {
+            dispatch(getRoundAndOrganization(object.id));
+            handleClose();
+          }, 2000);
+        } else {
+          showMessage("error", res.data);
+        }
+      })
+      .catch((err) => {
+        sessionTimeOut(err, history);
+      });
+  };
+
+  // ----------------------
+
   const [dataDeal, setDataDeal] = useState({
     soTienDauTu: "",
     phanTramCoPhan: "",
     moTa: "",
   });
 
-  const [dateStart, setDateStart] = useState();
-  const [dateEnd, setDateEnd] = useState();
-  const [form, setForm] = useState({
-    fundingAmount: "",
-    shareRequirement: "",
-    contentSumary: "",
-  });
-  var formatDateStart = moment(dateStart).format("DD-MM-YYYY");
-  var formatDateEnd = moment(dateEnd).format("DD-MM-YYYY");
-  const dateFormat = "DD/MM/YYYY";
-  const [urModal, setUrModal] = useState(false);
-  const handleCloseModalUr = () => {
-    setForm({
-      fundingAmount: "",
-      shareRequirement: "",
-      sumary: "",
-    });
-    setDateStart(undefined);
-    setDateEnd(undefined);
-    setUrModal(false);
-    localStorage.removeItem("fundingAmount");
-    localStorage.removeItem("shareRequirement");
-    localStorage.removeItem("contentSumary");
-    localStorage.removeItem("dateStart");
-    localStorage.removeItem("dateEnd");
-  };
-  const handleChangeValue = (event) => {
-    const { name, value } = event.target;
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
-  const handleClickButtonCapNhat = (e) => {
-    e.preventDefault();
-    if (dateStart === undefined && dateEnd !== undefined) {
-      const object = {
-        endDate: formatDateEnd,
-        fundingAmount: form.fundingAmount,
-        id: roundAndOrganization.idRound,
-        mail: userInfo.gmail,
-        shareRequirement: form.shareRequirement,
-        startDate: getLocalStorage("dateStart"),
-        summary: form.contentSumary,
-        thumbnail: roundAndOrganization.logo,
-      };
-      Swal.fire({
-        icon: "warning",
-        title: "Bạn chắc chắn muốn cập nhật vòng gọi vốn?",
-        heightAuto: true,
-        timerProgressBar: false,
-        showConfirmButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Đồng ý",
-        cancelButtonText: "Hủy",
-        confirmButtonColor: "#1890ff",
-        cancelButtonColor: "red",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          dispatch(updateRound(object));
-          setUrModal(false);
-        }
-      });
-    } else if (dateStart === undefined && dateEnd === undefined) {
-      const object = {
-        endDate: getLocalStorage("dateEnd"),
-        fundingAmount: form.fundingAmount,
-        id: roundAndOrganization.idRound,
-        mail: userInfo.gmail,
-        shareRequirement: form.shareRequirement,
-        startDate: getLocalStorage("dateStart"),
-        summary: form.contentSumary,
-        thumbnail: roundAndOrganization.logo,
-      };
-      Swal.fire({
-        icon: "warning",
-        title: "Bạn chắc chắn muốn cập nhật vòng gọi vốn?",
-        heightAuto: true,
-        timerProgressBar: false,
-        showConfirmButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Đồng ý",
-        cancelButtonText: "Hủy",
-        confirmButtonColor: "#1890ff",
-        cancelButtonColor: "red",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          dispatch(updateRound(object));
-          setUrModal(false);
-        }
-      });
-    } else if (dateEnd === undefined && dateStart !== undefined) {
-      const object = {
-        endDate: getLocalStorage("dateEnd"),
-        fundingAmount: form.fundingAmount,
-        id: roundAndOrganization.idRound,
-        mail: userInfo.gmail,
-        shareRequirement: form.shareRequirement,
-        startDate: formatDateStart,
-        summary: form.contentSumary,
-        thumbnail: roundAndOrganization.logo,
-      };
-      Swal.fire({
-        icon: "warning",
-        title: "Bạn chắc chắn muốn cập nhật vòng gọi vốn?",
-        heightAuto: true,
-        timerProgressBar: false,
-        showConfirmButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Đồng ý",
-        cancelButtonText: "Hủy",
-        confirmButtonColor: "#1890ff",
-        cancelButtonColor: "red",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          dispatch(updateRound(object));
-          setUrModal(false);
-        }
-      });
-    } else if (dateStart !== undefined && dateEnd !== undefined) {
-      const object = {
-        endDate: formatDateEnd,
-        fundingAmount: form.fundingAmount,
-        id: roundAndOrganization.idRound,
-        mail: userInfo.gmail,
-        shareRequirement: form.shareRequirement,
-        startDate: formatDateStart,
-        summary: form.contentSumary,
-        thumbnail: roundAndOrganization.logo,
-      };
-      Swal.fire({
-        icon: "warning",
-        title: "Bạn chắc chắn muốn cập nhật vòng gọi vốn?",
-        heightAuto: true,
-        timerProgressBar: false,
-        showConfirmButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Đồng ý",
-        cancelButtonText: "Hủy",
-        confirmButtonColor: "#1890ff",
-        cancelButtonColor: "red",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          dispatch(updateRound(object));
-          setUrModal(false);
-        }
-      });
-    }
-  };
-  const handleOpenModalUr = () => {
-    localStorages("fundingAmount", roundAndOrganization.fundingAmount);
-    localStorages("dateStart", roundAndOrganization.startDate);
-    localStorages("shareRequirement", roundAndOrganization.shareRequirement);
-    localStorages("dateEnd", roundAndOrganization.endDate);
-    localStorages("contentSumary", roundAndOrganization.summary);
-    form.fundingAmount = roundAndOrganization.fundingAmount;
-    form.dateStart = roundAndOrganization.startDate;
-    form.shareRequirement = roundAndOrganization.shareRequirement;
-    form.dateEnd = roundAndOrganization.endDate;
-    form.contentSumary = roundAndOrganization.summary;
-    setUrModal(true);
-  };
   const [openModal, setOpenModal] = useState(false);
   const handleChangeEdit = (event) => {
     const { value, name } = event.target;
@@ -210,10 +274,10 @@ function RoundDeail() {
       timerProgressBar: false,
       showConfirmButton: true,
       showCancelButton: true,
-      cancelButtonText: "Hủy",
-      cancelButtonColor: "gray",
       confirmButtonText: "Đồng ý",
-      confirmButtonColor: "#112D4E",
+      cancelButtonText: "Hủy",
+      confirmButtonColor: "#1890ff",
+      cancelButtonColor: "red",
     }).then(async (result) => {
       if (result.isConfirmed) {
         dispatch(updateStatusRoundDetail(obj, roundAndOrganization.idRound));
@@ -246,9 +310,29 @@ function RoundDeail() {
       }
     });
   };
-  const { roundAndOrganization } = useSelector((state) => state.round);
-  const { listDealByRound } = useSelector((state) => state.round);
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const handleDeleteRound = () => {
+    Swal.fire({
+      icon: "warning",
+      title: "Bạn có chắc muốn xóa vòng gọi vốn?",
+      heightAuto: true,
+      timerProgressBar: false,
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Đồng ý",
+      cancelButtonText: "Hủy",
+      confirmButtonColor: "#1890ff",
+      cancelButtonColor: "red",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const object = {
+          id: roundAndOrganization.idRound,
+          status: "Hủy",
+        };
+        dispatch(userDeleteRound(object, props.history));
+      }
+    });
+  };
   return (
     <div className="roundDetail__wrapper">
       <img
@@ -331,17 +415,25 @@ function RoundDeail() {
             <span className="label__fontWeightV2">Mô tả sơ lược: </span>
             <span>{roundAndOrganization.summary}</span>
           </div>
-          {userInfo.role === "ORGANIZATION" && (
-            <img
-              className="rd__editInfo"
-              src={Images.PENCIL}
-              alt="edit"
-              onClick={handleOpenModalUr}
-            />
-          )}
-          {userInfo.role == "INVESTOR" && (
+          {userInfo.role === "ORGANIZATION" &&
+            (roundAndOrganization.status === "ACTIVE" ||
+            roundAndOrganization.status === "PENDING" ? (
+              listDealByRound && listDealByRound.length === 0 ? (
+                <img
+                  className="rd__editInfo"
+                  src={Images.PENCIL}
+                  alt="edit"
+                  onClick={handleClickPencil}
+                />
+              ) : (
+                <></>
+              )
+            ) : (
+              <></>
+            ))}
+          {userInfo.role === "INVESTOR" && (
             <div className="rd__joinRound">
-              {listDealByRound == "No Data" &&
+              {listDealByRound === "No Data" &&
                 roundAndOrganization.status !== "EXPIRATION" && (
                   <Button
                     className="rd__joinButton"
@@ -354,22 +446,67 @@ function RoundDeail() {
                 )}
             </div>
           )}
-          {userInfo.role == "ORGANIZATION" &&
-            listDealByRound.length === 0 &&
+          {userInfo.role === "ORGANIZATION" &&
             roundAndOrganization.status !== "EXPIRATION" &&
             roundAndOrganization.status !== "PENDING" && (
-              <div className="rd__endRound">
-                <Button
-                  className="rd__buttonEndRound"
-                  size="large"
-                  onClick={handleClickEnd}
-                  type="primary"
-                >
-                  Kết thúc vòng gọi vốn
-                </Button>
+              <div className="rd__roundDetailActoun">
+                {listDealByRound.length === 0 ? (
+                  <div className="rd__deleteRound">
+                    <Button
+                      type="primary"
+                      className="rd__buttonDeleteRound"
+                      size="large"
+                      onClick={handleDeleteRound}
+                    >
+                      Xóa vòng gọi vốn
+                    </Button>
+                  </div>
+                ) : (
+                  <></>
+                )}
+
+                <div className="rd__endRound">
+                  <Button
+                    className="rd__buttonEndRound"
+                    size="large"
+                    onClick={handleClickEnd}
+                    type="primary"
+                  >
+                    Kết thúc vòng gọi vốn
+                  </Button>
+                </div>
               </div>
             )}
         </div>
+
+        <ModalUpdateRoundV2
+          data={roundAndOrganization}
+          open={openModalUpdate}
+          close={handleClose}
+          infoToUpdate={infoToUpdate}
+          descriptionUpdate={descriptionUpdate}
+          thumbnailUpdate={thumbnailUpdate}
+          startDateUpdate={startDateUpdate}
+          endDateUpdate={endDateUpdate}
+          dateFormat={format}
+          handleBlurFunding={handleBlurFunding}
+          handleBlurPer={handleBlurPer}
+          handleBlurDes={handleBlurDes}
+          handleChangeValueUpdate={handleChangeValueUpdate}
+          handleClickUpdate={handleClickUpdate}
+          //
+          setThumbnailUpdate={setThumbnailUpdate}
+          setsStartDateUpdate={setsStartDateUpdate}
+          setEndDateUpdate={setEndDateUpdate}
+          setDescriptionUpdate={setDescriptionUpdate}
+          //
+          desUpdateError={desUpdateError}
+          fundingAmountError={fundingAmountError}
+          shareRequirementError={shareRequirementError}
+          thumbnailError={thumbnailError}
+          setThumbnailError={setThumbnailError}
+          //
+        />
 
         <ModalConfirmDeal
           openModal={openModal}
@@ -377,18 +514,8 @@ function RoundDeail() {
           handleChangeValue={handleChangeEdit}
           handleCreateDealForm={handleCreateDealForm}
         />
-
-        <ModalUpdateRound
-          handleUpdate={handleClickButtonCapNhat}
-          dateFormat={dateFormat}
-          setDateStart={setDateStart}
-          setDateEnd={setDateEnd}
-          handleChangeValue={handleChangeValue}
-          urModal={urModal}
-          closeModal={handleCloseModalUr}
-        />
       </div>
     </div>
   );
 }
-export default RoundDeail;
+export default withRouter(RoundDeail);

@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   authorizationAccount,
   sessionTimeOut,
+  showMessage,
 } from "../../assets/helper/helper";
 import { defaultUrlAPI, defaultUrlAPIStringTemplate } from "../../configs/url";
 import "antd/dist/antd.css";
@@ -9,6 +10,8 @@ import { notification } from "antd";
 import { getValueListIndustry, getValueListStage } from "./value.action";
 import message from "../../assets/message/text";
 import {
+  GET_VALUE_ACCOUNT_FAILED,
+  GET_VALUE_ACCOUNT_SUCCESS,
   GET_VALUE_ARTICLE_FAILED,
   GET_VALUE_ARTICLE_SUCCESS,
 } from "../constants/value.const";
@@ -244,5 +247,101 @@ const getValueArticleFailed = (err) => {
   return {
     type: GET_VALUE_ARTICLE_FAILED,
     payload: err,
+  };
+};
+
+export const getValueAccount = (history, isLoading) => {
+  return (dispatch) => {
+    if (isLoading === true) {
+      dispatch(startLoading());
+    }
+    axios({
+      method: "GET",
+      url: defaultUrlAPI() + "account-confirmed",
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch(getValueAccountSuccess(res.data));
+        } else {
+          notification["error"]({
+            message: message.CACTH_ERROR,
+          });
+        }
+      })
+      .catch((err) => {
+        dispatch(getValueAccountFailed(err));
+        sessionTimeOut(err, history);
+      });
+  };
+};
+
+export const getValueAccountSuccess = (list) => {
+  return {
+    type: GET_VALUE_ACCOUNT_SUCCESS,
+    payload: list,
+  };
+};
+
+export const getValueAccountFailed = (err) => {
+  return {
+    type: GET_VALUE_ACCOUNT_FAILED,
+    payload: err,
+  };
+};
+
+export const adminBlockAccoutn = (gmail, name, history) => {
+  return (dispatch) => {
+    axios({
+      method: "PUT",
+      url: defaultUrlAPIStringTemplate() + `block-account?gmail=${gmail}`,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          notification["success"]({
+            message: "Khóa tài khoản " + name + " thành công",
+          });
+          dispatch(getValueAccount(history, false));
+        } else {
+          notification["error"]({
+            message: "Khóa tài khoản " + name + " thất bại",
+          });
+        }
+      })
+      .catch((err) => {
+        sessionTimeOut(err, history);
+      });
+  };
+};
+
+export const adminOpenAccount = (gmail, name, history) => {
+  return (dispatch) => {
+    axios({
+      method: "PUT",
+      url: defaultUrlAPIStringTemplate() + `open-account?gmail=${gmail}`,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          notification["success"]({
+            message: "Mở khóa tài khoản " + name + " thành công",
+          });
+          dispatch(getValueAccount(history, false));
+        } else {
+          notification["error"]({
+            message: "Mở khóa tài khoản " + name + " thất bại",
+          });
+        }
+      })
+      .catch((err) => {
+        sessionTimeOut(err, history);
+      });
   };
 };

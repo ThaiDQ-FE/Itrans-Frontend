@@ -766,7 +766,7 @@ export const getRoundActiveV2 = (idOrg, history) => {
         if (res.status === 200) {
           dispatch(getRoundActiveSuccessV2(res.data));
         } else {
-          showMessage("error", message.CACTH_ERROR);
+          dispatch(getRoundActiveSuccessV2({}));
         }
       })
       .catch((err) => {
@@ -894,5 +894,31 @@ const getListAllRoundV2Failed = (err) => {
   return {
     type: GET_ALL_ROUND_ACTIVE_FAILED_V2,
     payload: err,
+  };
+};
+
+export const userDeleteRound = (object, history) => {
+  return (dispatch) => {
+    axios({
+      method: "PUT",
+      url: defaultUrlAPI() + "round/updateStatusRound",
+      data: object,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          showMessage("success", "Xóa vòng gọi vốn thành công");
+          setTimeout(() => {
+            history.push("/quan-ly-tai-khoan");
+          }, 2000);
+        } else {
+          showMessage("error", "Xóa vòng gọi vốn thất bại");
+        }
+      })
+      .catch((err) => {
+        sessionTimeOut(err, history);
+      });
   };
 };

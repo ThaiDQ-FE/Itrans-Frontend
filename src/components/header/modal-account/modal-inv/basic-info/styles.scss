@@ -75,14 +75,17 @@
         justify-content: space-between;
         margin-top: 20px;
         .maib__web {
-            width: 60%;
+            width: 38%;
         }
         .maib__selectIType {
-            width: 35%;
+            width: 30%;
             .maib__select {
                 display: block;
                 width: 100%;
             }
+        }
+        .maib__taxCode {
+            width: 25%;
         }
     }
 }

@@ -1,21 +1,59 @@
 import React from "react";
 import "antd/dist/antd.css";
 import "./styles.scss";
-import { Table, Button } from "antd";
+import { Table, Button, Tag, Tooltip } from "antd";
+import Swal from "sweetalert2";
 import Images from "../../../../../assets/images/images";
-function ANACTableDone() {
-  const data = [];
-  for (let i = 0; i < 50; i++) {
-    data.push({
-      key: i,
-      logo: "",
-      loaiHinh: "Tổ chức 1" + i,
-      tenTaiKhoan: "Đặng Quốc Thái",
-      gmail: "dangquocthai07061998@gmail.com",
-      ngayDangKy: "01-01-2021",
+import { useDispatch } from "react-redux";
+import {
+  adminBlockAccoutn,
+  adminOpenAccount,
+} from "../../../../../store/action/admin.action";
+import { withRouter } from "react-router-dom";
+function ANACTableDone(props) {
+  const dispatch = useDispatch();
+  const handleBlockAccount = (value) => {
+    Swal.fire({
+      icon: "question",
+      title: `${
+        value.status === "ACTIVE"
+          ? "Bạn muốn khóa tài khoản này?"
+          : "Bạn muốn mở khóa tài khoản này?"
+      }`,
+      text: `${value.name}`,
+      heightAuto: true,
+      timerProgressBar: false,
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Đồng ý",
+      cancelButtonText: "Hủy",
+      confirmButtonColor: "#1890ff",
+      cancelButtonColor: "red",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (value.status === "ACTIVE") {
+          dispatch(adminBlockAccoutn(value.gmail, value.name, props.history));
+        } else {
+          dispatch(adminOpenAccount(value.gmail, value.name, props.history));
+        }
+      }
     });
-  }
+  };
   const column = [
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      render: (value) => (
+        <div className="anac__logo" style={{ textAlign: "center" }}>
+          {value === "ACTIVE" ? (
+            <Tag className="anrc__active">Hoạt động</Tag>
+          ) : (
+            <Tag className="anrc__delete">Đã khóa</Tag>
+          )}
+        </div>
+      ),
+    },
     {
       title: "Ảnh",
       dataIndex: "logo",
@@ -28,34 +66,52 @@ function ANACTableDone() {
     },
     {
       title: "Loại hình",
-      dataIndex: "loaiHinh",
-      key: "loaiHinh",
+      dataIndex: "role",
+      key: "role",
     },
     {
       title: "Tên tài khoản",
-      dataIndex: "tenTaiKhoan",
-      key: "tenTaiKhoan",
+      dataIndex: "name",
+      key: "name",
+      width: "200px",
+      render: (value) => (
+        <Tooltip title={value} placement="topRight">
+          <div className="anac__name">{value}</div>
+        </Tooltip>
+      ),
     },
     {
-      title: "Gmail",
+      title: "Mail",
       dataIndex: "gmail",
       key: "gmail",
+      width: "200px",
+      render: (value) => (
+        <Tooltip title={value} placement="topRight">
+          <div className="anac__mail">{value}</div>
+        </Tooltip>
+      ),
     },
     {
       title: "Ngày đăng ký",
-      dataIndex: "ngayDangKy",
-      key: "ngayDangKy",
+      dataIndex: "createAt",
+      key: "createAt",
       render: (value) => (
         <p style={{ textAlign: "center", margin: 0 }}>{value}</p>
       ),
     },
     {
       title: "",
-      dataIndex: "action",
-      key: "action",
-      render: (round) => (
+      dataIndex: "status",
+      key: "status",
+      render: (round, value) => (
         <div className="anac__button" style={{ textAlign: "center" }}>
-          <Button type="primary">Chi tiết</Button>
+          <Button
+            type="primary"
+            className={value.status === "ACTIVE" ? "anac__block" : "anac__open"}
+            onClick={() => handleBlockAccount(value)}
+          >
+            {value.status === "ACTIVE" ? "Khóa" : "Mở"}
+          </Button>
         </div>
       ),
     },
@@ -63,10 +119,10 @@ function ANACTableDone() {
   return (
     <Table
       columns={column}
-      dataSource={data}
-      key={data.key}
+      dataSource={props.list}
+      key={props.list.gmail}
       pagination={
-        data.length < 6
+        props.list.length < 6
           ? false
           : {
               defaultPageSize: 6,
@@ -76,4 +132,4 @@ function ANACTableDone() {
   );
 }
 
-export default ANACTableDone;
+export default withRouter(ANACTableDone);

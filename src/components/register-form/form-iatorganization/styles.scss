@@ -92,13 +92,16 @@
                         justify-content: space-between;
                         margin-top: 20px;
                         .fiato__linkWebsite {
-                            width: 60%;
+                            width: 40%;
                         }
                         .fiato__giaiDoanPhatTrien {
-                            width: 35%;
+                            width: 28%;
                             .fiato__selectStage {
                                 display: block;
                             }
+                        }
+                        .fiato__taxCode {
+                            width: 27%;
                         }
                     }
                 }

@@ -4,10 +4,10 @@ const message = {
   // form-role
   REGISTER_ORGANIZATION: "Tổ Chức Khởi Nghiệp",
   REGISTER_ORGANIZATION_TEXT:
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit.Consectetur ut deleniti molestias porro aliquid, sapientelaudantium aperiam odit tenetur.",
+    "Là một định chế/tổ chức con người được thiết kế nhằm mục đích tạo ra những sản phẩm và dịch vụ mới trong các điều kiện cực kỳ không chắc chắn.",
   REGISTER_INVESTOR: "Nhà Đầu Tư",
   REGISTER_INVESTOR_TEXT:
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit.Consectetur ut deleniti molestias porro aliquid, sapientelaudantium aperiam odit tenetur.",
+    "Là người tham gia vào một hay nhiều vụ đầu tư dưới các hình thức khác nhau. Nhà đầu tư có thể là một cá nhân, một doanh nghiệp, một tổ chức.",
   CHOOSE_ROLE_TEXT:
     "Chọn loại người dùng để bắt đầu quy trình đăng ký tài khoản!",
   INSTITUTIONAL_INVESTOR: "Nhà đầu tư tổ chức",

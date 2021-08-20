@@ -70,6 +70,16 @@ function MainTemplate(props) {
                   </li>
                 </>
               )}
+              <li className="easy-icons easy-pers">
+                <NavLink
+                  className="easy-nav"
+                  to="/quan-ly-tai-khoan"
+                  exact={true}
+                >
+                  <img className="img-icon" src={Images.BUILDINGS} alt="per" />
+                  Trang cá nhân
+                </NavLink>
+              </li>
             </ul>
           </div>
         ) : (

@@ -63,6 +63,15 @@ function FormAngelInvestorInformation(props) {
                   {children}
                 </Select>
               </div>
+              {/* tax code */}
+              <div className="faii__taxCode">
+                <label className="label__fontWeight">Mã số thuế</label>
+                <Input
+                  // placeholder="VD: https://www.facebook.com/"
+                  size="large"
+                />
+              </div>
+              {/* end tax */}
             </div>
             <div className="faii__formMiddle"></div>
             <div className="faii__formRight">

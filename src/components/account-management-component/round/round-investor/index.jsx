@@ -6,8 +6,10 @@ import Images from "../../../../assets/images/images";
 import { useHistory } from "react-router-dom";
 import {
   checkPathUrl,
+  checkRoleUser,
   localStorages,
   pathQuanLyTaiKhoan,
+  showMessage,
 } from "../../../../assets/helper/helper";
 function RoundByIdInvestor(props) {
   const [length, setLength] = useState({
@@ -29,7 +31,14 @@ function RoundByIdInvestor(props) {
     }
   };
   const handleClickToDetail = () => {
-    history.push("/thong-tin-chi-tiet-vong-goi-von");
+    if (checkRoleUser() === "INVESTOR") {
+      history.push("/thong-tin-chi-tiet-vong-goi-von");
+    } else {
+      showMessage(
+        "warning",
+        "Rất tiếc bạn không thể xem chi tiết vòng gọi vốn"
+      );
+    }
   };
   const handleClickToRound = () => {
     history.push("/vong-goi-von");

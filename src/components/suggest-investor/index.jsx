@@ -64,31 +64,42 @@ function SuggestInvestor(props) {
           <></>
         ) : (
           <div className="si__stage">
-            <span className="label__fontWeight">Giai đoạn muốn đầu tư: </span><Tag color="magenta">{value.stage}</Tag>
+            <span className="label__fontWeight">Giai đoạn muốn đầu tư: </span>
+            <Tag color="magenta">{value.stage}</Tag>
           </div>
         )}
         {value.min === 0 ? (
           <></>
         ) : (
           <div className="si__money">
-           <span className="label__fontWeight">Số tiền đầu tư: </span> <Tag color="green" className="si__minMoney">
+            <span className="label__fontWeight">Số tiền đầu tư: </span>{" "}
+            <Tag color="green" className="si__minMoney">
               {value.min + " Tỷ VNĐ"}
             </Tag>
             {"- "}
             <Tag color="green">{value.max + " Tỷ VNĐ"}</Tag>
           </div>
         )}
-  {value.industries && value.industries.length > 0 ? <div className="si__indus">
-          <span className="label__fontWeight">Lĩnh vực muốn đầu tư: </span> <span>{renderListIndus(value.industries)}</span>
-        </div>: <></>}
-        {value.provinces && value.provinces.length > 0 ? <div className="si__pro">
-          <span className="label__fontWeight">Tỉnh thành muốn đầu tư: </span><span>{renderListPro(value.provinces)}</span>
-        </div> : <></>}
-        
+        {value.industries && value.industries.length > 0 ? (
+          <div className="si__indus">
+            <span className="label__fontWeight">Lĩnh vực muốn đầu tư: </span>{" "}
+            <span>{renderListIndus(value.industries)}</span>
+          </div>
+        ) : (
+          <></>
+        )}
+        {value.provinces && value.provinces.length > 0 ? (
+          <div className="si__pro">
+            <span className="label__fontWeight">Tỉnh thành muốn đầu tư: </span>
+            <span>{renderListPro(value.provinces)}</span>
+          </div>
+        ) : (
+          <></>
+        )}
       </>
     );
   };
-  
+
   return (
     <div className="si__wrapper">
       {roundAndOrganization.status !== "PENDING" &&
@@ -130,7 +141,7 @@ function SuggestInvestor(props) {
                           placement="rightTop"
                         >
                           <Tag className="si__count" color="purple">
-                            Tiêu chí phù hợp
+                            Phù hợp: {value.count}/4 tiêu chí
                           </Tag>
                         </Popover>
                         <div className="si__name">

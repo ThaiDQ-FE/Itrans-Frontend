@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./styles.scss";
+import axios from "axios";
 import "antd/dist/antd.css";
 import { Input, Select, Tooltip } from "antd";
 import Messages from "../../../assets/message/text";
@@ -8,19 +9,26 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getListIndustry,
   getListProvince,
+  getListProvinceInvestor,
   getListRegion,
+  getListRegionInvestor,
   getListStage,
 } from "../../../store/action/register.action";
 import { storage } from "../../../configs/firebase";
 import { getLocalStorage } from "../../../assets/helper/helper";
+console.log("e ban");
 function FormInvestor(props) {
   const { Option } = Select;
   const { TextArea } = Input;
   const dispatch = useDispatch();
-  const { listProvince, listStage, listIndustry, listRegion } = useSelector(
-    (state) => state.register
-  );
-
+  const {
+    listProvince,
+    listStage,
+    listIndustry,
+    listRegion,
+    listProvinceInvestor,
+    listRegionInvestor,
+  } = useSelector((state) => state.register);
   const [information, setInformation] = useState({
     name: "",
     industry: "",
@@ -34,6 +42,7 @@ function FormInvestor(props) {
     province: "",
     min: "",
     max: "",
+    taxCode:""
   });
   const saveData = getLocalStorage("Form2Investor");
   if (saveData !== null) {
@@ -126,7 +135,7 @@ function FormInvestor(props) {
       const upload = storage.ref(`images/${image.name}`).put(image);
       upload.on(
         "state_changed",
-        (snapshot) => { },
+        (snapshot) => {},
         (error) => {
           console.log(error);
         },
@@ -158,7 +167,6 @@ function FormInvestor(props) {
   const regexFloat = /^\d+(\.\d+)?$/;
   const validate = (values) => {
     let errors = {};
-    console.log()
     if (!values.name) {
       errors.name = "Tên nhà/quỹ đầu tư không được để trống";
     } else {
@@ -240,8 +248,7 @@ function FormInvestor(props) {
       errors.max = "Số tiền lớn nhất phải lớn hơn 0";
     } else if (!regexFloat.test(values.max)) {
       errors.max = "Số tiền lớn nhất phải là số";
-    }
-    else if (parseFloat(values.min) >= parseFloat(values.max)) {
+    } else if (parseFloat(values.min) >= parseFloat(values.max)) {
       errors.max = "Số tiền lớn nhất phải lớn hơn số tiền nhỏ nhất";
     } else {
       errors.max = "";
@@ -341,6 +348,7 @@ function FormInvestor(props) {
     province: "",
     min: "",
     max: "",
+    taxCode:""
   });
   const [color, setColor] = useState({
     name: "",
@@ -355,6 +363,7 @@ function FormInvestor(props) {
     province: "",
     min: "",
     max: "",
+    taxCode:""
   });
   function validateEmail(email) {
     var re = /\S+\.\S+/;
@@ -373,7 +382,7 @@ function FormInvestor(props) {
   const handleBack = () => {
     localStorage.setItem("Form2Investor", JSON.stringify(information));
     props.handleBack();
-  }
+  };
   const handleChangeInput = (event) => {
     const { value, name } = event.target;
     setInformation({
@@ -381,7 +390,6 @@ function FormInvestor(props) {
       [name]: value,
     });
   };
-
   const handleChangeIdProvince = (value, action) => {
     setInformation({
       ...information,
@@ -393,6 +401,18 @@ function FormInvestor(props) {
     for (let index = 0; index < action.length; index++) {
       valueAction.push(parseInt(action[index].key));
     }
+
+    let url = "http://localhost:8080/api/v1/auth/get-province-investor?";
+    let urlNone = "";
+    valueAction.map((value, index) => {
+      let params = `idRegion=${value}`;
+      if (index === valueAction.length - 1) {
+        urlNone = urlNone + params;
+      } else {
+        urlNone = urlNone + params + `&`;
+      }
+    });
+    dispatch(getListProvinceInvestor(url, urlNone));
     setInformation({
       ...information,
       region: valueAction,
@@ -403,6 +423,17 @@ function FormInvestor(props) {
     for (let index = 0; index < action.length; index++) {
       valueAction.push(parseInt(action[index].key));
     }
+    let url = "http://localhost:8080/api/v1/auth/get-region-investor?";
+    let urlNone = "";
+    valueAction.map((value, index) => {
+      let params = `idProvince=${value}`;
+      if (index === valueAction.length - 1) {
+        urlNone = urlNone + params;
+      } else {
+        urlNone = urlNone + params + `&`;
+      }
+    });
+    dispatch(getListRegionInvestor(url, urlNone));
     setInformation({
       ...information,
       province: valueAction,
@@ -430,7 +461,7 @@ function FormInvestor(props) {
     });
   };
 
-  const renderListProvince = () => {
+  let renderListProvince = () => {
     return listProvince.map((item, index) => {
       return (
         <Option name="idProvince" value={item.name} key={item.idProvince}>
@@ -439,8 +470,8 @@ function FormInvestor(props) {
       );
     });
   };
-  const renderListProvinceOr = () => {
-    return listProvince.map((item, index) => {
+  let renderListProvinceOr = () => {
+    return listProvinceInvestor.map((item, index) => {
       return (
         <Option name="province" value={item.name} key={item.idProvince}>
           {item.name}
@@ -448,7 +479,7 @@ function FormInvestor(props) {
       );
     });
   };
-  const renderListStage = () => {
+  let renderListStage = () => {
     return listStage.map((item, index) => {
       return (
         <Option name="stage" value={item.name} key={item.idStage}>
@@ -457,8 +488,8 @@ function FormInvestor(props) {
       );
     });
   };
-  const renderListRegion = () => {
-    return listRegion.map((item, index) => {
+  let renderListRegion = () => {
+    return listRegionInvestor.map((item, index) => {
       return (
         <Option name="region" value={item.name} key={item.idRegion}>
           {item.name}
@@ -466,7 +497,7 @@ function FormInvestor(props) {
       );
     });
   };
-  const renderListIndustry = () => {
+  let renderListIndustry = () => {
     return listIndustry.map((item, index) => {
       return (
         <Option
@@ -485,6 +516,18 @@ function FormInvestor(props) {
     dispatch(getListIndustry());
     dispatch(getListStage());
     dispatch(getListRegion());
+    dispatch(
+      getListProvinceInvestor(
+        "http://localhost:8080/api/v1/auth/get-province-investor",
+        ""
+      )
+    );
+    dispatch(
+      getListRegionInvestor(
+        "http://localhost:8080/api/v1/auth/get-region-investor",
+        ""
+      )
+    );
     // localStorage.setItem("Form2Investor", JSON.stringify(information));
   }, []);
   return (
@@ -544,7 +587,7 @@ function FormInvestor(props) {
                       placeholder="VD: 1998"
                       type="text"
                       maxLength="9"
-                      style={{ border: color.foundedYear, textAlign: 'end' }}
+                      style={{ border: color.foundedYear, textAlign: "end" }}
                       value={information.foundedYear}
                       name="foundedYear"
                       size="large"
@@ -563,7 +606,10 @@ function FormInvestor(props) {
                       placeholder="VD: 1658"
                       type="text"
                       maxLength="9"
-                      style={{ border: color.numberOfEmployee, textAlign: 'end' }}
+                      style={{
+                        border: color.numberOfEmployee,
+                        textAlign: "end",
+                      }}
                       name="numberOfEmployee"
                       value={information.numberOfEmployee}
                       size="large"
@@ -606,6 +652,21 @@ function FormInvestor(props) {
                     </Select>
                   </Tooltip>
                 </div>
+                {/* Tax code */}
+                <div className="fi__taxCode">
+                  <small className="label__fontWeight">Mã số thuế</small>
+                  <Tooltip title={errors.taxCode} placement="topRight" color="red">
+                    <Input
+                      style={{ border: color.tax }}
+                      name="taxCode"
+                      size="large"
+                      onChange={handleChangeInput}
+                      value={information.taxCode}
+                      // placeholder="VD: https://www.facebook.com/"
+                    />
+                  </Tooltip>
+                </div>
+                {/* end tax code */}
               </div>
             </div>
           </div>
@@ -709,7 +770,7 @@ function FormInvestor(props) {
                         type="text"
                         maxLength="9"
                         addonAfter="Tỷ VNĐ"
-                        style={{ border: color.min, textAlign: 'end' }}
+                        style={{ border: color.min, textAlign: "end" }}
                         name="min"
                         value={information.min}
                         size="large"
@@ -728,7 +789,7 @@ function FormInvestor(props) {
                         type="text"
                         maxLength="9"
                         addonAfter="Tỷ VNĐ"
-                        style={{ border: color.max, textAlign: 'end' }}
+                        style={{ border: color.max, textAlign: "end" }}
                         name="max"
                         value={information.max}
                         size="large"

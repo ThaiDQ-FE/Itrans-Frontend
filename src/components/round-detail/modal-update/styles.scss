@@ -1,4 +1,4 @@
-.modal__addRound {
+.modal__updateRound {
     width: 780px !important;
     top: 20px;
     .ant-modal-content {
@@ -6,7 +6,7 @@
             padding: 30px;
         }
     }
-    .modal__addRoundWrapper {
+    .modal__updateRoundWrapper {
         .modal__addRoundLineOne {
             display: flex;
             justify-content: space-between;
@@ -81,14 +81,40 @@
                 }
             }
         }
-        .modal__addRoundLineThree {
+        .modal__labelUpdateRound {
             margin-top: 20px;
         }
-        .modal__addRoundLineFour {
-            margin-top: 20px;
+        .modal__updateButton {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            .formcr__noti {
+                ul {
+                    list-style-type: "*";
+                    margin-bottom: 0;
+                    li {
+                        font-style: italic;
+                        .formcr__stage {
+                            color: green;
+                            font-weight: 700;
+                            text-transform: uppercase;
+                        }
+                        .formcr__active {
+                            color: green;
+                            font-weight: 700;
+                            text-transform: uppercase;
+                        }
+                        .formcr__pending {
+                            color: orange;
+                            font-weight: 700;
+                            text-transform: uppercase;
+                        }
+                    }
+                }
+            }
         }
     }
 }
-.modal__labelAddRound {
+.modal__labelUpdateRound {
     font-weight: 600;
 }

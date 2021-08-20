@@ -3,87 +3,63 @@ import { Button, Input, Tooltip, Form, Space } from "antd";
 import { MinusCircleOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import "./styles.scss";
+import { Editor } from "@tinymce/tinymce-react";
+import { defaultContentForUser, keyTinyMCE } from "../../../../configs/tinyMCE";
 function FormCreateRound(props) {
-  const { TextArea } = Input;
+  const defaultContent = (editor) => {
+    editor.setContent(defaultContentForUser());
+  };
+  const handleChangeEditor = (e) => {
+    props.setContent(e.target.getContent());
+  };
   return (
-    <Form className="formCreateRound__wrapper" onFinish={props.onSubmit}>
-      <div className="formCreateRound__container">
-        <div className="formCreateRound__form">
-          <Form.List name="form">
-            {(fields, { add, remove }) => (
-              <>
-                {fields.map(({ key, name, fieldKey, ...restField }) => (
-                  <Space
-                    key={key}
-                    style={{ display: "flex", marginBottom: 8 }}
-                    align="baseline"
-                  >
-                    <Form.Item
-                      {...restField}
-                      name={[name, "title"]}
-                      fieldKey={[fieldKey, "title"]}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Tiêu đề không được bỏ trống",
-                        },
-                        { min: 5, message: "Độ dài tối thiểu là 5 ký tự" },
-                        { max: 200, message: "Độ dài tối đa là 200 ký tự" },
-                      ]}
-                    >
-                      <TextArea
-                        placeholder="Tiêu đề"
-                        style={{ resize: "none" }}
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      {...restField}
-                      name={[name, "content"]}
-                      fieldKey={[fieldKey, "content"]}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Nội dung không được bỏ trống",
-                        },
-                        {
-                          min: 50,
-                          message: "Độ dài tối thiểu là 50 ký tự",
-                        },
-                        { max: 5000, message: "Độ dài tối đa là 5000 ký tự" },
-                      ]}
-                    >
-                      <TextArea
-                        placeholder="Nội dung"
-                        style={{ resize: "none" }}
-                      />
-                    </Form.Item>
-                    <MinusCircleOutlined
-                      className="formCreateRound__close"
-                      onClick={() => remove(name)}
-                    />
-                  </Space>
-                ))}
-                <Form.Item className="formCreateRound__themTD">
-                  <Button type="dashed" onClick={() => add()} block>
-                    Thêm tiêu đề và nội dung
-                  </Button>
-                </Form.Item>
-              </>
-            )}
-          </Form.List>
-        </div>
+    <div className="formcr__wrapper">
+      <div className="formcr__editor">
+        <Editor
+          apiKey={keyTinyMCE}
+          init={{
+            init_instance_callback: defaultContent,
+            height: 400,
+            menubar: false,
+            language: "vi",
+            language_url: "/langs/vi.js",
+            fontsize_formats:
+              "8pt 9pt 10pt 11pt 12pt 14pt 16pt 18pt 24pt 30pt 36pt 48pt 60pt 72pt 96pt",
+            plugins: [
+              "advlist autolink lists link image preview charmap print preview anchor help searchreplace visualblocks code insertdatetime media table paste wordcount",
+            ],
+            toolbar:
+              "undo redo | formatselect | fontsizeselect | forecolor backcolor | bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | help",
+            toolbar_mode: "floating",
+          }}
+          onChange={handleChangeEditor}
+        />
       </div>
-      <div style={{ textAlign: "right", marginTop: 20 }}>
+      <div className="formcr__bottom">
+        <div className="formcr__noti">
+          <ul>
+            <li>
+              Giai đoạn gọi vốn là{" "}
+              <span className="formcr__stage">giai đoạn hiện tại</span>
+            </li>
+            <li>
+              Tối đa{" "}
+              <span className="formcr__active">1 vòng gọi vốn hiện tại</span> và{" "}
+              <span className="formcr__pending">1 vòng gọi vốn đang chờ</span>
+            </li>
+          </ul>
+        </div>
         <Button
           size="large"
           type="primary"
           htmlType="submit"
           disabled={props.loading === true || props.loadingCer === true}
+          onClick={props.onSubmit}
         >
           Tạo vòng gọi vốn
         </Button>
       </div>
-    </Form>
+    </div>
   );
 }
 

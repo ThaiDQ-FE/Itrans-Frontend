@@ -1,12 +1,34 @@
 import React from "react";
 import { Input, Tooltip, DatePicker, Spin, Popover } from "antd";
-import "antd/dist/antd.css";
 import "./styles.scss";
+import "antd/dist/antd.css";
+import moment from "moment";
 import Images from "../../../../assets/images/images";
-import { storage } from "../../../../configs/firebase";
 import configConstFirebase from "../../../../assets/helper/firebase/firebase";
-function InfoInputCreateRound(props) {
+import { storage } from "../../../../configs/firebase";
+function InfoUpdateRound(props) {
   const { TextArea } = Input;
+  const content = (
+    <div>
+      <span>Hệ thống sẽ tự làm tròn số.</span>
+      <br />
+      <span>Ví dụ:</span>
+      <br />
+      <span>15.156 {"-->"} 15.16</span>
+      <br />
+      <span>0.001 {"-->"} 0.00</span>
+      <br />
+      <span>15. {"-->"} 15</span>
+    </div>
+  );
+
+  const contentEnd = (
+    <div>
+      <span>Ngày kết thúc không được trùng với ngày bắt đầu</span>
+      <br />
+      <span>Ngày kết thúc cách ngày bắt đầu tối đa 30 ngày</span>
+    </div>
+  );
   const handleChangeThumbnail = (e) => {
     let thumbnail = e.target.files[0];
     if (e.target.files[0]) {
@@ -36,7 +58,7 @@ function InfoInputCreateRound(props) {
                   .then((url) => {
                     props.setLoading(false);
                     props.setThumbnailError("");
-                    props.setThumbnail(url);
+                    props.setThum(url);
                   });
               }
             );
@@ -47,31 +69,6 @@ function InfoInputCreateRound(props) {
       }
     }
   };
-  const content = (
-    <div>
-      <span>Hệ thống sẽ tự làm tròn số.</span>
-      <br />
-      <span>Ví dụ:</span>
-      <br />
-      <span>15.156 {"-->"} 15.16</span>
-      <br />
-      <span>0.001 {"-->"} 0.00</span>
-      <br />
-      <span>15. {"-->"} 15</span>
-    </div>
-  );
-  const contentStart = (
-    <div>
-      <span>Ngày bắt đầu phải là ngày hiện tại</span>
-    </div>
-  );
-  const contentEnd = (
-    <div>
-      <span>Ngày kết thúc không được trùng với ngày bắt đầu</span>
-      <br />
-      <span>Ngày kết thúc cách ngày bắt đầu tối đa 30 ngày</span>
-    </div>
-  );
   return (
     <>
       <div className="modal__addRoundLineOne">
@@ -93,9 +90,10 @@ function InfoInputCreateRound(props) {
               type="number"
               addonAfter="Tỷ VNĐ"
               name="fundingAmount"
-              onChange={props.handleChangeInfoRound}
-              onBlur={props.handleBlurMoney}
+              onChange={props.change}
+              onBlur={props.blurFund}
               style={{ textAlign: "right" }}
+              defaultValue={props.info.fundingAmount}
             />
           </Tooltip>
         </div>
@@ -119,38 +117,26 @@ function InfoInputCreateRound(props) {
               type="number"
               addonAfter="%"
               name="shareRequirement"
-              onChange={props.handleChangeInfoRound}
-              onBlur={props.handleBlurPercent}
+              onChange={props.change}
+              onBlur={props.blurPer}
               style={{ textAlign: "right" }}
+              defaultValue={props.info.shareRequirement}
             />
           </Tooltip>
         </div>
         <div className="modal__inputStart">
-          <label className="modal__labelAddRound">
-            Ngày bắt đầu
-            <Popover content={contentStart} title={null}>
-              {" "}
-              (i)
-            </Popover>
-          </label>
-          <Tooltip
-            title={props.startDateError}
-            placement="topRight"
-            color="red"
-          >
-            <DatePicker
-              dropdownClassName="round__dropdown"
-              className={props.startDateError !== "" ? "error__input" : ""}
-              value={props.startDate}
-              onChange={props.setStartDate}
-              size="middle"
-              style={{ width: "100%" }}
-              placeholder=""
-              allowClear={false}
-              format={props.dateFormat}
-              onBlur={props.hanldeBlurStart}
-            />
-          </Tooltip>
+          <label className="modal__labelAddRound">Ngày bắt đầu</label>
+          <DatePicker
+            dropdownClassName="round__dropdown"
+            onChange={props.setsStartDateUpdate}
+            size="middle"
+            style={{ width: "100%" }}
+            placeholder=""
+            allowClear={false}
+            format={props.format}
+            defaultValue={moment(props.start, props.format)}
+            disabled={props.data.status === "ACTIVE"}
+          />
         </div>
         <div className="modal__inputEnd">
           <label className="modal__labelAddRound">
@@ -160,33 +146,34 @@ function InfoInputCreateRound(props) {
               (i)
             </Popover>
           </label>
-          <Tooltip title={props.endDateError} placement="topRight" color="red">
-            <DatePicker
-              dropdownClassName="round__dropdown"
-              className={props.endDateError !== "" ? "error__input" : ""}
-              value={props.endDate}
-              onChange={props.setEndDate}
-              size="middle"
-              style={{ width: "100%" }}
-              placeholder=""
-              allowClear={false}
-              format={props.dateFormat}
-              onBlur={props.handleBlurEnd}
-            />
-          </Tooltip>
+          <DatePicker
+            dropdownClassName="round__dropdown"
+            onChange={props.setEndDateUpdate}
+            size="middle"
+            style={{ width: "100%" }}
+            placeholder=""
+            allowClear={false}
+            defaultValue={moment(props.end, props.format)}
+            format={props.format}
+          />
         </div>
       </div>
       <div className="modal__addRoundLineTwo">
         <div className="modal__inputSummary">
           <label className="modal__labelAddRound">Mô tả sơ lược</label>
-          <Tooltip title={props.summaryError} placement="topRight" color="red">
+          <Tooltip
+            title={props.desUpdateError}
+            placement="topRight"
+            color="red"
+          >
             <TextArea
-              className={props.summaryError !== "" ? "error__input" : ""}
+              className={props.desUpdateError !== "" ? "error__input" : ""}
               rows={5}
               style={{ resize: "none" }}
               name="summary"
-              onChange={props.handleChangeInfoRound}
-              onBlur={props.handleBlurSum}
+              onChange={props.change}
+              onBlur={props.blurDes}
+              defaultValue={props.info.summary}
             />
           </Tooltip>
         </div>
@@ -194,7 +181,11 @@ function InfoInputCreateRound(props) {
           <label className="modal__labelAddRound">Ảnh</label>
           <div className="modal__inputThumbnailContainer">
             <img
-              src={props.thumbnail === "" ? Images.NO_IMAGE : props.thumbnail}
+              src={
+                props.thumbnailUpdate === ""
+                  ? Images.NO_IMAGE
+                  : props.thumbnailUpdate
+              }
               alt="user"
               className={`modal__crIMG${
                 props.thumbnailError !== "" ? " modal__crIMGEror" : ""
@@ -236,4 +227,4 @@ function InfoInputCreateRound(props) {
   );
 }
 
-export default InfoInputCreateRound;
+export default InfoUpdateRound;

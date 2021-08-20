@@ -12,7 +12,7 @@ import {
 } from "@ant-design/icons";
 import Images from "../../../assets/images/images";
 function AdminSidebar() {
-  const [openSide, setOpenSide] = useState(false);
+  const [openSide, setOpenSide] = useState(true);
   const { Sider } = Layout;
   const checkDefaultSelect = () => {
     const path = window.location.pathname;

@@ -85,6 +85,18 @@ function AdminDetailInfo(props) {
   return (
     <div className="admindi__wrapper">
       <div className="admindi__displayGrid">
+        {props.detail.taxCode === null ? (
+          <></>
+        ) : (
+          <>
+            <div className="admindi__item">
+              <span className="admindi__fontWeight">Mã số thuế:</span>
+            </div>
+            <div className="admindi__item">
+              <span className="admindi__wordBreak">{props.detail.taxCode}</span>
+            </div>
+          </>
+        )}
         {checkRole === false ? (
           <>
             <div className="admindi__item">

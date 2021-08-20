@@ -31,8 +31,12 @@ import {
   GET_LIST_INDUSTRY_SUCCESS,
   GET_LIST_INVESTOR_TYPE_SUCCESS,
   GET_LIST_PROVINCE_FAIL,
+  GET_LIST_PROVINCE_INVESTOR_FAIL,
+  GET_LIST_PROVINCE_INVESTOR_SUCCESS,
   GET_LIST_PROVINCE_SUCCESS,
   GET_LIST_REGION_FAILED,
+  GET_LIST_REGION_INVESTOR_FAILED,
+  GET_LIST_REGION_INVESTOR_SUCCESS,
   GET_LIST_REGION_SUCCESS,
   GET_LIST_STAGE_FAIL,
   GET_LIST_STAGE_SUCCESS,
@@ -682,6 +686,64 @@ const createTypeOfInvestorSuccess = (object) => {
 const createTypeOfInvestorFail = (err) => {
   return {
     type: CREATE_TYPE_OF_INVESTOR_FAIL,
+    payload: err,
+  };
+};
+
+
+export const getListProvinceInvestor = (url,listProvinceInvestor) => {
+  return (dispatch) => {
+    axios({
+      method: "Get",
+      url: url+listProvinceInvestor,
+    })
+      .then((res) => {
+     dispatch(getListProvinceInvestorSuccess(res.data))
+     console.log(res.data)
+      })
+      .catch((err) => {
+        dispatch(getListProvinceInvestorFail(err))
+      });
+  };
+};
+
+const getListProvinceInvestorSuccess = (province) => {
+  return {
+    type: GET_LIST_PROVINCE_INVESTOR_SUCCESS,
+    payload: province,
+  };
+};
+const getListProvinceInvestorFail = (err) => {
+  return {
+    type: GET_LIST_PROVINCE_INVESTOR_FAIL,
+    payload: err,
+  };
+};
+
+export const getListRegionInvestor = (url,listRegionInvestor) => {
+  return (dispatch) => {
+    axios({
+      method: "Get",
+      url: url+listRegionInvestor,
+    })
+      .then((res) => {
+     dispatch(getListRegionInvestorSuccess(res.data))
+      })
+      .catch((err) => {
+        dispatch(getListRegionInvestorFail(err))
+      });
+  };
+};
+
+const getListRegionInvestorSuccess = (region) => {
+  return {
+    type: GET_LIST_REGION_INVESTOR_SUCCESS,
+    payload: region,
+  };
+};
+const getListRegionInvestorFail = (err) => {
+  return {
+    type: GET_LIST_REGION_INVESTOR_FAILED,
     payload: err,
   };
 };

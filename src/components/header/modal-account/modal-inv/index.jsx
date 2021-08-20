@@ -13,6 +13,8 @@ function ModalAccountInvestor(props) {
     listStage,
     listIndustry,
     listInvestorType,
+    listProvinceInvestor,
+    listRegionInvestor,
   } = useSelector((state) => state.register);
   const [loading, setLoading] = useState(false);
   const disable = () => {
@@ -102,8 +104,8 @@ function ModalAccountInvestor(props) {
             arrayInvestorType={props.arrayInvestorType}
             arrayInv={props.arrayInv}
             //
-            listProvince={listProvince}
-            listRegion={listRegion}
+            listProvince={listProvinceInvestor}
+            listRegion={listRegionInvestor}
             listStage={listStage}
             listIndustry={listIndustry}
             listInvestorType={listInvestorType}

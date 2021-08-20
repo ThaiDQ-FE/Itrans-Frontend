@@ -21,9 +21,9 @@ function ModalAccountInvestorBasic(props) {
   const content = (
     <div>
       <p>Định dạng:</p>
-      <p>- https://www.facebook.com/ChubbyDQT/</p>
-      <p>- www.facebook.com/ChubbyDQT/</p>
-      <p>- facebook.com/ChubbyDQT/</p>
+      <p>- https://www.itrans.vn</p>
+      <p>- www.itrans.vn</p>
+      <p>- itrans.vn</p>
     </div>
   );
   const handleChangeAvata = (e) => {
@@ -202,6 +202,22 @@ function ModalAccountInvestorBasic(props) {
               {listHead}
             </Select>
           </div>
+          {/* tax code */}
+          <div className="maib__taxCode">
+            <label className="label__fontWeight">Mã số thuế </label>
+            <Tooltip
+              // title={props.websiteError}
+              color="red"
+              placement="topRight"
+            >
+              <Input size="large"
+              name="taxCode"
+              defaultValue={props.basicInfoIn.taxCode}
+              onChange={props.handleChangeValue}
+              />
+            </Tooltip>
+          </div>
+          {/* tax code */}
         </div>
       </div>
     </>

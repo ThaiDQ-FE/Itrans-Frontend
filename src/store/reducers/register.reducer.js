@@ -16,8 +16,12 @@ import {
   GET_LIST_INVESTOR_TYPE_FAILED,
   GET_LIST_INVESTOR_TYPE_SUCCESS,
   GET_LIST_PROVINCE_FAIL,
+  GET_LIST_PROVINCE_INVESTOR_FAIL,
+  GET_LIST_PROVINCE_INVESTOR_SUCCESS,
   GET_LIST_PROVINCE_SUCCESS,
   GET_LIST_REGION_FAILED,
+  GET_LIST_REGION_INVESTOR_FAILED,
+  GET_LIST_REGION_INVESTOR_SUCCESS,
   GET_LIST_REGION_SUCCESS,
   GET_LIST_STAGE_FAIL,
   GET_LIST_STAGE_SUCCESS,
@@ -39,6 +43,8 @@ const initialState = {
   investor: {},
   image : null,
   errors: [],
+  listProvinceInvestor : [],
+  listRegionInvestor:[]
 };
 const registerReducre = (state = initialState, action) => {
   const { type, payload } = action;
@@ -87,6 +93,14 @@ const registerReducre = (state = initialState, action) => {
       return { ...state, investor: payload };
     case CREATE_INVESTOR_FAIL:
       return { ...state, errors: payload };
+      case GET_LIST_PROVINCE_INVESTOR_SUCCESS:
+        return { ...state, listProvinceInvestor: payload };
+      case GET_LIST_PROVINCE_INVESTOR_FAIL:
+        return { ...state, errors: payload };
+        case GET_LIST_REGION_INVESTOR_SUCCESS:
+          return { ...state, listRegionInvestor: payload };
+        case GET_LIST_REGION_INVESTOR_FAILED:
+          return { ...state, errors: payload };
     default:
       return state;
   }

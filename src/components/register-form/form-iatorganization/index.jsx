@@ -26,7 +26,7 @@ function FormInformationAboutTheOrganization(props) {
       const upload = storage.ref(`images/${image.name}`).put(image);
       upload.on(
         "state_changed",
-        (snapshot) => {},
+        (snapshot) => { },
         (error) => {
           console.log(error);
         },
@@ -53,6 +53,7 @@ function FormInformationAboutTheOrganization(props) {
     numberOfEmployee: "",
     province: "",
     link: "",
+    taxCode: ""
     // description: "",
   });
   const [errors, setErrors] = useState({
@@ -63,6 +64,7 @@ function FormInformationAboutTheOrganization(props) {
     numberOfEmployee: "",
     province: "",
     link: "",
+    taxCode: ""
     // description: "",
   });
   const [color, setColor] = useState({
@@ -73,6 +75,7 @@ function FormInformationAboutTheOrganization(props) {
     numberOfEmployee: "",
     province: "",
     link: "",
+    taxCode: ""
     // description: "",
   });
   let check = 0;
@@ -226,6 +229,7 @@ function FormInformationAboutTheOrganization(props) {
       });
     }
   };
+  console.log(information.taxCode)
   const renderListProvince = () => {
     return listProvince.map((item, index) => {
       return (
@@ -377,6 +381,22 @@ function FormInformationAboutTheOrganization(props) {
                     </Select>
                   </Tooltip>
                 </div>
+                {/* tax code */}
+                <div className="fiato__taxCode">
+                  <small className="label__fontWeight">Mã số thuế</small>
+                  <Tooltip
+                    title={errors.taxCode}
+                    placement="topRight"
+                    color="red"
+                  >
+                    <Input
+                      style={{ border: color.taxCode }}
+                      name="taxCode"
+                      onChange={handleChangeInput}
+                      type="text" size="large" />
+                  </Tooltip>
+                </div>
+                {/* end tax code */}
               </div>
             </div>
           </div>

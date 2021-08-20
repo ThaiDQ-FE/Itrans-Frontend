@@ -129,7 +129,7 @@ function ListDealSlider() {
   const handleAccept = () => {
     Swal.fire({
       icon: "warning",
-      title: "Bạn muốn chấp thỏa thuận hiện tại?",
+      title: "Bạn chắc chắn muốn thương lượng với thỏa thuận này?",
       heightAuto: true,
       timerProgressBar: false,
       showConfirmButton: true,
@@ -154,7 +154,7 @@ function ListDealSlider() {
   const handleReject = () => {
     Swal.fire({
       icon: "warning",
-      title: "Bạn muốn từ chối thỏa thuận hiện tại?",
+      title: "Bạn không muốn thương lượng với thỏa thuận này?",
       heightAuto: true,
       timerProgressBar: false,
       showConfirmButton: true,

@@ -37,7 +37,7 @@ function ANACTablePending(props) {
       key: "name",
     },
     {
-      title: "Gmail",
+      title: "Mail",
       dataIndex: "gmail",
       key: "gmail",
     },

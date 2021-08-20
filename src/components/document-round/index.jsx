@@ -103,6 +103,7 @@ function DocumentRound() {
       }
     });
   };
+  const userInfo = getLocalStorage("userInfo");
   return (
     <>
       <ModalUpdateDocument
@@ -117,6 +118,7 @@ function DocumentRound() {
         )}
         {listDocumentByRound.map((value) => (
           <div className="dr__documentWrapper">
+            {userInfo.role ===  "ORGANIZATION" &&
             <div className="dr__action">
               <Tooltip title="Chỉnh sửa">
                 <img
@@ -139,6 +141,7 @@ function DocumentRound() {
                 />
               </Tooltip>
             </div>
+            }
             <div>
               <a
                 href={value.linkResource}

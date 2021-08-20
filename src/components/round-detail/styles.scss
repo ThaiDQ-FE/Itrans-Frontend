@@ -119,14 +119,25 @@
                     }
                 }
             }
-            .rd__endRound {
-                text-align: right;
+            .rd__roundDetailActoun {
+                display: flex;
+                justify-content: flex-end;
                 margin-top: 15px;
-                .rd__buttonEndRound {
-                    background: red;
-                    border-color: red;
-                    font-weight: 600;
+                .rd__deleteRound {
+                    .rd__buttonDeleteRound {
+                        background: red;
+                        border-color: red;
+                    }
                 }
+                .rd__endRound {
+                    margin-left: 15px;
+                    .rd__buttonEndRound {
+                        background: red;
+                        border-color: red;
+                    }
+                }
+            }
+            .rd__endRound {
             }
             .rd__joinRound {
                 text-align: right;

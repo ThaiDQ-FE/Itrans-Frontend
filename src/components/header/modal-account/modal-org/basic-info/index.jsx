@@ -10,7 +10,11 @@ function ModalAccountOrganizationBasic(props) {
   let stage = [];
   for (let i = 0; i < props.stage.length; i++) {
     stage.push(
-      <Option key={props.stage[i].idStage} value={props.stage[i].idStage}>
+      <Option
+        disabled={props.stage[i].idStage < props.data.idCurrentStage}
+        key={props.stage[i].idStage}
+        value={props.stage[i].idStage}
+      >
         {props.stage[i].name}
       </Option>
     );
@@ -19,9 +23,9 @@ function ModalAccountOrganizationBasic(props) {
   const content = (
     <div>
       <p>Định dạng:</p>
-      <p>- https://www.facebook.com/ChubbyDQT/</p>
-      <p>- www.facebook.com/ChubbyDQT/</p>
-      <p>- facebook.com/ChubbyDQT/</p>
+      <p>- https://www.itrans.vn</p>
+      <p>- www.itrans.vn</p>
+      <p>- itrans.vn</p>
     </div>
   );
   const checkStage = () => {
@@ -214,6 +218,15 @@ function ModalAccountOrganizationBasic(props) {
               {stage}
             </Select>
           </div>
+          {/* tax code */}
+          <div className="maob__taxCode">
+            <label className="label__fontWeight">Mã số thuế</label>
+            <Input size="large"
+            name="taxCode"
+            defaultValue={props.basicInfoIn.taxCode}
+            onChange={props.handleChangeValue} />
+          </div>
+          {/* end tax */}
         </div>
       </div>
     </>
