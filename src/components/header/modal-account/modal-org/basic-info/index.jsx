@@ -10,7 +10,11 @@ function ModalAccountOrganizationBasic(props) {
   let stage = [];
   for (let i = 0; i < props.stage.length; i++) {
     stage.push(
-      <Option key={props.stage[i].idStage} value={props.stage[i].idStage}>
+      <Option
+        disabled={props.stage[i].idStage < props.data.idCurrentStage}
+        key={props.stage[i].idStage}
+        value={props.stage[i].idStage}
+      >
         {props.stage[i].name}
       </Option>
     );

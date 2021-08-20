@@ -127,7 +127,7 @@ function ModalDealDetail(props) {
             size="large"
             type="primary"
           >
-            Chấp nhận
+            Chấp nhận thương lượng
           </Button>
           <Button
             onClick={props.handleReject}
@@ -135,7 +135,7 @@ function ModalDealDetail(props) {
             size="large"
             type="primary"
           >
-            Từ chối
+            Từ chối thương lượng
           </Button>
         </div>
       )}
