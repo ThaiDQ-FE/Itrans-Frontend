@@ -3,6 +3,7 @@ import Images from "../../assets/images/images";
 import "./styles.scss";
 import "antd/dist/antd.css";
 function ModalConfirmDeal(props) {
+  console.log(props.data);
   const { TextArea } = Input;
   const content = (
     <div>
@@ -28,10 +29,67 @@ function ModalConfirmDeal(props) {
       visible={props.openModal}
       onCancel={props.closeModal}
     >
-      <h3 style={{ textAlign: "center" }}>Thông tin muốn đầu tư</h3>
-      <form className="cfr__form" id="cfr__form">
+      <h2 style={{ textAlign: "center" }}>Thông tin thỏa thuận</h2>
+
+      <div className="mcd__info">
+        <h5 className="mcfinfo__h3">Thông tin vòng gọi vốn</h5>
+        <div className="mcfinfo__lineOne">
+          <div className="mcfinfo__money">
+            <label className="label__fontWeight">Số tiền kêu goi</label>
+            <Input
+              readOnly
+              defaultValue={props.data.fundingAmount}
+              size="large"
+              style={{ textAlign: "right" }}
+              addonAfter="Tỷ VNĐ"
+              className="readonly"
+            />
+          </div>
+          <div className="mcfinfo__per">
+            <label className="label__fontWeight">Phần trăm cổ phần</label>
+            <Input
+              readOnly
+              defaultValue={props.data.shareRequirement}
+              size="large"
+              style={{ textAlign: "right" }}
+              addonAfter="%"
+              className="readonly"
+            />
+          </div>
+          <div className="mcfinfo__per">
+            <label className="label__fontWeight">Giai đoạn </label>
+            <Input
+              readOnly
+              defaultValue={props.data.stage}
+              size="large"
+              className="readonly"
+            />
+          </div>
+        </div>
+
+        <div className="mcfinfo__lineTwo" style={{ marginTop: 10 }}>
+          <div className="mcfinfo__money">
+            <label className="label__fontWeight">Mô tả sơ lược</label>
+            <TextArea
+              readOnly
+              defaultValue={props.data.summary}
+              rows={3}
+              className="readonly"
+            />
+          </div>
+        </div>
+      </div>
+      <hr
+        style={{
+          width: "75px",
+          margin: "auto",
+          marginTop: 25,
+          marginBottom: 15,
+        }}
+      />
+      <form className="cfr__form mud__form" id="cfr__form">
         <div className="cfr__lineOne">
-          <div className="cfr__wrapperSTKG">
+          <div className="cfr__wrapperSTKG overight">
             <label className="label__fontWeight">
               Số tiền đầu tư{" "}
               <Popover content={content} title={null}>
@@ -49,7 +107,7 @@ function ModalConfirmDeal(props) {
               name="soTienDauTu"
             />
           </div>
-          <div className="cfr__wrapperPTCP">
+          <div className="cfr__wrapperPTCP overight">
             <label className="label__fontWeight">
               Phần trăm cổ phần{" "}
               <Popover content={content} title={null}>

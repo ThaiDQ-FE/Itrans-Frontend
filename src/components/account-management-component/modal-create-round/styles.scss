@@ -48,6 +48,9 @@
                     justify-content: center;
                     margin: auto;
                     position: relative;
+                    .modal__crIMG {
+                        object-fit: cover;
+                    }
                     .modal__crFILE {
                         display: none;
                     }

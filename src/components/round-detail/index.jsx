@@ -513,6 +513,7 @@ function RoundDeail(props) {
           closeModal={handleCloseModal}
           handleChangeValue={handleChangeEdit}
           handleCreateDealForm={handleCreateDealForm}
+          data={roundAndOrganization}
         />
       </div>
     </div>

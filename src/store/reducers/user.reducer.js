@@ -3,6 +3,8 @@ import {
   GET_LIST_ACCOUNT_NOT_CONFIRM_SUCCESS,
   LOGIN_FAILED,
   LOGIN_SUCCESS,
+  USER_GET_STAGE_FAILED,
+  USER_GET_STAGE_SUCCESS,
 } from "../constants/user.const";
 
 const initialState = {
@@ -10,6 +12,7 @@ const initialState = {
   errors: {},
   checkLogin: false,
   listAccountNotConfirm: [],
+  listStage: [],
 };
 
 const userReducer = (state = initialState, action) => {
@@ -28,6 +31,10 @@ const userReducer = (state = initialState, action) => {
         return { ...state, listAccountNotConfirm: payload };
       }
     }
+    case USER_GET_STAGE_SUCCESS:
+      return { ...state, listStage: payload };
+    case USER_GET_STAGE_FAILED:
+      return { ...state, errors: payload };
     default:
       return state;
   }

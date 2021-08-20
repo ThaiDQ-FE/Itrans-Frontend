@@ -6,6 +6,8 @@ import {
   GET_LIST_ACCOUNT_NOT_CONFIRM_SUCCESS,
   LOGIN_FAILED,
   LOGIN_SUCCESS,
+  USER_GET_STAGE_FAILED,
+  USER_GET_STAGE_SUCCESS,
 } from "../constants/user.const";
 import Swal from "sweetalert2";
 import {
@@ -241,5 +243,44 @@ export const changePassword = (object, history) => {
       .catch((err) => {
         sessionTimeOut(err, history);
       });
+  };
+};
+
+export const userGetStage = (idOrg, history) => {
+  return (dispatch) => {
+    axios({
+      method: "GET",
+      url:
+        defaultUrlAPIStringTemplate() +
+        `update-organization-stage?idOrganization=${idOrg}`,
+      headers: {
+        Authorization: `Bearer ${authorizationAccount()}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch(userGetStageSuccess(res.data));
+        } else {
+          showMessage("error", message.CACTH_ERROR);
+        }
+      })
+      .catch((err) => {
+        dispatch(userGetStageFailed(err));
+        sessionTimeOut(err, history);
+      });
+  };
+};
+
+const userGetStageSuccess = (list) => {
+  return {
+    type: USER_GET_STAGE_SUCCESS,
+    payload: list,
+  };
+};
+
+const userGetStageFailed = (err) => {
+  return {
+    type: USER_GET_STAGE_FAILED,
+    payload: err,
   };
 };
