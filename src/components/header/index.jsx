@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, withRouter } from "react-router-dom";
 import "./styles.scss";
 import logo from "../../assets/images/logo-grey.png";
@@ -22,7 +22,7 @@ import {
   checkOld,
   checkReNew,
 } from "../../validate/changePass/rePass";
-import { changePassword } from "../../store/action/user.action";
+import { changePassword, userGetStage } from "../../store/action/user.action";
 import Swal from "sweetalert2";
 import {
   checkEmp,
@@ -44,11 +44,17 @@ import message from "../../assets/message/text";
 import { getDeatilCompany } from "../../store/action/company.action";
 import { Tooltip } from "antd";
 import {
+  getListIndustry,
+  getListInvestorType,
+  getListProvince,
   getListProvinceInvestor,
+  getListRegion,
   getListRegionInvestor,
+  getListStage,
 } from "../../store/action/register.action";
 function Header({ history }) {
   const { detailCompany } = useSelector((state) => state.detailCompany);
+  const { listStage } = useSelector((state) => state.user);
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const dispatch = useDispatch();
   const [openMenu, setOpenMenu] = useState(null);
@@ -102,6 +108,17 @@ function Header({ history }) {
   const [arrayIn, setArrayIn] = useState([]);
   const [arrayInvestorType, setArrayInvestorType] = useState([]);
   const [arrayInv, setArrayInv] = useState([]);
+  //
+  useEffect(() => {
+    dispatch(getListProvince());
+    dispatch(getListRegion());
+    dispatch(getListIndustry());
+    dispatch(getListStage());
+    dispatch(getListInvestorType());
+    if (checkRoleUser() === "ORGANIZATION") {
+      dispatch(userGetStage(checkIdUser(), history));
+    }
+  }, []);
   //
   const handleCloseMenu = () => {
     setOpenMenu(null);
@@ -791,6 +808,8 @@ function Header({ history }) {
         handleBlurStage={handleBlurStage}
         handleBlurMin={handleBlurMin}
         handleBlurMax={handleBlurMax}
+        //
+        userStage={listStage}
       />
       <ModalResetAccountPass
         handleChangePass={handleChangePass}

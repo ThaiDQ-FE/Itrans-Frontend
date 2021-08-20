@@ -6,16 +6,16 @@ import Images from "../../../../../assets/images/images";
 import configConstFirebase from "../../../../../assets/helper/firebase/firebase";
 import { storage } from "../../../../../configs/firebase";
 function ModalAccountOrganizationBasic(props) {
+  console.log(props.userStage);
   const { Option } = Select;
   let stage = [];
-  for (let i = 0; i < props.stage.length; i++) {
+  for (let i = 0; i < props.userStage.length; i++) {
     stage.push(
       <Option
-        disabled={props.stage[i].idStage < props.data.idCurrentStage}
-        key={props.stage[i].idStage}
-        value={props.stage[i].idStage}
+        key={props.userStage[i].idStage}
+        value={props.userStage[i].idStage}
       >
-        {props.stage[i].name}
+        {props.userStage[i].name}
       </Option>
     );
   }
@@ -221,10 +221,12 @@ function ModalAccountOrganizationBasic(props) {
           {/* tax code */}
           <div className="maob__taxCode">
             <label className="label__fontWeight">Mã số thuế</label>
-            <Input size="large"
-            name="taxCode"
-            defaultValue={props.basicInfoIn.taxCode}
-            onChange={props.handleChangeValue} />
+            <Input
+              size="large"
+              name="taxCode"
+              defaultValue={props.basicInfoIn.taxCode}
+              onChange={props.handleChangeValue}
+            />
           </div>
           {/* end tax */}
         </div>

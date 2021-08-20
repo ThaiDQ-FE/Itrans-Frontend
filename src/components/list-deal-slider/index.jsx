@@ -58,7 +58,7 @@ function ListDealSlider() {
       };
       Swal.fire({
         icon: "warning",
-        title: "Bạn chắc chắn thỏa thuận này?",
+        title: "Bạn chắc chắn muốn cập nhật thỏa thuận này?",
         heightAuto: true,
         timerProgressBar: false,
         showConfirmButton: true,

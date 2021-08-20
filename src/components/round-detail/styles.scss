@@ -21,6 +21,9 @@
         width: 45%;
         border: 5px double gray;
         border-radius: 12px;
+        min-height: 300px;
+        max-height: 350;
+        object-fit: cover;
     }
     .roundDetail__info {
         width: 45%;
