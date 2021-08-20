@@ -2,15 +2,14 @@
     width: 28%;
     margin-top: 20px;
     .maib__image {
-        width: 125px;
         height: 125px;
         display: flex;
         justify-content: center;
         margin: auto;
         position: relative;
+        padding: 0 20px 0 0;
         .maib__img {
             object-fit: cover;
-            object-position: top;
         }
         .maib__userAvata {
             border: 1px dashed red;

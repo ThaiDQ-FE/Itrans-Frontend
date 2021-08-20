@@ -22,13 +22,13 @@
                 .fi__basicImageWrapper {
                     width: 25%;
                     .fi__imageInfo {
-                        width: 125px;
                         height: 125px;
                         margin-bottom: 20px;
                         display: flex;
                         justify-content: center;
                         margin: auto;
                         position: relative;
+                        padding: 0 20px 0 0;
                         .fi__userLogo {
                             object-fit: cover;
                         }

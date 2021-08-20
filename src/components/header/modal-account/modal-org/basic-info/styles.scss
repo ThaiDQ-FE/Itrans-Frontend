@@ -2,15 +2,14 @@
     width: 28%;
     margin-top: 20px;
     .maob__image {
-        width: 125px;
         height: 125px;
         display: flex;
         justify-content: center;
         margin: auto;
         position: relative;
+        padding: 0 20px 0 0;
         .maob__img {
             object-fit: cover;
-            object-position: top;
         }
         .maob__userAvata {
             border: 1px dashed red;
