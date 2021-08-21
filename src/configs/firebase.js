@@ -1,14 +1,14 @@
 import firebase from "firebase/app";
 import 'firebase/storage';
 const firebaseConfig = {
-    apiKey: "AIzaSyBbQTuqu5qPsp1kwuF92IP2bioYRXnlZLI",
-    authDomain: "itrans-upload.firebaseapp.com",
-    projectId: "itrans-upload",
-    storageBucket: "itrans-upload.appspot.com",
-    messagingSenderId: "78851208099",
-    appId: "1:78851208099:web:3615eb350e30a7bce76016",
-    measurementId: "G-NYEP4L926K"
-  };
-   firebase.initializeApp(firebaseConfig);
-   const storage = firebase.storage();
-   export {storage,firebase as default};
+  apiKey: "AIzaSyBjBFv9HZDegxJ-iCtrmzO0jXKcuaX8O9E",
+  authDomain: "store-itrans.firebaseapp.com",
+  projectId: "store-itrans",
+  storageBucket: "store-itrans.appspot.com",
+  messagingSenderId: "657670444575",
+  appId: "1:657670444575:web:0b51c7809036c50e77672a",
+  measurementId: "G-2BHSF34F3D"
+};
+firebase.initializeApp(firebaseConfig);
+const storage = firebase.storage();
+export { storage, firebase as default };
