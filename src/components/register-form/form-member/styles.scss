@@ -38,6 +38,7 @@
                             border-radius: 100%;
                             object-fit: cover;
                         }
+                       
                         .fm__file {
                             display: none;
                         }
@@ -51,6 +52,12 @@
                             height: 25px;
                             right: 0;
                             bottom: 0;
+                            .modal__inLABELSpin {
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                            }
                         }
                     }
                     .fm__hoVaTen {
