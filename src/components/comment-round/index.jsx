@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { checkRoleUser, getLocalStorage } from "../../assets/helper/helper";
 import { createAnswer, createQuestion } from "../../store/action/round.action";
 const { TextArea } = Input;
-const idRound = getLocalStorage("idRound");
+
 const CommentList = ({ comments, onClick, children, idQuestion }) => (
   <List
     dataSource={comments}
@@ -64,6 +64,7 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
   </>
 );
 function CommentRound() {
+  const idRound = getLocalStorage("idRound");
   const dispatch = useDispatch();
   const userLogin = getLocalStorage("userInfo");
   const [state, setState] = useState({

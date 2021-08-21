@@ -1,4 +1,4 @@
-import { Input, Button, Tooltip } from "antd";
+import { Input, Button, Tooltip ,Spin } from "antd";
 import React, { useState } from "react";
 import "antd/dist/antd.css";
 import "./styles.scss";
@@ -27,6 +27,7 @@ function FormMember(props) {
     linkCv: "",
   });
   let check = 0;
+  const [loading, setLoading] = useState(false);
   const validate = (values) => {
     let errors = {};
     if (!values.name) {
@@ -69,7 +70,11 @@ function FormMember(props) {
       const upload = storage.ref(`images/${image.name}`).put(image);
       upload.on(
         "state_changed",
-        (snapshot) => { },
+        (snapshot) => {
+          if (snapshot.state === "running") {
+            setLoading(true);
+          }
+         },
         (error) => {
           console.log(error);
         },
@@ -82,6 +87,7 @@ function FormMember(props) {
               console.log(url);
               teamMember.image = url;
               setUrl(url);
+              setLoading(false);
               document.getElementById("name").disabled = false;
               document.getElementById("position").disabled = false;
               document.getElementById("linkCv").disabled = false;
@@ -208,6 +214,7 @@ function FormMember(props) {
                   className="fm__file"
                   type="file"
                   id="file"
+                  accept="image/*"
                   onChange={handleChangeImage}
                 />
                 <label htmlFor="file" className="fm__span">
@@ -216,6 +223,11 @@ function FormMember(props) {
                     alt=""
                     className="fm__camera"
                   />
+                  {loading === true ? (
+                      <Spin className="modal__inLABELSpin" />
+                    ) : (
+                      <></>
+                    )}
                 </label>
               </div>
               <div className="fm__hoVaTen">
