@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./styles.scss";
 import axios from "axios";
 import "antd/dist/antd.css";
-import { Input, Select, Tooltip } from "antd";
+import { Input, Select, Tooltip, Spin } from "antd";
 import Messages from "../../../assets/message/text";
 import Images from "../../../assets/images/images";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,6 +29,8 @@ function FormInvestor(props) {
     listProvinceInvestor,
     listRegionInvestor,
   } = useSelector((state) => state.register);
+  const [loading, setLoading] = useState(false);
+  const [url, setUrl] = useState("");
   const [information, setInformation] = useState({
     name: "",
     industry: "",
@@ -42,9 +44,10 @@ function FormInvestor(props) {
     province: "",
     min: "",
     max: "",
-    taxCode:""
+    taxCode: ""
   });
   const saveData = getLocalStorage("Form2Investor");
+  const imageData = getLocalStorage("image");
   if (saveData !== null) {
     setInformation({
       name: saveData.name,
@@ -60,7 +63,10 @@ function FormInvestor(props) {
       min: saveData.min,
       max: saveData.max,
     });
-
+    if (imageData !== null) {
+      setUrl(imageData);
+    }
+    localStorage.removeItem("image");
     localStorage.removeItem("Form2Investor");
   }
   const listIdProvinceDefaul = () => {
@@ -125,32 +131,52 @@ function FormInvestor(props) {
     }
     return array;
   };
-
+  const [imageError, setImageError] = useState(""
+  );
+  const [imageColor, setImageColor] = useState(""
+  );
   const [image, setImage] = useState(null);
-  const [url, setUrl] = useState("");
   const handleChangeImage = (e) => {
     setImage(e.target.files[0]);
     const image = e.target.files[0];
-    if (image != undefined) {
-      const upload = storage.ref(`images/${image.name}`).put(image);
-      upload.on(
-        "state_changed",
-        (snapshot) => {},
-        (error) => {
-          console.log(error);
-        },
-        () => {
-          storage
-            .ref("images")
-            .child(image.name)
-            .getDownloadURL()
-            .then((url) => {
-              setUrl(url);
-              localStorage.setItem("image", JSON.stringify(url));
-            });
+    if (image !== undefined) {
+      if (image.type.includes("image/")) {
+        if (image.name.length > 40) {
+          setImageError("Tên hình chỉ tối đa 40 ký tự");
+          setImageColor("1px solid red");
+        } else if (image.size > 4194304) {
+          setImageError("Kích thước hình ảnh tối đa 4MB");
+          setImageColor("1px solid red");
+        } else {
+          setImageError("");
+          setImageColor("");
+          const upload = storage.ref(`images/${image.name}`).put(image);
+          upload.on(
+            "state_changed",
+            (snapshot) => {
+              if (snapshot.state === "running") {
+                setLoading(true);
+              }
+            },
+            (error) => {
+              console.log(error);
+            },
+            () => {
+              storage
+                .ref("images")
+                .child(image.name)
+                .getDownloadURL()
+                .then((url) => {
+                  setUrl(url);
+                  setLoading(false);
+                  localStorage.setItem("image", JSON.stringify(url));
+                });
+            }
+          );
         }
-      );
-    } else {
+      }
+    }
+    else {
       setUrl(Images.NO_IMAGE);
     }
   };
@@ -348,7 +374,7 @@ function FormInvestor(props) {
     province: "",
     min: "",
     max: "",
-    taxCode:""
+    taxCode: ""
   });
   const [color, setColor] = useState({
     name: "",
@@ -363,7 +389,7 @@ function FormInvestor(props) {
     province: "",
     min: "",
     max: "",
-    taxCode:""
+    taxCode: ""
   });
   function validateEmail(email) {
     var re = /\S+\.\S+/;
@@ -372,15 +398,22 @@ function FormInvestor(props) {
 
   const handleNext = () => {
     localStorage.setItem("Form2Investor", JSON.stringify(information));
+    localStorage.setItem("image", JSON.stringify(url));
     setErrors(validate(information));
     setColor(validateColor(information));
-    if (check == 10) {
-      props.handleNext();
+    if (url === "" || url === Images.NO_IMAGE) {
+      setImageError("Hình không được để trống");
+      setImageColor("1px solid red");
+    } else {
+      if (check == 10) {
+        props.handleNext();
+      }
     }
   };
 
   const handleBack = () => {
     localStorage.setItem("Form2Investor", JSON.stringify(information));
+    localStorage.setItem("image", JSON.stringify(url));
     props.handleBack();
   };
   const handleChangeInput = (event) => {
@@ -538,26 +571,34 @@ function FormInvestor(props) {
           <div className="fi__basicInfo">
             <div className="fi__basicImageWrapper">
               <label className="label__fontWeight">Hình đại diện</label>
-              <div className="fi__imageInfo">
-                <img
-                  src={url || Images.NO_IMAGE}
-                  alt=""
-                  className="fi__userLogo"
-                />
-                <input
-                  className="fi__file"
-                  type="file"
-                  id="file"
-                  onChange={handleChangeImage}
-                />
-                <label htmlFor="file" className="fi__span">
+              <Tooltip title={imageError} placement="topRight" color="red">
+                <div style={{ border: imageColor }} className="fi__imageInfo">
                   <img
-                    src={Images.CAMERA}
-                    alt="camera"
-                    className="fi__camera"
+                    src={url || Images.NO_IMAGE}
+                    alt=""
+                    className="fi__userLogo"
                   />
-                </label>
-              </div>
+                  <input
+                    className="fi__file"
+                    type="file"
+                    id="file"
+                    accept="image/*"
+                    onChange={handleChangeImage}
+                  />
+                  <label htmlFor="file" className="fi__span">
+                    <img
+                      src={Images.CAMERA}
+                      alt="camera"
+                      className="fi__camera"
+                    />
+                    {loading === true ? (
+                      <Spin className="modal__inLABELSpin" />
+                    ) : (
+                      <></>
+                    )}
+                  </label>
+                </div>
+              </Tooltip>
             </div>
             <div className="fi__infoBasic">
               <div className="fi__lineOne">
@@ -662,7 +703,7 @@ function FormInvestor(props) {
                       size="large"
                       onChange={handleChangeInput}
                       value={information.taxCode}
-                      // placeholder="VD: https://www.facebook.com/"
+                    // placeholder="VD: https://www.facebook.com/"
                     />
                   </Tooltip>
                 </div>

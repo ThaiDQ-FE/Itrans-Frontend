@@ -58,6 +58,12 @@
                                     opacity: 1;
                                 }
                             }
+                            .modal__inLABELSpin {
+                                position: absolute;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                            }
                             .fiato__camera {
                                 width: 16px;
                                 height: 16px;

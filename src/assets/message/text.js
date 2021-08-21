@@ -48,8 +48,7 @@ const message = {
   LinhVucHoatDong: "Lĩnh vực hoạt động",
   MoTaVeNhaDauTu: "Mô tả về nhà đầu tư",
   // Footer
-  TRUSOHCM:
-    "Lô E2a-7, Đường D1, Khu Công Nghệ Cao, Long Thạnh Mỹ, Quận 9, Thành phố Hồ Chí Minh 700000",
+  TRUSOHCM: "367 QL1, Phường 4, Tân An, Long An",
   TRUSOCT:
     "Số 600 Đường Nguyễn Văn Cừ (nối dài), P. An Bình, Q. Ninh Kiều, TP. Cần Thơ",
   TRUSOHN:

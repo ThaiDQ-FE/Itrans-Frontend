@@ -18,7 +18,9 @@ function UserFooter() {
           </div>
           <div className="uf__contact">
             <div className="uf__HCM">
-              <span className="uf__truSo">Hồ Chí Minh:</span>
+              <span className="uf__truSo">
+                Sở Khoa học {"&"} Công nghệ Long An:
+              </span>
               <span className="uf__diaChi">{Messages.TRUSOHCM}</span>
             </div>
           </div>

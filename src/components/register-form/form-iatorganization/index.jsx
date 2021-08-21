@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./styles.scss";
 import "antd/dist/antd.css";
-import { Input, Select, Tooltip } from "antd";
+import { Input, Select, Tooltip, Spin } from "antd";
 import Messages from "../../../assets/message/text";
 import Images from "../../../assets/images/images";
 import {
@@ -11,6 +11,7 @@ import {
 } from "../../../store/action/register.action";
 import { useDispatch, useSelector } from "react-redux";
 import { storage } from "../../../configs/firebase";
+import { getLocalStorage } from "../../../assets/helper/helper";
 function FormInformationAboutTheOrganization(props) {
   const { Option } = Select;
   const { TextArea } = Input;
@@ -19,28 +20,51 @@ function FormInformationAboutTheOrganization(props) {
   const { listProvince, listStage, listIndustry } = useSelector(
     (state) => state.register
   );
+
+  const [imageError, setImageError] = useState(""
+  );
+  const [imageColor, setImageColor] = useState(""
+  );
+  const [loading, setLoading] = useState(false);
   const [url, setUrl] = useState("");
   const handleChangeImage = (e) => {
     const image = e.target.files[0];
     if (image != undefined) {
-      const upload = storage.ref(`images/${image.name}`).put(image);
-      upload.on(
-        "state_changed",
-        (snapshot) => { },
-        (error) => {
-          console.log(error);
-        },
-        () => {
-          storage
-            .ref("images")
-            .child(image.name)
-            .getDownloadURL()
-            .then((url) => {
-              setUrl(url);
-              localStorage.setItem("image", JSON.stringify(url));
-            });
+      if (image.type.includes("image/")) {
+        if (image.name.length > 40) {
+          setImageError("Tên hình chỉ tối đa 40 ký tự");
+          setImageColor("1px solid red");
+        } else if (image.size > 4194304) {
+          setImageError("Kích thước hình ảnh tối đa 4MB");
+          setImageColor("1px solid red");
+        } else {
+          setImageError("");
+          setImageColor("");
+          const upload = storage.ref(`images/${image.name}`).put(image);
+          upload.on(
+            "state_changed",
+            (snapshot) => {
+              if (snapshot.state === "running") {
+                setLoading(true);
+              }
+            },
+            (error) => {
+              console.log(error);
+            },
+            () => {
+              storage
+                .ref("images")
+                .child(image.name)
+                .getDownloadURL()
+                .then((url) => {
+                  setUrl(url);
+                  setLoading(false);
+                  localStorage.setItem("image", JSON.stringify(url));
+                });
+            }
+          );
         }
-      );
+      }
     } else {
       setUrl(Images.NO_IMAGE);
     }
@@ -78,7 +102,65 @@ function FormInformationAboutTheOrganization(props) {
     taxCode: ""
     // description: "",
   });
+
+  const saveData = getLocalStorage("Form2");
+  const imageData = getLocalStorage("image");
+  if (saveData !== null) {
+    setInformation({
+      name: saveData.name,
+      industry: saveData.industry,
+      stage: saveData.stage,
+      foundedYear: saveData.foundedYear,
+      numberOfEmployee: saveData.numberOfEmployee,
+      link: saveData.link,
+      region: saveData.region,
+      province: saveData.province,
+    });
+    if (imageData !== null) {
+      setUrl(imageData);
+    }
+    localStorage.removeItem("image");
+    localStorage.removeItem("Form2");
+  }
   let check = 0;
+  const listIndustryDefaul = () => {
+    let array = [];
+    if (information.industry !== undefined && information.industry !== "") {
+      listIndustry.map((value) => {
+        information.industry.map((valueS) => {
+          if (value.idIndustry.toString() === valueS.toString()) {
+            array.push(value.name);
+          }
+        });
+      });
+      return array;
+    }
+  };
+  const listProvinceDefaul = () => {
+    let array = [];
+    if (information.province !== undefined && information.province !== "") {
+      listProvince.map((value) => {
+        information.province.map((valueS) => {
+          if (value.idProvince.toString() === valueS.toString()) {
+            array.push(value.name);
+          }
+        });
+      });
+    }
+    return array;
+  };
+
+  const listStageDefaul = () => {
+    let array = "";
+    if (information.stage !== undefined && information.stage !== "") {
+      listStage.map((value) => {
+        if (value.idStage.toString() === information.stage) {
+          array = value.name;
+        }
+      });
+    }
+    return array;
+  };
   const regex = new RegExp("^[0-9]*$");
   const validate = (values) => {
     let errors = {};
@@ -210,30 +292,52 @@ function FormInformationAboutTheOrganization(props) {
   };
   const handleNext = () => {
     localStorage.setItem("Form2", JSON.stringify(information));
+    localStorage.setItem("image", JSON.stringify(url));
     setErrors(validate(information));
     setColor(validateColor(information));
-    if (check == 7) {
-      props.handleNext();
-    }
-  };
-  const handleChange = (value, action) => {
-    if (!action.length) {
-      setInformation({
-        ...information,
-        [action.name]: value,
-      });
+    if (url === "" || url === Images.NO_IMAGE) {
+      setImageError("Hình không được để trống");
+      setImageColor("1px solid red");
     } else {
-      setInformation({
-        ...information,
-        [action[0].name]: value,
-      });
+      if (check == 7) {
+        props.handleNext();
+      }
     }
   };
-  console.log(information.taxCode)
+  const handleBack = () => {
+    localStorage.setItem("Form2", JSON.stringify(information));
+    localStorage.setItem("image", JSON.stringify(url));
+    props.handleBack();
+  };
+  const handleChangeIndustry = (value, action) => {
+    let valueAction = [];
+    for (let index = 0; index < action.length; index++) {
+      valueAction.push(parseInt(action[index].key));
+    }
+    setInformation({
+      ...information,
+      industry: valueAction,
+    });
+  };
+  const handleChangeStage = (value, action) => {
+    setInformation({
+      ...information,
+      stage: action.key,
+    });
+  };
+  const handleChangeProvince = (value, action) => {
+    let valueAction = [];
+    for (let index = 0; index < action.length; index++) {
+      valueAction.push(parseInt(action[index].key));
+    } setInformation({
+      ...information,
+      province: valueAction,
+    });
+  };
   const renderListProvince = () => {
     return listProvince.map((item, index) => {
       return (
-        <Option name="province" value={item.idProvince} key={index}>
+        <Option name="province" value={item.name} key={item.idProvince}>
           {item.name}
         </Option>
       );
@@ -242,7 +346,7 @@ function FormInformationAboutTheOrganization(props) {
   const renderListStage = () => {
     return listStage.map((item, index) => {
       return (
-        <Option name="stage" value={item.idStage} key={index}>
+        <Option name="stage" value={item.name} key={item.idStage}>
           {item.name}
         </Option>
       );
@@ -253,8 +357,8 @@ function FormInformationAboutTheOrganization(props) {
       return (
         <Option
           name="industry"
-          value={item.idIndustry}
-          key={index}
+          value={item.name}
+          key={item.idIndustry}
           disabled={item.active === false}
         >
           {item.name}
@@ -278,26 +382,34 @@ function FormInformationAboutTheOrganization(props) {
           <div className="fiato__basicInfo">
             <div className="fiato__imgWrapper">
               <label className="label__fontWeight">Hình đại diện</label>
-              <div className="fiato__imageInfo">
-                <img
-                  src={url || Images.NO_IMAGE}
-                  alt=""
-                  className="fiato__userLogo"
-                />
-                <input
-                  className="fiato__file"
-                  type="file"
-                  id="file"
-                  onChange={handleChangeImage}
-                />
-                <label htmlFor="file" className="fiato__span">
+              <Tooltip title={imageError} placement="topRight" color="red">
+                <div style={{ border: imageColor }} className="fiato__imageInfo">
                   <img
-                    src={Images.CAMERA}
-                    alt="camera"
-                    className="fiato__camera"
+                    src={url || Images.NO_IMAGE}
+                    alt=""
+                    className="fiato__userLogo"
                   />
-                </label>
-              </div>
+                  <input
+                    className="fiato__file"
+                    type="file"
+                    id="file"
+                    accept="image/*"
+                    onChange={handleChangeImage}
+                  />
+                  <label htmlFor="file" className="fiato__span">
+                    <img
+                      src={Images.CAMERA}
+                      alt="camera"
+                      className="fiato__camera"
+                    />
+                    {loading === true ? (
+                      <Spin className="modal__inLABELSpin" />
+                    ) : (
+                      <></>
+                    )}
+                  </label>
+                </div>
+              </Tooltip>
             </div>
 
             <div className="fiato__infoBasic">
@@ -307,6 +419,8 @@ function FormInformationAboutTheOrganization(props) {
                   <Tooltip title={errors.name} placement="topRight" color="red">
                     <Input
                       style={{ border: color.name }}
+                      placeholder="VD: Tổ chức A"
+                      value={information.name}
                       name="name"
                       onChange={handleChangeInput}
                       size="large"
@@ -321,9 +435,11 @@ function FormInformationAboutTheOrganization(props) {
                     color="red"
                   >
                     <Input
+                      placeholder="VD: 1998"
                       style={{ border: color.foundedYear }}
                       name="foundedYear"
                       onChange={handleChangeInput}
+                      value={information.foundedYear}
                       type="text"
                       maxLength="9"
                       size="large"
@@ -341,7 +457,9 @@ function FormInformationAboutTheOrganization(props) {
                       style={{ border: color.numberOfEmployee }}
                       name="numberOfEmployee"
                       type="text"
+                      placeholder="VD: 1658"
                       maxLength="9"
+                      value={information.numberOfEmployee}
                       onChange={handleChangeInput}
                       size="large"
                     />
@@ -357,6 +475,8 @@ function FormInformationAboutTheOrganization(props) {
                       name="link"
                       onChange={handleChangeInput}
                       size="large"
+                      value={information.link}
+                      placeholder="VD: https://www.facebook.com/"
                     />
                   </Tooltip>
                 </div>
@@ -372,7 +492,8 @@ function FormInformationAboutTheOrganization(props) {
                     <Select
                       className="fiato__selectStage"
                       style={{ border: color.stage }}
-                      onChange={handleChange}
+                      onChange={handleChangeStage}
+                      defaultValue={listStageDefaul}
                       name="stage"
                       size="large"
                       allowClear
@@ -410,7 +531,9 @@ function FormInformationAboutTheOrganization(props) {
                   name="industry"
                   mode="multiple"
                   allowClear
-                  onChange={handleChange}
+                  onChange={handleChangeIndustry}
+                  placeholder="Chọn một hoặc nhiều lĩnh vực"
+                  defaultValue={listIndustryDefaul}
                   size="large"
                   className="fiato__selectIndus"
                 >
@@ -426,7 +549,9 @@ function FormInformationAboutTheOrganization(props) {
                   mode="multiple"
                   allowClear
                   name="province"
-                  onChange={handleChange}
+                  onChange={handleChangeProvince}
+                  placeholder="Chọn một hoặc nhiều khu vực"
+                  defaultValue={listProvinceDefaul}
                   size="large"
                   className="fiato__selectPro"
                 >
@@ -566,7 +691,7 @@ function FormInformationAboutTheOrganization(props) {
           </div> */}
         </form>
         <div className="fiato__button">
-          <div className="fiato__buttonLeft" onClick={props.handleBack}>
+          <div className="fiato__buttonLeft" onClick={handleBack}>
             <img src={Images.RIGHT_ARROWS} alt="" />
             <span>Quay lại</span>
           </div>
