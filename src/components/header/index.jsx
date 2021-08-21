@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, withRouter } from "react-router-dom";
 import "./styles.scss";
 import logo from "../../assets/images/logo-grey.png";
@@ -22,7 +22,7 @@ import {
   checkOld,
   checkReNew,
 } from "../../validate/changePass/rePass";
-import { changePassword } from "../../store/action/user.action";
+import { changePassword, userGetStage } from "../../store/action/user.action";
 import Swal from "sweetalert2";
 import {
   checkEmp,
@@ -43,9 +43,18 @@ import { defaultUrlAPI } from "../../configs/url";
 import message from "../../assets/message/text";
 import { getDeatilCompany } from "../../store/action/company.action";
 import { Tooltip } from "antd";
-import { getListProvinceInvestor, getListRegionInvestor } from "../../store/action/register.action";
+import {
+  getListIndustry,
+  getListInvestorType,
+  getListProvince,
+  getListProvinceInvestor,
+  getListRegion,
+  getListRegionInvestor,
+  getListStage,
+} from "../../store/action/register.action";
 function Header({ history }) {
   const { detailCompany } = useSelector((state) => state.detailCompany);
+  const { listStage } = useSelector((state) => state.user);
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const dispatch = useDispatch();
   const [openMenu, setOpenMenu] = useState(null);
@@ -74,7 +83,7 @@ function Header({ history }) {
     maxInvestment: "",
     currentStage: "",
     currentStageId: "",
-    taxCode:""
+    taxCode: "",
   });
   const [logoError, setLogoError] = useState("");
   const [nameError, setNameError] = useState("");
@@ -99,6 +108,17 @@ function Header({ history }) {
   const [arrayIn, setArrayIn] = useState([]);
   const [arrayInvestorType, setArrayInvestorType] = useState([]);
   const [arrayInv, setArrayInv] = useState([]);
+  //
+  useEffect(() => {
+    dispatch(getListProvince());
+    dispatch(getListRegion());
+    dispatch(getListIndustry());
+    dispatch(getListStage());
+    dispatch(getListInvestorType());
+    if (checkRoleUser() === "ORGANIZATION") {
+      dispatch(userGetStage(checkIdUser(), history));
+    }
+  }, []);
   //
   const handleCloseMenu = () => {
     setOpenMenu(null);
@@ -173,16 +193,16 @@ function Header({ history }) {
       arayPro.push(detailCompany.provinces[i].name);
     }
     let url = "http://localhost:8080/api/v1/auth/get-region-investor?";
-      let urlNone = "";
-      arrayProvince.map((value, index) => {
-        let params = `idProvince=${value}`;
-        if (index === arrayProvince.length - 1) {
-          urlNone = urlNone + params;
-        } else {
-          urlNone = urlNone + params + `&`;
-        }
-      });
-      dispatch(getListRegionInvestor(url, urlNone));
+    let urlNone = "";
+    arrayProvince.map((value, index) => {
+      let params = `idProvince=${value}`;
+      if (index === arrayProvince.length - 1) {
+        urlNone = urlNone + params;
+      } else {
+        urlNone = urlNone + params + `&`;
+      }
+    });
+    dispatch(getListRegionInvestor(url, urlNone));
     if (checkRoleUser() === "INVESTOR") {
       for (let i = 0; i < detailCompany.investorTypes.length; i++) {
         arrayInvestorType.push(detailCompany.investorTypes[i].idInvestorType);
@@ -203,7 +223,7 @@ function Header({ history }) {
         }
       });
       dispatch(getListProvinceInvestor(url, urlNone));
-     
+
       for (let i = 0; i < detailCompany.stages.length; i++) {
         arrayStage.push(detailCompany.stages[i].idStage);
         arrayS.push(detailCompany.stages[i].name);
@@ -221,7 +241,7 @@ function Header({ history }) {
       maxInvestment: detailCompany.maxInvestment,
       currentStage: detailCompany.currentStage,
       currentStageId: detailCompany.idCurrentStage,
-      taxCode: detailCompany.taxCode
+      taxCode: detailCompany.taxCode,
     });
     setHeadQuater(detailCompany.idHeadQuarter);
   };
@@ -271,16 +291,16 @@ function Header({ history }) {
       setArayPro(value);
     }
     let url = "http://localhost:8080/api/v1/auth/get-region-investor?";
-      let urlNone = "";
-      array.map((value, index) => {
-        let params = `idProvince=${value}`;
-        if (index === array.length - 1) {
-          urlNone = urlNone + params;
-        } else {
-          urlNone = urlNone + params + `&`;
-        }
-      });
-      dispatch(getListRegionInvestor(url, urlNone));
+    let urlNone = "";
+    array.map((value, index) => {
+      let params = `idProvince=${value}`;
+      if (index === array.length - 1) {
+        urlNone = urlNone + params;
+      } else {
+        urlNone = urlNone + params + `&`;
+      }
+    });
+    dispatch(getListRegionInvestor(url, urlNone));
   };
   const handleChangeRegion = (value, action) => {
     let array = [];
@@ -288,16 +308,16 @@ function Header({ history }) {
       array.push(Number(action[i].key));
     }
     let url = "http://localhost:8080/api/v1/auth/get-province-investor?";
-      let urlNone = "";
-      array.map((value, index) => {
-        let params = `idRegion=${value}`;
-        if (index === array.length - 1) {
-          urlNone = urlNone + params;
-        } else {
-          urlNone = urlNone + params + `&`;
-        }
-      });
-      dispatch(getListProvinceInvestor(url, urlNone));
+    let urlNone = "";
+    array.map((value, index) => {
+      let params = `idRegion=${value}`;
+      if (index === array.length - 1) {
+        urlNone = urlNone + params;
+      } else {
+        urlNone = urlNone + params + `&`;
+      }
+    });
+    dispatch(getListProvinceInvestor(url, urlNone));
     if (array.length > 5) {
       setArrayRegion(array);
       setArrayRe(value);
@@ -389,17 +409,21 @@ function Header({ history }) {
     );
   };
   const handleClickUpdateIn = () => {
-    handleBlurName();
-    handleBlurEmp();
-    handleBlurYear();
-    handleBlurLink();
-    handleBlurType();
-    handleBlurIndus();
-    handleBlurPro();
-    handleBlurRe();
-    handleBlurStage();
-    handleBlurMin();
-    handleBlurMax();
+    checkName(basicInfoIn.name, setNameError);
+    checkEmp(basicInfoIn.numberOfEmp, setNumberOfEmpError);
+    checkYear(basicInfoIn.foundedYear, setFoundedYearError);
+    checkLink(basicInfoIn.website, setWebsiteError);
+    checkType(arrayInvestorType, setTypeError);
+    checkIndus(arrayIndustry, setIndustryError);
+    checkPro(arrayProvince, setProvinceError, arrayRegion);
+    checkRe(arrayRegion, setRegionError, arrayProvince);
+    checkStage(arrayStage, setStageError);
+    checkMin(basicInfoIn.minInvestment, setMinInvestmentError);
+    checkMax(
+      basicInfoIn.minInvestment,
+      basicInfoIn.maxInvestment,
+      setMaxInvestmentError
+    );
     if (
       logoError === "" &&
       nameError === "" &&
@@ -415,6 +439,7 @@ function Header({ history }) {
       minInvestmentError === "" &&
       arrayIndustry.length !== 0 &&
       arrayInvestorType.length !== 0 &&
+      Number(basicInfoIn.minInvestment) < Number(basicInfoIn.maxInvestment) &&
       arrayStage.length !== 0 &&
       (arrayProvince.length !== 0 || arrayRegion.length !== 0)
     ) {
@@ -428,12 +453,12 @@ function Header({ history }) {
         idRegions: arrayRegion,
         idStages: arrayStage,
         logo: basicInfoIn.logo,
-        maxInvestment: Number(basicInfoIn.maxInvestment),
-        minInvestment: Number(basicInfoIn.minInvestment),
+        maxInvestment: Number(basicInfoIn.maxInvestment).toFixed(2),
+        minInvestment: Number(basicInfoIn.minInvestment).toFixed(2),
         name: basicInfoIn.name,
         numberOfEmp: Number(basicInfoIn.numberOfEmp),
         website: basicInfoIn.website,
-        taxCode:basicInfoIn.taxCode
+        taxCode: basicInfoIn.taxCode,
       };
       handleUpdateInvestor(object);
       console.log(object);
@@ -467,7 +492,7 @@ function Header({ history }) {
         name: basicInfoIn.name,
         numberOfEmp: Number(basicInfoIn.numberOfEmp),
         website: basicInfoIn.website,
-        taxCode:basicInfoIn.taxCode
+        taxCode: basicInfoIn.taxCode,
       };
       handleUpdateOrganization(object);
       console.log(object);
@@ -783,6 +808,8 @@ function Header({ history }) {
         handleBlurStage={handleBlurStage}
         handleBlurMin={handleBlurMin}
         handleBlurMax={handleBlurMax}
+        //
+        userStage={listStage}
       />
       <ModalResetAccountPass
         handleChangePass={handleChangePass}

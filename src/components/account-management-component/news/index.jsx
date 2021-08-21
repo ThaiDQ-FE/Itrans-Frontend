@@ -329,13 +329,26 @@ function NewsTab(props) {
           allowOutsideClick: false,
         }).then((result) => {
           if (result.isConfirmed) {
-            const object = {
-              date: moment(linkDate).format("DD-MM-YYYY"),
-              idNews: idLink,
-              link: infolink.linkLink,
-              resource: infolink.linkResource,
-              title: infolink.linkTitle,
-            };
+            var object;
+            if (moment(linkDate).format("DD-MM-YYYY") === "Invalid date") {
+              object = {
+                date: linkDate,
+                idNews: idLink,
+                link: infolink.linkLink,
+                resource: infolink.linkResource,
+                title: infolink.linkTitle,
+              };
+            } else {
+              object = {
+                date: moment(linkDate).format("DD-MM-YYYY"),
+                idNews: idLink,
+                link: infolink.linkLink,
+                resource: infolink.linkResource,
+                title: infolink.linkTitle,
+              };
+            }
+
+            console.log(object);
             updateLink(object, props.history);
           }
         });

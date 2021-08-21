@@ -11,7 +11,6 @@ function ModalAccountOrganization(props) {
     (state) => state.register
   );
   const [loading, setLoading] = useState(false);
-  console.log(props.data);
   const disable = () => {
     let boolen;
     if (
@@ -75,6 +74,8 @@ function ModalAccountOrganization(props) {
             //
             handleChangeValue={props.handleChangeValue}
             handleChangeCurrent={props.handleChangeCurrent}
+            //
+            userStage={props.userStage}
           />
         </div>
         <hr className="modalo__hr" />

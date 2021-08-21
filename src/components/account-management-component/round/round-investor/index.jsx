@@ -94,7 +94,7 @@ function RoundByIdInvestor(props) {
     } else {
       return (
         <div className="rbii__noRound">
-          <p>Nhà đầu tư này chưa có DEAL được đăng tải</p>
+          <p>Nhà đầu tư này chưa có thỏa thuận được đăng tải</p>
         </div>
       );
     }

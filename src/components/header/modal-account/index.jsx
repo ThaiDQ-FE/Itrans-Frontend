@@ -102,6 +102,8 @@ function ModalAccountHome(props) {
         handleBlurLink={props.handleBlurLink}
         handleBlurIndus={props.handleBlurIndus}
         handleBlurPro={props.handleBlurPro}
+        //
+        userStage={props.userStage}
       />
     );
   }
