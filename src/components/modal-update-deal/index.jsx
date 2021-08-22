@@ -98,12 +98,14 @@ function ModalUpdateDeal(props) {
                 (i)
               </Popover>
             </label>
+            <Tooltip title={props.errors.soTienDauTu} placement="topRight" color="red">
             <Input
               id="cfr__formSTKG"
               size="large"
               type="number"
               className="cfr__formSTKG input-right-alight"
               addonAfter="Tỷ VNĐ"
+              style={{ border: props.color.soTienDauTu }}
               placeholder="Số tiền đầu tư"
               onChange={props.handleChangeValueUpdate}
               defaultValue={
@@ -113,6 +115,7 @@ function ModalUpdateDeal(props) {
               }
               name="soTienDauTu"
             />
+            </Tooltip>
           </div>
           <div className="cfr__wrapperPTCP overight">
             <label className="label__fontWeight">
@@ -122,12 +125,14 @@ function ModalUpdateDeal(props) {
                 (i)
               </Popover>
             </label>
+            <Tooltip title={props.errors.phanTramCoPhan} placement="topRight" color="red">
             <Input
               size="large"
               type="number"
               className="cfr__formPTCP input-right-alight"
               addonAfter="%"
               placeholder="Phần trăm cổ phần"
+              style={{ border: props.color.phanTramCoPhan }}
               defaultValue={
                 props.openModalUpdate === true
                   ? getLocalStorage("listDealByRound").shareRequirement
@@ -136,16 +141,19 @@ function ModalUpdateDeal(props) {
               onChange={props.handleChangeValueUpdate}
               name="phanTramCoPhan"
             />
+            </Tooltip>
           </div>
         </div>
         <div className="cfr__lineArea">
           <label className="label__fontWeight">Mô tả</label>
+          <Tooltip title={props.errors.moTa} placement="topRight" color="red">
           <TextArea
             className="cfr__formMT"
             size="large"
             rows={5}
             placeholder="Mô tả"
             onChange={props.handleChangeValueUpdate}
+            style={{ border: props.color.moTa }}
             defaultValue={
               props.openModalUpdate === true
                 ? getLocalStorage("listDealByRound").description
@@ -153,6 +161,7 @@ function ModalUpdateDeal(props) {
             }
             name="moTa"
           />
+          </Tooltip>
         </div>
         <div className="cfr__submitForm">
           <Button

@@ -95,7 +95,70 @@ function RoundDeail(props) {
       [name]: value,
     });
   };
-
+  const [errors, setErrors] = useState({
+    soTienDauTu: "",
+    phanTramCoPhan: "",
+    moTa: ""
+  });
+  const [color, setColor] = useState({
+    soTienDauTu: "",
+    phanTramCoPhan: "",
+    moTa: ""
+  });
+  let check = 0;
+  const validate = (values) => {
+    let errors = {};
+    if (!values.soTienDauTu) {
+      errors.soTienDauTu = "Số tiền đầu tư không được để trống";
+    } else {
+      errors.soTienDauTu = "";
+      check++;
+    }
+    if (!values.phanTramCoPhan) {
+      errors.phanTramCoPhan = "Phần trăm cổ phần không được để trống";
+    } else if (values.phanTramCoPhan > 100) {
+      errors.phanTramCoPhan = "Phần trăm cổ phần không được lớn hơn 100%";
+    } else {
+      errors.phanTramCoPhan = "";
+      check++;
+    }
+    if (!values.moTa) {
+      errors.moTa = "Mô tả không được để trống";
+    } else if (values.moTa.length < 50) {
+      errors.moTa = "Mô tả phải lớn hơn 50 ký tự";
+    } else if (values.moTa.length > 1000) {
+      errors.moTa = "Mô tả phải bé hơn 1000 ký tự";
+    } else {
+      errors.moTa = "";
+      check++;
+    }
+    return errors;
+  }
+  const validateColor = (values) => {
+    let errors = {};
+    if (!values.soTienDauTu) {
+      errors.soTienDauTu = "1px solid red";
+    } else {
+      errors.soTienDauTu = "";
+    }
+    if (!values.phanTramCoPhan) {
+      errors.phanTramCoPhan = "1px solid red";
+    } else if (values.phanTramCoPhan > 100) {
+      errors.phanTramCoPhan = "1px solid red";
+    } else {
+      errors.phanTramCoPhan = "";
+    }
+    if (!values.moTa) {
+      errors.moTa = "1px solid red";
+    } else if (values.moTa.length < 50) {
+      errors.moTa = "1px solid red";
+    } else if (values.moTa.length > 1000) {
+      errors.moTa = "1px solid red";
+    } else {
+      errors.moTa = "";
+    }
+    return errors;
+  }
   const handleClickUpdate = () => {
     checkMoney(infoToUpdate.fundingAmount, setFundingAmountError);
     checkPercent(infoToUpdate.shareRequirement, setShareRequirementError);
@@ -292,23 +355,33 @@ function RoundDeail(props) {
       shareRequirement: dataDeal.phanTramCoPhan,
       description: dataDeal.moTa,
     };
-    Swal.fire({
-      icon: "warning",
-      title: "Bạn có chắc mô tả thỏa thuận đúng?",
-      heightAuto: true,
-      timerProgressBar: false,
-      showConfirmButton: true,
-      showCancelButton: true,
-      cancelButtonText: "Hủy",
-      confirmButtonText: "Đồng ý",
-      confirmButtonColor: "#1890ff",
-      cancelButtonColor: "red",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        dispatch(createDeal(dealNew, roundAndOrganization.gmail));
-        setOpenModal(false);
-      }
-    });
+    setErrors(validate(dataDeal));
+    setColor(validateColor(dataDeal));
+    console.log(dataDeal)
+    if (check == 3) {
+      Swal.fire({
+        icon: "warning",
+        title: "Bạn có chắc mô tả thỏa thuận đúng?",
+        heightAuto: true,
+        timerProgressBar: false,
+        showConfirmButton: true,
+        showCancelButton: true,
+        cancelButtonText: "Hủy",
+        confirmButtonText: "Đồng ý",
+        confirmButtonColor: "#1890ff",
+        cancelButtonColor: "red",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          dispatch(createDeal(dealNew, roundAndOrganization.gmail));
+          setOpenModal(false);
+          setDataDeal({
+            soTienDauTu: "",
+            phanTramCoPhan: "",
+            moTa: "",
+          })
+        }
+      });
+    }
   };
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const handleDeleteRound = () => {
@@ -417,7 +490,7 @@ function RoundDeail(props) {
           </div>
           {userInfo.role === "ORGANIZATION" &&
             (roundAndOrganization.status === "ACTIVE" ||
-            roundAndOrganization.status === "PENDING" ? (
+              roundAndOrganization.status === "PENDING" ? (
               listDealByRound && listDealByRound.length === 0 ? (
                 <img
                   className="rd__editInfo"
@@ -505,7 +578,7 @@ function RoundDeail(props) {
           shareRequirementError={shareRequirementError}
           thumbnailError={thumbnailError}
           setThumbnailError={setThumbnailError}
-          //
+        //
         />
 
         <ModalConfirmDeal
@@ -513,6 +586,8 @@ function RoundDeail(props) {
           closeModal={handleCloseModal}
           handleChangeValue={handleChangeEdit}
           handleCreateDealForm={handleCreateDealForm}
+          errors={errors}
+          color={color}
           data={roundAndOrganization}
         />
       </div>

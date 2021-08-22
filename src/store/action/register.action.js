@@ -97,6 +97,9 @@ export const postBasicInformation = (gmail, password) => {
           delete newObjInvestor.region;
           delete newObjInvestor.min;
           delete newObjInvestor.max;
+          console.log(logo)
+          console.log(investor)
+          console.log(objInvestor)
           dispatch(postInvestor(newObjInvestor));
         }
       })
@@ -425,8 +428,6 @@ export const postInvestor = (investor) => {
       .then((res) => {
         dispatch(createInvestorSuccess(res.data));
         const teamMember = JSON.parse(localStorage.getItem("TeamMember"));
-        console.log("e");
-        console.log(teamMember);
         if (teamMember !== null) {
           for (let index = 0; index < teamMember.length; index++) {
             teamMember[index].idInvestor = res.data;
