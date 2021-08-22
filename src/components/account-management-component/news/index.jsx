@@ -95,7 +95,7 @@ function NewsTab(props) {
       timerProgressBar: false,
       showConfirmButton: true,
       showCancelButton: true,
-      confirmButtonText: "Từ bản thân",
+      confirmButtonText: "Bài viết mới",
       cancelButtonText: "Từ nguồn khác",
       confirmButtonColor: "#42bf63",
       cancelButtonColor: "#1890ff",
