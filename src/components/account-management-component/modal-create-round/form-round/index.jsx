@@ -42,11 +42,11 @@ function FormCreateRound(props) {
               Giai đoạn gọi vốn là{" "}
               <span className="formcr__stage">giai đoạn hiện tại</span>
             </li>
-            <li>
+            {/* <li>
               Tối đa{" "}
               <span className="formcr__active">1 vòng gọi vốn hiện tại</span> và{" "}
               <span className="formcr__pending">1 vòng gọi vốn đang chờ</span>
-            </li>
+            </li> */}
           </ul>
         </div>
         <Button

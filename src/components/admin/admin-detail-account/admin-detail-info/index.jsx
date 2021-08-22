@@ -166,7 +166,7 @@ function AdminDetailInfo(props) {
             </div>
             <div className="admindi__item">
               <span className="admindi__wordBreak">
-                {props.detail.minInvestment} - {props.detail.maxInvestment} (tỷ
+                {props.detail.minInvestment} - {props.detail.maxInvestment} (Tỷ
                 VNĐ)
               </span>
             </div>

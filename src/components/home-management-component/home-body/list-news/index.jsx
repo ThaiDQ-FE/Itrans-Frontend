@@ -5,6 +5,7 @@ import "./styles.scss";
 import ArticlesItem from "./news-item";
 import { withRouter } from "react-router-dom";
 import Images from "../../../../assets/images/images";
+import { checkRoleUser, localStorages } from "../../../../assets/helper/helper";
 function ListNews(props) {
   const [length, setLength] = useState({
     minValue: 0,
@@ -26,6 +27,21 @@ function ListNews(props) {
   const handleClick = (id) => {
     props.history.push(`/tin-tuc/chi-tiet/${id}`);
   };
+  const handleClickToCompany = (id, gmail) => {
+    if (checkRoleUser() === "INVESTOR") {
+      localStorages("gmailOrganizationToDetail", gmail);
+      localStorages("idOrganizationToDetail", id);
+      setTimeout(() => {
+        props.history.push("/to-chuc/chi-tiet");
+      }, 500);
+    } else {
+      localStorages("gmailInvestorToDetail", gmail);
+      localStorages("idInvestorToDetail", id);
+      setTimeout(() => {
+        props.history.push("/nha-dau-tu/chi-tiet");
+      }, 500);
+    }
+  };
   return (
     <div className="ln__wrapper">
       {props.loading === true ? (
@@ -43,14 +59,10 @@ function ListNews(props) {
         props.list
           .slice(length.minValue, length.maxValue)
           .map((value, index) => (
-            <div
-              className="ln__articleWrapper"
-              key={index}
-              onClick={() => {
-                handleClick(value.idArticle);
-              }}
-            >
+            <div className="ln__articleWrapper" key={index}>
               <ArticlesItem
+                handleClick={handleClick}
+                handleClickCompany={handleClickToCompany}
                 id={value.idArticle}
                 title={value.title}
                 thumbnail={value.thumbnail}
@@ -59,6 +71,9 @@ function ListNews(props) {
                 createAt={value.createAt}
                 articleIndustries={value.articleIndustries}
                 accountCreate={value.accountCreate}
+                idOrg={value.idOrganization}
+                idInv={value.idInvestor}
+                gmail={value.gmail}
               />
             </div>
           ))

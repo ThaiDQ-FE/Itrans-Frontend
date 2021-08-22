@@ -23,6 +23,10 @@
     .news__title {
         font-weight: 600;
         font-size: 18px;
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
     }
     .news__description {
         width: 100%;
@@ -46,6 +50,10 @@
         .news__owner {
             margin-left: 20px;
             line-height: 2;
+            &:hover {
+                text-decoration: underline;
+                cursor: pointer;
+            }
         }
         .news__createAt {
             margin-left: 20px;

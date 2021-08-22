@@ -20,6 +20,7 @@ function FormRole(props) {
   localStorage.removeItem("Form1");
   localStorage.removeItem("VerificationCode");
   localStorage.removeItem("Form2Investor");
+  localStorage.removeItem("Form2");
   const jsonFile = [
     {
       image: Images.ORGANIZATION_REGISTER,
