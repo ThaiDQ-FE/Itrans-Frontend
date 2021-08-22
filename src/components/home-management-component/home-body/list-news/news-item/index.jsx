@@ -3,6 +3,7 @@ import { Tag } from "antd";
 import "antd/dist/antd.css";
 import Images from "../../../../../assets/images/images";
 import "./styles.scss";
+import { checkRoleUser } from "../../../../../assets/helper/helper";
 function ArticlesItem(props) {
   const renderListIndustries = () => {
     return props.articleIndustries.map((item, index) => {
@@ -19,7 +20,12 @@ function ArticlesItem(props) {
       </div>
       <div className="news__content">
         <div className="news__tags">{renderListIndustries()}</div>
-        <div className="news__title">{props.title}</div>
+        <div
+          className="news__title"
+          onClick={() => props.handleClick(props.id)}
+        >
+          {props.title}
+        </div>
         <div className="news__description">{props.description}</div>
         <div className="newss__bottomWrapper">
           <div className="news__logo">
@@ -28,7 +34,15 @@ function ArticlesItem(props) {
               alt="logo owner"
             />
           </div>
-          <div className="news__owner">
+          <div
+            className="news__owner"
+            onClick={() =>
+              props.handleClickCompany(
+                checkRoleUser() === "INVESTOR" ? props.idOrg : props.idInv,
+                props.gmail
+              )
+            }
+          >
             <span>{props.accountCreate}</span>
           </div>
           <div className="news__createAt">{props.createAt} (GMT+7)</div>

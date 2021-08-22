@@ -567,7 +567,7 @@ function NewsTab(props) {
           : ""
       }`}
     >
-      {props.article.length >= 0 || props.link.length >= 0 ? (
+      {props.article.length > 0 || props.link.length > 0 ? (
         checkPathUrl() === pathQuanLyTaiKhoan() ? (
           <div className="nt__buttonAdd">
             <Button type="primary" size="large" onClick={handleOpen}>

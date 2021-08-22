@@ -12,7 +12,7 @@ function IntroduceRound() {
   return (
     <>
       <div className="ir__wrapper">
-        <div className="ir__gioiThoi">Giới thiệu sơ lược</div>
+        <div className="ir__gioiThoi">Kế hoạch kinh doanh</div>
         {renderHTML(description)}
       </div>
     </>
