@@ -1,15 +1,15 @@
 .anac__button {
     button {
-        background: #ff7d04;
-        border-color: #ff7d04;
+        background: #1890ff;
+        border-color: #1890ff;
         text-transform: uppercase;
         &:hover {
-            background: #f79031;
-            border-color: #f79031;
+            background: #1890ff;
+            border-color: #1890ff;
         }
         &:focus {
-            background: #f79031;
-            border-color: #f79031;
+            background: #1890ff;
+            border-color: #1890ff;
         }
     }
 }

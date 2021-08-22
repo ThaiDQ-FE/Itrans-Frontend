@@ -87,6 +87,7 @@ function AdminDetailAccount(props) {
       showCancelButton: true,
       cancelButtonText: "Hủy",
       cancelButtonColor: "red",
+      confirmButtonColor: "#1890ff",
     }).then(async (result) => {
       if (result.isConfirmed) {
         dispatch(
@@ -178,9 +179,9 @@ function AdminDetailAccount(props) {
         </div>
       </div>
       <div className="ada__action">
-        <Button className="ada__aHuy" size="large" type="primary">
+        {/* <Button className="ada__aHuy" size="large" type="primary">
           Hủy
-        </Button>
+        </Button> */}
         <Button
           className="ada__aDuyet"
           size="large"

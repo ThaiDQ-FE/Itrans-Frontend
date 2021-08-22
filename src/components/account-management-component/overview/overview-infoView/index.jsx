@@ -182,7 +182,7 @@ function OverViewInfoViewComponent(props) {
                   <div className="ovic__item">
                     <span className="ovic__wordBreak">
                       {props.detailView.minInvestment} -
-                      {props.detailView.maxInvestment} (tỷ VNĐ)
+                      {props.detailView.maxInvestment} (Tỷ VNĐ)
                     </span>
                   </div>
                 </>
