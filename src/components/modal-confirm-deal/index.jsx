@@ -3,7 +3,8 @@ import Images from "../../assets/images/images";
 import "./styles.scss";
 import "antd/dist/antd.css";
 function ModalConfirmDeal(props) {
-  console.log(props.data);
+  console.log(props);
+  console.log(props.errors);
   const { TextArea } = Input;
   const content = (
     <div>
@@ -40,6 +41,7 @@ function ModalConfirmDeal(props) {
               readOnly
               defaultValue={props.data.fundingAmount}
               size="large"
+              style={{ border: props.color.soTienDauTu }}
               style={{ textAlign: "right" }}
               addonAfter="Tỷ VNĐ"
               className="readonly"
@@ -97,15 +99,18 @@ function ModalConfirmDeal(props) {
                 (i)
               </Popover>
             </label>
+            <Tooltip title={props.errors.soTienDauTu} placement="topRight" color="red">
             <Input
               id="cfr__formSTKG"
               size="large"
               type="number"
               className="cfr__formSTKG input-right-alight"
               addonAfter="Tỷ VNĐ"
+              style={{ border: props.color.soTienDauTu }}
               onChange={props.handleChangeValue}
               name="soTienDauTu"
             />
+            </Tooltip>
           </div>
           <div className="cfr__wrapperPTCP overight">
             <label className="label__fontWeight">
@@ -115,25 +120,31 @@ function ModalConfirmDeal(props) {
                 (i)
               </Popover>
             </label>
+            <Tooltip title={props.errors.phanTramCoPhan} placement="topRight" color="red">
             <Input
               size="large"
               type="number"
               className="cfr__formPTCP input-right-alight"
               addonAfter="%"
+              style={{ border: props.color.phanTramCoPhan }}
               onChange={props.handleChangeValue}
               name="phanTramCoPhan"
             />
+            </Tooltip>
           </div>
         </div>
         <div className="cfr__lineArea">
           <label className="label__fontWeight">Mô tả</label>
+          <Tooltip title={props.errors.moTa} placement="topRight" color="red">
           <TextArea
             className="cfr__formMT"
             size="large"
             rows={5}
+            style={{ border: props.color.moTa }}
             onChange={props.handleChangeValue}
             name="moTa"
           />
+          </Tooltip>
         </div>
         <div className="cfr__submitForm">
           <Button

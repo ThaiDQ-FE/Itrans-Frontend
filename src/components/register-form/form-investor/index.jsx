@@ -16,7 +16,6 @@ import {
 } from "../../../store/action/register.action";
 import { storage } from "../../../configs/firebase";
 import { getLocalStorage } from "../../../assets/helper/helper";
-console.log("e ban");
 function FormInvestor(props) {
   const { Option } = Select;
   const { TextArea } = Input;
@@ -62,6 +61,7 @@ function FormInvestor(props) {
       province: saveData.province,
       min: saveData.min,
       max: saveData.max,
+      taxCode: saveData.taxCode
     });
     if (imageData !== null) {
       setUrl(imageData);
@@ -280,6 +280,27 @@ function FormInvestor(props) {
       errors.max = "";
       check++;
     }
+    if (!values.taxCode) {
+      errors.taxCode = "";
+      check++;
+    } else if (values.taxCode.length != 10 || values.taxCode.length != 14) {
+      errors.taxCode = "Mã số thuế không đúng";
+      if (values.taxCode.length == 14) {
+        if (values.taxCode.substring(10, 11) === "-") {
+          errors.taxCode = "";
+          check++;
+
+        } else {
+          errors.taxCode = "Mã số thuế không đúng";
+        }
+      } else if (values.taxCode.length == 10) {
+        errors.taxCode = "";
+        check++;
+      }
+    } else {
+      errors.taxCode = "";
+      check++;
+    }
     return errors;
   };
   const validateColor = (values) => {
@@ -359,6 +380,22 @@ function FormInvestor(props) {
     } else {
       errors.max = "";
     }
+    if (!values.taxCode) {
+      errors.taxCode = "";
+    } else if (values.taxCode.length != 10 || values.taxCode.length != 14) {
+      errors.taxCode = "1px solid red";
+      if (values.taxCode.length == 14) {
+        if (values.taxCode.substring(10, 11) === "-") {
+          errors.taxCode = "";
+        } else {
+          errors.taxCode = "1px solid red";
+        }
+      } else if (values.taxCode.length == 10) {
+        errors.taxCode = "";
+      }
+    } else {
+      errors.taxCode = "";
+    }
     return errors;
   };
   const [errors, setErrors] = useState({
@@ -405,7 +442,7 @@ function FormInvestor(props) {
       setImageError("Hình không được để trống");
       setImageColor("1px solid red");
     } else {
-      if (check == 10) {
+      if (check == 11) {
         props.handleNext();
       }
     }
@@ -698,9 +735,10 @@ function FormInvestor(props) {
                   <small className="label__fontWeight">Mã số thuế</small>
                   <Tooltip title={errors.taxCode} placement="topRight" color="red">
                     <Input
-                      style={{ border: color.tax }}
+                      style={{ border: color.taxCode }}
                       name="taxCode"
                       size="large"
+                      type="text"
                       onChange={handleChangeInput}
                       value={information.taxCode}
                     // placeholder="VD: https://www.facebook.com/"

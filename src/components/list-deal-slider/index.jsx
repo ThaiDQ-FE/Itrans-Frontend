@@ -48,6 +48,71 @@ function ListDealSlider() {
     setOpenModalUpdate(false);
     localStorage.removeItem("listDealByRound");
   };
+  const [errors, setErrors] = useState({
+    soTienDauTu: "",
+    phanTramCoPhan: "",
+    moTa: ""
+  });
+  const [color, setColor] = useState({
+    soTienDauTu: "",
+    phanTramCoPhan: "",
+    moTa: ""
+  });
+  let check = 0;
+  const validate = (values) => {
+    let errors = {};
+    if (!values.soTienDauTu) {
+      errors.soTienDauTu = "Số tiền đầu tư không được để trống";
+    } else {
+      errors.soTienDauTu = "";
+      check++;
+    }
+    if (!values.phanTramCoPhan) {
+      errors.phanTramCoPhan = "Phần trăm cổ phần không được để trống";
+    } else if (values.phanTramCoPhan > 100) {
+      errors.phanTramCoPhan = "Phần trăm cổ phần không được lớn hơn 100%";
+    } else {
+      errors.phanTramCoPhan = "";
+      check++;
+    }
+    if (!values.moTa) {
+      errors.moTa = "Mô tả không được để trống";
+    } else if (values.moTa.length < 50) {
+      errors.moTa = "Mô tả phải lớn hơn 50 ký tự";
+     }else if (values.moTa.length > 1000) {
+      errors.moTa = "Mô tả phải bé hơn 1000 ký tự";
+     }
+    else {
+      errors.moTa = "";
+      check++;
+    }
+    return errors;
+  }
+  const validateColor = (values) => {
+    let errors = {};
+    if (!values.soTienDauTu) {
+      errors.soTienDauTu = "1px solid red";
+    } else {
+      errors.soTienDauTu = "";
+    }
+    if (!values.phanTramCoPhan) {
+      errors.phanTramCoPhan = "1px solid red";
+    } else if (values.phanTramCoPhan > 100) {
+      errors.phanTramCoPhan = "1px solid red";
+    } else {
+      errors.phanTramCoPhan = "";
+    }
+    if (!values.moTa) {
+      errors.moTa = "1px solid red";
+    }else if (values.moTa.length < 50) {
+      errors.moTa = "1px solid red";
+     }else if (values.moTa.length > 1000) {
+      errors.moTa = "1px solid red";
+     } else {
+      errors.moTa = "";
+    }
+    return errors;
+  }
   const handleUpdateDealForm = () => {
     if (getLocalStorage("listDealByRound") !== null) {
       const object = {
@@ -56,23 +121,27 @@ function ListDealSlider() {
         idDeal: listDealByRound.idDeal,
         shareRequirement: dataDeal.phanTramCoPhan,
       };
-      Swal.fire({
-        icon: "warning",
-        title: "Bạn chắc chắn muốn cập nhật thỏa thuận này?",
-        heightAuto: true,
-        timerProgressBar: false,
-        showConfirmButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Đồng ý",
-        cancelButtonText: "Hủy",
-        confirmButtonColor: "#1890ff",
-        cancelButtonColor: "red",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          dispatch(updateDealInRound(object));
-          setOpenModalUpdate(false);
-        }
-      });
+      setErrors(validate(dataDeal));
+      setColor(validateColor(dataDeal));
+      if (check == 3) {
+        Swal.fire({
+          icon: "warning",
+          title: "Bạn chắc chắn muốn cập nhật thỏa thuận này?",
+          heightAuto: true,
+          timerProgressBar: false,
+          showConfirmButton: true,
+          showCancelButton: true,
+          confirmButtonText: "Đồng ý",
+          cancelButtonText: "Hủy",
+          confirmButtonColor: "#1890ff",
+          cancelButtonColor: "red",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            dispatch(updateDealInRound(object));
+            setOpenModalUpdate(false);
+          }
+        });
+      }
     }
   };
 
@@ -218,118 +287,120 @@ function ListDealSlider() {
         closeModalUpdate={handleCloseModalUpdate}
         handleChangeValueUpdate={handleChangeValueUpdate}
         handleUpdateDealForm={handleUpdateDealForm}
+        errors={errors}
+        color={color}
       />
       {userInfo.role === "ORGANIZATION"
         ? listDealByRound.length !== 0 &&
-          listDealByRound !== "No Data" && (
-            <div className="lds__mid">
-              <div className="lds__title">Nhà đầu tư muốn tham gia</div>
-              <Slider {...settings} className={checkDeal()}>
-                {listDealByRound.length > 0 &&
-                  listDealByRound.map((value) => (
-                    <div
-                      className="lds__container"
-                      onClick={() => {
-                        dispatch(getDetailDeal(value.idDeal));
-                        localStorages("statusDeal", value.statusDeal);
-                      }}
-                    >
-                      <div className="lds__listRound">
-                        <Card
-                          hoverable
-                          className="lds__itemInves"
-                          onClick={handleChange}
-                        >
-                          {renderTag(value.statusDeal)}
-                          <img
-                            style={{ objectFit: "cover" }}
-                            src={value.logo}
-                            alt="thumbnail"
-                          />
-                          <div className="lds__name">
-                            <span className="span_text">
-                              {" "}
-                              {value.nameInvestor}
-                            </span>
-                          </div>
-                          <div className="lds__capital">
-                            <span className="span_text">Số tiền đầu tư:</span>
-                            <span> {value.capitalInvestment} Tỷ (VND)</span>
-                          </div>
-                          <div className="lds__share">
-                            <span className="span_text">
-                              Phần trăm cổ phần:{" "}
-                            </span>
-                            <span>{value.shareRequirement} %</span>
-                          </div>
-                          <div className="rbii__startDate">
-                            <span className="span_text">Ngày tạo: </span>
-                            <span>{value.date}</span>
-                          </div>
-                        </Card>
-                      </div>
+        listDealByRound !== "No Data" && (
+          <div className="lds__mid">
+            <div className="lds__title">Nhà đầu tư muốn tham gia</div>
+            <Slider {...settings} className={checkDeal()}>
+              {listDealByRound.length > 0 &&
+                listDealByRound.map((value) => (
+                  <div
+                    className="lds__container"
+                    onClick={() => {
+                      dispatch(getDetailDeal(value.idDeal));
+                      localStorages("statusDeal", value.statusDeal);
+                    }}
+                  >
+                    <div className="lds__listRound">
+                      <Card
+                        hoverable
+                        className="lds__itemInves"
+                        onClick={handleChange}
+                      >
+                        {renderTag(value.statusDeal)}
+                        <img
+                          style={{ objectFit: "cover" }}
+                          src={value.logo}
+                          alt="thumbnail"
+                        />
+                        <div className="lds__name">
+                          <span className="span_text">
+                            {" "}
+                            {value.nameInvestor}
+                          </span>
+                        </div>
+                        <div className="lds__capital">
+                          <span className="span_text">Số tiền đầu tư:</span>
+                          <span> {value.capitalInvestment} Tỷ (VND)</span>
+                        </div>
+                        <div className="lds__share">
+                          <span className="span_text">
+                            Phần trăm cổ phần:{" "}
+                          </span>
+                          <span>{value.shareRequirement} %</span>
+                        </div>
+                        <div className="rbii__startDate">
+                          <span className="span_text">Ngày tạo: </span>
+                          <span>{value.date}</span>
+                        </div>
+                      </Card>
                     </div>
-                  ))}
-              </Slider>
-            </div>
-          )
+                  </div>
+                ))}
+            </Slider>
+          </div>
+        )
         : listDealByRound !== "No Data" && (
-            <div className="lds__dealInvs">
-              <span className="lbs__title">Thông tin thỏa thuận </span>
-              <div className="lds_textDeal">
-                <div className="lds__introduceWrapper">
-                  {listDealByRound.statusDeal === "PENDING" && (
-                    <div className="lds__action">
-                      <Tooltip title="Chỉnh sửa">
-                        <img
-                          src={Images.PENCIL}
-                          alt="edit"
-                          onClick={() => {
-                            handleEditDeal();
-                          }}
-                          className="lbs__edit"
-                        />
-                      </Tooltip>
-                      <Tooltip title="Xóa">
-                        <img
-                          src={Images.RED_CANCEL}
-                          alt="clear"
-                          onClick={() => {
-                            handleDeletetDeal();
-                          }}
-                          className="lbs__delete"
-                        />
-                      </Tooltip>
-                    </div>
-                  )}
-                </div>
-                <span className="label__fontWeightV2">
-                  Số tiền đầu tư:{" "}
-                  <span className="lbs__labelNormal">
-                    {listDealByRound.capitalInvestment + " Tỷ VNĐ"}
-                  </span>
-                </span>
-                <span className="label__fontWeightV2 lbs__percent">
-                  Phần trăm cổ phần:{" "}
-                  <span className="lbs__labelNormal">
-                    {listDealByRound.shareRequirement + "%"}
-                  </span>
-                </span>
-                <span className="label__fontWeightV2">
-                  Ngày tạo:{" "}
-                  <span className="lbs__labelNormal">
-                    {listDealByRound.date}
-                  </span>
-                </span>
-                <span className="label__fontWeightV2 lbs__des">
-                  Mô tả:{" "}
-                  <span className="lbs__labelNormal">
-                    {listDealByRound.description}
-                  </span>
-                </span>
+          <div className="lds__dealInvs">
+            <span className="lbs__title">Thông tin thỏa thuận </span>
+            <div className="lds_textDeal">
+              <div className="lds__introduceWrapper">
+                {listDealByRound.statusDeal === "PENDING" && (
+                  <div className="lds__action">
+                    <Tooltip title="Chỉnh sửa">
+                      <img
+                        src={Images.PENCIL}
+                        alt="edit"
+                        onClick={() => {
+                          handleEditDeal();
+                        }}
+                        className="lbs__edit"
+                      />
+                    </Tooltip>
+                    <Tooltip title="Xóa">
+                      <img
+                        src={Images.RED_CANCEL}
+                        alt="clear"
+                        onClick={() => {
+                          handleDeletetDeal();
+                        }}
+                        className="lbs__delete"
+                      />
+                    </Tooltip>
+                  </div>
+                )}
               </div>
+              <span className="label__fontWeightV2">
+                Số tiền đầu tư:{" "}
+                <span className="lbs__labelNormal">
+                  {listDealByRound.capitalInvestment + " Tỷ VNĐ"}
+                </span>
+              </span>
+              <span className="label__fontWeightV2 lbs__percent">
+                Phần trăm cổ phần:{" "}
+                <span className="lbs__labelNormal">
+                  {listDealByRound.shareRequirement + "%"}
+                </span>
+              </span>
+              <span className="label__fontWeightV2">
+                Ngày tạo:{" "}
+                <span className="lbs__labelNormal">
+                  {listDealByRound.date}
+                </span>
+              </span>
+              <span className="label__fontWeightV2 lbs__des">
+                Mô tả:{" "}
+                <span className="lbs__labelNormal">
+                  {listDealByRound.description}
+                </span>
+              </span>
             </div>
-          )}
+          </div>
+        )}
     </>
   );
 }

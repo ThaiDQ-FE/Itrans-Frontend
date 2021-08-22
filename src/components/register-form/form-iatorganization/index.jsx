@@ -115,6 +115,7 @@ function FormInformationAboutTheOrganization(props) {
       link: saveData.link,
       region: saveData.region,
       province: saveData.province,
+      taxCode: saveData.taxCode
     });
     if (imageData !== null) {
       setUrl(imageData);
@@ -216,6 +217,27 @@ function FormInformationAboutTheOrganization(props) {
       errors.province = "";
       check++;
     }
+    if (!values.taxCode) {
+      errors.taxCode = "";
+      check++;
+    } else if (values.taxCode.length != 10 || values.taxCode.length != 14) {
+      errors.taxCode = "Mã số thuế không đúng";
+      if (values.taxCode.length == 14) {
+        if (values.taxCode.substring(10, 11) === "-") {
+          errors.taxCode = "";
+          check++;
+
+        } else {
+          errors.taxCode = "Mã số thuế không đúng";
+        }
+      } else if (values.taxCode.length == 10) {
+        errors.taxCode = "";
+        check++;
+      }
+    } else {
+      errors.taxCode = "";
+      check++;
+    }
     // if (!values.description) {
     //   errors.description = "Mô tả về doanh nghiệp không được để trống";
     // } else {
@@ -276,7 +298,22 @@ function FormInformationAboutTheOrganization(props) {
     // } else {
     //   errors.description = "";
     // }
-
+    if (!values.taxCode) {
+      errors.taxCode = "";
+    } else if (values.taxCode.length != 10 || values.taxCode.length != 14) {
+      errors.taxCode = "1px solid red";
+      if (values.taxCode.length == 14) {
+        if (values.taxCode.substring(10, 11) === "-") {
+          errors.taxCode = "";
+        } else {
+          errors.taxCode = "1px solid red";
+        }
+      } else if (values.taxCode.length == 10) {
+        errors.taxCode = "";
+      }
+    } else {
+      errors.taxCode = "";
+    }
     return errors;
   };
   function validateEmail(email) {
@@ -299,7 +336,7 @@ function FormInformationAboutTheOrganization(props) {
       setImageError("Hình không được để trống");
       setImageColor("1px solid red");
     } else {
-      if (check == 7) {
+      if (check == 8) {
         props.handleNext();
       }
     }
@@ -513,6 +550,7 @@ function FormInformationAboutTheOrganization(props) {
                     <Input
                       style={{ border: color.taxCode }}
                       name="taxCode"
+                      value={information.taxCode}
                       onChange={handleChangeInput}
                       type="text" size="large" />
                   </Tooltip>
