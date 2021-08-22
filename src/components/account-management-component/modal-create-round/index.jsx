@@ -62,11 +62,11 @@ function ModalAddRound(props) {
         </div>
         <div className="modal__addRoundLineFour">
           <label className="modal__labelAddRound">
-            Mô tả chi tiết
-            <Popover content={contentSum} title={null} placement="topLeft">
+            Kế hoạch kinh doanh
+            {/* <Popover content={contentSum} title={null} placement="topLeft">
               {" "}
               (i)
-            </Popover>
+            </Popover> */}
           </label>
           <FormCreateRound
             onSubmit={props.onSubmit}
