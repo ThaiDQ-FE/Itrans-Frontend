@@ -43,7 +43,7 @@ function FormAngelInvestorInformation(props) {
     province: "",
     min: "",
     max: "",
-    taxCode: ""
+    taxCode: "",
   });
   const saveData = getLocalStorage("Form2Investor");
   const imageData = getLocalStorage("image");
@@ -60,7 +60,7 @@ function FormAngelInvestorInformation(props) {
       province: saveData.province,
       min: saveData.min,
       max: saveData.max,
-      taxCode:saveData.taxCode
+      taxCode: saveData.taxCode,
     });
     if (imageData !== null) {
       setUrl(imageData);
@@ -135,10 +135,8 @@ function FormAngelInvestorInformation(props) {
     }
     return array;
   };
-  const [imageError, setImageError] = useState(""
-  );
-  const [imageColor, setImageColor] = useState(""
-  );
+  const [imageError, setImageError] = useState("");
+  const [imageColor, setImageColor] = useState("");
   const [image, setImage] = useState(null);
   const handleChangeImage = (e) => {
     setImage(e.target.files[0]);
@@ -179,8 +177,7 @@ function FormAngelInvestorInformation(props) {
           );
         }
       }
-    }
-    else {
+    } else {
       setUrl(Images.NO_IMAGE);
     }
   };
@@ -283,7 +280,6 @@ function FormAngelInvestorInformation(props) {
         if (values.taxCode.substring(10, 11) === "-") {
           errors.taxCode = "";
           check++;
-
         } else {
           errors.taxCode = "Mã số thuế không đúng";
         }
@@ -395,7 +391,7 @@ function FormAngelInvestorInformation(props) {
     province: "",
     min: "",
     max: "",
-    taxCode: ""
+    taxCode: "",
   });
   const [color, setColor] = useState({
     name: "",
@@ -409,7 +405,7 @@ function FormAngelInvestorInformation(props) {
     province: "",
     min: "",
     max: "",
-    taxCode: ""
+    taxCode: "",
   });
   function validateEmail(email) {
     var re = /\S+\.\S+/;
@@ -443,7 +439,6 @@ function FormAngelInvestorInformation(props) {
       },
     })
       .then((res) => {
-
         const user = JSON.parse(localStorage.getItem("Form1"));
         const gmailObj = { gmail: user.gmail };
         const objInvestor = Object.assign({}, gmailObj, information);
@@ -457,9 +452,7 @@ function FormAngelInvestorInformation(props) {
         delete newObjInvestor.max;
         postInvestor1(newObjInvestor);
       })
-      .catch((err) => {
-
-      });
+      .catch((err) => {});
   };
   const postInvestor1 = (investor) => {
     axios({
@@ -485,109 +478,100 @@ function FormAngelInvestorInformation(props) {
         };
         postInvestorTaste1(objInvestorTaste);
       })
-      .catch((err) => {
-      });
+      .catch((err) => {});
   };
-const postTypeOfInvestor1 = (type) => {
-      axios({
-        method: "Post",
-        url: "http://localhost:8080/api/v1/auth/type-of-investor",
-        data: type,
-      })
-        .then((res) => {
-        })
-        .catch((err) => {
-        });
+  const postTypeOfInvestor1 = (type) => {
+    axios({
+      method: "Post",
+      url: "http://localhost:8080/api/v1/auth/type-of-investor",
+      data: type,
+    })
+      .then((res) => {})
+      .catch((err) => {});
   };
   const postInvestorTaste1 = (investorTaste) => {
-      axios({
-        method: "Post",
-        url: "http://localhost:8080/api/v1/auth/create-investorTaste",
-        data: investorTaste,
+    axios({
+      method: "Post",
+      url: "http://localhost:8080/api/v1/auth/create-investorTaste",
+      data: investorTaste,
+    })
+      .then((res) => {
+        const investmentIndustry = [];
+        const investmentStage = [];
+        const provinceRegionList = [];
+        const investorOld = information;
+        for (let index = 0; index < investorOld.industry.length; index++) {
+          const industry = { idIndustry: investorOld.industry[index] };
+          industry.idInvestorTaste = res.data;
+          investmentIndustry.push(industry);
+        }
+        postInvestmentIndustry1(investmentIndustry);
+        for (let index = 0; index < investorOld.stage.length; index++) {
+          const stage = { idStage: investorOld.stage[index] };
+          stage.idInvestorTaste = res.data;
+          investmentStage.push(stage);
+        }
+        postInvestmentStage1(investmentStage);
+        for (let index = 0; index < investorOld.province.length; index++) {
+          let provinceRegion = {};
+          if (investorOld.province[index] !== undefined) {
+            provinceRegion.idProvince = investorOld.province[index];
+            provinceRegion.idInvestorTaste = res.data;
+            provinceRegionList.push(provinceRegion);
+          }
+          if (investorOld.region[index] !== undefined) {
+            provinceRegion = {};
+            provinceRegion.idRegion = investorOld.region[index];
+            provinceRegion.idInvestorTaste = res.data;
+            provinceRegionList.push(provinceRegion);
+          }
+        }
+        postTasteProvinceRegion1(provinceRegionList);
       })
-        .then((res) => {
-          const investmentIndustry = [];
-          const investmentStage = [];
-          const provinceRegionList = [];
-          const investorOld = information;
-          for (let index = 0; index < investorOld.industry.length; index++) {
-            const industry = { idIndustry: investorOld.industry[index] };
-            industry.idInvestorTaste = res.data;
-            investmentIndustry.push(industry);
-          }
-          postInvestmentIndustry1(investmentIndustry);
-          for (let index = 0; index < investorOld.stage.length; index++) {
-            const stage = { idStage: investorOld.stage[index] };
-            stage.idInvestorTaste = res.data;
-            investmentStage.push(stage);
-          }
-          postInvestmentStage1(investmentStage);
-          for (let index = 0; index < investorOld.province.length; index++) {
-            let provinceRegion = {};
-            if (investorOld.province[index] !== undefined) {
-              provinceRegion.idProvince = investorOld.province[index];
-              provinceRegion.idInvestorTaste = res.data;
-              provinceRegionList.push(provinceRegion);
-            }
-            if (investorOld.region[index] !== undefined) {
-              provinceRegion = {};
-              provinceRegion.idRegion = investorOld.region[index];
-              provinceRegion.idInvestorTaste = res.data;
-              provinceRegionList.push(provinceRegion);
-            }
-          }
-          postTasteProvinceRegion1(provinceRegionList);
-        })
-        .catch((err) => {
-        });
+      .catch((err) => {});
   };
   const postInvestmentIndustry1 = (investmentIndustry) => {
-      axios({
-        method: "Post",
-        url: "http://localhost:8080/api/v1/auth/create-investmentIndustry",
-        data: investmentIndustry,
-      })
-        .then((res) => {
-        })
-        .catch((err) => {
-        });
+    axios({
+      method: "Post",
+      url: "http://localhost:8080/api/v1/auth/create-investmentIndustry",
+      data: investmentIndustry,
+    })
+      .then((res) => {})
+      .catch((err) => {});
   };
   const postInvestmentStage1 = (investmentStage) => {
-      axios({
-        method: "Post",
-        url: "http://localhost:8080/api/v1/auth/create-investmentStage",
-        data: investmentStage,
-      })
-        .then((res) => {
-        })
-        .catch((err) => {
-        });
+    axios({
+      method: "Post",
+      url: "http://localhost:8080/api/v1/auth/create-investmentStage",
+      data: investmentStage,
+    })
+      .then((res) => {})
+      .catch((err) => {});
   };
   const postTasteProvinceRegion1 = (tasteProvinceRegion) => {
-      axios({
-        method: "Post",
-        url: "http://localhost:8080/api/v1/auth/create-taste-province-region",
-        data: tasteProvinceRegion,
-      })
-        .then((res) => {
-          Swal.fire({
-            imageUrl: Images.THANKS,
-            heightAuto: true,
-            showConfirmButton: true,
-            allowOutsideClick: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: () => {
-              Swal.showLoading();
-            },
-          }).then(async (result) => {
-            if (result.dismiss === Swal.DismissReason.timer) {
-              window.location.assign("http://localhost:3000/dang-nhap");
-            }
-          });
-        })
-        .catch((err) => {
+    axios({
+      method: "Post",
+      url: "http://localhost:8080/api/v1/auth/create-taste-province-region",
+      data: tasteProvinceRegion,
+    })
+      .then((res) => {
+        Swal.fire({
+          imageUrl: Images.THANKS,
+          heightAuto: true,
+          showConfirmButton: true,
+          allowOutsideClick: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        }).then(async (result) => {
+          if (result.dismiss === Swal.DismissReason.timer) {
+            window.location.assign("http://localhost:3000/dang-nhap");
+          }
         });
+      })
+      .catch((err) => {});
   };
   const handleChangeInput = (event) => {
     const { value, name } = event.target;
@@ -750,7 +734,10 @@ const postTypeOfInvestor1 = (type) => {
                     alt=""
                     className="faii__userAvata"
                   />
-                  <input className="faii__file" type="file" id="file"
+                  <input
+                    className="faii__file"
+                    type="file"
+                    id="file"
                     accept="image/*"
                     onChange={handleChangeImage}
                   />
@@ -771,30 +758,35 @@ const postTypeOfInvestor1 = (type) => {
               <div className="faii__hoVaTenNamSinh">
                 <div className="faii__hoVaTen">
                   <label className="label__fontWeight">Họ và Tên</label>
-                  <Tooltip title={errors.name} placement="topRight" color="red">  <Input
-                    placeholder="VD: Nguyễn Văn A"
-                    value={information.name}
-                    name="name"
-                    style={{ border: color.name }}
-                    onChange={handleChangeInput}
-                    size="large" /></Tooltip>
+                  <Tooltip title={errors.name} placement="topRight" color="red">
+                    {" "}
+                    <Input
+                      placeholder="VD: Nguyễn Văn A"
+                      value={information.name}
+                      name="name"
+                      style={{ border: color.name }}
+                      onChange={handleChangeInput}
+                      size="large"
+                    />
+                  </Tooltip>
                 </div>
                 <div className="faii__namSinh">
-
                   <label className="label__fontWeight">Năm sinh</label>
                   <Tooltip
                     title={errors.foundedYear}
                     placement="topRight"
                     color="red"
                   >
-                    <Input placeholder="VD: 1998"
+                    <Input
+                      placeholder="VD: 1998"
                       type="text"
                       maxLength="9"
                       style={{ border: color.foundedYear, textAlign: "end" }}
                       value={information.foundedYear}
                       name="foundedYear"
                       onChange={handleChangeInput}
-                      size="large" />
+                      size="large"
+                    />
                   </Tooltip>
                 </div>
               </div>
@@ -834,7 +826,11 @@ const postTypeOfInvestor1 = (type) => {
               {/* tax code */}
               <div className="faii__taxCode">
                 <label className="label__fontWeight">Mã số thuế</label>
-                <Tooltip title={errors.taxCode} placement="topRight" color="red">
+                <Tooltip
+                  title={errors.taxCode}
+                  placement="topRight"
+                  color="red"
+                >
                   <Input
                     // placeholder="VD: https://www.facebook.com/"
                     size="large"
@@ -858,7 +854,8 @@ const postTypeOfInvestor1 = (type) => {
                       placement="topRight"
                       color="red"
                     >
-                      <Input size="large"
+                      <Input
+                        size="large"
                         type="text"
                         maxLength="9"
                         style={{ border: color.min, textAlign: "end" }}
@@ -866,7 +863,8 @@ const postTypeOfInvestor1 = (type) => {
                         value={information.min}
                         size="large"
                         onChange={handleChangeInput}
-                        addonAfter="Tỷ VNĐ" />
+                        addonAfter="Tỷ VNĐ"
+                      />
                     </Tooltip>
                   </div>
                   <span className="faii__spanMoney">-</span>
@@ -876,20 +874,24 @@ const postTypeOfInvestor1 = (type) => {
                       placement="topRight"
                       color="red"
                     >
-                      <Input type="text"
+                      <Input
+                        type="text"
                         maxLength="9"
                         addonAfter="Tỷ VNĐ"
                         style={{ border: color.max, textAlign: "end" }}
                         name="max"
                         value={information.max}
                         size="large"
-                        onChange={handleChangeInput} />
+                        onChange={handleChangeInput}
+                      />
                     </Tooltip>
                   </div>
                 </div>
               </div>
               <div className="faii__linhVucDauTu">
-                <label className="label__fontWeight">Lĩnh vực kinh doanh đầu tư</label>
+                <label className="label__fontWeight">
+                  Lĩnh vực kinh doanh đầu tư
+                </label>
                 <Tooltip
                   title={errors.industry}
                   placement="topRight"
@@ -903,7 +905,6 @@ const postTypeOfInvestor1 = (type) => {
                     onChange={handleChangeIndustry}
                     defaultValue={listIndustryDefaul}
                     size="large"
-                    bordered={false}
                   >
                     {renderListIndustry()}
                   </Select>
@@ -920,7 +921,6 @@ const postTypeOfInvestor1 = (type) => {
                     onChange={handleChangeRegion}
                     defaultValue={listRegionDefaul}
                     size="large"
-                    bordered={false}
                   >
                     {renderListRegion()}
                   </Select>
@@ -941,7 +941,6 @@ const postTypeOfInvestor1 = (type) => {
                     onChange={handleChangeProvince}
                     defaultValue={listProvinceDefaul}
                     size="large"
-                    bordered={false}
                   >
                     {renderListProvinceOr()}
                   </Select>
@@ -959,7 +958,6 @@ const postTypeOfInvestor1 = (type) => {
                     defaultValue={listStageDefaul}
                     size="large"
                     className="fi__selectStage"
-                    bordered={false}
                   >
                     {renderListStage()}
                   </Select>
@@ -974,7 +972,9 @@ const postTypeOfInvestor1 = (type) => {
             <span>Quay lại</span>
           </div>
           <div className="faii__buttonDone">
-            <Button onClick={handleNext} type="primary">Hoàn tất</Button>
+            <Button onClick={handleNext} type="primary">
+              Hoàn tất
+            </Button>
           </div>
         </div>
       </div>
